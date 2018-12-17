@@ -1,0 +1,11 @@
+client/node_modules/
+admin/node_modules/
+server/venv
+*.pyc
+*.env
+*.vscode
+*.sqlite3
+*.ipynb
+*.xlsx
+*.csv
+*.json
