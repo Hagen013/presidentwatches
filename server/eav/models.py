@@ -5,13 +5,27 @@ from core.db.fields import NameField
 from core.db.mixins import TimeStampedMixin, DescriptionMixin, OrderableMixin
 
 from .managers import AttributeValueManager
-from .fields import EavSlugField, EavDatatypeField
+from .fields import EavSlugField, EavDatatypeField, AttributeType
+from .exceptions import IllegalAssignmentException
 
 
 class DatatypeRestrictionsMixin(models.Model):
 
     class Meta:
         abstract = True
+
+    __datatype_to_field_mapping = {
+        1: 'value_text',
+        2: 'value_int',
+        3: 'value_float',
+        4: 'value_bool',
+        5: 'value_enum',
+        6: 'value_enum'
+    }
+
+    @property
+    def _value_field(self):
+        return self.__datatype_to_field_mapping[self.datatype]
 
     def __init__(self, *args, **kwargs):
         super(DatatypeRestrictionsMixin, self).__init__(*args, **kwargs)
@@ -52,16 +66,34 @@ class AbstractAttribute(DatatypeRestrictionsMixin, DescriptionMixin):
         default=False
     )
 
-    # @property
-    # def values(self):
-    #     return self.value_class.objects.filter(attribute=self)
+    strict_options = models.BooleanField(
+        default=True
+    )
+
+    @property
+    def adding_values_allowed(self):
+        if (self.datatype == AttributeType.Choice) or (self.datatype == AttributeType.MultiChoice):
+            return not self.strict_options
+        return True
 
     @property
     def values_json(self):
         pass
 
-    def add_value(self):
-        pass
+    def create_value(self, value, forced=False):
+        if self.adding_values_allowed or forced:
+            data = {
+                'attribute': self,
+                self._value_field: value
+            }
+            return self.value_class(**data).save()
+        else:
+            msg = """Attribute with strict options doesn't support
+            adding new values. Change attribute.strict_options to True first,
+            or use attribute.create_value() method with forced=True argument provided
+            """
+            raise IllegalAssignmentException(msg)
+
 
     def __str__(self):
         return self.name
@@ -77,6 +109,14 @@ class AbstractAttributeValue(DatatypeRestrictionsMixin):
     """
     class Meta:
         abstract = True
+        unique_together = ((
+            'attribute',
+            'value_text',
+            'value_int',
+            'value_float',
+            'value_bool',
+            'value_enum'
+        ))
 
     attribute = None
     objects = AttributeValueManager()
@@ -84,28 +124,16 @@ class AbstractAttributeValue(DatatypeRestrictionsMixin):
     # денормализация
     datatype = EavDatatypeField()
 
-    value_text = models.CharField(blank=True, null=True, max_length=2048)
-    value_int = models.IntegerField(blank=True, null=True)
+    value_text  = models.CharField(blank=True, null=True, max_length=2048)
+    value_int   = models.IntegerField(blank=True, null=True)
     value_float = models.FloatField(blank=True, null=True)
-    value_enum = models.CharField(
+    value_bool  = models.BooleanField(blank=True, null=True)
+    value_enum  = models.CharField(
         max_length=256,
         default=None,
         null=True,
         db_index=True
     )
-
-    __datatype_to_field_mapping = {
-        1: 'value_text',
-        2: 'value_int',
-        3: 'value_float',
-        4: 'value_bool',
-        5: 'value_enum',
-        6: 'value_enum'
-    }
-
-    @property
-    def _value_field(self):
-        return self.__datatype_to_field_mapping[self.datatype]
 
     @property
     def value(self):
@@ -120,20 +148,22 @@ class AbstractAttributeValue(DatatypeRestrictionsMixin):
         super(AbstractAttributeValue, self).save(force_insert, force_update, *args, **kwargs)
 
 
-class EntityMixin(models.Model):
+class EavEntityMixin(models.Model):
     """
     """
+
+    value_relation_class = None
 
     class Meta:
         abstract = True
 
-    def add_value(self):
-        pass
-
+    def add_value(self, value):
+        return self.value_relation_class(
+            entity=self,
+            value=value
+        ).save()
+        
     def remove_value(self):
-        pass
-
-    def update_value(self, values):
         pass
 
 
@@ -148,3 +178,9 @@ class AbstractAttributeGroup(OrderableMixin):
         abstract = True
 
     name = NameField()
+
+
+class AbstractEntityValueRelation(models.Model):
+    
+    class Meta:
+        abstract = True

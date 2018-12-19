@@ -27,12 +27,14 @@ class WatchesProductMixin(models.Model):
 
     manual = models.FileField(
         upload_to='manuals',
-        null=True
+        null=True,
+        blank=True
     )
 
     certificate = models.FileField(
         upload_to='certificates',
-        null=True
+        null=True,
+        blank=True
     )
 
     guarantee = models.PositiveSmallIntegerField(
@@ -52,4 +54,17 @@ class WatchesProductMixin(models.Model):
     package = models.CharField(
         max_length=512,
         blank=True
+    )
+
+
+class YandexMarketOfferMixin(models.Model):
+    """
+    Класс, реализующий весь необходимый функционал для работы с
+    Яндекс.Маркет
+    """
+    class Meta:
+        abstract = True
+
+    is_yml_offer = models.BooleanField(
+        default=False
     )

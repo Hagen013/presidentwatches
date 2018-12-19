@@ -4,19 +4,9 @@ from core.models import Offer, WebPage
 from eav.models import (AbstractAttribute,
                         AbstractAttributeValue,
                         AbstractAttributeGroup,
-                        EntityMixin)
-from .mixins import WatchesProductMixin
-
-
-class ProductPage(Offer, WebPage, EntityMixin, WatchesProductMixin):
-
-    def get_absolute_url(self):
-        return '/watches/{slug}/'.format(
-            self.slug
-        )
-
-    class Meta:
-        abstract = False
+                        AbstractEntityValueRelation,
+                        EavEntityMixin)
+from .mixins import WatchesProductMixin, YandexMarketOfferMixin
 
 
 class CategoryPage(models.Model):
@@ -72,8 +62,38 @@ class Attribute(AbstractAttribute):
         abstract = False
 
 
-class ProductAttributeValueRelation():
-    pass
+class ProductValueRelation(AbstractEntityValueRelation):
+    
+    entity = models.ForeignKey(
+        'ProductPage',
+        on_delete=models.CASCADE
+    )
+
+    value = models.ForeignKey(
+        'AttributeValue',
+        on_delete=models.CASCADE
+    )
+
+
+class ProductPage(Offer, WebPage, EavEntityMixin, WatchesProductMixin, YandexMarketOfferMixin):
+
+    value_class = AttributeValue
+    value_relation_class = ProductValueRelation
+
+    class Meta:
+        abstract = False
+
+    attribute_values = models.ManyToManyField(
+        value_class,
+        blank=True,
+        related_name='product_set',
+        through=ProductValueRelation
+    )
+
+    def get_absolute_url(self):
+        return '/watches/{slug}/'.format(
+            self.slug
+        )
 
 
 class ProductImage():
