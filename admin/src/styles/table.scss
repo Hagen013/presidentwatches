@@ -1,0 +1,62 @@
+tbody {
+    width: 100%;
+}
+.table__content {
+    display: table;
+    width: 100%;
+}
+.table__row {
+    width: 100%;
+}
+.table__head {
+    height: 48px;
+}
+.table__head-container {
+    display: flex;
+    align-items: center;
+    padding: 0px 16px;
+    height: 100%;
+    width: 100%;
+}
+.table__cell {
+    display: table-cell;
+    height: 48px;
+    padding: 0px;
+    border-top-color: rgba(0,0,0,.12);
+    border-top: 1px solid rgba(0,0,0,.12);
+}
+.table__cell-container {
+    display: flex;
+    align-items: center;
+    padding: 0px 16px;
+    height: 100%;
+    width: 100%;
+    &:after {
+        content: "";
+    }
+}
+.table__row {
+    transition: .3s cubic-bezier(.4,0,.2,1);
+    transition-property: background-color,font-weight;
+    will-change: background-color,font-weight;
+    cursor: pointer;
+    &:hover {
+        background-color: rgba(0,0,0,.08);
+    }
+
+}
+.table__buttons {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    padding: 16px 0px;
+}
+.text_left {
+    text-align: left;
+}
+.text_center {
+    text-align: center;
+}
+.text_right {
+    text-align: right;
+}

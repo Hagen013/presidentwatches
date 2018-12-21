@@ -45,6 +45,7 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     'django_extensions',
     'rest_framework',
+    'corsheaders',
     'django_filters',
     'mptt',
     'imagekit'
@@ -70,6 +71,7 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 # MIDDLEWARE CONFIGURATION
 # ------------------------------------------------------------------------------
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -165,6 +167,33 @@ REST_FRAMEWORK = {
 }
 # ------------------------------------------------------------------------------
 # REST_FRAMEWORK END
+
+
+# RESPONSE HEADERS START
+# ------------------------------------------------------------------------------
+CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ALLOW_METHODS = (
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+)
+
+CORS_ALLOW_HEADERS = (
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+    'x-token'
+)
+# ------------------------------------------------------------------------------
+# RESPONSE HEADERS END
 
 
 # STATIC FILES START
