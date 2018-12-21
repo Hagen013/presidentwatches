@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 
 from djchoices import DjangoChoices, ChoiceItem
 from core.db.fields import NameField
@@ -6,7 +7,6 @@ from core.db.mixins import TimeStampedMixin, DescriptionMixin, OrderableMixin
 
 from .managers import AttributeValueManager
 from .fields import EavSlugField, EavDatatypeField, AttributeType
-from .exceptions import IllegalAssignmentException
 
 
 class DatatypeRestrictionsMixin(models.Model):
@@ -81,19 +81,11 @@ class AbstractAttribute(DatatypeRestrictionsMixin, DescriptionMixin):
         pass
 
     def create_value(self, value, forced=False):
-        if self.adding_values_allowed or forced:
-            data = {
-                'attribute': self,
-                self._value_field: value
-            }
-            return self.value_class(**data).save()
-        else:
-            msg = """Attribute with strict options doesn't support
-            adding new values. Change attribute.strict_options to True first,
-            or use attribute.create_value() method with forced=True argument provided
-            """
-            raise IllegalAssignmentException(msg)
-
+        self.value_class.objects.create(
+            attribute=self,
+            value=value,
+            forced=forced
+        )
 
     def __str__(self):
         return self.name
@@ -109,14 +101,6 @@ class AbstractAttributeValue(DatatypeRestrictionsMixin):
     """
     class Meta:
         abstract = True
-        unique_together = ((
-            'attribute',
-            'value_text',
-            'value_int',
-            'value_float',
-            'value_bool',
-            'value_enum'
-        ))
 
     attribute = None
     objects = AttributeValueManager()
@@ -142,9 +126,33 @@ class AbstractAttributeValue(DatatypeRestrictionsMixin):
         else:
             raise AttributeError('datatype is not defined')
 
+    def validate_unique(self, exclude=None):
+        super(AbstractAttributeValue, self).validate_unique(exclude=exclude)
+        lookup = {
+            'attribute': self.attribute,
+            self._value_field: self.value
+        }
+        # если новый
+            # - проверить что такого нет
+        # противном случае
+            # - проверить что если с такими параметрами существует, то их id равны
+            # - а если не существует, то без разницы
+        if self.id is not None:
+            try:
+                instance = self.__class__.objects.get(**lookup)
+                if instance.id != self.id:
+                    ValidationError('Unique constraint has been violated: attribute_id, value')
+            except ObjectDoesNotExist:
+                pass
+        else:
+            if self.__class__.objects.filter(**lookup).exists():
+                raise ValidationError('Unique constraint has been violated: attribute_id, value')
+
+
     def save(self, force_insert=False, force_update=False, *args, **kwargs):
         if self.attribute is not None:
             self.datatype = self.attribute.datatype
+        self.validate_unique()
         super(AbstractAttributeValue, self).save(force_insert, force_update, *args, **kwargs)
 
 
@@ -158,10 +166,12 @@ class EavEntityMixin(models.Model):
         abstract = True
 
     def add_value(self, value):
-        return self.value_relation_class(
+        relation =  self.value_relation_class(
             entity=self,
             value=value
-        ).save()
+        )
+        relation.save()
+        return relation
         
     def remove_value(self):
         pass
