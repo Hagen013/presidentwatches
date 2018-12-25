@@ -10,7 +10,7 @@ DATABASES = {
 
 # MEDIA FILES CONFIGURATION START
 # ------------------------------------------------------------------------------
-MEDIA_ROOT = "/var/test/"
+MEDIA_ROOT = "/1TB/presidentwatches-original/"
 MEDIA_URL = '/media/'
 # MEDIA FILES CONFIGURATION END
 # ------------------------------------------------------------------------------

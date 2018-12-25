@@ -4,8 +4,9 @@
     <breadcrumb />
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
-        <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
-        <i class="el-icon-caret-bottom"/>
+        <div class="avatar">
+          В
+        </div>
       </div>
       <el-dropdown-menu slot="dropdown" class="user-dropdown">
         <router-link class="inlineBlock" to="/">
@@ -76,10 +77,18 @@ export default {
       cursor: pointer;
       margin-top: 5px;
       position: relative;
-      .user-avatar {
+      .avatar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 20px;
         width: 40px;
         height: 40px;
-        border-radius: 10px;
+        border-radius: 20px;
+        background: #f6de32;
+        color: #000000;
+        user-select: none;
       }
       .el-icon-caret-bottom {
         position: absolute;

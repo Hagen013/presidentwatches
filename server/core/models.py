@@ -6,7 +6,8 @@ from .db.mixins import (TimeStampedMixin,
                         DisplayableMixin,
                         DescriptionMixin,
                         DimensionsMixin,
-                        OrderableMixin)
+                        OrderableMixin,
+                        ImageMixin)
 from .db.fields import NameField, DescriptionField
 from .managers import NodeManager, NodePublicManager
 
@@ -65,7 +66,7 @@ class WebPage(OrderableMixin, DisplayableMixin, TimeStampedMixin):
         return self._meta_description
 
 
-class Offer(DescriptionMixin, DimensionsMixin):
+class Offer(DescriptionMixin, DimensionsMixin, ImageMixin):
 
     class Meta:
         abstract = True
@@ -120,6 +121,14 @@ class Offer(DescriptionMixin, DimensionsMixin):
     @property
     def sale_amount(self):
         return self.old_price - self.price
+
+
+class AbstractOfferPage(WebPage, Offer):
+
+    upload_image_to = 'images/'
+
+    class Meta:
+        abstract = True
 
 
 class Node(models.Model):

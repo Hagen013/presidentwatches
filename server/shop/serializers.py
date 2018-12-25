@@ -8,6 +8,8 @@ from .models import ProductPage
 class ProductPageSerializer(DynamicFieldsModelSerializer):
 
     slug = serializers.CharField(validators=[slug_validator,])
+    image = serializers.ImageField(use_url=True)
+    thumbnail = serializers.ImageField(use_url=True)
 
     class Meta:
         model = ProductPage
@@ -27,7 +29,9 @@ class ProductPageSerializer(DynamicFieldsModelSerializer):
             'is_new',
             'is_in_showcase',
             'is_sale',
-            'scoring'
+            'scoring',
+            'image',
+            'thumbnail'
         )
 
         read_only_fields = (

@@ -1,6 +1,6 @@
 from django.db import models
 
-from core.models import Offer, WebPage
+from core.models import AbstractOfferPage
 from eav.models import (AbstractAttribute,
                         AbstractAttributeValue,
                         AbstractAttributeGroup,
@@ -75,7 +75,7 @@ class ProductValueRelation(AbstractEntityValueRelation):
     )
 
 
-class ProductPage(Offer, WebPage, EavEntityMixin, WatchesProductMixin, YandexMarketOfferMixin):
+class ProductPage(AbstractOfferPage, EavEntityMixin, WatchesProductMixin, YandexMarketOfferMixin):
 
     value_class = AttributeValue
     value_relation_class = ProductValueRelation
