@@ -95,3 +95,27 @@ class ProductPageJsonSerializer:
     @property
     def data(self):
         return self._data
+
+
+class CategoryPageSerializer(serializers.ModelSerializer):
+    """
+    """
+    pass
+
+
+class AttributeGroupSerializer(serializers.ModelSerializer):
+    """
+    """
+    pass
+
+
+class AttributeValueSerializer(serializers.ModelSerializer):
+    """
+    """
+    pass
+
+
+class ImageSerializer(serializers.ModelSerializer):
+    """
+    """
+    pass

@@ -99,6 +99,28 @@ export const constantRouterMap = [
   },
 
   {
+    path: '/shop',
+    component: Layout,
+    redirect: '/shop/eav',
+    name: 'EAV',
+    meta: { title: 'EAV', icon: 'dashboard' },
+    children: [
+      {
+        path: 'attributes',
+        name: 'Attributes',
+        component: () => import('@/views/images/index'),
+        meta: { title: 'Атрибуты', icon: 'insert_photo' }
+      },
+      {
+        path: 'values',
+        name: 'Attributes',
+        component: () => import('@/views/images/index'),
+        meta: { title: 'Значения', icon: 'insert_photo' }
+      }
+    ]
+  },
+
+  {
     path: '/images',
     component: Layout,
     children: [

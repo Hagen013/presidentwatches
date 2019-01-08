@@ -20,7 +20,8 @@ class ImageMixin(models.Model):
     image = models.ImageField(
         upload_to='images/',
         default='images/no_photo.png',
-        blank=False
+        blank=False,
+        max_length=512
     )
 
     thumbnail = ImageSpecField(

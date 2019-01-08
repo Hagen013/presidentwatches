@@ -1,5 +1,8 @@
 from django.db import models
-from django.cotrib.postgres.fields import JSONField
+from django.contrib.auth import get_user_model
+from django.contrib.postgres.fields import JSONField
+
+User = get_user_model()
 
 
 class Order(models.Model):
@@ -23,6 +26,10 @@ class Order(models.Model):
     )
 
     user = models.ForeignKey(
+        User,
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
     )
 
     # JSON FIELDS
