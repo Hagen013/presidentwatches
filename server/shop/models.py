@@ -1,6 +1,7 @@
 from django.db import models
 
 from core.models import AbstractOfferPage
+from core.db.mixins import ImageMixin
 from eav.models import (AbstractAttribute,
                         AbstractAttributeValue,
                         AbstractAttributeGroup,
@@ -14,14 +15,8 @@ class CategoryPage(models.Model):
     # must be implemented by a subclass
     def get_absolute_url(self):
         return '/watches/{slug}/'.format(
-            self.slug
+            slug=self.slug
         )
-
-    class Meta:
-        abstract = True
-
-
-class ProductImage(models.Model):
 
     class Meta:
         abstract = True
@@ -92,9 +87,18 @@ class ProductPage(AbstractOfferPage, EavEntityMixin, WatchesProductMixin, Yandex
 
     def get_absolute_url(self):
         return '/watches/{slug}/'.format(
-            self.slug
+            slug=self.slug
         )
 
 
-class ProductImage():
-    pass
+class ProductImage(ImageMixin):
+    """
+    Модель дополнительного изображения для ProductPage
+    миниатюра и главное изображение для товара хранятся в таблице
+    ProductPage, наследующей ImageMixin
+    """
+    
+    product = models.ForeignKey(
+        'ProductPage',
+        on_delete=models.CASCADE,
+    )

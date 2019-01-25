@@ -51,6 +51,19 @@ export const constantRouterMap = [
   },
 
   {
+    path: '/payments',
+    component: Layout,
+    children: [
+      {
+        path: '',
+        name: 'Payments',
+        component: () => import('@/views/users/index'),
+        meta: { title: 'Оплаты', icon: 'user' }
+      }
+    ]
+  },
+
+  {
     path: '/shop',
     component: Layout,
     redirect: '/shop/offers',
@@ -68,12 +81,6 @@ export const constantRouterMap = [
         name: 'Categories',
         component: () => import('@/views/shop/categories/index'),
         meta: { title: 'Категории' }
-      },
-      {
-        path: 'products',
-        name: 'Products',
-        component: () => import('@/views/shop/products/index'),
-        meta: { title: 'Модели' }
       },
       {
         path: 'warehouse',
@@ -95,27 +102,48 @@ export const constantRouterMap = [
         component: () => import('@/views/forms/category'),
         meta: { title: 'Редактирование категории' }
       },
+      {
+        path: 'offers/:id',
+        name: 'Offer',
+        hidden: true,
+        component: () => import('@/views/forms/offer'),
+        meta: { title: 'Редактирование товара' }
+      },
     ]
   },
 
   {
-    path: '/shop',
+    path: '/eav',
     component: Layout,
-    redirect: '/shop/eav',
+    redirect: '/eav/attributes',
     name: 'EAV',
     meta: { title: 'EAV', icon: 'dashboard' },
     children: [
       {
         path: 'attributes',
         name: 'Attributes',
-        component: () => import('@/views/images/index'),
+        component: () => import('@/views/eav/attributes'),
         meta: { title: 'Атрибуты', icon: 'insert_photo' }
       },
       {
-        path: 'values',
-        name: 'Attributes',
-        component: () => import('@/views/images/index'),
-        meta: { title: 'Значения', icon: 'insert_photo' }
+        path: 'attributes/create',
+        name: 'Attribute',
+        hidden: true,
+        component: () => import('@/views/forms/attribute'),
+        meta: { title: 'Создать атрибут' }
+      },
+      {
+        path: 'attributes/:id',
+        name: 'Attribute',
+        hidden: true,
+        component: () => import('@/views/forms/attribute'),
+        meta: { title: 'Редактирование атрибута' }
+      },
+      {
+        path: 'groups',
+        name: 'Groups',
+        component: () => import('@/views/eav/groups'),
+        meta: { title: 'Группы', icon: 'insert_photo' }
       }
     ]
   },
@@ -134,6 +162,19 @@ export const constantRouterMap = [
   },
 
   {
+    path: '/comments',
+    component: Layout,
+    children: [
+      {
+        path: '',
+        name: 'Comments',
+        component: () => import('@/views/users/index'),
+        meta: { title: 'Отзывы', icon: 'user' }
+      }
+    ]
+  },
+
+  {
     path: '/users',
     component: Layout,
     children: [
@@ -142,6 +183,45 @@ export const constantRouterMap = [
         name: 'Users',
         component: () => import('@/views/users/index'),
         meta: { title: 'Пользователи', icon: 'user' }
+      }
+    ]
+  },
+
+  {
+    path: '/staff',
+    component: Layout,
+    children: [
+      {
+        path: '',
+        name: 'Staff',
+        component: () => import('@/views/users/index'),
+        meta: { title: 'Работники', icon: 'user' }
+      }
+    ]
+  },
+
+  {
+    path: '/news',
+    component: Layout,
+    children: [
+      {
+        path: '',
+        name: 'News',
+        component: () => import('@/views/users/index'),
+        meta: { title: 'Новости', icon: 'user' }
+      }
+    ]
+  },
+
+  {
+    path: '/reviews',
+    component: Layout,
+    children: [
+      {
+        path: '',
+        name: 'Reviews',
+        component: () => import('@/views/users/index'),
+        meta: { title: 'Обзоры', icon: 'user' }
       }
     ]
   },

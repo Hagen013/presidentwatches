@@ -1,8 +1,15 @@
+from collections import OrderedDict
+
 from rest_framework import serializers
+from rest_framework.relations import PKOnlyObject
 
 from core.serializers import DynamicFieldsModelSerializer
 from core.db.validators import slug_validator
-from .models import ProductPage
+from eav.fields import AttributeType
+from .models import (ProductPage,
+                     Attribute,
+                     AttributeValue,
+                     AttributeGroup)
 
 
 class ProductPageSerializer(DynamicFieldsModelSerializer):
@@ -15,23 +22,32 @@ class ProductPageSerializer(DynamicFieldsModelSerializer):
         model = ProductPage
         fields = (
             'id',
+            'model',
             'name',
             'slug',
+            'absolute_url',
             '_title',
             '_meta_title',
             '_meta_keywords',
             '_meta_description',
             '_price',
             'old_price',
+            'is_published',
             'is_in_stock',
             'is_in_store',
             'is_bestseller',
             'is_new',
             'is_in_showcase',
             'is_sale',
+            'is_yml_offer',
             'scoring',
             'image',
-            'thumbnail'
+            'thumbnail',
+            '_weight',
+            'height',
+            'width',
+            'thickness',
+            'quantity'
         )
 
         read_only_fields = (
@@ -42,7 +58,7 @@ class ProductPageSerializer(DynamicFieldsModelSerializer):
 class ProductPageJsonSerializer:
     """
     Костыльный класс для работы с json-"дампами" от
-    прошлого прого программиста
+    прошлого программиста
     """
     
     def __init__(self, row, *args, **kwargs):
@@ -103,16 +119,136 @@ class CategoryPageSerializer(serializers.ModelSerializer):
     pass
 
 
-class AttributeGroupSerializer(serializers.ModelSerializer):
-    """
-    """
-    pass
-
-
 class AttributeValueSerializer(serializers.ModelSerializer):
     """
+    Serializer для Value из EAV, отображение Attribute предусмотрено
+    в виде ID
     """
-    pass
+    class Meta:
+        model = AttributeValue
+        fields = (
+            'id',
+            'attribute',
+            'datatype',
+            'value',
+            'order',
+            'is_hidden',
+            'created_at',
+            'modified_at'
+        )
+
+
+class AttributeSerializer(serializers.ModelSerializer):
+    """
+    Serializer для Attribute, предусматривающий отображение вложенных списков
+    значений для атрибутов типов Choice и MultiChoice, в случае прочих типов отображение
+    значений не имеет смысла на стороне клиентского приложения
+    """
+
+    allowed_value_representation_types = {
+        AttributeType.Choice,
+        AttributeType.MultiChoice
+    }
+    value_set = AttributeValueSerializer(many=True)
+
+    class Meta:
+        model = Attribute
+        fields = (
+            'id',
+            'name',
+            'datatype',
+            'slug',
+            'description',
+            'is_filter',
+            'strict_options',
+            'group',
+            'order',
+            'is_hidden',
+            'created_at',
+            'modified_at',
+            'value_set'
+        )
+
+    # Оверрайд базового метода для реализации следующего функционала:
+    # отображение значений EAV в виде Nested ListSerializer предусмотрено исключительно
+    # для атрибутов типов Choice и Multichoice, для прочих, для которых не имеет смысла
+    # предоставлять опции для выбора на стороне клиента - отдаётся пустой список
+    def to_representation(self, instance):
+        """
+        Object instance -> Dict of primitive datatypes.
+        """
+        ret = OrderedDict()
+        fields = self._readable_fields
+
+        for field in fields:
+            try:
+                attribute = field.get_attribute(instance)
+            except SkipField:
+                continue
+
+            # We skip `to_representation` for `None` values so that fields do
+            # not have to explicitly deal with that case.
+            #
+            # For related fields with `use_pk_only_optimization` we need to
+            # resolve the pk value.
+            check_for_none = attribute.pk if isinstance(attribute, PKOnlyObject) else attribute
+            if check_for_none is None:
+                ret[field.field_name] = None
+            else:
+                if field.label == 'Value set':
+                    if instance.datatype in self.allowed_value_representation_types:
+                        ret[field.field_name] = field.to_representation(attribute)
+                    else:
+                        ret[field.field_name] = []
+                else:
+                    ret[field.field_name] = field.to_representation(attribute)
+
+        return ret
+
+
+class AttributePlainSerializer(serializers.ModelSerializer):
+    """
+    Serializer для Attribute, не предусматривающий отображение вложенного
+    списка значений
+    """
+    
+    class Meta:
+        model = Attribute
+        fields = (
+            'id',
+            'name',
+            'datatype',
+            'slug',
+            'description',
+            'is_filter',
+            'strict_options',
+            'group',
+            'order',
+            'is_hidden',
+            'created_at',
+            'modified_at'
+        )
+
+
+class AttributeGroupSerializer(serializers.ModelSerializer):
+    """
+    Serializer для групп атрибутов, предусматривает отображение вложенных списков
+    атрибутов (без значений)
+    """
+
+    attribute_set = AttributePlainSerializer(many=True)
+
+    class Meta:
+        model = AttributeGroup
+        fields = (
+            'id',
+            'name',
+            'order',
+            'is_hidden',
+            'created_at',
+            'modified_at',
+            'attribute_set'
+        )
 
 
 class ImageSerializer(serializers.ModelSerializer):

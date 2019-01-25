@@ -8,5 +8,13 @@ module.exports = {
           .options({
             symbolId: 'icon-[name]'
           })
+    },
+    devServer: {
+      proxy: {
+        '^/media': {
+          target: 'http://localhost:8000',
+          changeOrigin: true
+        }
+      }
     }
 }

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueResource from 'vue-resource';
 import csrfToken from './utils/csrftoken';
+import normalizeNUmber from '@/utils/normalizeNumber';
 Vue.use(VueResource);
 Vue.http.headers.common['X-CSRFToken'] = csrfToken();
 
@@ -21,6 +22,7 @@ import '@/icons' // icon
 Vue.use(ElementUI, { locale })
 
 Vue.config.productionTip = false
+
 
 new Vue({
   el: '#app',

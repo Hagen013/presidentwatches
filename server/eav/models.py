@@ -3,7 +3,11 @@ from django.core.exceptions import ValidationError, ObjectDoesNotExist
 
 from djchoices import DjangoChoices, ChoiceItem
 from core.db.fields import NameField
-from core.db.mixins import TimeStampedMixin, DescriptionMixin, OrderableMixin
+from core.db.mixins import (TimeStampedMixin,
+                            DescriptionMixin,
+                            OrderableMixin,
+                            DisplayableMixin,
+                            HiddenMixin)
 
 from .managers import AttributeValueManager
 from .fields import EavSlugField, EavDatatypeField, AttributeType
@@ -41,8 +45,8 @@ class DatatypeRestrictionsMixin(models.Model):
         self.__initial_datatype = self.datatype
 
 
-
-class AbstractAttribute(DatatypeRestrictionsMixin, DescriptionMixin):
+class AbstractAttribute(DatatypeRestrictionsMixin, DescriptionMixin, OrderableMixin,
+                        TimeStampedMixin, HiddenMixin):
     """
     """
     class Meta:
@@ -96,7 +100,8 @@ class AbstractAttribute(DatatypeRestrictionsMixin, DescriptionMixin):
         super(AbstractAttribute, self).save(*args, **kwargs)
 
 
-class AbstractAttributeValue(DatatypeRestrictionsMixin):
+class AbstractAttributeValue(DatatypeRestrictionsMixin, OrderableMixin,
+                             TimeStampedMixin, HiddenMixin):
     """
     """
     class Meta:
@@ -177,7 +182,7 @@ class EavEntityMixin(models.Model):
         pass
 
 
-class AbstractAttributeGroup(OrderableMixin):
+class AbstractAttributeGroup(OrderableMixin, HiddenMixin, TimeStampedMixin):
     """
     Группа атрибутов
     Необходимо для группировки атрибутов на странице отображения
