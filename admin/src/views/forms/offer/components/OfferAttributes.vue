@@ -7,7 +7,7 @@
             :key="attribute.id"
             :attribute="attribute"
             :options="attribute.value_set"
-            :values="values"
+            :active_options="attribute.activeOptions"
             v-on:add-option="addActiveOption"
             v-on:remove-option="removeActiveOption"
             v-on:change-option="changeOption"
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import Vue from 'vue'
+import {Vue} from '@/vue.js'
 
 import request from '@/utils/request'
 
@@ -150,16 +150,15 @@ export default {
         },
         removeActiveOption(option) {
             for (let i=0; i<this.attributes.length; i++) {
-                if (this.attributes[i].id === option.attribute) {
-                    for (let y=0; y<this.attributes[i].activeOptions.length; y++) {
-                        let value = this.attributes[i].activeOptions[y];
-                        if (value.id === option.id) {
-                            console.log('triggered');
-                            console.log(this.attributes[i].activeOptions.length);
-                            let attribute = this.attributes[i];
-                            attribute.activeOptions.splice(y,1);
-                            Vue.set(this.attributes, i, attribute);
-                            console.log(this.attributes[i].activeOptions.length);
+                let attribute = this.attributes[i];
+                if (attribute.id === option.attribute) {
+                    let activeOptions = attribute.activeOptions;
+                    for (let y=0; y<activeOptions.length; y++) {
+                        let activeOption = activeOptions[y];
+                        if (activeOption.id === option.id) {
+                            activeOptions.splice(y, 1);
+                            attribute.activeOptions = activeOptions;
+                            this.$set(this.attributes, i, attribute);
                             this.$forceUpdate();
                             break
                         }

@@ -8,7 +8,7 @@
         >
             <div class="attribute-field__input-box">
                 <el-select v-model="searchQuery" filterable placeholder="Поиск"
-                    @change="handleSelectChange"
+                    @change="addActiveOption"
                 >
                     <el-option
                         v-for="option in filteredOptions"
@@ -22,7 +22,7 @@
             </div>
             <div class="attribute-field__tags">
                 <el-tag
-                    v-for="option in attribute.activeOptions"
+                    v-for="option in active_options"
                     :key="option.value"
                     closable
                     @close="removeActiveOption(option)"
@@ -63,26 +63,22 @@ export default {
     props: [
         'attribute',
         'options',
-        'values'
+        'active_options'
     ],
     computed: {
         filteredOptions() {
-            console.log('triggered');
-            let options = [];
-            let activeValuesIdMapping = this.attribute.activeOptions.map((option) => option.id);
-            options = this.options.slice();
-
-            for (let i=0; i<this.options.length; i++) {
-                if (activeValuesIdMapping.indexOf(this.options[i].id) !== -1 ) {
-                    this.options[i].disabled = true;
+            let filteredOptions = this.options.slice();
+            let activeOptionsMapping = this.active_options.map(function(option) {
+                return option.id
+            })
+            for (let i=0; i<filteredOptions.length; i++) {
+                if (activeOptionsMapping.indexOf(filteredOptions[i].id) !== -1) {
+                    filteredOptions[i].disabled = true;
                 } else {
-                    this.options[i].disabled = false;
+                    filteredOptions[i].disabled = false;
                 }
             }
-            return options
-        },
-        activeOptions() {
-            return this.attribute.activeOptions
+            return filteredOptions
         }
     },
     created() {
@@ -91,40 +87,35 @@ export default {
     methods: {
         initialize() {
             if (this.attribute.datatype === 5) {
-                this.searchQuery = this.activeOptions[0].value
+            }
+        },
+        handleOptionChange(option) {
+
+        },
+        removeActiveOption(option) {
+
+        },
+        addActiveOption(label) {
+            for (let i=0; i<this.options.length; i++) {
+                let option = this.options[i];
+                if (option.value === label) {
+                    this.$emit('add-option', option);
+                    this.searchQuery = '';
+                    break
+                }
             }
         },
         removeActiveOption(option) {
-            for (let i=0; i<this.attribute.activeOptions.length; i++) {
-                let activeOption = this.attribute.activeOptions[i];
-                if (activeOption.id === option.id) {
-                    this.attribute.activeOptions.splice(i,1);
-                    this.$forceUpdate();
-                    break
-                }
-            }
-            //this.$emit('remove-option', option);
-        },
-        handleSelectChange(label) {
-            for (let i=0; i<this.options.length; i++) {
-                let option = this.options[i];
-                if (option.value === label) {
-                    //this.$emit('add-option', option);
-                    this.attribute.activeOptions.push(option);
-                    this.searchQuery = '';
-                    this.$forceUpdate();
-                    break
-                }
-            }
-        },
-        handleOptionChange(label) {
-            for (let i=0; i<this.options.length; i++) {
-                let option = this.options[i];
-                if (option.value === label) {
-                    this.$emit('change-option', option);
-                    break
-                }
-            }
+            this.$emit('remove-option', option);
+            this.$forceUpdate();
+        }
+    },
+    watch: {
+        attribute: {
+            handler() {
+                console.log('handler triggered');
+            },
+            deep: true
         }
     }
 }
