@@ -5,14 +5,16 @@
     >
         <div class="offer__controls">
             <el-button type="primary" icon="el-icon-check"
-                :disabled="!hasChanged"
-                :plain="!hasChanged"
+                :disabled="!hasChangedOverall"
+                :plain="!hasChangedOverall"
+                @click="saveChangesOverall"
             >
                 Сохранить
             </el-button>
             <el-button type="warning"
-                :disabled="!hasChanged"
-                :plain="!hasChanged"
+                :disabled="!hasChangedOverall"
+                :plain="!hasChangedOverall"
+                @click="rollbackChangesOverall"
             >
                 Отменить изменения
             </el-button>
@@ -56,7 +58,7 @@
                     :instance="instance"
                     :activeTab="activeTabName"
                     ref="attributes"
-                    @chageStatus="changeAttributesStatus"
+                    @change="handleAttributesChange"
                 >
                 </offer-attributes>
             </el-tab-pane>
@@ -110,9 +112,33 @@ export default {
         activeTabName: 'main',
         attributesHasChanged: false
     }),
+    computed: {
+        hasChangedOverall() {
+            return (
+                this.hasChanged ||
+                this.attributesHasChanged
+            )
+        }
+    },
     methods: {
-        changeAttributesStatus(state) {
+        handleAttributesChange(state) {
             this.attributesHasChanged = state;
+        },
+        saveChangesOverall() {
+            if (this.hasChanged) {
+                this.saveChanges();
+            }
+            if (this.attributesHasChanged) {
+                this.$refs.attributes.saveChanges();
+            }
+        },
+        rollbackChangesOverall() {
+            if (this.hasChanged) {
+                this.rollbackChanges();
+            }
+            if (this.attributesHasChanged) {
+                this.$refs.attributes.rollbackChanges();
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models, transaction
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 
 from djchoices import DjangoChoices, ChoiceItem
@@ -164,8 +164,10 @@ class AbstractAttributeValue(DatatypeRestrictionsMixin, OrderableMixin,
 class EavEntityMixin(models.Model):
     """
     """
-
+    attribute_class = None
+    value_class = None
     value_relation_class = None
+    attribute_values = None
 
     class Meta:
         abstract = True
@@ -178,8 +180,46 @@ class EavEntityMixin(models.Model):
         relation.save()
         return relation
         
-    def remove_value(self):
+    def remove_value(self, values):
         pass
+
+    def update_values_from_list(self, values):
+        """
+        Метод, обновляющий M2M таблицу связей между Entity и
+        Values, опционально также создающий значения в Values,
+        если таковых нет в таблице
+        """
+        stored_values = self.attribute_values.all()
+        values_to_create = list(filter(lambda x: x['id'] is None, values))
+        values_to_bind = list(filter(lambda x: x['id'] is not None, values))
+        received_values_ids = {value['id'] for value in values}
+        values_to_delete = list(filter(lambda x: x not in received_values_ids, stored_values))
+
+        relations_to_delete = self.value_relation_class.objects.filter(
+            entity=self,
+            value__in=values_to_delete
+        )
+        ids = [value['id'] for value in values_to_bind]
+        values_to_bind =  self.value_class.objects.filter(id__in=ids)
+        
+        with transaction.atomic():
+            relations_to_delete.delete()
+            for value in values_to_bind:
+                relation = self.value_relation_class(entity=self, value=value)
+                relation.save()
+
+            # Non-existing values:
+            for value in values_to_create:
+                attribute = self.attribute_class.objects.get(id=value['attribute'])
+                value_instance =  self.value_class.objects.get_or_create(
+                    attribute=attribute,
+                    value=value['value']
+                )
+                relation = self.value_relation_class(
+                    entity=self,
+                    value=value_instance
+                )
+                relation.save()
 
 
 class AbstractAttributeGroup(OrderableMixin, HiddenMixin, TimeStampedMixin):

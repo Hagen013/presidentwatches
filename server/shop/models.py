@@ -72,6 +72,7 @@ class ProductValueRelation(AbstractEntityValueRelation):
 
 class ProductPage(AbstractOfferPage, EavEntityMixin, WatchesProductMixin, YandexMarketOfferMixin):
 
+    attribute_class = Attribute
     value_class = AttributeValue
     value_relation_class = ProductValueRelation
 

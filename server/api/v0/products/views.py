@@ -57,10 +57,14 @@ class ProductValuesViewSet(viewsets.ViewSet):
         filters.OrderingFilter
     )
 
-
-    def get_instance(self, product_pk, pk):
-        pass
-
+    def get_instance(self, product_pk):
+        try:
+            return self.parent_model.objects.get(
+                id=product_pk
+            )
+        except ObjectDoesNotExist:
+            raise Http404
+        
     def get_queryset(self):
         product_pk = self.kwargs.get('product_pk')
         return self.model.objects.filter(
@@ -88,13 +92,42 @@ class ProductValuesViewSet(viewsets.ViewSet):
         response = self.get_paginated_response(serializer.data)
         return response
 
-    def create(self):
+    def create(self, request, product_pk):
+        data = request.data
+
+        import pickle
+        with open('values.pickle', 'wb') as fp:
+            pickle.dump(data, fp)
+
+        queryparams = request.query_params
+        bulk_mode = queryparams.get('bulk', False)
+        if bulk_mode:
+            serializer = self.serializer_class(data=data, many=True)
+            if serializer.is_valid():
+                instance = self.get_instance(product_pk)
+
+                instance.update_values_from_list(data)
+                output = self.serializer_class(
+                    instance.attribute_values.all(),
+                    many=True
+                )
+                return Response(
+                    {'results': output.data},
+                    status=status.HTTP_200_OK
+                )
+            else:
+                return Response(
+                    serializer.errors,
+                    status=HTTP_400_BAD_REQUEST
+                )
+        else:
+            pass
         return Response({})
 
     def retrieve(self, product_pk, pk):
         return Response({})
 
-    def update(self, product_pk, pk):
+    def update(self, product_pk, pk=None):
         return Response({})
 
     def delete(self, product_pk, pk):
