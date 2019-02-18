@@ -139,3 +139,28 @@ class Node(models.Model):
     objects = NodeManager()
     public = NodePublicManager()
 
+
+class AbstractCategoryPage(WebPage, Node):
+
+    name = NameField()
+    description = DescriptionField()
+    
+    product_class = None
+
+    class Meta:
+        abstract = True
+
+    @property
+    def products(self):
+        if self.slug == '':
+            return self.product_class.objects.all()
+        else:
+            av = self.attribute_values.all()
+            return self.product_class.objects.filter(
+                id__in=self
+                .product_class
+                .objects.values('id')
+                .filter(attribute_values__in=av)
+                .annotate(len_av=models.Count("id", distinct=False))
+                .filter(len_av=len(av)).values('id')
+            )

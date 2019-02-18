@@ -1,0 +1,135 @@
+.header {
+
+}
+
+.header-mobile {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 60px;
+    padding: 0px 20px;
+    @include mq($from: tablet) {
+        display: none;
+    }
+}
+
+.header-mobile__left {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+}
+
+.header-mobile__right {
+    display: flex;
+    width: 78px;
+    padding-left: 20px;
+}
+
+.header__desktop {
+    display: none;
+    @include mq($from: tablet) {
+        display: block;
+    }
+}
+
+.header__logo {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 192px;
+    @include mq($from: desktop) {
+        width: 256px;
+    }
+}
+
+.header__top {
+    height: 40px;
+    background-color: #000000;
+}
+
+.header__middle {
+    height: 80px;
+    background-color: #ffffff;
+    .content-area {
+        align-items: center;
+    }
+}
+
+.header__bottom {
+    height: 50px;
+    border-top: 1px solid #dcdcdc;
+    border-bottom: 1px solid #dcdcdc;
+}
+
+.header__top-menu {
+    height: 100%;
+    color: white;
+}
+
+.header__search-box {
+    position: relative;
+    height: 46px;
+    flex-grow: 1;
+    padding: 0px 30px;
+}
+
+.header__search-icon {
+    position: absolute;
+    top: 15px;
+    left: 40px;
+    font-size: 16px !important;
+}
+
+.header__input {
+    height: 100%;
+    width: 100%;
+    padding: 0px 34px;
+    background-color: $light-grey;
+}
+
+.header__logo_mobile {
+    height: 60px;
+    width: 190px;
+}
+
+.header__toggle-menu  {
+    margin-right: 20px;
+}
+
+.header__home {
+    width: 100%;
+    margin-top: 2px;
+    text-align: center;
+}
+
+.header__controls {
+    display: flex;
+    width: 154px;
+    justify-content: space-between;
+    .icon {
+        font-size: 18px;
+    }
+    @include mq($from: desktop) {
+        justify-content: center;
+    }
+}
+
+.header__search-button {
+    margin-right: 24px;
+}
+
+.header__button {
+    .icon {
+        font-size: 16px;
+    }
+}
+
+.header__catalog {
+    height: 100%;
+    width: 568px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

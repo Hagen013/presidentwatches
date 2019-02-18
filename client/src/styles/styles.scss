@@ -1,0 +1,29 @@
+@import '../../node_modules/sass-mq/mq';
+
+$mq-breakpoints: (
+    mobile:  320px,
+    tablet: 768px,
+    desktop: 1032px,
+    wide: 1500px,
+);
+
+// Типография
+@import url("https://fonts.googleapis.com/css?family=IBM+Plex+Sans");
+
+@font-face {
+    font-family: 'icons';
+    src:  url('/static/fonts/icons.eot?ouarcd');
+    src:  url('/static/fonts/icons.eot?ouarcd#iefix') format('embedded-opentype'),
+      url('/static/fonts/icons.ttf?ouarcd') format('truetype'),
+      url('/static/fonts/icons.woff?ouarcd') format('woff'),
+      url('/static/fonts/icons.svg?ouarcd#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+//
+
+
+@import 'base/*';
+@import 'UIKit/*';
+@import 'layout/*';
+@import 'components/*';

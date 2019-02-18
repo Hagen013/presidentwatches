@@ -1,0 +1,207 @@
+.footer-top {
+    position: relative;
+    height: 560px;
+    width: 100%;
+    @include mq($from: tablet) {
+        height: 400px;
+    }
+    @include mq($from: desktop) {
+        height: 210px;
+    }
+}
+
+.footer-bottom {
+    @include mq($from: tablet) {
+        padding: 0px 38px;
+        height: 76px;
+    }
+    @include mq($from: desktop) {
+        padding: 0px 50px;
+    }
+    @include mq($from: wide) {
+        padding: 0px 72px;
+    }
+}
+
+.footer-bottom__content {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 17px 0px;
+    border-top: 1px solid $light-grey;
+}
+
+.footer-columns {
+    @include mq($from: tablet) {
+        padding: 0px 38px;
+    }
+    @include mq($from: desktop) {
+        padding: 0px 50px;
+    }
+    @include mq($from: wide) {
+        padding: 0px 72px;
+    }
+}
+
+.footer-columns__content {
+    @include mq($from: tablet) {
+        display: flex;
+        padding: 30px 0px;
+        border-top: 1px solid $light-grey;
+        border-bottom: 1px solid $light-grey;
+    }
+}
+
+.footer-column {
+    width: 100%;
+}
+
+.footer-column_contacts {
+    position: absolute;
+    top: 404px;
+    left: 0px;
+    @include mq($from: tablet) {
+        top: 241px;
+    }
+    @include mq($from: desktop) {
+        top: 0px;
+        position: relative;
+        width: 25%;
+    }
+}
+
+.address {
+    display: flex;
+    flex-direction: column;
+    height: 70px;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 21px;
+    @include mq($from: desktop) {
+        align-items: flex-start;
+    }
+}
+
+.shedule {
+    display: flex;
+    flex-direction: column;
+    height: 38px;
+    align-items: center;
+    justify-content: space-between;
+    @include mq($from: desktop) {
+        align-items: flex-start;
+    }
+}
+
+.footer-column_links {
+    height: 200px;
+    border-top: 1px solid $light-grey;
+    border-bottom: 1px solid $light-grey;
+    @include mq($from: tablet) {
+        height: auto;
+        border-top: none;
+        border-bottom: none;
+        width: 75%;
+    }
+    @include mq($from: desktop) {
+        width: 50%;
+        justify-content: space-around;
+    }
+    @include mq($from: wide) {
+        width: 25%;
+    }
+}
+
+.footer-links {
+    display: flex;
+    justify-content: space-around;
+    height: 200px;
+    padding: 25px 10px;
+    @include mq($from: tablet) {
+        justify-content: space-around;
+        height: 100%;
+        padding: 0px 0px;
+    }
+}
+
+.footer-links__list {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    @include mq($from: tablet) {
+        width: 50%;
+    }
+    @include mq($from: desktop) {
+        width: 136px;
+    }
+    @include mq($from: wide) {
+        width: 50%;
+    }
+}
+
+.footer-links__list_1 {
+    height: 150px;
+}
+
+.footer-links__list_2 {
+    height: 96px;
+}
+
+.footer-links__item {
+
+}
+
+.footer-column_info {
+    padding: 25px 10px 30px 10px;
+    text-align: center;
+    @include mq($from: tablet) {
+        padding: 0px;
+        width: 25%;
+        text-align: left;
+    }
+    @include mq($from: wide) {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        width: 50%;
+    }
+}
+
+.social-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 24px;
+    .subtitle {
+        margin-bottom: 12px;
+    }
+    @include mq($from: tablet) {
+        align-items: flex-start;
+    }
+    @include mq($from: wide) {
+        padding-left: 35%;
+        justify-content: flex-end;
+    }
+}
+
+.payment-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .subtitle {
+        margin-bottom: 14px;
+    }
+    @include mq($from: tablet) {
+        align-items: flex-start;
+    }
+    @include mq($from: wide) {
+        justify-content: flex-end;
+        padding-left: 35%;
+    }
+}
+
+.footer-column__sub-column {
+    @include mq($from: wide) {
+        width: 50%;
+    }
+}

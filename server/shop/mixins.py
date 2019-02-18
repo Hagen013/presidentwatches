@@ -25,6 +25,17 @@ class WatchesProductMixin(models.Model):
         unique=True
     )
 
+    brand = models.CharField(
+        max_length=512,
+        blank=True,
+        db_index=True
+    )
+
+    series = models.CharField(
+        max_length=512,
+        blank=True
+    )
+
     manual = models.FileField(
         upload_to='manuals',
         null=True,

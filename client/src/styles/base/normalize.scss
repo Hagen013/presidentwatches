@@ -1,0 +1,24 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    color: 	rgb(64,64,64);
+    -webkit-font-smoothing: antialiased;
+    -moz-font-smoothing: antialiased;
+}
+
+input {
+    outline: none !important;
+    box-shadow: none !important;
+    border-radius: 0px;
+    border: none;
+    font-family: inherit;
+}
+
+li {
+    list-style: none;
+}

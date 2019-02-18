@@ -1,0 +1,125 @@
+@import "./variables";
+
+.icon {
+    display: flex;
+    font-style: normal !important;
+    font-size: 12px;
+    font-family: 'Icons';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon_menu {
+    &:before  {
+        content: $icon-menu;
+    }
+}
+
+.icon_search {
+    &:before  {
+        content: $icon-search;
+    }
+}
+
+.icon_cart {
+    &:before  {
+        content: $icon-cart;
+    }
+}
+
+.icon_eye {
+    &:before {
+        content: $icon-eye;
+    }
+}
+
+
+.icon_user {
+    &:before {
+        content: $icon-user;
+    }
+}
+
+.icon_heart {
+    &:before {
+        content: $icon-heart;
+    }
+}
+
+.icon_nav {
+    &:before {
+        content: $icon-nav;
+    }
+}
+
+.icon_phone {
+    &:before {
+        content: $icon-phone;
+    }
+}
+
+.icon_pin {
+    &:before {
+        content: $icon-pin;
+    }
+}
+
+.icon_bag {
+    &:before {
+        content: $icon-bag;
+    }
+}
+
+.icon_delivery {
+    &:before {
+        content: $icon-delivery;
+    }
+}
+
+.icon_mastercard {
+    &:before {
+        content: $icon-mastercard;
+    }
+}
+
+.icon_visa {
+    &:before {
+        content: $icon-visa;
+    }
+}
+
+.icon_mir {
+    &:before {
+        content: $icon-mir;
+    }
+}
+
+.icon_facebook {
+    &:before {
+        content: $icon-facebook;
+    }
+}
+
+.icon_instagram {
+    &:before {
+        content: $icon-instagram;
+    }
+}
+
+.icon_google {
+    &:before {
+        content: $icon-google;
+    }
+}
+
+.icon_youtube {
+    &:before {
+        content: $icon-youtube;
+    }
+}

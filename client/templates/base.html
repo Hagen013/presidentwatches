@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>    
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+        <meta name="author"    lang="ru" content="www.presidentwatches.ru"/>
+        <meta name="copyright" lang="ru" content="© 2018 Интернет-магазин ПрезидентВотчес"/>
+
+        {% block meta %}
+        <title></title>
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        {% endblock meta %}
+
+        {% block open_graph %}
+        {% endblock open_graph %}
+
+        {% block open_graph_image %}
+        {% endblock open_graph_image %}
+
+        {% block favicons %}
+        {% endblock favicons %}
+
+        {% block css %}
+        <link rel="stylesheet" href="{{ static('css/styles.css') }}" />
+        {% endblock css %}
+
+        {% block script_head %}
+        {% endblock script_head %}
+    </head>
+
+    <body class="page">
+        <div class="side-menu">
+        </div>
+        <div class="side-catalog">
+        </div>
+        <div class="page__content">
+            <div class="page__content-top">
+                {% block header %}
+                    {% include "blocks/header.html" %}
+                {% endblock header %}
+
+                {% block content %}
+                {% endblock content %}
+
+            </div>
+            <div class="page__content-bottom">
+                {% block footer %}
+                    {% include "blocks/footer.html" %}
+                {% endblock footer %}
+            </div>
+        </div>
+    </body>
+</html>

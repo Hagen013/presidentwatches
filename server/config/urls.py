@@ -4,7 +4,7 @@ from django.conf import settings
 
 
 urlpatterns = [
-    path('', TemplateView.as_view(template_name='index.html')),
+    path('', include('shop.urls', namespace='shop')),
     path('api/', include('api.urls', namespace='api')),
     path('admin/', TemplateView.as_view(template_name='admin.html'))
 ]

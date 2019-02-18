@@ -19,6 +19,7 @@ class DisplayableMixin(models.Model):
     slug = models.CharField(
         max_length=2048,
         unique=True,
+        blank=True,
         db_index=True
     )
 

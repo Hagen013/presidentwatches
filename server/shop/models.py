@@ -1,6 +1,8 @@
+from mptt.models import TreeForeignKey
+
 from django.db import models
 
-from core.models import AbstractOfferPage
+from core.models import AbstractOfferPage, AbstractCategoryPage
 from core.db.mixins import ImageMixin
 from eav.models import (AbstractAttribute,
                         AbstractAttributeValue,
@@ -8,18 +10,6 @@ from eav.models import (AbstractAttribute,
                         AbstractEntityValueRelation,
                         EavEntityMixin)
 from .mixins import WatchesProductMixin, YandexMarketOfferMixin
-
-
-class CategoryPage(models.Model):
-
-    # must be implemented by a subclass
-    def get_absolute_url(self):
-        return '/watches/{slug}/'.format(
-            slug=self.slug
-        )
-
-    class Meta:
-        abstract = True
 
 
 class AttributeValue(AbstractAttributeValue):
@@ -69,6 +59,18 @@ class ProductValueRelation(AbstractEntityValueRelation):
         on_delete=models.CASCADE
     )
 
+class CategoryValueRelation(AbstractEntityValueRelation):
+
+    entity = models.ForeignKey(
+        'CategoryPage',
+        on_delete=models.CASCADE
+    )
+
+    value = models.ForeignKey(
+        'AttributeValue',
+        on_delete=models.CASCADE
+    )
+
 
 class ProductPage(AbstractOfferPage, EavEntityMixin, WatchesProductMixin, YandexMarketOfferMixin):
 
@@ -103,3 +105,34 @@ class ProductImage(ImageMixin):
         'ProductPage',
         on_delete=models.CASCADE,
     )
+
+
+class CategoryPage(AbstractCategoryPage):
+
+    product_class = ProductPage
+    attributevalues_relation_class = CategoryValueRelation
+
+    parent = TreeForeignKey(
+        'self',
+        null=True,
+        blank=True,
+        db_index=True,
+        on_delete=models.SET_NULL,
+        related_name='childs'
+    )
+    
+    attribute_values = models.ManyToManyField(
+        'AttributeValue',
+        blank=True,
+        related_name='categories',
+        through=attributevalues_relation_class
+    )
+
+    # must be implemented by a subclass
+    def get_absolute_url(self):
+        return '/watches/{slug}/'.format(
+            slug=self.slug
+        )
+
+    class Meta:
+        abstract = False

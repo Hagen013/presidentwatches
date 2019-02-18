@@ -1,0 +1,413 @@
+.page {
+    min-width: 320px;
+}
+
+.page__content {
+	height: 100%;
+	width: 100%;
+}
+
+.page__content-top {
+    min-height: 100%;
+    margin-bottom: -620px;
+    &:after {
+        content: "";
+        display: block;
+        height: 620px;
+    }
+    @include mq($from: tablet) {
+        margin-bottom: -476px;
+        &:after {
+            height: 476px;
+        }
+    }
+    @include mq($from: desktop) {
+        margin-bottom: -286px;
+        &:after {
+            height: 286px;
+        }
+    }
+}
+
+.page__content-bottom {
+    height: 620px;
+    @include mq($from: tablet) {
+        height: 476px;
+    }
+    @include mq($from: desktop) {
+        height: 286px;
+    }
+}
+
+.clearfix {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
+
+.row {
+    width: 100%;
+    &:after {
+        content: "";
+        display: table;
+        clear: both;
+        visibility: hidden;
+        height: 0px;
+        font-size: 0px;
+    }
+}
+
+.col {
+    float: left;
+    padding-right: 11px;
+    @include mq($from: tablet) {
+        padding-right: 20px;
+    }
+    &:last-of-type {
+        padding-right: 0px !important;
+    }
+}
+
+.col-1 {
+    width: percentage(1/12);
+}
+
+.col-2 {
+    width: percentage(2/12);
+}
+
+.col-3 {
+    width: percentage(3/12);
+}
+
+.col-4 {
+    width: percentage(4/12);
+}
+
+.col-5 {
+    width: percentage(5/12);
+}
+
+.col-6 {
+    width: percentage(6/12);
+}
+
+.col-7 {
+    width: percentage(7/12);
+}
+
+.col-8 {
+    width: percentage(8/12);
+}
+
+.col-9 {
+    width: percentage(9/12);
+}
+
+.col-10 {
+    width: percentage(10/12);
+}
+
+.col-11 {
+    width: percentage(11/12);
+}
+
+.col-12 {
+    width: percentage(12/12);
+}
+
+@mixin row() {
+    width: 100%;
+    &:after {
+        content: "";
+        display: table;
+        clear: both;
+        visibility: hidden;
+        height: 0px;
+        font-size: 0px;
+    }
+}
+
+@mixin col() {
+    float: left;
+    padding-right: 11px;
+    @include mq($from: tablet) {
+        padding-right: 20px;
+    }
+    &:last-of-type {
+        padding-right: 0px !important;
+    }
+}
+
+@mixin col-1() {
+    width: percentage(1/12);
+}
+
+@mixin col-2() {
+    width: percentage(2/12);
+}
+
+@mixin col-3() {
+    width: percentage(3/12);
+}
+
+@mixin col-4() {
+    width: percentage(4/12);
+}
+
+@mixin col-5() {
+    width: percentage(5/12);
+}
+
+@mixin col-6() {
+    width: percentage(6/12);
+}
+
+@mixin col-7() {
+    width: percentage(7/12);
+}
+
+@mixin col-8() {
+    width: percentage(8/12);
+}
+
+@mixin col-9() {
+    width: percentage(9/12);
+}
+
+@mixin col-10() {
+    width: percentage(10/12);
+}
+
+@mixin col-11() {
+    width: percentage(11/12);
+}
+
+@mixin col-12() {
+    width: percentage(12/12);
+}
+
+
+// TABLET
+.t-col-1 {
+    @include mq($from: tablet) {
+        width: percentage(1/12);
+    }
+}
+
+.t-col-2 {
+    @include mq($from: tablet) {
+        width: percentage(1/12);
+    }
+}
+
+.t-col-3 {
+    @include mq($from: tablet) {
+        width: percentage(3/12);
+    }
+}
+
+.t-col-4 {
+    @include mq($from: tablet) {
+        width: percentage(4/12);
+    }
+}
+
+.t-col-5 {
+    @include mq($from: tablet) {
+        width: percentage(5/12);
+    }
+}
+
+.t-col-6 {
+    @include mq($from: tablet) {
+        width: percentage(6/12);
+    }
+}
+
+.t-col-7 {
+    @include mq($from: tablet) {
+        width: percentage(7/12);
+    }
+}
+
+.t-col-8 {
+    @include mq($from: tablet) {
+        width: percentage(8/12);
+    }
+}
+
+.t-col-9 {
+    @include mq($from: tablet) {
+        width: percentage(9/12);
+    }
+}
+
+.t-col-10 {
+    @include mq($from: tablet) {
+        width: percentage(10/12);
+    }
+}
+
+.t-col-11 {
+    @include mq($from: tablet) {
+        width: percentage(11/12);
+    }
+}
+
+.t-col-12 {
+    @include mq($from: tablet) {
+        width: percentage(12/12);
+    }
+}
+
+// DESKTOP
+
+.d-col-1 {
+    @include mq($from: desktop) {
+        width: percentage(1/12);
+    }
+}
+
+.d-col-2 {
+    @include mq($from: desktop) {
+        width: percentage(2/12);
+    }
+}
+
+.d-col-3 {
+    @include mq($from: desktop) {
+        width: percentage(3/12);
+    }
+}
+
+.d-col-4 {
+    @include mq($from: desktop) {
+        width: percentage(4/12);
+    }
+}
+
+.d-col-5 {
+    @include mq($from: desktop) {
+        width: percentage(5/12);
+    }
+}
+
+.d-col-6 {
+    @include mq($from: desktop) {
+        width: percentage(6/12);
+    }
+}
+
+.d-col-7 {
+    @include mq($from: desktop) {
+        width: percentage(7/12);
+    }
+}
+
+.d-col-8 {
+    @include mq($from: desktop) {
+        width: percentage(8/12);
+    }
+}
+
+.d-col-9 {
+    @include mq($from: desktop) {
+        width: percentage(9/12);
+    }
+}
+
+.d-col-10 {
+    @include mq($from: desktop) {
+        width: percentage(10/12);
+    }
+}
+
+.d-col-11 {
+    @include mq($from: desktop) {
+        width: percentage(11/12);
+    }
+}
+
+.d-col-12 {
+    @include mq($from: desktop) {
+        width: percentage(12/12);
+    }
+}
+
+// WIDESCREEN
+
+.w-col-1 {
+    @include mq($from: wide) {
+        width: percentage(1/12);
+    }
+}
+
+.w-col-2 {
+    @include mq($from: wide) {
+        width: percentage(2/12);
+    }
+}
+
+.w-col-3 {
+    @include mq($from: wide) {
+        width: percentage(3/12);
+    }
+}
+
+.w-col-4 {
+    @include mq($from: wide) {
+        width: percentage(4/12);
+    }
+}
+
+.w-col-5 {
+    @include mq($from: wide) {
+        width: percentage(5/12);
+    }
+}
+
+.w-col-6 {
+    @include mq($from: wide) {
+        width: percentage(6/12);
+    }
+}
+
+.w-col-7 {
+    @include mq($from: wide) {
+        width: percentage(7/12);
+    }
+}
+
+.w-col-8 {
+    @include mq($from: wide) {
+        width: percentage(8/12);
+    }
+}
+
+.w-col-9 {
+    @include mq($from: wide) {
+        width: percentage(9/12);
+    }
+}
+
+.w-col-10 {
+    @include mq($from: wide) {
+        width: percentage(10/12);
+    }
+}
+
+.w-col-11 {
+    @include mq($from: wide) {
+        width: percentage(11/12);
+    }
+}
+
+.w-col-12 {
+    @include mq($from: wide) {
+        width: percentage(12/12);
+    }
+}
