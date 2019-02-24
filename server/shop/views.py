@@ -180,5 +180,26 @@ class CategoryPageView(DiggPaginatorViewMixin, ListView):
 
 
 
-class ProductPageView():
-    pass
+class ProductPageView(TemplateView):
+    
+    template_name = 'pages/product.html'
+
+    model = ProductPage
+    instance_context_name = 'product'
+
+    def get(self, request, slug, *args, **kwargs):
+        print(slug)
+        self.instance = self.get_instance(slug)
+        return super(ProductPageView, self).get(self, request, *args, **kwargs)
+
+    def get_instance(self, slug):
+        try:
+            return self.model.objects.get(slug=slug)
+        except ObjectDoesNotExist:
+            raise Http404
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProductPageView, self).get_context_data(**kwargs)
+
+        context[self.instance_context_name] = self.instance
+        return context

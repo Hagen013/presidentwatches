@@ -1,0 +1,124 @@
+.product-page {
+
+}
+
+.product-front__main-img-wrap {
+    position: relative;
+    height: 300px;
+    width: 100%;
+    text-align: center;
+    overflow: hidden;
+    @include mq($from: tablet) {
+        height: 276px;
+        padding-left: 59px;
+    }
+}
+
+.product-front__main-img {
+    height: 100%;
+    width: auto;
+}
+
+.product-front__gallery {
+    height: 56px;
+    width: 100%;
+    padding-top: 10px;
+}
+
+.product__top {
+    @include mq($from: tablet) {
+        padding: 0px 38px;
+    }
+}
+
+.product-front {
+    padding: 10px;
+    border-top: 1px solid $grey;
+    border-bottom: 1px solid $grey;
+    @include mq($from: tablet) {
+        border: none;
+        padding: 0px 38px;
+    }
+}
+
+
+.product-main {
+    padding: 20px 10px 20px 10px;
+    color: black;
+    @include mq($from: tablet) {
+        padding: 0px;
+    }
+}
+
+.product-main__model {
+    letter-spacing: 0.9px;
+    font-size: 12px;
+    margin-bottom: 6px;
+    @include mq($from: tablet) {
+        font-size: 14px;
+        letter-spacing: 1px;
+    }
+}
+
+.product-main__name {
+    height: 24px;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.33;
+    letter-spacing: normal;
+    margin-bottom: 10px;
+    @include mq($from: tablet) {
+        height: 30px;
+        font-size: 24px;
+        line-height: 30px;
+    }
+}
+
+.product-main__price-area {
+    height: 24px;
+    margin-top: 10px;
+}
+
+.product-main__price {
+    float: left;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.product-main__buttons {
+    padding: 20px 0px;
+}
+
+.product-main__button {
+    @include mq($from: tablet) {
+        width: 214px;
+        padding: 0px 20px;
+        letter-spacing: 1px;
+    }
+}
+
+.product-main__guarantee {
+    font-size: 14px;
+}
+
+.product-main__guarantee-title {
+    margin-bottom: 4px;
+}
+
+.product-main__guarantee-text {
+    margin-bottom: 2px;
+}
+
+.product__tabs {
+    width: 100%;
+}
+
+.card-footer__mobile {
+    padding: 0px 10px;
+    font-size: 14px;
+    line-height: 1.5;
+    @include mq($from: tablet) {
+        display: none;
+    }
+}

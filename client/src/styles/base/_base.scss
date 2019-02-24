@@ -47,3 +47,10 @@ html, body {
     letter-spacing: 1px;
     color: #000000;
 }
+
+.hide-mb {
+    display: none;
+    @include mq($from: tablet) {
+        display: block;
+    }
+}

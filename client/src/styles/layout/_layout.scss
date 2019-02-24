@@ -60,11 +60,18 @@
     }
 }
 
+[class*='col-']:last-of-type {
+  padding-right: 0 !important;
+}
+
 .col {
     float: left;
     padding-right: 11px;
     @include mq($from: tablet) {
         padding-right: 20px;
+        &:last-child {
+            padding-right: 0px !important;
+        }
     }
     &:last-of-type {
         padding-right: 0px !important;
