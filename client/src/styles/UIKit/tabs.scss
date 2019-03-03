@@ -1,0 +1,56 @@
+.tabs-nav {
+    @include row();
+    border-bottom: 1px solid $grey;
+}
+
+.tabs-nav-item {
+    float: left;
+    padding-right: 20px;
+    &:last-of-type {
+        padding-right: 0px;
+    }
+    @include mq($from: desktop) {
+        padding-right: 40px;
+        &:last-of-type {
+            padding-right: 0px;
+        }
+    }
+}
+
+.tabs-link {
+    display: block;
+    padding: 10px 0px 10px 0px;
+    @include bold();
+    font-size: 10px;
+    color: $dark-grey;
+    letter-spacing: 1px;
+    text-decoration: none;
+    text-transform: uppercase;
+    @include mq($from: desktop) {
+        padding: 10px 0px 20px 0px;
+        font-size: 12px;
+    }
+}
+
+.tabs-link.active {
+    color: black;
+}
+
+.tabs-outlet {
+    padding: 30px 0px;
+    line-height: 1.5;
+    font-size: 14px;
+    h2 {
+        margin-bottom: 10px;
+        font-size: 24px;
+        @include bold();
+    }
+}
+
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+}

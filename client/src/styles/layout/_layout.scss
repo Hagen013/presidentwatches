@@ -4,7 +4,13 @@
 
 .page__content {
 	height: 100%;
-	width: 100%;
+    width: 100%;
+    @include mq($from: desktop) {
+        padding-right: 60px;
+    }
+    @include mq($from: maximum) {
+        padding-right: 320px;
+    }
 }
 
 .page__content-top {

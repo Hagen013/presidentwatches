@@ -1,0 +1,120 @@
+.sidebar {
+    background: white;
+    z-index: 200;
+    @include mq($from: desktop) {
+        display: block;
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        height: 100%;
+        height: 100vh;
+        width: 60px;
+    }
+    @include mq($from: maximum) {
+        width: 320px;
+    }
+}
+
+.sidebar__inner {
+    height: 100%;
+    width: 100%;
+    padding-top: 40px;
+}
+
+.sidebar.active {
+    width: 320px;
+    .sidebar-tabs {
+        width: 320px;
+        padding: 0px 20px 0px 20px;
+    }
+    .sidebar-nav {
+        height: 80px;
+    }
+    .sidebar-nav-tab {
+        float: left;
+        height: 100%;
+        line-height: 80px;
+        width: percentage(1/3);
+    }
+    .sidebar-outlet {
+        display: block;
+    }
+    .sidebar-link {
+        border-bottom: 1px solid $grey;
+    }
+    .sidebar-link.active {
+        border-bottom: 1px solid black;
+    }
+}
+
+.sidebar-tabs {
+    top: 0px;
+    height: 100%;
+    height: 100vh;
+    width: 60px;
+    padding: 14px 0px;
+    border-left: 1px solid $grey;
+    background: white;
+    .icon {
+        display: inline-block;
+        font-size: 16px;
+    }
+    z-index: 500;
+    @include mq($from: maximum) {
+        width: 320px;
+        padding: 0px 20px 0px 20px;
+    }
+}
+
+.sidebar-nav {
+    @include row();
+    @include mq($from: maximum) {
+        height: 80px;
+    }
+}
+
+.sidebar-nav-tab {
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    @include mq($from: maximum) {
+        float: left;
+        height: 100%;
+        line-height: 80px;
+        width: percentage(1/3);
+    }
+}
+
+.sidebar-pane {
+    display: none;
+    background: white;
+}
+
+.sidebar-pane.active {
+    display: block;
+}
+
+.sidebar-outlet {
+    display: none;
+    padding: 20px 0px;
+    @include mq($from: maximum) {
+        display: block;
+    }
+}
+
+.sidebar-link {
+    display: block;
+    height: 100%;
+    width: 100%;
+    z-index: 100;
+    @include mq($from: maximum) {
+        border-bottom: 1px solid $grey;
+    }
+}
+
+.sidebar-link.active {
+    @include mq($from: maximum) {
+        border-bottom: 1px solid black;
+        cursor: default;
+    }
+}

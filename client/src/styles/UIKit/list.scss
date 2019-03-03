@@ -1,0 +1,58 @@
+.list-group {
+
+}
+
+.list-group_mobile {
+
+}
+
+.list-group-item {
+    margin-bottom: 20px;
+    &:last-of-type {
+        margin-bottom: 0px;
+    }
+}
+
+.list-heading {
+    margin-bottom: 10px;
+    font-size: 14px;
+    @include bold();
+    @include mq($from: tablet) {
+        font-size: 18px;
+    }
+}
+
+.list {
+
+}
+
+.list-item {
+    margin-bottom: 10px;
+    line-height: 1.43;
+}
+
+.list-item-label {
+    color: $dark-grey;
+    margin-bottom: 4px;
+    line-height: normal;
+    vertical-align: middle;
+    @include mq($from: tablet) {
+        display: inline-block;
+        width: 42%;
+        max-width: 290px;
+        margin-right: 16px;
+        background: url(../img/assets/dot.png) bottom repeat-x;
+        background-position-y: 15px;
+        color: black;
+        span {
+            display: inline-block;
+            padding-right: 6px;
+            background: white;
+            vertical-align: middle;
+        }
+    }
+}
+
+.list-item-text {
+    display: inline-block;
+}

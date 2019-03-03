@@ -9,8 +9,15 @@
     text-align: center;
     overflow: hidden;
     @include mq($from: tablet) {
+        padding: 10px 0px;
         height: 276px;
         padding-left: 59px;
+    }
+    @include mq($from: desktop) {
+        height: 360px;
+    }
+    @include mq($from: wide) {
+        height: 540px;
     }
 }
 
@@ -22,22 +29,41 @@
 .product-front__gallery {
     height: 56px;
     width: 100%;
-    padding-top: 10px;
+    padding: 10px 22px;
+    @include mq($from: tablet) {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        height: 100%;
+        width: 40px;
+        padding: 40px 0px;
+    }
 }
 
 .product__top {
     @include mq($from: tablet) {
         padding: 0px 38px;
+        margin-bottom: 30px;
+    }
+    @include mq($from: desktop) {
+        padding: 0px 50px;
+        margin-bottom: 40px;
+    }
+    @include mq($from: wide) {
+        padding: 0px 70px;
     }
 }
 
 .product-front {
+    position: relative;
     padding: 10px;
     border-top: 1px solid $grey;
     border-bottom: 1px solid $grey;
     @include mq($from: tablet) {
         border: none;
-        padding: 0px 38px;
+        padding-left: 0px;
+        padding-top: 0px;
+        padding-bottom: 0px;
     }
 }
 
@@ -47,6 +73,11 @@
     color: black;
     @include mq($from: tablet) {
         padding: 0px;
+    }
+    @include mq($from: wide) {
+        float: left;
+        width: percentage(2/3);
+        padding-right: 20px;
     }
 }
 
@@ -69,14 +100,24 @@
     margin-bottom: 10px;
     @include mq($from: tablet) {
         height: 30px;
+        margin-bottom: 6px;
         font-size: 24px;
         line-height: 30px;
+    }
+    @include mq($from: desktop) {
+        margin-bottom: 16px;
     }
 }
 
 .product-main__price-area {
-    height: 24px;
-    margin-top: 10px;
+    margin-bottom: 10px;
+    @include mq($from: desktop) {
+        margin-bottom: 20px;
+    }
+}
+
+.product-main-interactions {
+    margin-bottom: 20px;
 }
 
 .product-main__price {
@@ -84,13 +125,20 @@
     font-size: 24px;
     font-weight: 600;
     line-height: 1;
+    @include mq($from: tablet) {
+        font-size: 36px;
+    }
 }
 
 .product-main__buttons {
-    padding: 20px 0px;
+    margin-bottom: 20px;
+    @include mq($from: desktop) {
+        margin-bottom: 30px;
+    }
 }
 
 .product-main__button {
+    width: 100%;
     @include mq($from: tablet) {
         width: 214px;
         padding: 0px 20px;
@@ -98,16 +146,41 @@
     }
 }
 
-.product-main__guarantee {
-    font-size: 14px;
+.product-main__one-click  {
+    display: none;
+    margin-left: 10px;
+    @include mq($from: desktop) {
+        display: inline-block;
+        padding: 0px 20px;
+        letter-spacing: 1px;
+    }
 }
 
-.product-main__guarantee-title {
+.product-main__info-block {
+    font-size: 14px;
+    margin-bottom: 20px;
+    line-height: 1.43;
+}
+
+.product-main__info-block-title {
     margin-bottom: 4px;
 }
 
-.product-main__guarantee-text {
+.product-main__info-block-text {
     margin-bottom: 2px;
+}
+
+.product-controls {
+    @include mq($from: wide) {
+        float: left;
+        width: 33.33%;
+    }
+}
+
+.product-controls__block {
+    position: relative;
+    height: 106px;
+    width: 100%;
 }
 
 .product__tabs {
@@ -121,4 +194,19 @@
     @include mq($from: tablet) {
         display: none;
     }
+}
+
+.card-footer {
+
+}
+
+.card-footer__left {
+    float: left;
+    @include mq($from: wide) {
+        width: 747px;
+    }
+}
+
+.card-footer__right {
+    float: left;
 }

@@ -24,41 +24,153 @@
                         </div>
                     </div>
                     <div class="product-front__gallery">
+                        <div class="thumb">
+                            <img class="thumb-img" src="{{product.thumbnail.url}}">
+                        </div>
                     </div>
                 </div>
                 <div class="col col-12 t-col-6">
-                    <div class="product-main">
-                        <div class="product-main__model">
-                            {{product.model}}
+                    <div class="product-left row">
+                        <div class="product-main">
+                            <div class="product-main__model">
+                                {{product.model}}
+                            </div>
+                            <div class="product-main__name">
+                                {{product.brand}} {{product.series}}
+                            </div>
+                            <div class="product-main__price-area row">
+                                <div class="price product-main__price">
+                                    {{product.price}} ₽
+                                </div>
+                                {% if product.is_sale %}
+                                <div class="old-price product-main__old-price">
+                                    {{product.old_price}}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="hide-wide product-main-interactions">
+                                <div class="row">
+                                    <div class="rating float-left">
+                                        <div class="rating__stars">
+                                            <i class="icon icon_star-full">
+                                            </i>
+                                            <i class="icon icon_star-full">
+                                            </i>
+                                            <i class="icon icon_star-full">
+                                            </i>
+                                            <i class="icon icon_star-full">
+                                            </i>
+                                            <i class="icon icon_star-stroke">
+                                            </i>
+                                        </div>
+                                        <div class="rating__overall">
+                                            4,1
+                                        </div>
+                                    </div>
+                                    <div class="interaction-links float-left">
+                                        <a class="interaction-link">
+                                            <i class="icon icon_heart-stroke">
+                                            </i>
+                                            <span>В ИЗБРАННОЕ</span>
+                                        </a>
+                                        <a class="interaction-link">
+                                            <i class="icon icon_share">
+                                            </i>
+                                            <span>ПОДЕЛИТЬСЯ</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <a class="link link_dotted product-main__reviews-count">
+                                22 отзыва
+                                </a> 
+                            </div>
+                            <div class="product-main__buttons row">
+                                <div class="button button_big button_accent product-main__button float-left">
+                                    ДОБАВИТЬ В КОРЗИНУ
+                                </div>
+                                <div class="button button_big button_ghost product-main__one-click float-left">
+                                    КУПИТЬ В 1 КЛИК
+                                </div>
+                            </div>
+                            <div class="product-main__info-block show-wide">
+                                <div class="bold product-main__info-block-title">
+                                    Информация о доставке
+                                </div>
+                                <div class="product-main__info-block-text">
+                                    За 100 ₽ в Санкт-Петербург курьером, в течении 3 — 5 дней
+                                </div>
+                            </div>
+                            <div class="product-main__info-block">
+                                <div class="bold product-main__info-block-title">
+                                    Гарантия
+                                </div>
+                                <div class="product-main__info-block-text">
+                                    2 года + 1 год от ПрезидентВотчес
+                                </div>
+                                <a class="link link_dotted" href="#">
+                                Информация о гарантии
+                                </a>
+                            </div>
+                            <div class="product-main__info-block show-wide">
+                                <div class="bold product-main__info-block-title">
+                                    Коротко о товаре
+                                </div>
+                                <ul class="list list_mini">
+                                    <li class="list-item">
+                                        — Минеральное стекло
+                                    </li>
+                                    <li class="list-item">
+                                        — Кожаный браслет
+                                    </li>
+                                    <li class="list-item">
+                                        — Водонепроницаемость 50 м.
+                                    </li>
+                                    <li class="list-item">
+                                        — Габариты 47 × 43.5 × 10.4
+                                    </li>
+                                </ul>
+                                <a class="link link_grey link_dotted">
+                                    Все характеристики
+                                </a>
+                            </div>
                         </div>
-                        <div class="product-main__name">
-                            {{product.brand}} {{product.series}}
-                        </div>
-                        <div class="product-main__price-area row">
-                            <div class="price product-main__price">
-                                {{product.price}} ₽
+                        <div class="product-controls show-wide">
+                            <div class="product-controls__block">
+                                <div class="row">
+                                    <div class="rating float-left">
+                                        <div class="rating__stars">
+                                            <i class="icon icon_star-full">
+                                            </i>
+                                            <i class="icon icon_star-full">
+                                            </i>
+                                            <i class="icon icon_star-full">
+                                            </i>
+                                            <i class="icon icon_star-full">
+                                            </i>
+                                            <i class="icon icon_star-stroke">
+                                            </i>
+                                        </div>
+                                        <div class="rating__overall">
+                                            4,1
+                                        </div>
+                                    </div>
+                                    <div class="interaction-links float-left">
+                                        <a class="interaction-link">
+                                            <i class="icon icon_heart-stroke">
+                                            </i>
+                                            <span>В ИЗБРАННОЕ</span>
+                                        </a>
+                                        <a class="interaction-link">
+                                            <i class="icon icon_share">
+                                            </i>
+                                            <span>ПОДЕЛИТЬСЯ</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <a class="link link_dotted product-main__reviews-count">
+                                22 отзыва
+                                </a>
                             </div>
-                            {% if product.is_sale %}
-                            <div class="old-price product-main__old-price">
-                                {{product.old_price}}
-                            </div>
-                            {% endif %}
-                        </div>
-                        <div class="product-main__buttons">
-                            <div class="button button_big button_accent product-main__button">
-                                ДОБАВИТЬ В КОРЗИНУ
-                            </div>
-                        </div>
-                        <div class="product-main__guarantee">
-                            <div class="bold product-main__guarantee-title">
-                                Гарантия
-                            </div>
-                            <div class="product-main__guarantee-text">
-                                2 года + 1 год от ПрезидентВотчес
-                            </div>
-                            <a class="link link_dotted" href="#">
-                            Информация о гарантии
-                            </a>
                         </div>
                     </div>
                 </div>
@@ -87,29 +199,29 @@
                             </div>
                             <div class="content-block">
                                 <h2 class="heading-2">Характеристики</h2>
-                                {% for group in product.grouped_attributes %}
                                 <div class="list-group">
-                                    <div class="list-group-heading">
-                                        {{group['name']}}
-                                    </div>
-                                    <ul class="list list_grouped list_mobile">
-                                        {% for attribute in group['attributes'] %}
-                                        <li class="list-item">
-                                            <div class="list-item-caption">
-                                                {{attribute['name']}}
-                                            </div>
-                                            <div class="list-item-values">
-                                            {% for value in attribute['values'] %}
-                                                <span class="list-item-value">
-                                                {{value['value']}}
-                                                </span>
+                                    {% for group in product.grouped_attributes %}
+                                    <div class="list-group-item">
+                                        <div class="list-heading">
+                                            {{ group['name'] }}
+                                        </div>
+                                        <ul class="list">
+                                            {% for attribute in group['attributes'] %}
+                                            <li class="list-item">
+                                                <div class="list-item-label">
+                                                    <span>{{ attribute['name'] }}</span>
+                                                </div>
+                                                <div class="list-item-text">
+                                                    {% for value in attribute['values'] %}
+                                                    {{ value['value'] }}
+                                                    {% endfor %}
+                                                </div>
+                                            </li>
                                             {% endfor %}
-                                            </span>
-                                        </li>
-                                        {% endfor %}
-                                    </ul>
+                                        </ul>
+                                    </div>
+                                    {% endfor %}
                                 </div>
-                                {% endfor %}
                                 <div class="grey-block">
                                     Нашли ошибку в описании или характеристиках? 
                                     <a class="link link_grey" href="#">Сообщите нам</a>
@@ -190,18 +302,96 @@
             </div>
             <div class="card-footer hide-mb">
                 <div class="content-area content-area_block">
+
                     <div class="tabs">
                         <ul class="tabs-nav">
+                            <li class="tabs-nav-item">
+                                <a class="tabs-link active" href="#description">
+                                    Описание и характеристики
+                                </a>
+                            </li>
+                            <li class="tabs-nav-item">
+                                <a class="tabs-link" href="#delivery">
+                                    Наличие и доставка
+                                </a>
+                            </li>
+                            <li class="tabs-nav-item">
+                                <a class="tabs-link" href="#videos">
+                                    Видеобзоры
+                                </a>
+                            </li>
+                            <li class="tabs-nav-item">
+                                <a class="tabs-link" href="#reviews">
+                                    Отзывы
+                                </a>
+                            </li>
+                            <li class="tabs-nav-item">
+                                <a class="tabs-link" href="#questions">
+                                    Вопросы и ответы
+                                </a>
+                            </li>
                         </ul>
-                        <div class="tabs-outlet">
-                            <div class="content-block">
-                                <h2>Описание</h2>
-                                <div class="content-block__text">
-                                За 360 долларов это выдающиеся часы. За эти деньги Вы получаете: хорошо выполненный корпус, отличный дизайн, надёжный механизм Miyota 9015, сапфировое стекло и застёжку бабочку. Трудно найти часы дешевле с подобным набором характеристик. Уверен, часы Brathwait Minimalist Automatic получат огромную популярность у любителей часового искусства.
+                    </div>
+
+                    <div class="row">
+                        <div class="card-footer__left">
+                            <div class="tabs-outlet">
+                                <div class="tab-pane active" id="description">
+                                    <div class="content-block">
+                                        <h2>Описание</h2>
+                                        <div class="content-block__text">
+                                        За 360 долларов это выдающиеся часы. За эти деньги Вы получаете: хорошо выполненный корпус, отличный дизайн, надёжный механизм Miyota 9015, сапфировое стекло и застёжку бабочку. Трудно найти часы дешевле с подобным набором характеристик. Уверен, часы Brathwait Minimalist Automatic получат огромную популярность у любителей часового искусства.
+                                        </div>
+                                    </div>
+                                    <div class="content-block">
+                                        <h2>Характеристики</h2>
+                                        <div class="list-group">
+                                            {% for group in product.grouped_attributes %}
+                                            <div class="list-group-item">
+                                                <div class="list-heading">
+                                                    {{ group['name'] }}
+                                                </div>
+                                                <ul class="list">
+                                                    {% for attribute in group['attributes'] %}
+                                                    <li class="list-item">
+                                                        <div class="list-item-label">
+                                                            <span>{{ attribute['name'] }}</span>
+                                                        </div>
+                                                        <div class="list-item-text">
+                                                            {% for value in attribute['values'] %}
+                                                            {{ value['value'] }}
+                                                            {% endfor %}
+                                                        </div>
+                                                    </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="grey-block">
+                                            Нашли ошибку в описании или характеристиках? 
+                                            <a class="link link_grey" href="#">Сообщите нам</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="delivery">
+                                    Доставка
+                                </div>
+                                <div class="tab-pane" id="videos">
+                                    Видеообзоры
+                                </div>
+                                <div class="tab-pane" id="reviews">
+                                    Отзывы
+                                </div>
+                                <div class="tab-pane" id="questions">
+                                    Вопросы и ответы
                                 </div>
                             </div>
                         </div>
+                        <div class="card-footer__right show-wide">
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>

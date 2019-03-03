@@ -46,12 +46,6 @@
     }
 }
 
-.icon_heart {
-    &:before {
-        content: $icon-heart;
-    }
-}
-
 .icon_nav {
     &:before {
         content: $icon-nav;
@@ -121,5 +115,30 @@
 .icon_youtube {
     &:before {
         content: $icon-youtube;
+    }
+}
+
+.icon_heart-stroke {
+    &:before {
+        content: $icon-heart-stroke;
+    }
+}
+
+.icon_share {
+    &:before {
+        content: $icon-share;
+    }
+}
+
+
+.icon_star-stroke {
+    &:before {
+        content: $icon-star-stroke;
+    }
+}
+
+.icon_star-full {
+    &:before {
+        content: $icon-star-full;
     }
 }

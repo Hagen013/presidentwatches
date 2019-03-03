@@ -7,7 +7,6 @@ html, body {
     font-weight: 600;
 }
 
-
 .input::-webkit-input-placeholder {
     font-family: 'IBM Plex Sans', sans-serif;
     font-weight: normal;
@@ -53,4 +52,26 @@ html, body {
     @include mq($from: tablet) {
         display: block;
     }
+}
+
+.show-wide {
+    display: none;
+    @include mq($from: wide) {
+        display: block;
+    }
+}
+
+.hide-wide {
+    display: block;
+    @include mq($from: wide) {
+        display: none;
+    }
+}
+
+.float-left {
+    float: left;
+}
+
+a {
+    color: inherit;
 }

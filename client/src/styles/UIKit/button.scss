@@ -1,0 +1,41 @@
+.button {
+    display: inline-block;
+    height: 36px;
+    padding: 0px 10px;
+    line-height: 36px;
+    font-size: 12px;
+    border-radius: 4px;
+    text-align: center;
+    border: 1px solid $dark-grey;
+    user-select: none;
+}
+
+.button_big {
+    height: 46px;
+    padding: 0px 40px;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 46px;
+    letter-spacing: 0.9px;
+}
+
+.button_ghost {
+    background: white;
+    color: black;
+    border: 1px solid black;
+}
+
+.button_filled {
+    color: white !important;
+    background: black !important;
+}
+
+.button_grey {
+    border: none;
+    background-color: #ededed;
+}
+
+.button_accent {
+    border: none !important;
+    background-color: $accent;
+}
