@@ -1,0 +1,14 @@
+.nav-list {
+
+}
+
+.nav-list-item {
+    height: 40px;
+    padding: 0px 10px;
+    line-height: 40px;
+    border-bottom: 1px solid $grey;
+    a {
+        text-decoration: none;
+        @include rarefied();
+    }
+}

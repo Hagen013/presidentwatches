@@ -53,64 +53,148 @@
                 {% endblock footer %}
             </div>
         </div>
-        <div class="sidebar" id="sidebar">
-            <div class="sidebar__inner">
-                <div class="sidebar-tabs sticky">
-                    <ul class="sidebar-nav">
-                        <li class="sidebar-nav-tab">
-                            <a class="sidebar-link active" href="#viewed">
-                                <i class="icon icon_eye">
-                                </i>
-                            </a>
-                        </li>
-                        <li class="sidebar-nav-tab">
-                            <a class="sidebar-link" href="#favorites">
-                                <i class="icon icon_heart-stroke">
-                                </i>
-                            </a>
-                        </li>
-                        <li class="sidebar-nav-tab">
-                            <a class="sidebar-link" href="#cart">
-                                <i class="icon icon_cart">
-                                </i>
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="sidebar-outlet">
-                        <div class="sidebar-pane active" id="viewed">
-                            <div class="sidebar-pane-heading">
-                                <div class="heading-2 bold">
-                                    Вы смотрели
-                                </div>
-                                <span class="sidebar-pane-count">
-                                </span>
-                            </div>
+
+
+        {% block modals %}
+        <div class="page-overlay" id="page-overlay">
+        </div>
+        <div class="mobile-menu" id="mobile-menu">
+            <div class="mobile-header">
+                <div class="mobile-header__left">
+                    <div class="mobile-header__close">
+                        <div class="control-button">
+                            ×
                         </div>
-                        <div class="sidebar-pane" id="favorites">
-                            <div class="sidebar-pane-heading">
-                                <div class="heading-2 bold">
-                                    Избранное
-                                </div>
-                                <span class="sidebar-pane-count">
-                                </span>
-                            </div>
+                    </div>
+                </div>
+                <div class="mobile-header__right">
+                    <div class="mobile-header__auth">
+                        <i class="icon icon_user">
+                        </i>
+                        <span class="rarefied">ВОЙТИ</span>
+                    </div>
+                    <div class="mobile-header__controls">
+                        <div class="control-button">
+                            <i class="icon icon_eye">
+                            </i>
                         </div>
-                        <div class="sidebar-pane" id="cart">
-                            <div class="sidebar-pane-heading">
-                                <div class="heading-2 bold">
-                                    Корзина
-                                </div>
-                                <span class="sidebar-pane-count">
-                                </span>
-                            </div>
+                        <div class="control-button">
+                            <i class="icon icon_heart-stroke">
+                            </i>
+                        </div>
+                        <div class="control-button">
+                            <i class="icon icon_cart">
+                            </i>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="mobile-menu__container">
+                <div class="mobile-menu__body">
+                    <nav class="nav-list">
+                        <li class="nav-list-item">
+                            <a href="#">
+                                МУЖСКИЕ
+                            </a>
+                        </li>
+                        <li class="nav-list-item">
+                            <a href="#">
+                                ЖЕНСКИЕ
+                            </a>
+                        </li>
+                        <li class="nav-list-item">
+                            <a href="#">
+                                ДЕТСКИЕ
+                            </a>
+                        </li>
+                        <li class="nav-list-item">
+                            <a href="#">
+                                БРЕНДЫ
+                            </a>
+                        </li>
+                        <li class="nav-list-item">
+                            <a href="#">
+                                РАСПРОДАЖА
+                            </a>
+                        </li>
+                    </nav>
+                    <nav class="nav-list mobile-menu__main-links">
+                        <li class="nav-list-item">
+                            <a href="#">
+                                <i class="icon icon_nav">
+                                </i>
+                                <span>
+                                САНКТ-ПЕТЕРБУРГ
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-list-item">
+                            <a href="#">
+                                <i class="icon icon_pin">
+                                </i>
+                                <span>
+                                30 ТОЧЕК САМОВЫВОЗА
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-list-item">
+                            <a href="#">
+                                <i class="icon icon_bag">
+                                </i>
+                                <span>
+                                МАГАЗИНЫ
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-list-item">
+                            <a href="#">
+                                <i class="icon icon_delivery">
+                                </i>
+                                <span>
+                                ДОСТАВКА И ОПЛАТА
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-list-item">
+                            <a href="#">
+                                <i class="icon icon_phone">
+                                </i>
+                                <span>
+                                8 800 200-7456
+                                </span>
+                            </a>
+                        </li>
+                    </nav>
+                </div>
+                <div class="mobile-menu__footer">
+                    <nav class="social-footer row">
+                        <li class="social-footer-item">
+                            <a href="#">
+                                <i class="icon icon_facebook">
+                                </i>
+                            </a>
+                        </li>
+                        <li class="social-footer-item">
+                            <a href="#">
+                                <i class="icon icon_instagram">
+                                </i>
+                            </a>
+                        </li>
+                        <li class="social-footer-item">
+                            <a href="#">
+                                <i class="icon icon_youtube">
+                                </i>
+                            </a>
+                        </li>
+                    </nav>
+                </div>
+            </div>
         </div>
-
-        {% block modals %}
-        <div class="page-overlay" id="page-overlay">
+        <div class="mobile-catalog">
+        </div>
+        <div class="auth-modal">
+        </div>
+        <div class="register-modal">
         </div>
         {% endblock modals %}
 

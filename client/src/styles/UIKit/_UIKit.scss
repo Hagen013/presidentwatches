@@ -15,6 +15,15 @@
     font-weight: 600;
 }
 
+.rarefied {
+    letter-spacing: 1px;
+}
+
+@mixin rarefied {
+    letter-spacing: 1px;
+}
+
+
 @mixin row() {
     width: 100%;
     &:after {
