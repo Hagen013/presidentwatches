@@ -54,6 +54,62 @@
             </div>
         </div>
 
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar__inner">
+                <div class="sidebar-tabs sticky">
+                    <ul class="sidebar-nav">
+                        <li class="sidebar-nav-tab">
+                            <a class="sidebar-link active" href="#viewed">
+                                <i class="icon icon_eye">
+                                </i>
+                            </a>
+                        </li>
+                        <li class="sidebar-nav-tab">
+                            <a class="sidebar-link" href="#favorites">
+                                <i class="icon icon_heart-stroke">
+                                </i>
+                            </a>
+                        </li>
+                        <li class="sidebar-nav-tab">
+                            <a class="sidebar-link" href="#cart">
+                                <i class="icon icon_cart">
+                                </i>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="sidebar-outlet">
+                        <div class="sidebar-pane active" id="viewed">
+                            <div class="sidebar-pane-heading">
+                                <div class="heading-2 bold">
+                                    Вы смотрели
+                                </div>
+                                <span class="sidebar-pane-count">
+                                </span>
+                            </div>
+                        </div>
+                        <div class="sidebar-pane" id="favorites">
+                            <div class="sidebar-pane-heading">
+                                <div class="heading-2 bold">
+                                    Избранное
+                                </div>
+                                <span class="sidebar-pane-count">
+                                </span>
+                            </div>
+                        </div>
+                        <div class="sidebar-pane" id="cart">
+                            <div class="sidebar-pane-heading">
+                                <div class="heading-2 bold">
+                                    Корзина
+                                </div>
+                                <span class="sidebar-pane-count">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         {% block modals %}
         <div class="page-overlay" id="page-overlay">
@@ -61,7 +117,7 @@
         <div class="mobile-menu" id="mobile-menu">
             <div class="mobile-header">
                 <div class="mobile-header__left">
-                    <div class="mobile-header__close">
+                    <div class="mobile-header__close menu-left-close">
                         <div class="control-button">
                             ×
                         </div>
@@ -89,7 +145,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mobile-menu__container">
+            <div class="mobile-menu__container" id="mobile-menu-container">
                 <div class="mobile-menu__body">
                     <nav class="nav-list">
                         <li class="nav-list-item">
@@ -189,12 +245,33 @@
                     </nav>
                 </div>
             </div>
+            <div class="mobile-menu-overlay menu-left-close">
+            </div>
         </div>
         <div class="mobile-catalog">
         </div>
-        <div class="auth-modal">
+        <div class="search-modal modal" id="search-modal">
+            <div class="search-modal-container">
+                <div class="input-box search-modal__input-box">
+                    <i class="icon icon_search search-modal__icon">
+                    </i>
+                    <input class="input search-modal-input">
+                </div>
+            </div>
+            <div class="search-modal-overlay">
+                <i class="icon">
+                    ×
+                </i>
+                <div>
+                    <span>
+                        Закрыть
+                    </span>
+                </div>
+            </div>
         </div>
-        <div class="register-modal">
+        <div class="auth-modal modal">
+            <div class="auth-modal-container">
+            </div>
         </div>
         {% endblock modals %}
 

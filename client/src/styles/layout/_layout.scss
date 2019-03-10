@@ -15,22 +15,22 @@
 
 .page__content-top {
     min-height: 100%;
-    margin-bottom: -620px;
+    margin-bottom: -625px;
     &:after {
         content: "";
         display: block;
-        height: 620px;
+        height: 625px;
     }
     @include mq($from: tablet) {
-        margin-bottom: -476px;
+        margin-bottom: -465px;
         &:after {
-            height: 476px;
+            height: 465px;
         }
     }
     @include mq($from: desktop) {
-        margin-bottom: -286px;
+        margin-bottom: -275px;
         &:after {
-            height: 286px;
+            height: 275px;
         }
     }
 }
@@ -38,10 +38,10 @@
 .page__content-bottom {
     height: 620px;
     @include mq($from: tablet) {
-        height: 476px;
+        height: 465px;
     }
     @include mq($from: desktop) {
-        height: 286px;
+        height: 275px;
     }
 }
 

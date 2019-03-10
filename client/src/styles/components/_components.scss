@@ -291,6 +291,10 @@
     @include mq($from: desktop) {
         display: none;
     }
+    .button {
+        width: 100%;
+        text-align: left;
+    }
 }
 
 .title-area__count-wrap {
@@ -372,13 +376,6 @@
     @include mq($from: desktop) {
         display: block;
         float: left;
-        // Удалить
-        text-align: center;
-        letter-spacing: 1px;
-        font-size: 24px;
-        color: $dark-grey;
-        padding-top: 128px;
-        // Удалить
     }
 }
 
@@ -456,6 +453,7 @@
 }
 
 .pagination__button-mobile {
+    width: 100%;
     margin-bottom: 10px;
     font-size: 11px;
     letter-spacing: 0.9px;
@@ -698,3 +696,8 @@
     overflow: hidden;
 }
 
+.filter {
+    padding: 14px 0px;
+    font-size: 14px;
+    border-bottom: 1px solid $grey;
+}

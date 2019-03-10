@@ -131,7 +131,7 @@ class AbstractOfferPage(WebPage, Offer):
         abstract = True
 
 
-class Node(models.Model):
+class Node(MPTTModel):
 
     class Meta:
         abstract = True
@@ -140,7 +140,7 @@ class Node(models.Model):
     public = NodePublicManager()
 
 
-class AbstractCategoryPage(WebPage, Node):
+class AbstractCategoryPage(Node, WebPage):
 
     name = NameField()
     description = DescriptionField()

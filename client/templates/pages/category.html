@@ -81,7 +81,15 @@
     <div class="content-area content-area_block">
         <div class="catalog row">
             <div class="catalog__left col col-1 d-col-3 w-col-2">
-                Фильтры
+                {% for item in filters %}
+                <div class="filter">
+                    <div class="filter-heading">
+                        <span class="filter-title">
+                        {{item.name}}
+                        </span>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
             <div class="catalog__right col col-12 d-col-9 w-col-10">
                 <div class="catalog__tags tags row">

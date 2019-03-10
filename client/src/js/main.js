@@ -132,8 +132,51 @@ $(document).ready(function() {
     })
     // END SIDEBAR
 
+    // MOBILE MENU
+    function openMobileMenu() {
+        $('#mobile-menu').css('display', 'block');
+        setTimeout(function() {
+            $('#mobile-menu-container').addClass('active');
+        }, 10);
+    }
+    function closeMobileMenu() {
+        $('#mobile-menu').css('display', 'none');
+    }
+    $('#hamburger').click(function(e) {
+        e.preventDefault();
+        openMobileMenu();
+    })
+    $('.menu-left-close').click(function(e) {
+        $('#mobile-menu-container').removeClass('active');
+        e.preventDefault();
+        closeMobileMenu();
+    })
+    // END MOBILE MENU
+
+    // SEARCH-MODAL
+    function openSearchModal() {
+        $('#search-modal').css('display', 'block');
+    }
+    function closeSearchModal() {
+        $('.search-modal').css('display', 'none');
+    }
+    $('#search-mobile').click(function(e) {
+        e.preventDefault();
+        openSearchModal();
+    })
+    $('.search-modal-overlay').click(function(e) {
+        e.preventDefault();
+        closeSearchModal();
+    })
+    // END SEARCH-MODAL
+
+    // AUTH MODAL
+    
+    // AUTH MODAL END
+
 
     // TABS
+    // перенести в отдельный файл
     $('.tabs-link').click(function(e) {
         e.preventDefault();
         let href = this.getAttribute('href');

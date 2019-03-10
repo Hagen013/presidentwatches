@@ -96,7 +96,7 @@ class CategoryPageView(DiggPaginatorViewMixin, ListView):
 
         category_values = {x['id'] for x in self.category.attribute_values.all().values('id')}
         self.search_values = category_values.difference(removed_values).union(added_values)
-        exact_nodes = self.node_class.objects.get_exact_node(tuple(self.search_values))
+        exact_nodes = self.model.objects.get_exact_node(tuple(self.search_values))
 
         try:
             exact_node = exact_nodes[0]
@@ -156,6 +156,8 @@ class CategoryPageView(DiggPaginatorViewMixin, ListView):
             self.request.GET,
             queryset=qs
         ).qs
+
+        print(qs.count())
 
         return qs.distinct()
 

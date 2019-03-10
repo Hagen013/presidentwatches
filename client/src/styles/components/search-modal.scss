@@ -1,0 +1,36 @@
+.search-modal {
+
+}
+
+.search-modal-container {
+    padding: 10px;
+}
+
+.search-modal-input {
+    height: 46px;
+    width: 100%;
+    padding: 0px 20px 0px 50px;
+}
+
+.search-modal__input-box {
+    position: relative;
+}
+
+.search-modal__icon {
+    top: 13px;
+    left: 20px;
+    position: absolute;
+    font-size: 20px;
+}
+
+.search-modal-overlay {
+    height: 100%;
+    font-size: 14px;
+    text-align: center;
+    color: $white;
+    user-select: none;
+    .icon {
+        justify-content: center;
+        font-size: 28px;
+    }
+}

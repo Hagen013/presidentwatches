@@ -1,6 +1,6 @@
 .mobile-menu {
     display: none;
-    position: absolute;
+    position: fixed;
     top: 0px;
     left: 0px;
     height: 100%;
@@ -18,6 +18,12 @@
     padding-top: 60px;
     background: $white;
     z-index: 1000;
+    transform: translateX(-100%);
+    transition: transform .45s cubic-bezier(.19,1,.22,1);
+}
+
+.mobile-menu__container.active { 
+    transform: translateX(0);
 }
 
 .mobile-header {
@@ -122,4 +128,10 @@
     &:first-of-type {
         border-left: none;
     }
+}
+
+.mobile-menu-overlay {
+    height: 100%;
+    float: right;
+    width: 25%;
 }

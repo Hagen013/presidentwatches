@@ -1,5 +1,8 @@
+from transliterate import translit
+
 from django.db import models, transaction
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
+from django.utils.text import slugify
 
 from djchoices import DjangoChoices, ChoiceItem
 from core.db.fields import NameField
@@ -45,7 +48,22 @@ class DatatypeRestrictionsMixin(models.Model):
         self.__initial_datatype = self.datatype
 
 
-class AbstractAttribute(DatatypeRestrictionsMixin, DescriptionMixin, OrderableMixin,
+class SlugifiedAttributeMixin(models.Model):
+
+    class Meta:
+        abstract = True
+
+    slug = models.CharField(
+        blank=True,
+        max_length=256
+    )
+
+    def get_slug(self):
+        return slugify(translit(self.name, 'ru', reversed=True))
+
+
+class AbstractAttribute(DatatypeRestrictionsMixin,
+                        DescriptionMixin, OrderableMixin,
                         TimeStampedMixin, HiddenMixin):
     """
     """
@@ -58,7 +76,7 @@ class AbstractAttribute(DatatypeRestrictionsMixin, DescriptionMixin, OrderableMi
     datatype = EavDatatypeField()
 
     name = NameField()
-    slug = EavSlugField()
+    key = EavSlugField()
 
     measure = models.CharField(
         blank=True,
