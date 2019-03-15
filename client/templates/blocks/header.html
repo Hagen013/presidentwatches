@@ -62,12 +62,12 @@
                 <div class="header__search-box">
                     <i class="icon icon_search header__search-icon">
                     </i>
-                    <input class="input header__input input"
+                    <input class="input input_filled header__input"
                         placeholder="ПОИСК ТОВАРОВ"
                     >
                 </div>
                 <div class="header__controls">
-                    <div class="control-button">
+                    <div class="control-button header-auth">
                         <i class="icon icon_user">
                         </i>
                         <div class="control-button__text">
@@ -1073,33 +1073,35 @@
         </div>
     </div>
     <div class="header-mobile">
-        <div class="header-mobile__left">
-            <div class="header__toggle-menu control-button" id="hamburger">
-                <i class="icon icon_menu">
-                </i>
-            </div>
-            <a class="header__home"
-                href="/"
-            >
-                <div class="logo-wrap logo-wrap_mobile">
-                    <img class="logo logo_mobile"
-                        src="{{ static('img/logo/logo_small.svg') }}"
-                    >
+        <div class="header-mobile-content" id="header-mobile">
+            <div class="header-mobile__left">
+                <div class="header__toggle-menu control-button" id="hamburger">
+                    <i class="icon icon_menu">
+                    </i>
                 </div>
-            </a>
-        </div>
-        <div class="header-mobile__right">
-            <div class="header__search-button header__button"
-                id="search-mobile"
-            >
-                <i class="icon icon_search">
-                </i>
+                <a class="header__home"
+                    href="/"
+                >
+                    <div class="logo-wrap logo-wrap_mobile">
+                        <img class="logo logo_mobile"
+                            src="{{ static('img/logo/logo_small.svg') }}"
+                        >
+                    </div>
+                </a>
             </div>
-            <div class="header__cart-button header__button"
-                id="cart-mobile"
-            >
-                <i class="icon icon_cart">
-                </i>
+            <div class="header-mobile__right">
+                <div class="header__search-button header__button"
+                    id="search-mobile"
+                >
+                    <i class="icon icon_search">
+                    </i>
+                </div>
+                <div class="header__cart-button header__button"
+                    id="cart-mobile"
+                >
+                    <i class="icon icon_cart">
+                    </i>
+                </div>
             </div>
         </div>
     </div>

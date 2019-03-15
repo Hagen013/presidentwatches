@@ -17,7 +17,9 @@
             <div class="title-area__buttons">
                 <div class="row">
                     <div class="col col-6">
-                        <div class="button button_grey text_left">
+                        <div class="button button_grey mobile-catalog-button drawer-btn"
+                            href="#drawer-filters"
+                        >
                             <span class="button__text">
                                 Фильтры
                             </span>
@@ -27,7 +29,9 @@
                         </div>
                     </div>
                     <div class="col col-6">
-                        <div class="button button_grey">
+                        <div class="button button_grey mobile-catalog-button drawer-btn"
+                            href="#drawer-sorting"
+                        >
                             По популярности
                         </div>
                     </div>
@@ -81,12 +85,39 @@
     <div class="content-area content-area_block">
         <div class="catalog row">
             <div class="catalog__left col col-1 d-col-3 w-col-2">
-                {% for item in filters %}
+
+                <div class="filter">
+                    <div class="filter-heading">
+                        <span class="filter-title">
+                        {{filters[0].name}}
+                        </span>
+                    </div>
+                    <div class="filter-panel active">
+                        <ul class="filter-values-list scrollable">
+                        {% for value in filters[0].values %}
+                        <div class="filter-value">
+                            <span>{{ value.value }}</span>
+                        </div>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                {% for item in filters[1:] %}
                 <div class="filter">
                     <div class="filter-heading">
                         <span class="filter-title">
                         {{item.name}}
                         </span>
+                    </div>
+                    <div class="filter-panel">
+                        <ul class="filter-values-list scrollable">
+                        {% for value in item.values %}
+                        <div class="filter-value">
+                            <span>{{ value.value }}</span>
+                        </div>
+                        {% endfor %}
+                        </ul>
                     </div>
                 </div>
                 {% endfor %}
@@ -109,20 +140,24 @@
                 <div class="catalog__gallery row">
                     {% for product in products %}
                         <div class="product-card">
-                            <div class="product-card__img-wrap">
-                                <img class="product-card__img" src="{{ product.thumbnail.url }}">
-                            </div>
+                            <a href="/watches/{{ product.slug }}/">
+                                <div class="product-card__img-wrap">
+                                    <img class="product-card__img" src="{{ product.thumbnail.url }}">
+                                </div>
+                            </a>
                             <div class="product-card__data">
                                 <div class="product-card__info">
-                                    <div class="product-card__brand">
-                                        {{product.brand}}
-                                    </div>
-                                    <div class="product-card__series">
-                                        {{product.series}}
-                                    </div>
-                                    <div class="product-card__model">
-                                    {{ product.model }}
-                                    </div>
+                                    <a href="/watches/{{ product.slug }}/">
+                                        <div class="product-card__brand">
+                                            {{product.brand}}
+                                        </div>
+                                        <div class="product-card__series">
+                                            {{product.series}}
+                                        </div>
+                                        <div class="product-card__model">
+                                            {{ product.model }}
+                                        </div>
+                                    </a>
                                 </div>
                                 <div class="product-card__price">
                                     {{product.price}} ₽
@@ -170,3 +205,47 @@
     </div>
 
 {% endblock content %}
+
+{% block modals %}
+    {{ super() }}
+    <div class="drawer drawer-left drawer-filters" id="drawer-filters">
+        <div class="drawer-content drawer-content_left">
+            <div class="drawer-filters-header">
+                <div class="drawer-filters-title heading-2">
+                    Фильтры
+                </div>
+                <div class="drawer-filters-clear">
+                    Очистить
+                </div>
+            </div>
+            <div class="drawer-filters-body">
+                <ul class="drawer-filters-list">
+                    {% for item in filters %}
+                    <div class="filter">
+                        <div class="filter-heading">
+                            <div class="filter-title">
+                                {{item.name}}
+                            </div>
+                        </div>
+                        <div class="filter-panel">
+                        </div>
+                    </div>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="drawer-filters-footer">
+                <div class="button button_accent">
+                    Показать 777 товаров
+                </div>
+            </div>
+        </div>
+        <div class="drawer-overlay">
+        </div>
+    </div>
+    <div class="drawer drawer-bottom drawer-sorting" id="drawer-sorting">
+        <div class="drawer-content drawer-content_bottom">
+        </div>
+        <div class="drawer-overlay">
+        </div>
+    </div>
+{% endblock modals %}

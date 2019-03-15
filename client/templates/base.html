@@ -29,6 +29,7 @@
         {% block script_head %}
         <script src="{{ static('js/jquery-3.3.1.min.js') }}"></script>
         <script src="{{ static('js/main.js') }}"></script>
+
         {% endblock script_head %}
     </head>
 
@@ -124,7 +125,7 @@
                     </div>
                 </div>
                 <div class="mobile-header__right">
-                    <div class="mobile-header__auth">
+                    <div class="mobile-header__auth header-auth">
                         <i class="icon icon_user">
                         </i>
                         <span class="rarefied">ВОЙТИ</span>
@@ -269,8 +270,173 @@
                 </div>
             </div>
         </div>
-        <div class="auth-modal modal">
-            <div class="auth-modal-container">
+        <div class="auth-modal modal" id="auth-modal">
+            <div class="auth-modal-container" id="auth-modal-container">
+                <div class="tabs">
+                    <ul class="tabs-nav">
+                        <li class="tabs-nav-item">
+                            <a class="tabs-link active" href="#login">
+                                Вход
+                            </a>
+                        </li>
+                        <li class="tabs-nav-item">
+                            <a class="tabs-link" href="#register">
+                                Регистрация
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tabs-outlet">
+                        <div class="tab-pane active" id="login">
+                            <form class="form login-form">
+                                <div class="form-title">
+                                    С помощью аккаунта ПрезидентВотчес
+                                </div>
+                                <div class="input-box form-input-box">
+                                    <input class="input input_white" placeholder="E-mail">
+                                </div>
+                                <div class="input-box form-input-box">
+                                    <input class="input input_white" placeholder="Пароль">
+                                </div>
+                                <div>
+                                    <input type="submit" class="button button_accent button_big" value="Войти">
+                                    <a class="link link_underscored login-form__reset" href="#" id="reset-passw">
+                                        Напомнить пароль
+                                    </a>
+                                </div>
+                            </form>
+                            <div class="form">
+                                <div class="form-title">
+                                    Через социальные сети
+                                </div>
+                                <div class="social-auth">
+                                    <div class="button button_big social-auh-button button_fb">
+                                        <i class="icon icon_fb">
+                                        </i>
+                                        <span>
+                                            FACEBOOK
+                                        </span>
+                                    </div>
+                                    <div class="button button_big social-auh-button button_vk">
+                                        <i class="icon icon_vk">
+                                        </i>
+                                        <span>
+                                            ВКОНТАКТЕ
+                                        </span>
+                                    </div>
+                                    <div class="button button_big social-auh-button button_google">
+                                        <i class="icon icon_google">
+                                        </i>
+                                        <span>
+                                            GOOGLE
+                                        </span>
+                                    </div>
+                                    <div class="button button_big social-auh-button button_mail">
+                                        <i class="icon icon_mail">
+                                        </i>
+                                        <span>
+                                            MAIL.RU
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="register">
+                            <div class="form">
+                                <div class="form-title">
+                                    Через социальные сети
+                                </div>
+                                <div class="social-auth">
+                                    <div class="button button_big social-auh-button button_fb">
+                                        <i class="icon icon_fb">
+                                        </i>
+                                        <span>
+                                            FACEBOOK
+                                        </span>
+                                    </div>
+                                    <div class="button button_big social-auh-button button_vk">
+                                        <i class="icon icon_vk">
+                                        </i>
+                                        <span>
+                                            ВКОНТАКТЕ
+                                        </span>
+                                    </div>
+                                    <div class="button button_big social-auh-button button_google">
+                                        <i class="icon icon_google">
+                                        </i>
+                                        <span>
+                                            GOOGLE
+                                        </span>
+                                    </div>
+                                    <div class="button button_big social-auh-button button_mail">
+                                        <i class="icon icon_mail">
+                                        </i>
+                                        <span>
+                                            MAIL.RU
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <form class="form register-form">
+                                <div class="form-title">
+                                    Используя адрес электронной почты
+                                </div>
+                                <div class="field">
+                                    <div class="field-title">
+                                        E-mail
+                                    </div>
+                                    <div class="field-input-box">
+                                        <input class="input">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="field-title">
+                                        Пароль
+                                    </div>
+                                    <div class="field-input-box">
+                                        <input class="input">
+                                    </div>
+                                    <div class="field-hint">
+                                        Пароль должен состоять как минимум из 6-ти знаков и содержать хотя бы одну цифру.
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="field-title">
+                                        Имя
+                                    </div>
+                                    <div class="field-input-box">
+                                        <input class="input">
+                                    </div>
+                                </div>
+                                <input type="submit" class="button button_big button_accent" value="ЗАРЕГЕСТРИРОВАТЬСЯ">
+                                <div class="field-hint register-form__hint">
+                                    Нажимая на кнопку «Зарегистрироваться» даю согласие на обработку моих персональных данных.
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="auth-modal-reset-container" id="reset-passw-drawer">
+                <form class="form reset-passw-form">
+                    <div class="form-title">
+                        Восстановление пароля
+                    </div>
+                    <div class="input-box">
+                        <input class="input" placeholder="E-mail">
+                    </div>
+                    <div class="reset-passw-form__text">
+                        Укажите адрес эл. почты, который вы использовали при оформлении заказов на ПрезидентВотчес. 
+                        Мы вышлем вам инструкцию по восстановлению пароля.
+                    </div>
+                    <div>
+                        <input type="submit" class="button button_big button_accent" value="ВОССТАНОВИТЬ ПАРОЛЬ">
+                        <a class="link link_underscored reset-passw-form__cancel" href="#" id="reset-passw-cancel">
+                            Вспомнил пароль
+                        </a>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-close-overlay" id="auth-overlay" href="#">
             </div>
         </div>
         {% endblock modals %}

@@ -1,5 +1,7 @@
 .auth-modal {
-    display: block !important;
+    .tabs-nav-item {
+        padding-right: 20px;
+    }
 }
 
 .auth-modal-container {
@@ -8,5 +10,108 @@
     right: 0px;
     height: 100%;
     width: 520px;
+    padding: 50px;
     background: $white;
+    transform: translateX(100%);
+    transition: transform .45s cubic-bezier(.19,1,.22,1);
+}
+
+.auth-modal-reset-container {
+    position: absolute;
+    display: flex;
+    top: 0px;
+    right: 0px;
+    height: 100%;
+    width: 520px;
+    padding: 50px;
+    background: $white;
+    transform: translateX(100%);
+    transition: transform .45s cubic-bezier(.19,1,.22,1);
+}
+
+.auth-modal-reset-container.active {
+    transform: translateX(0);
+}
+
+.auth-modal-container.active {
+    transform: translateX(0);
+}
+
+.form-input-box {
+    width: 100%;
+}
+
+.login-form {
+    padding-bottom: 30px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid $grey;
+}
+
+.login-form__reset {
+    margin-left: 20px;
+}
+
+
+
+.social-auth {
+    display: flex;
+    height: 102px;
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.social-auh-button {
+    color: $white;
+    border: none;
+    text-align: left;
+    .icon {
+        display: inline-block;
+    }
+}
+
+.button_fb {
+    background-color: #4967a8;
+    margin-bottom: 10px;
+}
+
+.button_vk {
+    background-color: #4a75a8;
+    margin-bottom: 10px;
+}
+
+.button_google {
+    background-color: #df6359;
+}
+
+.button_mail {
+    background-color: #134785;
+}
+
+.register-form {
+    padding-top: 30px;
+    margin-top: 30px;
+    border-top: 1px solid $grey;
+}
+
+.register-form__hint {
+    margin-top: 10px;
+}
+
+.auth-modal-reset-container {
+    display: flex;
+    align-items: center;
+}
+
+.reset-passw-form {
+
+}
+
+.reset-passw-form__text {
+    margin-bottom: 14px;
+    line-height: 1.5;
+}
+
+.reset-passw-form__cancel {
+    margin-left: 20px;
 }

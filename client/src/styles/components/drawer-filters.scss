@@ -1,0 +1,50 @@
+.drawer-filters {
+    .drawer-content {
+        padding: 0px 10px;
+    }
+}
+
+.drawer-filters-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    line-height: 60px;
+}
+
+.drawer-filters-body {
+
+}
+
+.drawer-filters-footer {
+    bottom: 0px;
+    left: 0px;
+    position: absolute;
+    width: 100%;
+    padding: 12px 10px;
+    .button {
+        width: 100%;
+    }
+}
+
+.drawer-filters-title {
+    margin: 0px;
+}
+
+.drawer-filters-clear {
+    font-size: 14px;
+}
+
+.drawer-filters-body {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    padding: 60px 10px;
+}
+
+.drawer-filters-list {
+    height: 100%;
+    overflow-y: scroll;
+}

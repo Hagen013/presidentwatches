@@ -99,6 +99,10 @@ class AbstractAttribute(DatatypeRestrictionsMixin,
         return True
 
     @property
+    def values(self):
+        return self.value_set.all()
+
+    @property
     def values_json(self):
         pass
 
@@ -113,8 +117,8 @@ class AbstractAttribute(DatatypeRestrictionsMixin,
         return self.name
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = EavSlugField.create_slug_from_name(self.name)
+        if not self.key:
+            self.key = EavSlugField.create_slug_from_name(self.name)
         super(AbstractAttribute, self).save(*args, **kwargs)
 
 

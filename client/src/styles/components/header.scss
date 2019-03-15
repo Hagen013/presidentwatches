@@ -3,15 +3,29 @@
 }
 
 .header-mobile {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    position: relative;
     width: 100%;
     height: 60px;
-    padding: 0px 20px;
+    background: $white;
+    overflow: hidden;
     @include mq($from: tablet) {
         display: none;
     }
+}
+
+.header-mobile-content {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    top: 0px;
+    left: 0px;
+    height: 60px;
+    width: 100%;
+    padding: 0px 20px;
+    z-index: 900;
+    background: $white;
+    box-shadow: 0 2px 8px 0 rgba(0,0,0,.14);
 }
 
 .header-mobile__left {

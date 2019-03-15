@@ -1,3 +1,6 @@
+import SimpleBar from 'simplebar';
+
+
 $(document).ready(function() {
 
     var STATE = {
@@ -79,6 +82,7 @@ $(document).ready(function() {
 
     // STICKY
     let offsetTop = $('.sticky').offset().top;
+    let mobileHeaderOffsetTop = 0;
 
     function scrollFunction() {
         let windowTop = $(window).scrollTop();
@@ -86,6 +90,11 @@ $(document).ready(function() {
             $('.sticky').css('position', 'fixed');
         } else {
             $('.sticky').css('position', 'relative')
+        }
+        if (mobileHeaderOffsetTop < windowTop) {
+            $('#header-mobile').css('position', 'fixed');
+        } else {
+            $('#header-mobile').css('position', 'absolute');
         }
     }
     scrollFunction();
@@ -171,7 +180,39 @@ $(document).ready(function() {
     // END SEARCH-MODAL
 
     // AUTH MODAL
-    
+    function openAuthModal() {
+        $('#auth-modal').css('display', 'block');
+        setTimeout(function() {
+            $('#auth-modal-container').addClass('active');
+        }, 10);
+    }
+    function closeAuthModal() {
+        $('#auth-modal').css('display', 'none');
+        $('#auth-modal-container').removeClass('active');
+        closeResetForm();
+    }
+    function openResetForm() {
+        $('#reset-passw-drawer').addClass('active');
+    }
+    function closeResetForm() {
+        $('#reset-passw-drawer').removeClass('active');
+    }
+    $('.header-auth').click(function(e) {
+        e.preventDefault();
+        openAuthModal();
+    })
+    $('#auth-overlay').click(function(e) {
+        e.preventDefault();
+        closeAuthModal();
+    })
+    $('#reset-passw').click(function(e) {
+        e.preventDefault();
+        openResetForm();
+    })
+    $('#reset-passw-cancel').click(function(e) {
+        e.preventDefault();
+        closeResetForm();
+    })
     // AUTH MODAL END
 
 
@@ -192,4 +233,36 @@ $(document).ready(function() {
         $(href).addClass('active');
     })
     // END TABS
+
+    // CUSTOM SCROLLBAR
+    let scrollable = document.getElementsByClassName('scrollable');
+
+    for (let i=0; i<scrollable.length; i++) {
+        new SimpleBar(scrollable[i], { autoHide: false })
+    }
+    // END CUSTOM SCROLLBAR
+
+    // MOBILE SORTING AND FILTERING
+    function showDrawer(selector) {
+        let drawer = $(selector);
+        drawer.css('display', 'block');
+        setTimeout(() => {
+            drawer.children('.drawer-content').addClass('active');
+        }, 10);
+    }
+    function hideDrawer(selector) {
+        let drawer = $(selector);
+        drawer.css('display', 'none');
+        drawer.children('.drawer-content').removeClass('active')
+    }
+    $('.drawer-btn').click(function(e) {
+        e.preventDefault();
+        let target = this.getAttribute('href');
+        showDrawer(target);
+    })
+    $('.drawer-overlay').click(function() {
+        let parent = $(this).parent();
+        hideDrawer(parent);
+    })
+    // END MOBILE SORTING AND FILTERING
 })

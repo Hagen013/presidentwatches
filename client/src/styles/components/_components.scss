@@ -90,6 +90,8 @@
 .control-button {
     display: flex;
     align-items: center;
+    user-select: none;
+    cursor: pointer;
 }
 
 .control-button__text {
@@ -151,6 +153,9 @@
     width: 100%;
     padding: 10px 0px;
     border-top: 1px solid $light-grey;
+    background: $white;
+    transition-property: box-shadow;
+    transition-duration: .1s;
     @include mq($from: tablet) {
         float: left;
         height: auto;
@@ -158,6 +163,10 @@
         padding: 0px;
         padding-bottom: 30px;
         border: none;
+        &:hover {
+            z-index: 100;
+            box-shadow: 0 14px 38px 0 rgba(51, 38, 38, 0.15);
+        }
     }
     @include mq($from: desktop) {
         width: percentage(1/3);
@@ -171,6 +180,7 @@
     float: left;
     height: 100%;
     width: 39%;
+    padding: 10px 0px;
     text-align: center;
     overflow: hidden;
     @include mq($from: tablet) {
@@ -193,6 +203,9 @@
 
 .product-card__info {
     padding-bottom: 11px;
+    a {
+        text-decoration: none;
+    }
     @include mq($from: tablet) {
         padding-bottom: 9px;
         text-align: center;
@@ -398,7 +411,7 @@
 
 .sorting-bar__item {
     float: left;
-    color: #7f7f7f;
+    color: $dark-grey;
     margin-left: 15px;
 }
 
@@ -694,10 +707,4 @@
     height: 40px;
     width: percentage(1/3);
     overflow: hidden;
-}
-
-.filter {
-    padding: 14px 0px;
-    font-size: 14px;
-    border-bottom: 1px solid $grey;
 }

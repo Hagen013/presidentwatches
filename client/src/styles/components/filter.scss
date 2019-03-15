@@ -1,0 +1,41 @@
+.filter {
+    font-size: 14px;
+    border-bottom: 1px solid $grey;
+    user-select: none;
+}
+
+.filter-heading {
+    padding: 14px 0px;
+    cursor: pointer;
+}
+
+.filter-panel {
+    display: none;
+    height: 0px;
+}
+
+.filter-panel.active {
+    display: block;
+    height: auto;
+}
+
+.filter-values-list {
+    max-height: 352px !important;
+    margin-top: 10px;
+    padding-right: 10px;
+}
+
+.filter-value {
+    min-height: 38px;
+    width: 100%;
+    margin-bottom: 6px;
+    padding: 9px 10px 9px 10px;
+    line-height: 1.33;
+    border-radius: 4px;
+    border: 1px solid $grey;
+    cursor: pointer;
+}
+
+
+
+

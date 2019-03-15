@@ -18,6 +18,7 @@
 }
 
 .tabs-link {
+    position: relative;
     display: block;
     padding: 10px 0px 10px 0px;
     @include bold();
@@ -34,6 +35,15 @@
 
 .tabs-link.active {
     color: black;
+    &:after {
+        content: "";
+        display: block;
+        height: 1px;
+        width: 100%;
+        background: $black;
+        position: absolute;
+        bottom: -1px;
+    }
 }
 
 .tabs-outlet {
