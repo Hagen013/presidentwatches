@@ -57,6 +57,7 @@ LOCAL_APPS = [
     'eav',
     'shop',
     'cart',
+    'favorites',
     'delivery',
     'tasks',
     'blog',

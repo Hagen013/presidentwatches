@@ -2,32 +2,31 @@ from datetime import datetime
 
 from django.core.exceptions import ObjectDoesNotExist
 
-from shop.models import ProductPage
+from shop.models import 
 
+class FavoritesController():
 
-class Cart():
-
-    CART_SESSION_ID = 'cart'
+    SESSION_ID = 'favorites'
 
     def __init__(self, request):
         self.session = request.session
-        cart = self.session.get(self.CART_SESSION_ID)
-        if not cart:
+        data = self.session.get(self.SESSION_ID)
+        if not data:
             now = datetime.now().isoformat()
-            cart = {
+            data = {
                 'created_at': now,
                 'modified_at': now,
                 'items': {},
                 'total_price': 0,
                 'quantity': 0,
             }
-            self.session[self.CART_SESSION_ID] = cart
+            self.session[self.SESSION_ID] = cart
 
-        self.cart = cart
+        self.data = data
 
     
     def add_offer(self, offer_identifier):
-        item = self.cart['items'].get('offer_identifier')
+        item = self.data['items'].get('offer_identifier')
         # Проверка на наличе в корзине
         # если есть -> инкремент
         # если нет -> создание
@@ -51,7 +50,7 @@ class Cart():
                     'added_at': now,
                     'brand': instance.brand
                 }
-                self.cart['items']['offer_identifier'] = item
+                self.data['items']['offer_identifier'] = item
                 self.save()
         else:
             item['quantity'] += 1
@@ -59,52 +58,52 @@ class Cart():
             self.save()
 
     def delete_offer(self, offer_identifier):
-        del self.cart['items'][offer_identifier]
+        del self.data['items'][offer_identifier]
         self.save()
 
     def update_quantity(self, offer_identifier, quanity):
-        item = self.cart['items']['offer_identifier']
+        item = self.data['items']['offer_identifier']
         item['quanity'] = quanity
         item['total_price'] = item['price'] * quanity
         self.save()
 
     def calculate_total_price(self):
         total_price = 0
-        for item in self.cart['items'].values():
+        for item in self.data['items'].values():
             total_price += item['total_price']
         return total_price
 
     def calculate_total_quantity(self):
         total_quantity = 0
-        for item in self.cart['items'].values():
+        for item in self.data['items'].values():
             total_quantity += item['quantity']
         return total_quantity
     
     def calculate_items_quantity(self):
-        return len(self.cart['items'])
+        return len(self.data['items'])
 
-    def refresh_cart(self):
+    def refresh(self):
         total_quantity = 0
         total_price = 0
         items_quantity = 0
 
-        for item in self.cart['items'].values():
+        for item in self.data['items'].values():
             total_price += item['total_price']
             total_quantity += item['quantity']
             items_quantity += 1
 
-        self.cart['total_quantity'] = total_quantity
-        self.cart['total_price'] = total_price
-        self.cart['items_quantity'] = items_quantity
+        self.data['total_quantity'] = total_quantity
+        self.data['total_price'] = total_price
+        self.data['items_quantity'] = items_quantity
 
     # Сохранение данных в сессию
     def save(self):
-        self.refresh_cart()
-        self.cart['modified_at'] = datetime.now().isoformat()
-        self.session(self.CART_SESSION_ID) = self.cart
+        self.refresh()
+        self.data['modified_at'] = datetime.now().isoformat()
+        self.session(self.SESSION_ID) = self.data
         self.session.modified = True
 
     # Очистка корзины
     def clear(self):
-        del self.session[self.CART_SESSION_ID]
+        del self.session[self.SESSION_ID]
         self.session.modified = True

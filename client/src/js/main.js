@@ -1,5 +1,7 @@
 import SimpleBar from 'simplebar';
 
+import { Cart } from './controllers/cartController.js';
+
 
 $(document).ready(function() {
 
@@ -22,6 +24,10 @@ $(document).ready(function() {
             }
         }
     }
+
+    STATE.cart = new Cart();
+    let cart = new Cart();
+
 
     let resolutions = {
         tablet: 768,

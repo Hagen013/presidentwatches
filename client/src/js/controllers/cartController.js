@@ -1,15 +1,23 @@
-function addToCart() {
+export class Cart {
 
-}
+    constructor() {
 
-function clearCart() {
+    }
 
-}
+    add(offer) {
+        console.log('adding to cart');
+        console.log(offer);
+    }
 
-function changeQuantity() {
+    updateQuantity() {
 
-}
+    }
 
-function removeFromCart() {
+    remove() {
 
+    }
+
+    clear() {
+
+    }
 }

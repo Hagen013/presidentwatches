@@ -397,3 +397,13 @@
         </div>
     </div>
 {% endblock content %}
+
+{% block javascript %}
+    {{ super() }}
+    <script type="text/javascript">
+        var PRODUCT = {
+            model: '{{ product.model }}',
+            slug: '{{ product.slug }}',
+        }
+    </script>
+{% endblock javascript %}
