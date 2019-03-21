@@ -142,3 +142,51 @@
         content: $icon-star-full;
     }
 }
+
+.icon_arrow-up {
+    &:before {
+        content: $icon-arrow-up;
+    }
+}
+
+.icon_arrow-down {
+    &:before {
+        content: $icon-arrow-down;
+    }
+}
+
+.icon_arrow-right {
+    &:before {
+        content: $icon-arrow-right;
+    }
+}
+
+.icon_arrow-left {
+    &:before {
+        content: $icon-arrow-left;
+    }
+}
+
+.icon_chevron-up {
+    &:before {
+        content: $icon-chevron-up;
+    }
+}
+
+.icon_chevron-down {
+    &:before {
+        content: $icon-chevron-down;
+    }
+}
+
+.icon_chevron-right {
+    &:before {
+        content: $icon-chevron-right;
+    }
+}
+
+.icon_chevron-left {
+    &:before {
+        content: $icon-chevron-left;
+    }
+}

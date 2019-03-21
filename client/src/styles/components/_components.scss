@@ -396,25 +396,6 @@
 
 }
 
-.sorting-bar {
-    display: none;
-    padding: 20px 0px;
-    font-size: 14px;
-    @include mq($from: desktop) {
-        display: block;
-    }
-}
-
-.sorting-bar__label {
-    float: left;
-}
-
-.sorting-bar__item {
-    float: left;
-    color: $dark-grey;
-    margin-left: 15px;
-}
-
 .breadcrumbs {
     display: none;
     margin-bottom: 6px;
@@ -436,92 +417,6 @@
     &:hover {
         text-decoration: underline;
     }
-}
-
-.pagination {
-    padding: 10px 0px;
-    @include mq($from: tablet) {
-        margin-bottom: 30px;
-    }
-    @include mq($from: desktop) {
-        margin-bottom: 50px;
-    }
-}
-
-.pagination__page {
-    float: left;
-    height: 36px;
-    width: 36px;
-    border: 1px solid $grey;
-    border-radius: 4px;
-    vertical-align: middle;
-    line-height: 36px;
-    cursor: pointer;
-    @include mq($from: tablet) {
-        height: 46px;
-        width: 46px;
-        line-height: 46px;
-        font-size: 14px;
-    }
-}
-
-.pagination__button-mobile {
-    width: 100%;
-    margin-bottom: 10px;
-    font-size: 11px;
-    letter-spacing: 0.9px;
-    @include mq($from: tablet) {
-        display: none;
-    }
-}
-
-.pagination__button {
-    display: none;
-    @include mq($from: wide) {
-        display: block;
-    }
-}
-
-.pagination__pages-wrapper {
-}
-
-.pagination__pages {
-    display: flex;
-    justify-content: center;
-    margin: 0 auto;
-    width: auto !important;
-    @include mq($from: tablet) {
-        float: left;
-        justify-content: flex-start;
-    }
-}
-
-.pagination__page_num {
-    margin-right: 8px;
-    &:last-of-type {
-        margin-right: 0px;
-    }
-    @include mq($from: tablet) {
-        margin-right: 10px;
-        &:last-of-type {
-            margin-right: 0px;
-        }
-    }
-}
-
-.pagination__page_next {
-    display: none;
-    width: auto !important;
-    margin-left: 10px;
-    padding: 0px 30px;
-    letter-spacing: 1px;
-    @include mq($from: tablet) {
-        display: block;
-    }
-}
-
-.pagination__button {
-    float: right;
 }
 
 .breadcrumbs-area {

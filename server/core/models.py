@@ -86,6 +86,10 @@ class Offer(DescriptionMixin, DimensionsMixin, ImageMixin):
         default=0
     )
 
+    sale_percentage = models.PositiveIntegerField(
+        default=0
+    )
+
     # Boolean fields
     is_in_stock = models.BooleanField(
         default=False
@@ -121,6 +125,16 @@ class Offer(DescriptionMixin, DimensionsMixin, ImageMixin):
     @property
     def sale_amount(self):
         return self.old_price - self.price
+
+    def save(self, *args, **kwargs):
+        if self._price < self.old_price:
+            if self.old_price == 0:
+                self.sale_percentage = 0
+            else:
+                self.sale_percentage = round(self._price/self.old_price) * 100
+        else:
+            self.sale_percentage = 0
+        super(Offer, self).save(*args, **kwargs)
 
 
 class AbstractOfferPage(WebPage, Offer):

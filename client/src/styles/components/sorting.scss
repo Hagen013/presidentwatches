@@ -1,0 +1,52 @@
+.sorting-bar {
+    display: none;
+    padding: 20px 0px;
+    font-size: 14px;
+    @include mq($from: desktop) {
+        display: block;
+    }
+}
+
+.sorting-bar__label {
+    float: left;
+    margin-right: 15px;
+}
+
+.sorting-item {
+    position: relative;
+    float: left;
+    color: $dark-grey;
+    padding-right: 15px;
+    user-select: none;
+    cursor: pointer;
+}
+
+.sorting-item.active {
+    color: $black;
+}
+
+.sorting-item.inc-dec {
+    .sorting-icon {
+        display: block !important;
+    }
+}
+
+.sorting-item.decrement {
+    .sorting-icon {
+        &:before  {
+            content: $icon-arrow-up !important;
+        }
+    }
+}
+
+.sorting-icon {
+    display: none;
+    position: absolute;
+    right: 6px;
+    top: 6px;
+    font-size: 9px;
+    &:before  {
+        content: $icon-arrow-down;
+    }
+}
+

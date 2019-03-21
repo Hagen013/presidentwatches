@@ -2,16 +2,33 @@
     font-size: 14px;
     border-bottom: 1px solid $grey;
     user-select: none;
+    .icon {
+        transition: transform .45s cubic-bezier(.19,1,.22,1);
+    }
+}
+
+.filter.active {
+    .filter-panel {
+        max-height: 352px 
+    }
+    .icon_chevron-down {
+        transform: rotate(180deg);
+    }
 }
 
 .filter-heading {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 14px 0px;
     cursor: pointer;
 }
 
 .filter-panel {
-    display: none;
-    height: 0px;
+    max-height: 0px;
+    transition: max-height 0.2s ease-out;
+    overflow: hidden;
 }
 
 .filter-panel.active {

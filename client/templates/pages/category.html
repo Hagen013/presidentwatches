@@ -59,22 +59,38 @@
                         </div>
                     </div>
                 </div>
-                <div class="sorting-bar">
+                <div class="sorting-bar" id="sorting-bar">
                     <div class="sorting-bar__controls">
                         <div class="sorting-bar__label">
                         Сортировать:
                         </div>
-                        <div class="sorting-bar__item">
-                            по цене
+                        <div class="sorting-item inc-dec {{sorting_option_class('price', sorting_option)}}"
+                            data-option="price"
+                        >
+                            <span>по цене</span>
+                            <i class="icon sorting-icon">
+                            </i>
                         </div>
-                        <div class="sorting-bar__item">
-                            по популярности
+                        <div class="sorting-item {{sorting_option_class('scoring', sorting_option)}}"
+                            data-option="scoring"
+                        >
+                            <span>по популярности</span>
+                            <i class="icon sorting-icon">
+                            </i>
                         </div>
-                        <div class="sorting-bar__item">
-                            по новинкам
+                        <div class="sorting-item {{sorting_option_class('created_at', sorting_option)}}"
+                            data-option="created_at"
+                        >
+                            <span>по новинкам</span>
+                            <i class="icon sorting-icon">
+                            </i>
                         </div>
-                        <div class="sorting-bar__item">
-                            по скидкам
+                        <div class="sorting-item {{sorting_option_class('sale_percentage', sorting_option)}}"
+                            data-option="sale_percentage"
+                        >
+                            <span>по скидкам</span>
+                            <i class="icon sorting-icon">
+                            </i>
                         </div>
                     </div>
                 </div>
@@ -86,13 +102,18 @@
         <div class="catalog row">
             <div class="catalog__left col col-1 d-col-3 w-col-2">
 
-                <div class="filter">
+                <div class="filter"
+                    data-id="{{filters[0].id}}"
+                    data-key={{filters[0].key}}
+                >
                     <div class="filter-heading">
                         <span class="filter-title">
                         {{filters[0].name}}
                         </span>
+                        <i class="icon icon_chevron-down">
+                        </i>
                     </div>
-                    <div class="filter-panel active">
+                    <div class="filter-panel">
                         <ul class="filter-values-list scrollable">
                         {% for value in filters[0].values %}
                         <div class="filter-value">
@@ -104,11 +125,16 @@
                 </div>
 
                 {% for item in filters[1:] %}
-                <div class="filter">
+                <div class="filter"
+                    data-id="{{item.id}}"
+                    data-key="{{item.key}}"
+                >
                     <div class="filter-heading">
                         <span class="filter-title">
                         {{item.name}}
                         </span>
+                        <i class="icon icon_chevron-down">
+                        </i>
                     </div>
                     <div class="filter-panel">
                         <ul class="filter-values-list scrollable">
@@ -172,34 +198,49 @@
                         </div>
                     {% endfor %}
                 </div>
+
                 <div class="pagination catalog__pagination">
-                    <div class="pagination__button-mobile button button_big button_filled">
+                    <div class="pagination__load-mobile button button_big button_filled show-mb">
                         ПОКАЗАТЬ ЕЩЁ
                     </div>
-                    <div class="pagination__pages-wrapper">
+                    <div class="pagination__pages-wrap">
                         <div class="pagination__pages row">
                             {% for page in page_obj.page_range %}
-                                {% if page %}
-                                <div class="pagination__page_num pagination__page pagination__page_num text_center">
-                                {{page}}
+                                {% if not page %}
+                                <div class="page-btn page-btn_disabled hide-mb">
+                                    ...
                                 </div>
                                 {% else %}
-                                <div class="pagination__page_num pagination__page pagination__page_disabled text_center">
-                                ...
-                                </div>
+                                    {% if page == page_obj.number %}
+                                    <a class="page-btn page-btn_active">
+                                        {{page}}
+                                    </a>
+                                    {% else %}
+                                    <a class="page-btn"
+                                        href="{{request.path}}{{ update_pagination(querystring=request.GET, kwargs={'page':page}) }}"
+                                    >
+                                        {{page}}
+                                    </a>
+                                    {% endif %}
                                 {% endif %}
                             {% endfor %}
                         </div>
-                        <div class="pagination__page pagination__page_next text_center">
-                        СЛЕДУЮЩАЯ
+                        {% if page_obj.has_next() %}
+                        <a class="page-btn page-btn_next hide-mb"
+                            href="{{request.path}}{{ update_pagination(querystring=request.GET, kwargs={'page':page_obj.next_page_number()}) }}"
+                        >
+                            СЛЕДУЮЩАЯ
+                        </a>
+                        {% else %}
+                        <div class="pagination-load_disabled page-btn_next hide-mb">
+                            СЛЕДУЮЩАЯ
                         </div>
-                        <div class="button button_big button_ghost pagination__button">
-                            ПОКАЗАТЬ ЕЩЁ
-                        </div>
+                        {% endif %}
                         <div class="clearfix">
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -281,3 +322,8 @@
         </div>
     </div>
 {% endblock modals %}
+
+{% block javascript %}
+    {{ super() }}
+    <script src="{{ static('js/catalogPage.js') }}"></script>
+{% endblock javascript %}

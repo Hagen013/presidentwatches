@@ -44,16 +44,23 @@ html, body {
 }
 
 .hide-mb {
-    display: none;
+    display: none !important;
     @include mq($from: tablet) {
-        display: block;
+        display: block !important;
+    }
+}
+
+.show-mb {
+    display: block;
+    @include mq($from: tablet) {
+        display: none !important;
     }
 }
 
 .show-wide {
-    display: none;
+    display: none !important;
     @include mq($from: wide) {
-        display: block;
+        display: block !important;
     }
 }
 

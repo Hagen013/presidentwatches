@@ -4,6 +4,18 @@ export default class FiltersController {
 
     }
 
+    addActiveOption() {
+
+    }
+
+    removeActiveOption() {
+
+    }
+
+    clearOptions() {
+        
+    }
+
     getFacetesCounts() {
 
     }

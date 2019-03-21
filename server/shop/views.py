@@ -41,9 +41,12 @@ class CategoryPageView(DiggPaginatorViewMixin, ListView):
 
     paginate_by = 24
 
-    allowed_sorting_options = {'-price': ('-price', 'id'),
-                               'price': ('price', 'id'),
-                               '-scoring': ('-scoring', 'id')}
+    allowed_sorting_options = {'-price': ('-_price', 'id'),
+                               'price': ('_price', 'id'),
+                               '-scoring': ('-scoring', 'id'),
+                               'sale_percentage': ('sale_percentage', 'id'),
+                               'created_at': ('created_at', 'id')
+                              }
     default_sorting_option = ('-scoring', 'id')
     nonfilter_options = {"sort_by", "price__gte", "price__lte"}
 
@@ -157,13 +160,15 @@ class CategoryPageView(DiggPaginatorViewMixin, ListView):
             queryset=qs
         ).qs
 
-        print(qs.count())
-
         return qs.distinct()
 
     def get_queryset(self, *args, **kwargs):
         sorting_option = self.request.GET.get('sort_by')
-        sort_by = self.allowed_sorting_options.get(sorting_option, self.default_sorting_option)
+        sort_by = self.allowed_sorting_options.get(
+            sorting_option,
+            self.default_sorting_option
+        )
+        self.sorting_option = sort_by[0]
         return self.get_default_queryset(*args, **kwargs).order_by(*sort_by)
 
     def get_context_data(self, *args, **kwargs):
@@ -176,6 +181,8 @@ class CategoryPageView(DiggPaginatorViewMixin, ListView):
         node_values = list(map(lambda x: {"key": x.attribute.key, "id": x.id}, self.node_values))
         node_values = json.dumps(node_values)
 
+        context['sorting_option'] = self.sorting_option
+        print(self.sorting_option)
         context['filters'] = self.get_filters()
         
         return context
@@ -190,7 +197,6 @@ class ProductPageView(TemplateView):
     instance_context_name = 'product'
 
     def get(self, request, slug, *args, **kwargs):
-        print(slug)
         self.instance = self.get_instance(slug)
         return super(ProductPageView, self).get(self, request, *args, **kwargs)
 

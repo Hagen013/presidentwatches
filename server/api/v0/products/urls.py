@@ -1,12 +1,3 @@
-# from rest_framework.routers import DefaultRouter
-# from .views import ProductPageViewSet
-
-# app_name = 'api'
-
-# router = DefaultRouter()
-
-# router.register(r'', ProductPageViewSet, base_name='products')
-# urlpatterns = router.urls
 from rest_framework_nested import routers
 
 from django.urls import re_path, include
