@@ -11,6 +11,8 @@ from django.http import Http404
 from core.viewmixins import DiggPaginatorViewMixin
 from core.utils import custom_redirect
 
+from cart.last_seen import LastSeenController
+
 from .models import CategoryPage, ProductPage
 from .models import Attribute, AttributeValue
 
@@ -18,8 +20,8 @@ from .models import Attribute, AttributeValue
 class ProductPageFilter(django_filters.FilterSet):
 
     price = django_filters.NumberFilter()
-    price__gte = django_filters.NumberFilter(field_name='price', lookup_expr='gte')
-    price__lte = django_filters.NumberFilter(field_name='price', lookup_expr='lte')
+    price__gte = django_filters.NumberFilter(field_name='_price', lookup_expr='gte')
+    price__lte = django_filters.NumberFilter(field_name='_price', lookup_expr='lte')
 
     class Meta:
         model = ProductPage
@@ -182,7 +184,6 @@ class CategoryPageView(DiggPaginatorViewMixin, ListView):
         node_values = json.dumps(node_values)
 
         context['sorting_option'] = self.sorting_option
-        print(self.sorting_option)
         context['filters'] = self.get_filters()
         
         return context
@@ -198,6 +199,8 @@ class ProductPageView(TemplateView):
 
     def get(self, request, slug, *args, **kwargs):
         self.instance = self.get_instance(slug)
+        controller = LastSeenController(request)
+        controller.push(self.instance)
         return super(ProductPageView, self).get(self, request, *args, **kwargs)
 
     def get_instance(self, slug):

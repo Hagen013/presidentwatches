@@ -2,7 +2,8 @@ from datetime import datetime
 
 from django.core.exceptions import ObjectDoesNotExist
 
-from shop.models import 
+from shop.models import ProductPage
+
 
 class FavoritesController():
 
@@ -20,13 +21,13 @@ class FavoritesController():
                 'total_price': 0,
                 'quantity': 0,
             }
-            self.session[self.SESSION_ID] = cart
+            self.session[self.SESSION_ID] = data
 
         self.data = data
 
     
     def add_offer(self, offer_identifier):
-        item = self.data['items'].get('offer_identifier')
+        item = self.data['items'].get(offer_identifier)
         # Проверка на наличе в корзине
         # если есть -> инкремент
         # если нет -> создание
@@ -50,7 +51,7 @@ class FavoritesController():
                     'added_at': now,
                     'brand': instance.brand
                 }
-                self.data['items']['offer_identifier'] = item
+                self.data['items'][offer_identifier] = item
                 self.save()
         else:
             item['quantity'] += 1

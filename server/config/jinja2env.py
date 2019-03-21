@@ -6,6 +6,8 @@ from urllib.parse import urlencode
 
 from jinja2 import Environment
 
+from cart.last_seen import LastSeenController
+
 
 def update_pagination(querystring, kwargs):
     query = querystring.dict()
@@ -39,11 +41,17 @@ def sorting_option_class(option, active_option):
                 css += ' decrement'
     return css
 
+
+def last_seen(request):
+    return LastSeenController(request).data['items']
+
+
 def environment(**options):
     env = Environment(**options)
     env.globals.update({
         'static': staticfiles_storage.url,
         'url': reverse,
+        'last_seen': last_seen,
         'update_pagination': update_pagination,
         'sorting_option_class': sorting_option_class,
     })

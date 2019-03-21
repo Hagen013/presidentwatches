@@ -87,6 +87,40 @@
                                 <span class="sidebar-pane-count">
                                 </span>
                             </div>
+                            <ul class="sidebar-list">
+                            {% if last_seen(request)|length == 0 %}
+                            {% else %}
+                                {% for item in last_seen(request) %}
+                                <a class="card-mini card-mini_sidebar"
+                                    href="/watches/{{item['slug']}}"
+                                >
+                                    <div class="card-mini__img-wrap">
+                                        <img class="card-mini__img" src="{{item['image']}}">
+                                        <div class="card-mini__controls">
+                                        </div>
+                                    </div>
+                                    <div class="card-mini__content">
+                                        <div class="card-mini__brand">
+                                            {{item['brand']}}
+                                        </div>
+                                        <div class="card-mini__series">
+                                            G-Shock
+                                        </div>
+                                        <div class="card-mini__model">
+                                            {{item['model']}}
+                                        </div>
+                                        <div class="card-mini-buy fab fab-mini fab_accent">
+                                            <i class="icon icon_cart">
+                                            </i>
+                                        </div>
+                                        <div class="card-mini__price">
+                                            <span class="price">{{item['price']}} ₽</span>
+                                        </div>
+                                    </div>
+                                </a>
+                                {% endfor %}
+                            {% endif %}
+                            </ul>
                         </div>
                         <div class="sidebar-pane" id="favorites">
                             <div class="sidebar-pane-heading">
@@ -337,7 +371,7 @@
                                             MAIL.RU
                                         </span>
                                     </div>
-                                </div>
+                                </div> 
                             </div>
                         </div>
                         <div class="tab-pane" id="register">
