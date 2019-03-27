@@ -6,6 +6,7 @@
     line-height: 36px;
     font-size: 12px;
     font-weight: 600;
+    text-decoration: none;
     text-align: center;
     text-transform: uppercase;
     letter-spacing: 0.9px;
@@ -22,6 +23,12 @@
     line-height: 46px;
 }
 
+.button_dense {
+    min-width: auto !important;
+    padding: 0px 10px;
+    font-size: 10px;
+}
+
 .button_ghost {
     background: white;
     color: black;
@@ -35,7 +42,7 @@
 
 .button_grey {
     border: none;
-    background-color: #ededed;
+    background-color: $light-grey;
 }
 
 .button_accent {

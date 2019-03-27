@@ -1,1 +1,283 @@
 {% extends "base.html" %}
+
+{% block content %}
+    <div class="title-area">
+        <div class="content-area content-area_block">
+            <div class="breadcrumbs">
+                <a class="breadcrumbs__item breadcrumbs_first" href="/">
+                Главная
+                </a>
+                <span class="breadcrumbs__delimeter">
+                /
+                </span>
+            </div>
+            <h1 class="title">
+                Корзина
+            </h1>
+        </div>
+    </div>
+    {% with cart = session_cart(request) %}
+    <div class="cart">
+
+            <div class="row">
+                <div class="cart-items w-col-6">
+                    <ul class="cart-list">
+                        {% for item in cart.items_list %}
+                        <li class="cart-item">
+                            <div class="cart-item__img-wrap">
+                                <img class="cart-item__img"
+                                    src="{{ item['image'] }}"
+                                    alt="{{ item['model'] }}"
+                                >
+                            </div>
+                            <div class="cart-item__info">
+                                <div class="cart-item__model">
+                                    {{ item['model'] }}
+                                </div>
+                                <div class="cart-item__name">
+                                    <span class="cart-item__brand">
+                                        {{ item['brand'] }}
+                                    </span>
+                                    <span class="cart-item__series">
+                                        {{ item['series'] }}
+                                    </span>
+                                </div>
+                                <div class="cart-item__controls">
+                                    <div class="cart-item__quantity-group">
+                                        <div class="quantity-btn quantity_decrement">
+                                        </div>
+                                        <div class="cart-item__quantity">
+                                            {{ item['quantity'] }}
+                                        </div>
+                                        <div class="quantity-btn quantity_increment">
+                                        </div>
+                                    </div>
+                                    <div class="cart-item__subtotal">
+                                    </div>
+                                </div>
+                                <div class="cart-item__favorite">
+                                    <i class="icon icon_favorite"></i>
+                                </div>
+                                <div class="cart-item__delete">
+                                    <i class="icon icon_close">
+                                    </i>
+                                </div>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="cart-items-sum">
+                        <div class="cart-promo">
+                            <div class="input-box input-box_combined cart-promo__input-box">
+                                <input class="input"
+                                    placeholder="Промокод"
+                                >
+                                <input type="submit"
+                                    class="button button_ghost"
+                                    value="Применить"
+                                >
+                            </div>
+                        </div>
+                        <div class="cart-total">
+                            <div class="cart-total__overall">
+                                2 товара на сумму: <span class="price">{{ cart.data['total_price'] }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cart-data w-col-6">
+                    <div class="cart-data-container">
+                        <h2 class="heading-2 cart-data__heading">
+                            Оформление заказа
+                        </h2>
+                        <div class="cart-recipient">
+                            <h3 class="heading-3 rarefied">
+                                ПОЛУЧАТЕЛЬ
+                            </h3>
+                            <div class="cart-recipient__inputs">
+                                <div class="field cart-field cart-recipient__mail cart-receipient__field">
+                                    <div class="field-title">
+                                        E-mail
+                                    </div>
+                                    <div class="field-input-box">
+                                        <input class="input">
+                                    </div>
+                                </div>
+                                <div class="field cart-field cart-recipient__phone cart-receipient__field">
+                                    <div class="field-title">
+                                        Телефон
+                                    </div>
+                                    <div class="field-input-box">
+                                        <input class="input">
+                                    </div>
+                                </div>
+                                <div class="field cart-field cart-recipient__name cart-receipient__field">
+                                    <div class="field-title">
+                                        Имя и фамилия
+                                    </div>
+                                    <div class="field-input-box">
+                                        <input class="input">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cart-delivery">
+                            <h3 class="heading-3 rarefied">
+                                ДОСТАВКА
+                            </h3>
+                            <div class="cart-delivery__city-field">
+                                <div class="field-title">
+                                    Населенный пункт
+                                </div>
+                                <div class="cart-delivery__city bordered">
+                                    Санкт-Петербург
+                                </div>
+                            </div>
+                            <ul class="cart-delivery-options radio-group">
+                                <li class="radio-group-container">
+                                    <input type="radio"
+                                        id="radio-1" 
+                                        name="delivery" 
+                                        value="courier" checked/>
+                                    <label for="radio-1">
+                                        <span class="rarefied">
+                                            КУРЬЕРОМ
+                                        </span>
+                                    </label>
+                                </li>
+                                <li class="radio-group-container">
+                                    <input type="radio"
+                                        id="radio-2" 
+                                        name="delivery" 
+                                        value="pickup"/>
+                                    <label for="radio-2">
+                                        <span class="rarefied">
+                                            САМОВЫВОЗ
+                                        </span>
+                                    </label>
+                                </li>
+                                <li class="radio-group-container">
+                                    <input type="radio"
+                                        id="radio-3" 
+                                        name="delivery" 
+                                        value="post"/>
+                                    <label for="radio-3">
+                                        <span class="rarefied">
+                                            ПОЧТА
+                                        </span>
+                                    </label>
+                                </li>
+                            </ul>
+                            <div class="field cart-field">
+                                <div class="field-title">
+                                    Адрес
+                                </div>
+                                <div class="field-input-box">
+                                    <input class="input">
+                                </div>
+                            </div>
+                            <div class="field cart-field">
+                                <div class="field-title">
+                                    Пожелания
+                                </div>
+                                <div class="field-input-box">
+                                    <input class="input">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cart-payment">
+                            <h3 class="heading-3 rarefied">
+                                СПОСОБ ОПЛАТЫ
+                            </h3>
+                            <ul class="cart-payment-options radio-group">
+                                <li class="radio-group-container">
+                                    <input type="radio"
+                                        id="radio-4" 
+                                        name="payment" 
+                                        value="cash"/>
+                                    <label for="radio-4">
+                                        <span class="rarefied">
+                                            НАЛИЧНЫМИ ПРИ ПОЛУЧЕНИИ
+                                        </span>
+                                    </label>
+                                </li>
+                                <li class="radio-group-container">
+                                    <input type="radio"
+                                        id="radio-5" 
+                                        name="payment" 
+                                        value="card"/>
+                                    <label for="radio-5">
+                                        <span class="rarefied">
+                                            КАРТОЙ ПРИ ПОЛУЧЕНИИ
+                                        </span>
+                                    </label>
+                                </li>
+                                <li class="radio-group-container">
+                                    <input type="radio"
+                                        id="radio-6" 
+                                        name="payment" 
+                                        value="online"/>
+                                    <label for="radio-6">
+                                        <span class="rarefied">
+                                            КАРТОЙ ОНЛАЙН
+                                        </span>
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="cart-summary">
+                            <ul class="cart-sum-list">
+                                <li class="cart-sum-item">
+                                    <div class="cart-sum-cell text_left">
+                                        Товаров
+                                    </div>
+                                    <div class="cart-sum-cell text_right">
+                                        <span class="price">
+                                            {{ cart.data['total_price'] }}
+                                        </span>
+                                    </div>
+                                </li>
+                                <li class="cart-sum-item">
+                                    <div class="cart-sum-cell">
+                                        Доставка
+                                    </div>
+                                    <div class="cart-sum-cell text_right">
+                                        <span class="price">
+                                            0 ₽
+                                        </span>
+                                    </div>
+                                </li>
+                                <li class="cart-sum-item cart-sum-item_overall bold">
+                                    <div class="cart-sum-cell">
+                                        Итого к оплате
+                                    </div>
+                                    <div class="cart-sum-cell text_right">
+                                        <span class="price">
+                                            {{cart.data['total_price']}}
+                                        </span>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="cart-submit-area">
+                                <input class="button button_big button_accent cart-submit"
+                                    type="submit"
+                                    value="ПОДТВЕРДИТЬ ЗАКАЗ"
+                                >
+                                <div class="cart-policy">
+                                    Нажимая на кнопку «Подтвердить заказ» даю согласие на обработку моих персональных данных.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    </div>
+    {% endwith %}
+
+{% endblock content %}
+
+{% block javascript %}
+    {{ super() }}
+    <script src="{{ static('js/cartPage.js') }}"></script>
+{% endblock javascript %}

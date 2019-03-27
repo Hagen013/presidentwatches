@@ -6,6 +6,8 @@ from urllib.parse import urlencode
 
 from jinja2 import Environment
 
+from cart.cart import Cart
+
 
 def update_pagination(querystring, kwargs):
     query = querystring.dict()
@@ -39,6 +41,11 @@ def sorting_option_class(option, active_option):
                 css += ' decrement'
     return css
 
+
+def session_cart(request):
+    cart = Cart(request)
+    return cart
+
 def environment(**options):
     env = Environment(**options)
     env.globals.update({
@@ -46,5 +53,6 @@ def environment(**options):
         'url': reverse,
         'update_pagination': update_pagination,
         'sorting_option_class': sorting_option_class,
+        'session_cart': session_cart
     })
     return env

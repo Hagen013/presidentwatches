@@ -190,3 +190,9 @@
         content: $icon-chevron-left;
     }
 }
+
+.icon_close {
+    &:before {
+        content: $icon-delete;
+    }
+}

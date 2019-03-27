@@ -79,7 +79,7 @@
                         </li>
                     </ul>
                     <div class="sidebar-outlet">
-                        <div class="sidebar-pane active" id="viewed">
+                        <div class="sidebar-pane" id="viewed">
                             <div class="sidebar-pane-heading">
                                 <div class="heading-2 bold">
                                     Вы смотрели
@@ -97,7 +97,8 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="sidebar-pane" id="cart">
+                        {% with cart = session_cart(request) %}
+                        <div class="sidebar-pane active" id="cart">
                             <div class="sidebar-pane-heading">
                                 <div class="heading-2 bold">
                                     Корзина
@@ -105,7 +106,62 @@
                                 <span class="sidebar-pane-count">
                                 </span>
                             </div>
+                            <div class="sidebar-pane-body">
+                                <ul class="sidebar-pane-cart" id="sidebar-cart-items">
+                                    {% for item in cart.items_list %}
+                                    <li class='card-mini sidebar-card'>
+                                        <div class="card-mini__img-wrap">
+                                            <img class="card-mini__img" src="{{item['image']}}">
+                                        </div>
+                                        <div class="card-mini__content">
+                                            <div class="card-mini__brand">
+                                                {{item['brand']}}
+                                            </div>
+                                            <div class="card-mini__series">
+                                                {{item['series']}}
+                                            </div>
+                                            <div class="card-mini__model">
+                                                {{item['model']}}
+                                            </div>
+                                            <div class="card-mini__controls">
+                                                <div class="card-mini__quantity-controls">
+                                                </div>
+                                                <div class="card-mini__side-price">
+                                                    {{item['total_price']}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="sidebar-pane-footer">
+                                <div class="sidebar-cart-summary">
+                                    <div class="sidebar-old-price">
+                                    </div>
+                                    <div class="sidebar-overall bold">
+                                        <div class="sidebar__overall-left">
+                                            Итого
+                                        </div>
+                                        <div class="sidebar__overall-right">
+                                            <span class="price">{{cart.data['total_price']}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="sidebar-submit-area">
+                                        <div class="sidebar-promo">
+                                            <input class="input"
+                                                placeholder="Промокод"
+                                            >
+                                        </div>
+                                        <a class="button button_accent button_dense sidebar-submit"
+                                            href="/cart/">
+                                            ОФОРМИТЬ ЗАКАЗ
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                        {% endwith %}
                     </div>
                 </div>
             </div>
@@ -442,6 +498,7 @@
         {% endblock modals %}
 
         {% block javascript %}
+        <script src="{{ static('js/common.js') }}"></script>
         {% endblock javascript %}
     </body>
 </html>
