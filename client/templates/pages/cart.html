@@ -42,17 +42,29 @@
                                         {{ item['series'] }}
                                     </span>
                                 </div>
-                                <div class="cart-item__controls">
-                                    <div class="cart-item__quantity-group">
-                                        <div class="quantity-btn quantity_decrement">
+                                <div class="cart-item__controls row">
+                                    <div class="cart-item__quantity-group row">
+                                        <div class="quantity-btn quantity_decrement cart-item__button">
+                                            -
                                         </div>
                                         <div class="cart-item__quantity">
                                             {{ item['quantity'] }}
                                         </div>
-                                        <div class="quantity-btn quantity_increment">
+                                        <div class="quantity-btn quantity_increment cart-item__button">
+                                            +
                                         </div>
                                     </div>
                                     <div class="cart-item__subtotal">
+                                        {% if item['quantity'] > 1 %}
+                                        <div class="cart-item__subtotal-quantity grey">
+                                            {{ item['quantity'] }} шт. × <span class="price price_9">{{ item['price'] }}</span>
+                                        </div>
+                                        {% endif %}
+                                        <div class="cart-item__subtotal-price bold">
+                                            <span class="price">
+                                                {{ item['total_price'] }}
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="cart-item__favorite">
@@ -66,7 +78,7 @@
                         </li>
                         {% endfor %}
                     </ul>
-                    <div class="cart-items-sum">
+                    <div class="cart-items-sum row">
                         <div class="cart-promo">
                             <div class="input-box input-box_combined cart-promo__input-box">
                                 <input class="input"
@@ -80,7 +92,7 @@
                         </div>
                         <div class="cart-total">
                             <div class="cart-total__overall">
-                                2 товара на сумму: <span class="price">{{ cart.data['total_price'] }}</span>
+                                {{ cart.data['total_quantity'] }} товара на сумму: <span class="price">{{ cart.data['total_price'] }}</span>
                             </div>
                         </div>
                     </div>
@@ -139,10 +151,13 @@
                                         id="radio-1" 
                                         name="delivery" 
                                         value="courier" checked/>
-                                    <label for="radio-1">
-                                        <span class="rarefied">
+                                    <label for="radio-1" class="flex-column">
+                                        <div class="rarefied">
                                             КУРЬЕРОМ
-                                        </span>
+                                        </div>
+                                        <div class="grey">
+                                            Завтра
+                                        </div>
                                     </label>
                                 </li>
                                 <li class="radio-group-container">
@@ -150,10 +165,13 @@
                                         id="radio-2" 
                                         name="delivery" 
                                         value="pickup"/>
-                                    <label for="radio-2">
-                                        <span class="rarefied">
+                                    <label for="radio-2" class="flex-column">
+                                        <div class="rarefied">
                                             САМОВЫВОЗ
-                                        </span>
+                                        </div>
+                                        <div class="grey">
+                                            Завтра
+                                        </div>
                                     </label>
                                 </li>
                                 <li class="radio-group-container">
@@ -161,10 +179,13 @@
                                         id="radio-3" 
                                         name="delivery" 
                                         value="post"/>
-                                    <label for="radio-3">
-                                        <span class="rarefied">
+                                    <label for="radio-3" class="flex-column">
+                                        <div class="rarefied">
                                             ПОЧТА
-                                        </span>
+                                        </div>
+                                        <div class="grey">
+                                            До 27 сентября
+                                        </div>
                                     </label>
                                 </li>
                             </ul>
@@ -196,6 +217,8 @@
                                         name="payment" 
                                         value="cash"/>
                                     <label for="radio-4">
+                                        <i class="icon icon_pay-cash cart-payment-icon cart-payment-icon_1">
+                                        </i>
                                         <span class="rarefied">
                                             НАЛИЧНЫМИ ПРИ ПОЛУЧЕНИИ
                                         </span>
@@ -207,6 +230,8 @@
                                         name="payment" 
                                         value="card"/>
                                     <label for="radio-5">
+                                        <i class="icon icon_pay-card cart-payment-icon cart-payment-icon_2">
+                                        </i>
                                         <span class="rarefied">
                                             КАРТОЙ ПРИ ПОЛУЧЕНИИ
                                         </span>
@@ -218,6 +243,8 @@
                                         name="payment" 
                                         value="online"/>
                                     <label for="radio-6">
+                                        <i class="icon icon_pay-online cart-payment-icon cart-payment-icon_3">
+                                        </i>
                                         <span class="rarefied">
                                             КАРТОЙ ОНЛАЙН
                                         </span>

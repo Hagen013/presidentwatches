@@ -8,7 +8,8 @@ from eav.models import (AbstractAttribute,
                         AbstractAttributeValue,
                         AbstractAttributeGroup,
                         AbstractEntityValueRelation,
-                        EavEntityMixin)
+                        EavEntityMixin,
+                        TimeStampedMixin)
 from .mixins import WatchesProductMixin, YandexMarketOfferMixin
 
 
@@ -107,10 +108,52 @@ class ProductImage(ImageMixin):
     )
 
 
+class CategoryNodeInputRelation(models.Model):
+
+    class Meta:
+        unique_together = (("input_node", "output_node"),)
+
+    node_class = "CategoryPage"
+
+    input_node = models.ForeignKey(
+        node_class,
+        on_delete=models.CASCADE,
+        db_index=True,
+        blank=True,
+        related_name='input_node_reverse',
+    )
+
+    output_node = models.ForeignKey(
+        node_class,
+        on_delete=models.CASCADE,
+        db_index=True,
+        blank=True,
+        related_name='output_node_reverse',
+    )
+
+class CategoryNodeOutdatedUrl(TimeStampedMixin):
+
+    class Meta:
+        abstract = False
+
+    node = None
+
+    slug = models.CharField(
+        max_length=2048,
+        unique=True,
+        blank=True,
+        db_index=True
+    )
+    
+
 class CategoryPage(AbstractCategoryPage):
 
     product_class = ProductPage
     attributevalues_relation_class = CategoryValueRelation
+
+    inputs_relation_class = CategoryNodeInputRelation
+    outdated_url_class = CategoryNodeOutdatedUrl
+
 
     parent = TreeForeignKey(
         'self',
@@ -126,6 +169,14 @@ class CategoryPage(AbstractCategoryPage):
         blank=True,
         related_name='categories',
         through=attributevalues_relation_class
+    )
+
+    inputs = models.ManyToManyField(
+        'self',
+        blank=True,
+        symmetrical=False,
+        related_name='outputs',
+        through=inputs_relation_class,
     )
 
     # must be implemented by a subclass

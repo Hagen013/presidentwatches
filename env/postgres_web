@@ -1,0 +1,4 @@
+POSTGRES_USER=presidentwatches_user
+POSTGRES_DB=presidentwatches_db
+POSTGRES_PASSWORD=zealot096
+PGDATA=/var/president_db/data

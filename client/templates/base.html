@@ -55,6 +55,7 @@
             </div>
         </div>
 
+        {% with cart = session_cart(request) %}
         <div class="sidebar" id="sidebar">
             <div class="sidebar__inner">
                 <div class="sidebar-tabs sticky">
@@ -75,6 +76,9 @@
                             <a class="sidebar-link" href="#cart">
                                 <i class="icon icon_cart">
                                 </i>
+                                <div class="sidebar-nav-count">
+                                    {{ cart.data['total_quantity'] }}
+                                </div>
                             </a>
                         </li>
                     </ul>
@@ -97,7 +101,6 @@
                                 </span>
                             </div>
                         </div>
-                        {% with cart = session_cart(request) %}
                         <div class="sidebar-pane active" id="cart">
                             <div class="sidebar-pane-heading">
                                 <div class="heading-2 bold">
@@ -161,11 +164,11 @@
                                 </div>
                             </div>
                         </div>
-                        {% endwith %}
                     </div>
                 </div>
             </div>
         </div>
+        {% endwith %}
 
 
         {% block modals %}
@@ -366,7 +369,7 @@
                                 </div>
                                 <div class="social-auth">
                                     <div class="button button_big social-auh-button button_fb">
-                                        <i class="icon icon_fb">
+                                        <i class="icon icon_facebook">
                                         </i>
                                         <span>
                                             FACEBOOK

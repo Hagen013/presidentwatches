@@ -1,0 +1,49 @@
+version: "3"
+
+services:
+  # NGINX
+  nginx:
+    image: hagen013/president_nginx:latest
+    restart: unless-stopped
+    hostname: nginx
+    build:
+      context: .
+      dockerfile: ./compose/nginx/Dockerfile
+    env_file:
+      - env/nginx
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8282:8282"
+    volumes:
+      - /var/president_media:/media
+    links:
+      - "web:web"
+    depends_on:
+      - web
+
+  # WEB
+  web:
+    image: hagen013/president_server:latest
+    restart: unless-stopped
+    hostname: web
+    build:
+      context: .
+      dockerfile: ./compose/server/Dockerfile
+    env_file:
+      - env/web
+    volumes:
+      - /var/president_media:/var/president_media
+    links:
+      - postgres_web:postgres
+    depends_on:
+      - postgres_web
+
+  postgres_web:
+    image: postgres:latest
+    restart: unless-stopped
+    volumes:
+      - /var/postgresql_web/data:/var/postgresql_web/data
+    env_file:
+      - env/postgres_web
+

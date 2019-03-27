@@ -34,12 +34,12 @@ class NodeManager(TreeManager):
                 node.save()
         super(NodeManager, self).rebuild()
         for node in self.get_queryset():
-            old_url = node.url
+            old_url = node.slug
             new_url = node.get_graph_url()
 
             stored_node_exists = False
             try:
-                stored_node = self.get_queryset().get(url=new_url)
+                stored_node = self.get_queryset().get(slug=new_url)
                 stored_node_exists = True
             except ObjectDoesNotExist:
                 pass
@@ -47,21 +47,21 @@ class NodeManager(TreeManager):
             if stored_node_exists:
                 pass
             else:
-                node.url = new_url
+                node.slug = new_url
             node.save()
 
             # Handling old outdated urls
-            if old_url != node.url:
+            if old_url != node.slug:
                 try:
                     instance = node.outdated_url_class.objects.get(
-                        url=old_url
+                        slug=old_url
                     )
                     instance.delete()
                 except ObjectDoesNotExist:
                     pass
                 instance = node.outdated_url_class(
                     node=node,
-                    url=old_url
+                    slug=old_url
                 )
                 instance.save()
 
