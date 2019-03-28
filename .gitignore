@@ -1,6 +1,8 @@
 client/node_modules/
 admin/node_modules/
 server/venv
+compose/nginx/static_production/
+client/static_production/
 *.pyc
 *.env
 *.vscode

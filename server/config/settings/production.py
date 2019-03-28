@@ -26,8 +26,3 @@ DATABASES = {
 }
 # DATABASE CONFIGURATION END
 # ------------------------------------------------------------------------------
-
-print(POSTGRES_DATABASE)
-print(POSTGRES_USER)
-print(POSTGRES_PASSWORD)
-print(POSTGRES_HOST)
