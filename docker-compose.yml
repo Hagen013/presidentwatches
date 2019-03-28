@@ -3,7 +3,7 @@ version: "3"
 services:
   # NGINX
   nginx:
-    image: hagen013/president_nginx:latest
+    image: graphmarket/nginx_pw
     restart: unless-stopped
     hostname: nginx
     build:
@@ -24,7 +24,7 @@ services:
 
   # WEB
   web:
-    image: hagen013/president_server:latest
+    image: graphmarket/server_pw
     restart: unless-stopped
     hostname: web
     build:
