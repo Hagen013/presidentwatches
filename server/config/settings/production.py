@@ -26,3 +26,12 @@ DATABASES = {
 }
 # DATABASE CONFIGURATION END
 # ------------------------------------------------------------------------------
+
+
+# MEDIA FILES CONFIGURATION START
+# ------------------------------------------------------------------------------
+MEDIA_ROOT = "/var/president_media/presidentwatches-original/"
+MEDIA_URL = '/media/'
+STATIC_ROOT = str(ROOT_DIR.path('client/static_production'))
+# MEDIA FILES CONFIGURATION END
+# ------------------------------------------------------------------------------
