@@ -12,16 +12,18 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, './dist/js'),
         publicPath: '/dist/js/',
-        filename: '[name].js'
+        filename: '[name].js',
+        sourceMapFilename: '[file].map'
     },
     optimization: {
         splitChunks: {
-            cacheGroups: {
-                commons: {
-                    name: 'common',
-                    chunks: 'all'
-                }
+          cacheGroups: {
+            commons: {
+              name: 'commons',
+              chunks: 'initial',
+              minChunks: 2
             }
+          }
         }
     },
     devServer: {
@@ -34,7 +36,6 @@ module.exports = {
             "/": "http://localhost:8000"
         },
     },
-    devtool: 'inline-source-map',
     plugins: [
         new webpack.HotModuleReplacementPlugin()
     ]
