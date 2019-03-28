@@ -3,6 +3,9 @@
 }
 
 .nav-list-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     height: 40px;
     padding: 0px 10px;
     line-height: 40px;
