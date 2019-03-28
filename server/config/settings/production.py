@@ -6,10 +6,13 @@ STATIC_ROOT = str(ROOT_DIR.path('client/static_production'))
 
 ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS')
 
+
+# DATABASE CONFIGURATION START
+# ------------------------------------------------------------------------------
 POSTGRES_DATABASE = env('DJANGO_POSTGRES_DATABASE')
-POSTGRES_USER = env('DJANGO_POSTGRES_DATABASE')
-POSTGRES_PASSWORD = env('DJANGO_POSTGRES_DATABASE')
-POSTGRES_HOST = env('DJANGO_POSTGRES_DATABASE')
+POSTGRES_USER     = env('DJANGO_POSTGRES_USER')
+POSTGRES_PASSWORD = env('DJANGO_POSTGRES_PASSWORD')
+POSTGRES_HOST     = 'postgres'
 
 DATABASES = {
     'default': {
@@ -21,3 +24,10 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+# DATABASE CONFIGURATION END
+# ------------------------------------------------------------------------------
+
+print(POSTGRES_DATABASE)
+print(POSTGRES_USER)
+print(POSTGRES_PASSWORD)
+print(POSTGRES_HOST)

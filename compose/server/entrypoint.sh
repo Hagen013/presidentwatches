@@ -7,7 +7,7 @@ python3 << END
 import sys
 import psycopg2
 try:
-    conn = psycopg2.connect(dbname='$POSTGRES_DATABASE', user='$POSTGRES_USER', password='$POSTGRES_PASSWORD', host='$POSTGRES_HOST')
+    conn = psycopg2.connect(dbname='$DJANGO_POSTGRES_DATABASE', user='$DJANGO_POSTGRES_USER', password='$DJANGO_POSTGRES_PASSWORD', host='$DJANGO_POSTGRES_HOST')
 except psycopg2.OperationalError:
     sys.exit(-1)
 sys.exit(0)
