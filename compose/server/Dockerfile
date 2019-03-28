@@ -30,6 +30,7 @@ RUN pip3 install uwsgi
 
 # COPY ENTRYPOINT AND CODE
 COPY  server /server
+COPY  client /client
 COPY  compose/server/uwsgi.ini uwsgi.ini
 COPY  compose/server/entrypoint.sh entrypoint.sh
 RUN sed -i 's/\r//' /entrypoint.sh
