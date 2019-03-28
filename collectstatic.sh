@@ -4,6 +4,7 @@
 cd ./client/;
 rm -rf /static /static_production;
 # npm i;
+nvm use 8.12.0
 npm  run build;
 gulp build;
 cd ..;
