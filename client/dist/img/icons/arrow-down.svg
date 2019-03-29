@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="5" height="9.0081" version="1.1" viewBox="0 0 5 9.0081" xmlns="http://www.w3.org/2000/svg">
- <g transform="translate(-.48535 -.5)">
-  <path d="m2.5 1a0.5 0.5 0 0 1 1 0v8a0.5 0.5 0 0 1-1 0z"/>
-  <path d="m0.647 7.348a0.5 0.5 0 1 1 0.706-0.707l2 1.999a0.5 0.5 0 1 1-0.706 0.707z"/>
-  <path d="m3.353 9.347a0.5 0.5 0 0 1-0.706-0.707l2-1.999a0.5 0.5 0 0 1 0.706 0.707l-2 2z"/>
- </g>
-</svg>
