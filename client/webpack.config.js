@@ -5,12 +5,26 @@ module.exports = {
     context: path.resolve(__dirname, "./src/js"),
     entry: {
         main: './main.js',
-        catalogPage: './catalogPage.js'
+        catalogPage: './catalogPage.js',
+        productPage: './productPage.js',
+        cartPage: './cartPage.js'
     },
     output: {
         path: path.resolve(__dirname, './dist/js'),
         publicPath: '/dist/js/',
-        filename: '[name].js'
+        filename: '[name].js',
+        sourceMapFilename: '[file].map'
+    },
+    optimization: {
+        splitChunks: {
+          cacheGroups: {
+            commons: {
+              name: 'common',
+              chunks: 'initial',
+              minChunks: 4
+            }
+          }
+        }
     },
     devServer: {
         contentBase: path.join(__dirname, './src/js'),
@@ -22,7 +36,6 @@ module.exports = {
             "/": "http://localhost:8000"
         },
     },
-    devtool: 'inline-source-map',
     plugins: [
         new webpack.HotModuleReplacementPlugin()
     ]

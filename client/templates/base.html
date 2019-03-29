@@ -23,13 +23,11 @@
         {% endblock favicons %}
 
         {% block css %}
-        <link rel="stylesheet" href="{{ static('css/styles.css') }}" />
+        <link rel="stylesheet" href="{{ static('css/styles_8c3414e.css') }}" />
         {% endblock css %}
 
         {% block script_head %}
         <script src="{{ static('js/jquery-3.3.1.min.js') }}"></script>
-        <script src="{{ static('js/main.js') }}"></script>
-
         {% endblock script_head %}
     </head>
 
@@ -55,6 +53,7 @@
             </div>
         </div>
 
+        {% with cart = session_cart(request) %}
         <div class="sidebar" id="sidebar">
             <div class="sidebar__inner">
                 <div class="sidebar-tabs sticky">
@@ -75,6 +74,9 @@
                             <a class="sidebar-link" href="#cart">
                                 <i class="icon icon_cart">
                                 </i>
+                                <div class="sidebar-nav-count">
+                                    {{ cart.data['total_quantity'] }}
+                                </div>
                             </a>
                         </li>
                     </ul>
@@ -139,11 +141,66 @@
                                 <span class="sidebar-pane-count">
                                 </span>
                             </div>
+                            <div class="sidebar-pane-body">
+                                <ul class="sidebar-pane-cart" id="sidebar-cart-items">
+                                    {% for item in cart.items_list %}
+                                    <li class='card-mini sidebar-card'>
+                                        <div class="card-mini__img-wrap">
+                                            <img class="card-mini__img" src="{{item['image']}}">
+                                        </div>
+                                        <div class="card-mini__content">
+                                            <div class="card-mini__brand">
+                                                {{item['brand']}}
+                                            </div>
+                                            <div class="card-mini__series">
+                                                {{item['series']}}
+                                            </div>
+                                            <div class="card-mini__model">
+                                                {{item['model']}}
+                                            </div>
+                                            <div class="card-mini__controls">
+                                                <div class="card-mini__quantity-controls">
+                                                </div>
+                                                <div class="card-mini__side-price">
+                                                    {{item['total_price']}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="sidebar-pane-footer">
+                                <div class="sidebar-cart-summary">
+                                    <div class="sidebar-old-price">
+                                    </div>
+                                    <div class="sidebar-overall bold">
+                                        <div class="sidebar__overall-left">
+                                            Итого
+                                        </div>
+                                        <div class="sidebar__overall-right">
+                                            <span class="price">{{cart.data['total_price']}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="sidebar-submit-area">
+                                        <div class="sidebar-promo">
+                                            <input class="input"
+                                                placeholder="Промокод"
+                                            >
+                                        </div>
+                                        <a class="button button_accent button_dense sidebar-submit"
+                                            href="/cart/">
+                                            ОФОРМИТЬ ЗАКАЗ
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        {% endwith %}
 
 
         {% block modals %}
@@ -154,7 +211,8 @@
                 <div class="mobile-header__left">
                     <div class="mobile-header__close menu-left-close">
                         <div class="control-button">
-                            ×
+                            <i class="icon icon_close">
+                            </i>
                         </div>
                     </div>
                 </div>
@@ -183,35 +241,47 @@
             <div class="mobile-menu__container" id="mobile-menu-container">
                 <div class="mobile-menu__body">
                     <nav class="nav-list">
-                        <li class="nav-list-item">
+                        <li class="nav-list-item"
+                            href="#categories-men"
+                        >
                             <a href="#">
                                 МУЖСКИЕ
                             </a>
+                            <i class="icon icon_chevron-right">
+                            </i>
                         </li>
                         <li class="nav-list-item">
                             <a href="#">
                                 ЖЕНСКИЕ
                             </a>
+                            <i class="icon icon_chevron-right">
+                            </i>
                         </li>
                         <li class="nav-list-item">
                             <a href="#">
                                 ДЕТСКИЕ
                             </a>
+                            <i class="icon icon_chevron-right">
+                            </i>
                         </li>
                         <li class="nav-list-item">
                             <a href="#">
                                 БРЕНДЫ
                             </a>
+                            <i class="icon icon_chevron-right">
+                            </i>
                         </li>
                         <li class="nav-list-item">
                             <a href="#">
                                 РАСПРОДАЖА
                             </a>
+                            <i class="icon icon_chevron-right">
+                            </i>
                         </li>
                     </nav>
                     <nav class="nav-list mobile-menu__main-links">
                         <li class="nav-list-item">
-                            <a href="#">
+                            <a class="bold" href="#">
                                 <i class="icon icon_nav">
                                 </i>
                                 <span>
@@ -280,6 +350,11 @@
                     </nav>
                 </div>
             </div>
+            <div class="drawer drawer-left drawer-categories" id="categories-men">
+                <div class="drawer-content drawer-content_left drawer-content_categories">
+                    МУЖСКИЕ
+                </div>
+            </div>
             <div class="mobile-menu-overlay menu-left-close">
             </div>
         </div>
@@ -344,7 +419,7 @@
                                 </div>
                                 <div class="social-auth">
                                     <div class="button button_big social-auh-button button_fb">
-                                        <i class="icon icon_fb">
+                                        <i class="icon icon_facebook">
                                         </i>
                                         <span>
                                             FACEBOOK
@@ -476,6 +551,8 @@
         {% endblock modals %}
 
         {% block javascript %}
+        <script src="{{ static('js/common_8c3414e.js') }}"></script>
+        <script src="{{ static('js/main_8c3414e.js') }}"></script>
         {% endblock javascript %}
     </body>
 </html>

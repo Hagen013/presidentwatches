@@ -124,6 +124,12 @@
     }
 }
 
+.icon-heart-fill {
+    &:before {
+        content: $icon-heart-fill;
+    }
+}
+
 .icon_share {
     &:before {
         content: $icon-share;
@@ -188,5 +194,38 @@
 .icon_chevron-left {
     &:before {
         content: $icon-chevron-left;
+    }
+}
+
+.icon_close {
+    &:before {
+        content: $icon-delete;
+    }
+}
+
+.icon_pay-cash {
+    &:before {
+        content: $icon-pay-cash;
+    }
+}
+
+.icon_pay-card {
+    &:before {
+        content: $icon-pay-card;
+    }
+}
+
+.icon_pay-online {
+    &:before {
+        content: $icon-pay-online;
+    }
+}
+
+.price {
+    &:after {
+        margin-left: 1px;
+        content: $icon-rouble;
+        font-family: 'Icons';
+        font-size: 0.7em;
     }
 }

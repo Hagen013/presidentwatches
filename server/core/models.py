@@ -147,11 +147,85 @@ class AbstractOfferPage(WebPage, Offer):
 
 class Node(MPTTModel):
 
+    inputs_relation_class = None
+
     class Meta:
         abstract = True
 
     objects = NodeManager()
     public = NodePublicManager()
+
+    inputs = None
+    outputs = None
+
+    # Глубина узла в графе
+    _depth = models.PositiveIntegerField(
+        default=0,
+    )
+
+    @property
+    def depth(self):
+        return self._depth
+
+    @property
+    def has_inputs(self):
+        return self.inputs.count() > 0
+
+    @property
+    def has_outputs(self):
+        return self.outputs.count() > 0
+
+    @property
+    def is_detached(self):
+        return self.get_root()._depth > 0
+
+    def set_depth(self):
+        self._depth = self.get_depth()
+
+    def get_depth(self):
+        return self.attribute_values.count()
+
+    def set_inputs(self):
+        self.inputs.clear()
+        values = self.attribute_values.all()
+        values_set = set(map(lambda x: x.slug, values))
+        potential_inputs = self._meta.default_manager.filter(
+            _depth=self._depth - 1,
+            id__in=self
+            ._meta.default_manager
+            .values('id')
+            .filter(attribute_values__in=values.values('id'))
+            .annotate(len_av=models.Count("id", distinct=False))
+            .filter(len_av=values.count() - 1)
+            .values('id')
+        )
+        for node in potential_inputs:
+            self.add_input(node)
+
+
+    def get_graph_url(self):
+        """
+        Функция получения собственного графового URL:
+        - применим только к не оторванным от общего графа узлам
+        - для корректной работы должны быть прорисованы inputs графа и parent
+        эталонного mptt-дерева
+        """
+        if self._depth == 0:
+            return ''
+        if self.is_detached:
+            return self.slug
+        slugs_list = []
+        slugs_set = set()
+        ancestors = self.get_ancestors(include_self=True)
+        for ancestor in ancestors:
+            ancestor_values = ancestor.attribute_values.all()
+            ancestor_slugs_set = set(map(lambda x: x.key, ancestor_values))
+            difference = ancestor_slugs_set.difference(slugs_set)
+            difference_list = list(difference)
+            slugs_set.update(difference)
+            if len(difference_list) > 0:
+                slugs_list.append(difference_list[0])
+        return '/'.join(slugs_list) + '/'
 
 
 class AbstractCategoryPage(Node, WebPage):

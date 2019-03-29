@@ -7,6 +7,7 @@ from urllib.parse import urlencode
 from jinja2 import Environment
 
 from cart.last_seen import LastSeenController
+from cart.cart import Cart
 
 
 def update_pagination(querystring, kwargs):
@@ -45,6 +46,9 @@ def sorting_option_class(option, active_option):
 def last_seen(request):
     return LastSeenController(request).data['items']
 
+def session_cart(request):
+    cart = Cart(request)
+    return cart
 
 def environment(**options):
     env = Environment(**options)
@@ -54,5 +58,6 @@ def environment(**options):
         'last_seen': last_seen,
         'update_pagination': update_pagination,
         'sorting_option_class': sorting_option_class,
+        'session_cart': session_cart
     })
     return env

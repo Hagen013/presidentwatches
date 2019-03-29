@@ -17,6 +17,11 @@
 
 }
 
+.drawer-categories {
+    top: 60px;
+    width: percentage(9/12);
+}
+
 .drawer-content {
     position: absolute;
     background: $white;
@@ -35,6 +40,10 @@
     height: 100%;
     width: 320px;
     transform: translateX(-100%);
+}
+
+.drawer-content_categories {
+    width: 100%;
 }
 
 .drawer-content_bottom {

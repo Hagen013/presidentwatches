@@ -40,7 +40,7 @@
                             </div>
                             <div class="product-main__price-area row">
                                 <div class="price product-main__price">
-                                    {{product.price}} ₽
+                                    {{product.price}}
                                 </div>
                                 {% if product.is_sale %}
                                 <div class="old-price product-main__old-price">
@@ -85,10 +85,14 @@
                                 </a> 
                             </div>
                             <div class="product-main__buttons row">
-                                <div class="button button_big button_accent product-main__button float-left">
+                                <div class="button button_big button_accent product-main__button float-left"
+                                    id="add-to-cart"
+                                >
                                     ДОБАВИТЬ В КОРЗИНУ
                                 </div>
-                                <div class="button button_big button_ghost product-main__one-click float-left">
+                                <div class="button button_big button_ghost product-main__one-click float-left"
+                                    id="fast-buy"
+                                >
                                     КУПИТЬ В 1 КЛИК
                                 </div>
                             </div>
@@ -400,6 +404,7 @@
 
 {% block javascript %}
     {{ super() }}
+    <script src="{{ static('js/productPage.js') }}"></script>
     <script type="text/javascript">
         var PRODUCT = {
             model: '{{ product.model }}',

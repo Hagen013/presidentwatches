@@ -1,0 +1,10 @@
+DJANGO_SECRET_KEY=!4i$l8*5+76r^ds)4ij712arl)shhx*g@8hsh*uh6u!v*p9(hq
+DJANGO_ALLOWED_HOSTS=0.0.0.0,localhost
+
+DJANGO_SETTINGS_MODULE=config.settings.production
+
+DJANGO_POSTGRES_DATABASE=presidentwatches_db
+DJANGO_POSTGRES_USER=presidentwatches_user
+DJANGO_POSTGRES_PASSWORD=zealot096
+DJANGO_POSTGRES_HOST=postgres
+

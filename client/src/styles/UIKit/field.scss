@@ -1,5 +1,8 @@
 .field {
     margin-bottom: 14px;
+    &:last-of-type {
+        margin-bottom: 0px;
+    }
 }
 
 .field-title {

@@ -1,9 +1,11 @@
 import SimpleBar from 'simplebar';
 
 import { Cart } from './controllers/cartController.js';
-
+import SidebarCart from './components/sidebarCart.js'
 
 $(document).ready(function() {
+
+    const sidebarCart = new SidebarCart();
 
     var STATE = {
         device: {
