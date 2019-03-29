@@ -1,6 +1,8 @@
 client/node_modules/
+client/dist
 admin/node_modules/
 server/venv
+env/
 compose/nginx/static_production/
 client/static_production/
 *.pyc
