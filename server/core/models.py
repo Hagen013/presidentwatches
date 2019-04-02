@@ -2,6 +2,8 @@ from django.db import models
 
 from mptt.models import MPTTModel, TreeForeignKey
 
+from eav.models import EavEntityMixin
+
 from .db.mixins import (TimeStampedMixin,
                         DisplayableMixin,
                         DescriptionMixin,
@@ -145,7 +147,7 @@ class AbstractOfferPage(WebPage, Offer):
         abstract = True
 
 
-class Node(MPTTModel):
+class Node(MPTTModel, EavEntityMixin):
 
     inputs_relation_class = None
 
@@ -188,7 +190,6 @@ class Node(MPTTModel):
     def set_inputs(self):
         self.inputs.clear()
         values = self.attribute_values.all()
-        values_set = set(map(lambda x: x.slug, values))
         potential_inputs = self._meta.default_manager.filter(
             _depth=self._depth - 1,
             id__in=self
@@ -201,6 +202,20 @@ class Node(MPTTModel):
         )
         for node in potential_inputs:
             self.add_input(node)
+
+    def add_input(self, instance):
+        """
+        Предполагается что:
+            self.attribute_values == added_attribute_value + instance.attribute_values
+        """
+        added_attribute_value = self.attribute_values.all().difference(instance.attribute_values.all())
+        if added_attribute_value.count() != 1:
+            raise ValueError("Numbers of added attribute_value not 1")
+        relation = self.inputs_relation_class(
+            output_node=instance,
+            input_node=self
+        )
+        relation.save()
 
 
     def get_graph_url(self):

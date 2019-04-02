@@ -148,12 +148,14 @@ class CategoryNodeOutdatedUrl(TimeStampedMixin):
 
 class CategoryPage(AbstractCategoryPage):
 
+    attribute_class = Attribute
+    value_class = AttributeValue
+    value_relation_class = CategoryValueRelation
+
     product_class = ProductPage
-    attributevalues_relation_class = CategoryValueRelation
 
     inputs_relation_class = CategoryNodeInputRelation
     outdated_url_class = CategoryNodeOutdatedUrl
-
 
     parent = TreeForeignKey(
         'self',
@@ -168,7 +170,7 @@ class CategoryPage(AbstractCategoryPage):
         'AttributeValue',
         blank=True,
         related_name='categories',
-        through=attributevalues_relation_class
+        through=value_relation_class
     )
 
     inputs = models.ManyToManyField(
