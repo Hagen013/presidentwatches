@@ -9,6 +9,6 @@ app_name = 'shop'
 
 urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html'), name='index'),
-    re_path(r'^shop/(?P<slug>(($)|([-_\.\d\w/]+/$)))', CategoryPageView.as_view(), name='category'),
+    re_path(r'^shop(?P<slug>(($)|([-_\.\d\w/]+/$)))', CategoryPageView.as_view(), name='category'),
     re_path(r'^watches/(?P<slug>(($)|([-_\.\d\w/]+)))/$', ProductPageView.as_view(), name='product')
 ]

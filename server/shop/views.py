@@ -53,6 +53,9 @@ class CategoryPageView(DiggPaginatorViewMixin, ListView):
     nonfilter_options = {"sort_by", "price__gte", "price__lte"}
 
     def get(self, request, slug, *args, **kwargs):
+        print('TSOY')
+        print(slug)
+        print('TSOY')
         querydict = request.GET.dict()
         page = querydict.get('page', None)
         if page == '1':

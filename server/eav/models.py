@@ -80,7 +80,7 @@ class AbstractAttribute(DatatypeRestrictionsMixin,
 
     measure = models.CharField(
         blank=True,
-        max_length=256,
+        max_length=255,
         verbose_name='единица змерения'
     )
 
@@ -134,6 +134,7 @@ class AbstractAttributeValue(DatatypeRestrictionsMixin, OrderableMixin,
 
     # денормализация
     datatype = EavDatatypeField()
+    key = EavSlugField(max_length=255)
 
     value_text  = models.CharField(blank=True, null=True, max_length=2048)
     value_int   = models.IntegerField(blank=True, null=True)
@@ -180,6 +181,12 @@ class AbstractAttributeValue(DatatypeRestrictionsMixin, OrderableMixin,
         if self.attribute is not None:
             self.datatype = self.attribute.datatype
         self.validate_unique()
+        if not self.key:
+            key = EavSlugField.create_slug_from_name(str(self.value))
+            self.key = "{attribute_key}__{key}".format(
+                attribute_key=self.attribute.key,
+                key=key
+            )
         super(AbstractAttributeValue, self).save(force_insert, force_update, *args, **kwargs)
 
 

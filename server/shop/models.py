@@ -133,10 +133,17 @@ class CategoryNodeInputRelation(models.Model):
 
 class CategoryNodeOutdatedUrl(TimeStampedMixin):
 
+    node_class = 'CategoryPage'
+
     class Meta:
         abstract = False
 
-    node = None
+    node = models.ForeignKey(
+        node_class,
+        on_delete=models.CASCADE,
+        db_index=True,
+        null=True
+    )
 
     slug = models.CharField(
         max_length=2048,
