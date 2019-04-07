@@ -182,11 +182,7 @@ class AbstractAttributeValue(DatatypeRestrictionsMixin, OrderableMixin,
             self.datatype = self.attribute.datatype
         self.validate_unique()
         if not self.key:
-            key = EavSlugField.create_slug_from_name(str(self.value))
-            self.key = "{attribute_key}__{key}".format(
-                attribute_key=self.attribute.key,
-                key=key
-            )
+            self.key = EavSlugField.create_slug_from_name(str(self.value))
         super(AbstractAttributeValue, self).save(force_insert, force_update, *args, **kwargs)
 
 

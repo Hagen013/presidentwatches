@@ -109,6 +109,10 @@ class WatchesProductMixin(models.Model):
 
         return groups
 
+    def save(self):
+        super(WatchesProductMixin, self).save()
+
+
 class YandexMarketOfferMixin(models.Model):
     """
     Класс, реализующий весь необходимый функционал для работы с
