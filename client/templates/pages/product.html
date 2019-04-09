@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 
+{% block css %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ static('css/jquery.fancybox.min.css') }}" />
+{% endblock css %}
+
 {% block content %}
     <div class="content-area content-area_block">
         <div class="breadcrumbs-area">
@@ -19,14 +24,65 @@
             <div class="product__top row">
                 <div class="product-front col col-12 t-col-6">
                     <div class="product-front__main-img-wrap">
-                        <img class="product-front__main-img" src="{{product.image.url}}">
+                        <a class="product-front__img-link active" href="{{product.image.url}}"
+                            data-fancybox="gallery"
+                            target="_blank"
+                            id="image"
+                        >
+                            <img class="product-front__main-img" 
+                                src="{{product.image.url}}"
+                                alt="{{product.model}}"
+                            >
+                        </a>
+                        {% for image in images %}
+                        <a class="product-front__img-link"
+                            href="{{image.image.url}}"
+                            data-fancybox="gallery"
+                            target="_blank"
+                            id="image-{{loop.index}}"
+                        >
+                            <img class="product-fron__main-img"
+                                src="{{image.thumbnail.url}}"
+                                alt="{{product.model}}-{{loop.index}}"
+                            >
+                        </a>
+                        {% endfor %}
                         <div class="product-front__badges">
                         </div>
                     </div>
-                    <div class="product-front__gallery">
-                        <div class="thumb">
-                            <img class="thumb-img" src="{{product.thumbnail.url}}">
+                    <div class="product-front__gallery gallery">
+                        {% if images|length > 0 %}
+                        <div class="fab fab-micro gallery-btn gallery-btn_prev">
+                            <i class="icon icon_chevron-up">
+                            </i>
                         </div>
+                        {% endif %}
+                        <div class="gallery-slick-list">
+                            <div class="gallery-track row" id="gallery-track">
+                                <div class="thumb thumb_active"
+                                    data-image="{{product.image.url}}"
+                                    data-target="#image"
+                                >
+                                    <img class="thumb-img" src="{{product.thumbnail.url}}">
+                                </div>
+                                {% for image in images %}
+                                <div class="thumb"
+                                    data-image="{{image.image.url}}"
+                                    data-target="#image-{{loop.index}}"
+                                >
+                                    <img class="thumb-img" src="{{image.thumbnail.url}}">
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% if images|length > 0 %}
+                        <div class="gallery-control">
+                            <div class="fab fab-micro gallery-btn gallery-btn_next">
+                                <i class="icon icon_chevron-down">
+                                </i>
+                            </div>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="col col-12 t-col-6">
@@ -404,6 +460,7 @@
 
 {% block javascript %}
     {{ super() }}
+    <script src="{{ static('js/jquery.fancybox.min.js') }}"></script>
     <script src="{{ static('js/productPage.js') }}"></script>
     <script type="text/javascript">
         var PRODUCT = {

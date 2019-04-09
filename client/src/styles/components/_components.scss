@@ -400,35 +400,6 @@
 
 }
 
-.breadcrumbs {
-    display: none;
-    margin-bottom: 6px;
-    color: $dark-grey;
-    @include mq($from: desktop) {
-        display: block;
-    }
-}
-
-.breadcrumb_tablet {
-    @include mq($from: tablet) {
-        display: block;
-    }
-}
-
-.breadcrumbs__item {
-    color: $dark-grey;
-    text-decoration: none;
-    &:hover {
-        text-decoration: underline;
-    }
-}
-
-.breadcrumbs-area {
-    @include mq($from: tablet) {
-        padding-top: 20px;
-    }
-}
-
 .grey-block {
     margin-top: 20px;
     padding: 13px 10px;
@@ -542,17 +513,6 @@
         float: none !important;
         display: block;
     }
-}
-
-.thumb {
-    height: 36px;
-    width: 36px;
-    text-align: center;
-}
-
-.thumb-img {
-    height: 100%;
-    width: auto;
 }
 
 

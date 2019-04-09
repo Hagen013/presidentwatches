@@ -1,0 +1,28 @@
+.breadcrumbs {
+    display: none;
+    margin-bottom: 20px;
+    color: $dark-grey;
+    @include mq($from: desktop) {
+        display: block;
+    }
+}
+
+.breadcrumb_tablet {
+    @include mq($from: tablet) {
+        display: block;
+    }
+}
+
+.breadcrumbs__item {
+    color: $dark-grey;
+    text-decoration: none;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.breadcrumbs-area {
+    @include mq($from: tablet) {
+        padding-top: 20px;
+    }
+}

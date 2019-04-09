@@ -1,0 +1,43 @@
+.thumb {
+    display: block;
+    height: 36px;
+    width: 36px;
+    text-align: center;
+    overflow: hidden;
+    cursor: pointer;
+    float: left;
+    margin-right: 8px;
+    &:last-of-type {
+        margin-right: 0px;
+    }
+    @include mq($from: tablet) {
+        float: none;
+        height: 39px;
+        width: 39px;
+        margin-bottom: 10px;
+        margin-right: 0px;
+    }
+    @include mq($from: desktop) {
+        height: 56px;
+        width: 56px;
+    }
+    @include mq($from: wide) {
+        height: 60px;
+        width: 60px;
+    }
+}
+
+.thumb-img {
+    height: 100%;
+    width: auto;
+    will-change: opacity;
+}
+
+.thumb_active {
+    cursor: default !important;
+    .thumb-img {
+        opacity: 0.6;
+    }
+}
+
+

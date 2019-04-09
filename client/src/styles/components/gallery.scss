@@ -1,0 +1,79 @@
+.gallery {
+    position: relative;
+    height: 56px;
+    width: 100%;
+    padding: 10px 32px;
+    z-index: 200;
+    @include mq($from: tablet) {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        height: 100%;
+        width: 40px;
+        padding: 45px 0px;
+    }
+    @include mq($from: desktop) {
+        width: 56px;
+        padding: 53px 0px;
+    }
+    @include mq($from: wide) {
+        width: 60px;
+        padding: 0px;
+    }
+}
+
+.gallery-control {
+
+}
+
+.gallery-btn {
+    display: none;
+    position: absolute;
+    left: 8px;
+    box-shadow: 0 4px 16px 0 rgba(51, 38, 38, 0.15);
+    @include mq($from: tablet) {
+        display: flex;
+    }
+    @include mq($from: desktop) {
+        left: 16px;
+    }
+    @include mq($from: wide) {
+        display: none;
+    }
+}
+
+.gallery-btn_prev {
+    top: 0px;
+}
+
+.gallery-btn_next {
+    bottom: 0px;
+}
+
+
+.gallery-slick-list {
+    position: relative;
+    @include mq($from: tablet) {
+        height: 186px;
+        overflow: hidden;
+    }
+    @include mq($from: desktop) {
+        height: 254px;
+    }
+    @include mq($from: wide) {
+        height: 100%;
+    }
+}
+
+.gallery-track {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    @include mq($from: tablet) {
+        display: block;
+        height: 2000px;
+    }
+}

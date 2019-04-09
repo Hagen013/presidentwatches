@@ -9,9 +9,7 @@
     text-align: center;
     overflow: hidden;
     @include mq($from: tablet) {
-        padding: 10px 0px;
         height: 276px;
-        padding-left: 59px;
     }
     @include mq($from: desktop) {
         height: 360px;
@@ -26,18 +24,32 @@
     width: auto;
 }
 
-.product-front__gallery {
-    height: 56px;
+.product-front__img-link {
+    display: block;
+    position: absolute;
+    height: 100%;
     width: 100%;
-    padding: 10px 22px;
+    top: 0px;
+    left: 0px;
+    background: white;
+    z-index: 0;
+    opacity: 0;
+    will-change: opacity;
     @include mq($from: tablet) {
-        position: absolute;
-        top: 0px;
-        left: 0px;
-        height: 100%;
-        width: 40px;
-        padding: 40px 0px;
+        padding: 10px 0px;
+        padding-left: 59px;
     }
+    @include mq($from: desktop) {
+        padding-left: 66px;
+    }
+    @include mq($from: wide) {
+        padding-left: 70px;
+    }
+}
+
+.product-front__img-link.active {
+    z-index: 100;
+    opacity: 1;
 }
 
 .product__top {

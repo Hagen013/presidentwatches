@@ -53,9 +53,6 @@ class CategoryPageView(DiggPaginatorViewMixin, ListView):
     nonfilter_options = {"sort_by", "price__gte", "price__lte"}
 
     def get(self, request, slug, *args, **kwargs):
-        print('TSOY')
-        print(slug)
-        print('TSOY')
         querydict = request.GET.dict()
         page = querydict.get('page', None)
         if page == '1':
@@ -216,4 +213,6 @@ class ProductPageView(TemplateView):
         context = super(ProductPageView, self).get_context_data(**kwargs)
 
         context[self.instance_context_name] = self.instance
+        context['images'] = self.instance.images.all()
+
         return context

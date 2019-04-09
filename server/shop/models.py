@@ -60,6 +60,7 @@ class ProductValueRelation(AbstractEntityValueRelation):
         on_delete=models.CASCADE
     )
 
+
 class CategoryValueRelation(AbstractEntityValueRelation):
 
     entity = models.ForeignKey(
@@ -105,6 +106,7 @@ class ProductImage(ImageMixin):
     product = models.ForeignKey(
         'ProductPage',
         on_delete=models.CASCADE,
+        related_name='images'
     )
 
 
