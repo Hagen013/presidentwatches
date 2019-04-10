@@ -2,30 +2,12 @@ import SimpleBar from 'simplebar';
 
 import { Cart } from './controllers/cartController.js';
 import SidebarCart from './components/sidebarCart.js'
+import store from './store/index.js';
+import STATE from './state/index.js';
 
 $(document).ready(function() {
 
     const sidebarCart = new SidebarCart();
-
-    var STATE = {
-        device: {
-            _mode: 'mobile',
-            _listeners: [],
-
-            set widthMode(value) {
-                this._mode = value;
-                for (let index in this._listeners) {
-                    this._listeners[index](value);
-                }
-            },
-            get widthMode() {
-                return this._mode
-            },
-            registerListener: function(listener) {
-                this._listeners.push(listener);
-            }
-        }
-    }
 
     STATE.cart = new Cart();
     let cart = new Cart();
@@ -143,6 +125,7 @@ $(document).ready(function() {
     $('#page-overlay').click(hideSidebar);
 
     STATE.device.registerListener(function(val) {
+        console.log('PIDAR TSOY')
         if ( (val === 'maximum') || (val === 'tablet') ) {
             hideSidebar();
         }

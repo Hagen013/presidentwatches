@@ -4,7 +4,7 @@
     top: 0px;
     right: 0px;
     background: white;
-    z-index: 200;
+    z-index: 300;
     overflow: hidden;
     @include mq($from: desktop) {
         display: block;

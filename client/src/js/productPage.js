@@ -1,10 +1,11 @@
-import store from './store/index.js';
 import SidebarCart from './components/sidebarCart.js'
-
+import store from './store/index.js';
+import state from './state/index.js';
 
 $(document).ready(function() {
 
     const sidebarCart = new SidebarCart();
+    console.log(state);
 
     $('#add-to-cart').click(function() {
         store.dispatch('addToCart', PRODUCT);

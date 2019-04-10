@@ -116,7 +116,7 @@
                                             </i>
                                         </div>
                                         <div class="card-mini__price">
-                                            <span class="price">{{item['price']}} ₽</span>
+                                            <span class="price">{{item['price']}}</span>
                                         </div>
                                     </div>
                                 </a>
@@ -158,13 +158,26 @@
                                             <div class="card-mini__model">
                                                 {{item['model']}}
                                             </div>
-                                            <div class="card-mini__controls">
-                                                <div class="card-mini__quantity-controls">
+                                            <div class="card-mini__controls row">
+                                                <div class="quantity-controls row">
+                                                    <div class="quantity-btn quantity_decrement cart-item__button">
+                                                        -
+                                                    </div>
+                                                    <div class="item-quantity">
+                                                        {{ item['quantity'] }}
+                                                    </div>
+                                                    <div class="quantity-btn quantity_increment cart-item__button">
+                                                        +
+                                                    </div>
                                                 </div>
-                                                <div class="card-mini__side-price">
-                                                    {{item['total_price']}}
+                                                <div class="card-mini__price">
+                                                    <span class="price">{{item['total_price']}}</span>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="card-mini__delete">
+                                            <i class="icon icon_close">
+                                            </i>
                                         </div>
                                     </li>
                                     {% endfor %}
