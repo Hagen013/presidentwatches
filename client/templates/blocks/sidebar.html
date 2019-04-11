@@ -1,0 +1,175 @@
+<div class="sidebar" id="sidebar">
+    <div class="sidebar__inner">
+        <div class="sidebar-tabs sticky">
+            <ul class="sidebar-nav">
+                <li class="sidebar-nav-tab">
+                    <a class="sidebar-link active" id="sidebar-cart-link" href="#cart">
+                        <i class="icon icon_cart">
+                        </i>
+                        <div class="sidebar-nav-count cart-count">
+                            {{ cart.data['total_quantity'] }}
+                        </div>
+                    </a>
+                </li>
+                <li class="sidebar-nav-tab">
+                    <a class="sidebar-link" href="#favorites">
+                        <i class="icon icon_heart-stroke">
+                        </i>
+                    </a>
+                </li>
+                <li class="sidebar-nav-tab">
+                    <a class="sidebar-link" href="#viewed">
+                        <i class="icon icon_eye">
+                        </i>
+                    </a>
+                </li>
+            </ul>
+            <div class="sidebar-outlet">
+                <div class="sidebar-pane active" id="cart">
+                    <div class="sidebar-pane-heading row">
+                        <div class="heading-2 bold sidebar-pane-title">
+                            Корзина
+                        </div>
+                        <div class="sidebar-pane-count">
+                            <span class="cart-count">
+                            {{ cart.data['total_quantity'] }}
+                            </span>
+                            товара
+                        </div>
+                        <div class="sidebar-pane-clear">
+                            <a class="link_underline_forced" id="sidebar-cart-clear">
+                                Удалить всё
+                            </a>
+                        </div>
+                    </div>
+                    <div class="sidebar-pane-body">
+                        <ul class="sidebar-pane-cart" id="sidebar-cart-items">
+                            {% for item in cart.items_list %}
+                            <li class='card-mini sidebar-card' data-model="{{item['model']}}">
+                                <div class="card-mini__img-wrap">
+                                    <a class="link-wrap" href="/watches/{{item['slug']}}/">
+                                        <img class="card-mini__img" src="{{item['image']}}">
+                                    </a>
+                                </div>
+                                <div class="card-mini__content">
+                                    <a class="link-wrap" href="/watches/{{item['slug']}}/">
+                                        <div class="card-mini__brand">
+                                            {{item['brand']}}
+                                        </div>
+                                        <div class="card-mini__series">
+                                            {{item['series']}}
+                                        </div>
+                                        <div class="card-mini__model">
+                                            {{item['model']}}
+                                        </div>
+                                    </a>
+                                    <div class="card-mini__controls row">
+                                        <div class="quantity-controls row">
+                                            <div class="quantity-btn quantity_decrement cart-item__button">
+                                                -
+                                            </div>
+                                            <div class="item-quantity">
+                                                {{ item['quantity'] }}
+                                            </div>
+                                            <div class="quantity-btn quantity_increment cart-item__button">
+                                                +
+                                            </div>
+                                        </div>
+                                        <div class="card-mini__price text_right">
+                                            <span class="price">{{item['total_price']}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-mini__delete">
+                                    <i class="icon icon_close">
+                                    </i>
+                                </div>
+                                <div class="card-mini__favorite like">
+                                    <i class="icon icon-like">
+                                    </i>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="sidebar-pane-footer">
+                        <div class="sidebar-cart-summary">
+                            <div class="sidebar-old-price">
+                            </div>
+                            <div class="sidebar-overall bold">
+                                <div class="sidebar__overall-left">
+                                    Итого
+                                </div>
+                                <div class="sidebar__overall-right">
+                                    <span class="price" id='sidebar-total-price'>
+                                        {{cart.data['total_price']}}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="sidebar-submit-area">
+                                <div class="sidebar-promo">
+                                    <input class="input"
+                                        placeholder="Промокод"
+                                    >
+                                </div>
+                                <a class="button button_accent button_dense sidebar-submit"
+                                    href="/cart/">
+                                    ОФОРМИТЬ ЗАКАЗ
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sidebar-pane" id="viewed">
+                    <div class="sidebar-pane-heading">
+                        <div class="heading-2 bold">
+                            Вы смотрели
+                        </div>
+                        <span class="sidebar-pane-count">
+                        </span>
+                    </div>
+                    <ul class="sidebar-list">
+                    {% if last_seen(request)|length == 0 %}
+                    {% else %}
+                        {% for item in last_seen(request) %}
+                        <div class="card-mini card-mini_sidebar"
+                        >
+                            <div class="card-mini__img-wrap">
+                                <img class="card-mini__img" src="{{item['image']}}">
+                            </div>
+                            <div class="card-mini__content">
+                                <div class="card-mini__brand">
+                                    {{item['brand']}}
+                                </div>
+                                <div class="card-mini__series">
+                                    G-Shock
+                                </div>
+                                <div class="card-mini__model">
+                                    {{item['model']}}
+                                </div>
+                                <div class="card-mini-buy fab fab-mini fab_accent" data-model="{{ item['model'] }}">
+                                    <i class="icon icon_cart">
+                                    </i>
+                                </div>
+                                <div class="card-mini__price">
+                                    <span class="price">{{item['price']}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                    </ul>
+                </div>
+                <div class="sidebar-pane" id="favorites">
+                    <div class="sidebar-pane-heading">
+                        <div class="heading-2 bold">
+                            Избранное
+                        </div>
+                        <span class="sidebar-pane-count">
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

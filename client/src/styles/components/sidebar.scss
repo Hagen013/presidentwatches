@@ -144,6 +144,29 @@
     }
 }
 
+.sidebar-pane-title {
+    margin-bottom: 0px;
+    line-height: normal;
+    float: left;
+}
+
+.sidebar-pane-heading {
+    margin-bottom: 10px;
+}
+
+.sidebar-pane-count {
+    float: left;
+    padding-top: 4px;
+    user-select: none;
+    margin-left: 10px;
+}
+
+.sidebar-pane-clear {
+    padding-top: 4px;
+    float: right;
+    cursor: pointer;
+}
+
 .sidebar-card {
     height: 100px;
     padding: 10px 0px;

@@ -1,13 +1,15 @@
 import SimpleBar from 'simplebar';
 
-import { Cart } from './controllers/cartController.js';
-import SidebarCart from './components/sidebarCart.js'
-import store from './store/index.js';
-import STATE from './state/index.js';
+import { Cart } from '@/controllers/cartController.js';
+import SidebarCart from '@/components/sidebarCart.js'
+import SidebarLastSeen from '@/components/sidebarLastSeen.js'
+import store from '@/store/index.js';
+import STATE from '@/state/index.js';
 
 $(document).ready(function() {
 
     const sidebarCart = new SidebarCart();
+    const lastSeen = new SidebarLastSeen();
 
     STATE.cart = new Cart();
     let cart = new Cart();
@@ -125,7 +127,6 @@ $(document).ready(function() {
     $('#page-overlay').click(hideSidebar);
 
     STATE.device.registerListener(function(val) {
-        console.log('PIDAR TSOY')
         if ( (val === 'maximum') || (val === 'tablet') ) {
             hideSidebar();
         }

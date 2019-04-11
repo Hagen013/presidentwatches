@@ -4,8 +4,10 @@ import mutations from './mutations.js';
 import state from './state.js';
 import Store from './store.js';
 
-export default new Store({
+let store = new Store({
     actions,
     mutations,
     state
 });
+
+export default store

@@ -229,3 +229,29 @@
         font-size: 0.8em;
     }
 }
+
+.like {
+    cursor: pointer;
+    .icon {
+        font-size: 11px !important;
+        &:before {
+            content: $icon-heart-stroke;
+        }
+    }
+    &:hover {
+        color: $red-2 !important;
+        // &:before {
+        //     content: $icon-heart-fill;
+        // } 
+    }
+}
+
+.like_active {
+    cursor: default !important;
+    color: $red-2 !important;
+    .icon {
+        &:before {
+            content: $icon-heart-fill;
+        }
+    }
+}

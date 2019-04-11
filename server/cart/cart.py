@@ -13,14 +13,7 @@ class Cart():
         self.session = request.session
         data = self.session.get(self.CART_SESSION_ID)
         if not data:
-            now = datetime.now().isoformat()
-            data = {
-                'created_at': now,
-                'modified_at': now,
-                'items': {},
-                'total_price': 0,
-                'quantity': 0,
-            }
+            data = self.get_empty_data()
             self.session[self.CART_SESSION_ID] = data
 
         self.data = data
@@ -64,7 +57,7 @@ class Cart():
         self.save()
 
     def update_quantity(self, offer_identifier, quantity):
-        item = self.data['items']['offer_identifier']
+        item = self.data['items'][offer_identifier]
         item['quantity'] = quantity
         item['total_price'] = item['price'] * quantity
         self.save()
@@ -98,6 +91,18 @@ class Cart():
         self.data['total_price'] = total_price
         self.data['items_quantity'] = items_quantity
 
+    def get_empty_data(self):
+        now = datetime.now().isoformat()
+        data = {
+            'created_at': now,
+            'modified_at': now,
+            'items': {},
+            'total_price': 0,
+            'total_quantity': 0,
+            'items_quantity': 0
+        }
+        return data
+
     @property
     def items_list(self):
         return list(self.data['items'].values())
@@ -111,5 +116,6 @@ class Cart():
 
     # Очистка корзины
     def clear(self):
-        del self.session[self.CART_SESSION_ID]
-        self.session.modified = True
+        data = self.get_empty_data()
+        self.session[self.CART_SESSION_ID] = data
+        self.data = data

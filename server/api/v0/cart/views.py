@@ -15,10 +15,36 @@ class BaseCartAPIView(APIView):
         self.cart = Cart(request)
 
 
+class CartApiView(BaseCartAPIView):
+
+    def delete(self, request):
+        self.cart.clear()
+        return Response(self.cart.data)
+
+
 class CartItemsApiView(BaseCartAPIView):
 
     def post(self, request):
         identifier = request.data['model']
         self.cart.add_offer(identifier)
-        print(self.cart.data)
+        return Response(self.cart.data)
+
+
+class CartItemDetailsApiView(BaseCartAPIView):
+
+    def put(self, request, identifier):
+        return Response({})
+
+    def delete(self, request, identifier):
+        self.cart.delete_offer(identifier)
+        return Response(self.cart.data)
+
+
+class CartItemQuantityApiView(BaseCartAPIView):
+
+    def get(self, request, identifier, quantity):
+        return Response({})
+
+    def put(self, request, identifier, quantity):
+        self.cart.update_quantity(identifier, quantity)
         return Response(self.cart.data)

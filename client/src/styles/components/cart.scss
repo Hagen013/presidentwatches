@@ -375,6 +375,7 @@
 .item-quantity {
     float: left;
     padding: 0px 14px;
+    user-select: none;
 }
 
 .cart-item__button {
