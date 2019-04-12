@@ -34,6 +34,9 @@ $(document).ready(function() {
             for (let i=0; i<images.length; i++) {
                 $(images[i]).removeClass('active');
             }
+            let fullRes = imageLink.attr('href');
+            let child = imageLink.children('img');
+            child.attr('src', fullRes);
             $(imageLink).addClass('active');
             
             image.onload = function() {

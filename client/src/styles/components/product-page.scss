@@ -24,8 +24,12 @@
     width: auto;
 }
 
+
 .product-front__img-link {
     display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: absolute;
     height: 100%;
     width: 100%;
@@ -35,15 +39,16 @@
     z-index: 0;
     opacity: 0;
     will-change: opacity;
+    overflow: hidden;
     @include mq($from: tablet) {
         padding: 10px 0px;
-        padding-left: 59px;
+        margin-left: 59px;
     }
     @include mq($from: desktop) {
-        padding-left: 66px;
+        margin-left: 66px;
     }
     @include mq($from: wide) {
-        padding-left: 70px;
+        margin-left: 70px;
     }
 }
 
