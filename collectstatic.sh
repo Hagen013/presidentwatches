@@ -32,8 +32,8 @@ STATIC_FILE_PATHS=(
     "css/styles.css"
     "js/common.js"
     "js/main.js"
-    "js/productPage.js",
-    "js/catalogPage.js",
+    "js/productPage.js"
+    "js/catalogPage.js"
     "js/cartPage.js"
 )
 
