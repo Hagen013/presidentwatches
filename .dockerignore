@@ -1,2 +1,9 @@
 ./server/venv
 /server/venv/
+/client/node_modules
+/client/src
+/client/static_production
+
+./client/node_modules
+./client/src
+./client/static_production
