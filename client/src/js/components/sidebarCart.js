@@ -59,6 +59,7 @@ export default class sidebarCart extends Component {
     }
 
     render() {
+        console.log('render');
         let self = this;
         let items = [];
         for (let key in store.state.cart.data.items) {

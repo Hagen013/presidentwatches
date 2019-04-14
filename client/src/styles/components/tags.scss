@@ -1,0 +1,35 @@
+.tags {
+    padding: 10px 0px;
+}
+
+.tag {
+    position: relative;
+    float: left;
+    height: 26px;
+    padding: 0px 26px 0px 8px;
+    line-height: 26px;
+    margin-right: 4px;
+    border: 1px solid $light-grey;
+    border-radius: 4px;
+    user-select: none;
+    &:last-of-type {
+        margin-right: 0px !important;
+    }
+}
+
+
+.tag__close {
+    height: 26px;
+    width: 26px;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+.tag__icon {
+    display: inline;
+    font-size: 10px !important;
+}

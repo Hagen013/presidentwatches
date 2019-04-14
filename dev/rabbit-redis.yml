@@ -1,0 +1,19 @@
+version: '2'
+
+services:
+  rabbit:
+    restart: unless-stopped
+    image: rabbitmq:3.6.11
+    environment:
+      - RABBITMQ_DEFAULT_USER=8800
+      - RABBITMQ_DEFAULT_PASS=8800pass
+      - RABBITMQ_DEFAULT_VHOST=8800vh
+    ports:
+      - "5672:5672"
+
+  redis:
+    restart: unless-stopped
+    hostname: redis
+    image: redis:latest
+    ports:
+      - "6379:6379"

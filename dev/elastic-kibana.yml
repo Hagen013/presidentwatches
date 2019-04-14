@@ -1,0 +1,30 @@
+version: '2'
+
+services:
+  elasticsearch:
+    restart: unless-stopped
+    build: 
+      context: ../
+      dockerfile: compose/elasticsearch/Dockerfile
+    volumes:
+      - /var/graph_market/elastic-snapshots:/var/graph_market/elastic-snapshots
+      - ../compose/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    hostname: elasticsearch
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+  kibana:
+    build: 
+      context: ../
+      dockerfile: compose/kibana/Dockerfile
+    volumes:
+      - /var/graph_market/elastic-snapshots:/var/graph_market/elastic-snapshots
+      - ../compose/kibana/config/:/usr/share/kibana/config
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    links:
+      - elasticsearch

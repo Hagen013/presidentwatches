@@ -179,12 +179,15 @@ class CategoryPageView(DiggPaginatorViewMixin, ListView):
 
         # Node values formating
         self.node_values = self.value_class.objects.filter(categories=self.category)
+        print(self.node_values)
         node_values_set = {str(value.id) for value in self.node_values}
         node_values = list(map(lambda x: {"key": x.attribute.key, "id": x.id}, self.node_values))
         node_values = json.dumps(node_values)
 
         context['sorting_option'] = self.sorting_option
         context['filters'] = self.get_filters()
+        context['node_values'] = node_values
+        context['tags'] = self.node_values
         
         return context
 

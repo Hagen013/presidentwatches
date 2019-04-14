@@ -8,8 +8,23 @@ export default {
         return state;
     },
     updateCart(state, payload) {
-        console.log('updating');
         state.cart.data = payload;
         return state
+    },
+    setBaseFacetes(state, payload) {
+        for (let i=0; i<payload.length; i++) {
+            let item = payload[i];
+
+            if (state.facetes.base[item.key] !== undefined) {
+                state.facetes.base[item.key].push(item.id);
+            } else {
+                state.facetes.base[item.key] = [item.id,]
+            }
+            if (state.facetes.active[item.key] !== undefined) {
+                state.facetes.active[item.key].push(item.id);
+            } else {
+                state.facetes.active[item.key] = [item.id,]
+            }
+        }
     }
 };

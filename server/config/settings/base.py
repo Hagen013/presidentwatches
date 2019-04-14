@@ -61,6 +61,7 @@ LOCAL_APPS = [
     'delivery',
     'tasks',
     'blog',
+    'search',
     'api'
 ]
 
@@ -205,3 +206,15 @@ STATICFILES_DIRS = (
 )
 # ------------------------------------------------------------------------------
 # STATIC FILES END
+
+
+# ELASTICSEARCH SETTINGS
+# ------------------------------------------------------------------------------
+ELASTICSEARCH_HOST = 'elasticsearch'
+ELASTICSEARCH_PORT = 9200
+ELASTICSEARCH_URL = 'http://{0}:{1}/'.format(ELASTICSEARCH_HOST, ELASTICSEARCH_PORT)
+ELASTICSEARCH_SNAPSHOT_REPO = 'backups'
+ELASTICSEARCH_SNAPSHOT_NAME = 'backup'
+ELASTICSEARCH_SNAPSHOT_DIR = '/var/graph_market/elastic-snapshots/'
+#-------------------------------------------------------------------------------
+# ELASTICSEARCH SETTINGS END

@@ -116,7 +116,7 @@
                     <div class="filter-panel">
                         <ul class="filter-values-list scrollable">
                         {% for value in filters[0].values %}
-                        <div class="filter-value">
+                        <div class="filter-value" data-id="{{value.id}}">
                             <span>{{ value.value }}</span>
                         </div>
                         {% endfor %}
@@ -150,18 +150,15 @@
             </div>
             <div class="catalog__right col col-12 d-col-9 w-col-10">
                 <div class="catalog__tags tags row">
+                    {% for tag in tags %}
                     <div class="tag">
-                        От 5500 ₽
+                        {{tag.value}}
+                        <div class="tag__close">
+                            <i class="icon icon_close tag__icon">
+                            </i>
+                        </div>
                     </div>
-                    <div class="tag">
-                        До 98 300 ₽
-                    </div>
-                    <div class="tag">
-                        США
-                    </div>
-                    <div class="tag">
-                        Красный
-                    </div>
+                    {% endfor %}
                 </div>
                 <div class="catalog__gallery row">
                     {% for product in products %}
@@ -325,5 +322,9 @@
 
 {% block javascript %}
     {{ super() }}
+    <script type="text/javascript">
+        var categoryId = {{category.id}};
+        var NODE_VALUES = '{{node_values}}'
+    </script>
     <script src="{{ static('js/catalogPage.js') }}"></script>
 {% endblock javascript %}

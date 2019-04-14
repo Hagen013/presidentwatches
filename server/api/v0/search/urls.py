@@ -6,7 +6,7 @@ from .views import FacetesApiView
 app_name = 'api'
 
 urlpatterns = [
-    path('facetes/<key>/', FacetesApiView.as_view())
+    path('facetes/', FacetesApiView.as_view())
 ]
 
 

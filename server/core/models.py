@@ -9,7 +9,8 @@ from .db.mixins import (TimeStampedMixin,
                         DescriptionMixin,
                         DimensionsMixin,
                         OrderableMixin,
-                        ImageMixin)
+                        ImageMixin,
+                        Searchable)
 from .db.fields import NameField, DescriptionField
 from .managers import NodeManager, NodePublicManager
 
@@ -139,7 +140,7 @@ class Offer(DescriptionMixin, DimensionsMixin, ImageMixin):
         super(Offer, self).save(*args, **kwargs)
 
 
-class AbstractOfferPage(WebPage, Offer):
+class AbstractOfferPage(WebPage, Offer, Searchable):
 
     upload_image_to = 'images/'
 

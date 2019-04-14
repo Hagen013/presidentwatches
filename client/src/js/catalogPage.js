@@ -1,23 +1,24 @@
+import store from '@/store/index.js'
+
 import { SortingController } from './controllers/sortingController.js'
+import Filter from '@/components/Filter.js'
+import Tag from '@/components/Tags'
+
 
 new SortingController('#sorting-bar');
 
-$('.filter-heading').click(function() {
-    let parent = this.parentElement;
-    $(parent).toggleClass('active');
+
+$(document).ready(function() {
+    NODE_VALUES = NODE_VALUES.replace(/&#34;/g, '"');
+    NODE_VALUES = JSON.parse(NODE_VALUES);
+    store.commit('setBaseFacetes', NODE_VALUES);
+
+    let filters = $('.filter');
+    
+    for (let i=0; i<filters.length; i++) {
+        let filterSelector = filters[i];
+        let filter = new Filter(filterSelector);
+    }    
 })
 
-function getFacetes(key) {
-    console.log('facetes');
-    let url = `/api/v0/search/facetes/${key}/`;
-    fetch(url).then(
-        response => {
-            console.log('success');
-            console.log(response);
-        },
-        response => {
-            console.log('success');
-            console.log(response);
-        }
-    )
-}
+// FILTERS BREADCRUMBS

@@ -348,24 +348,6 @@
     }
 }
 
-.tags {
-    padding: 10px 0px;
-}
-
-.tag {
-    float: left;
-    height: 26px;
-    padding: 0px 8px;
-    line-height: 26px;
-    margin-right: 4px;
-    border: 1px solid $light-grey;
-    border-radius: 4px;
-    user-select: none;
-    &:last-of-type {
-        margin-right: 0px !important;
-    }
-}
-
 .title {
     font-size: 18px;
     line-height: 1.33;

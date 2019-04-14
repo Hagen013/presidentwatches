@@ -5,5 +5,4 @@ from .dimensions_mixin import DimensionsMixin
 from .orderable import OrderableMixin
 from .image_mixin import ImageMixin
 from .hidden_mixin import HiddenMixin
-
-
+from .searchable import Searchable
