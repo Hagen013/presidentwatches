@@ -1,18 +1,14 @@
 import SimpleBar from 'simplebar';
 
-import { Cart } from '@/controllers/cartController.js';
 import SidebarCart from '@/components/sidebarCart.js'
 import SidebarLastSeen from '@/components/sidebarLastSeen.js'
-import store from '@/store/index.js';
+
 import STATE from '@/state/index.js';
 
 $(document).ready(function() {
 
     const sidebarCart = new SidebarCart();
     const lastSeen = new SidebarLastSeen();
-
-    STATE.cart = new Cart();
-    let cart = new Cart();
 
 
     let resolutions = {

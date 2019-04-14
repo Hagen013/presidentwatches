@@ -5,8 +5,8 @@ module.exports = {
     context: path.resolve(__dirname, "./src/js"),
     entry: {
         main: './main.js',
-        catalogPage: './catalogPage.js',
         productPage: './productPage.js',
+        catalogPage: './catalogPage.js',
         cartPage: './cartPage.js'
     },
     output: {
@@ -20,13 +20,24 @@ module.exports = {
             '@': path.join(__dirname, './src/js')
         }
     },
+    module: {
+        rules: [
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: {
+                  loader: "babel-loader"
+                }
+            }
+        ]
+    },
     optimization: {
         runtimeChunk: {
             name: "common"
         },
         splitChunks: {
             cacheGroups: {
-                commons: {
+                common: {
                     name: 'common',
                     chunks: 'all'
                 }
