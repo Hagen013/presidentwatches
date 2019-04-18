@@ -9,7 +9,7 @@ class FacetesApiView(APIView):
 
     def get(self, request):
         slug = request.GET.get("key")
-        fields = set(request.GET.keys()).difference({'slug', slug})
+        fields = set(request.GET.keys()).difference({'key', slug})
         body = {
             "size": 0,
             "query": {
@@ -41,7 +41,6 @@ class FacetesApiView(APIView):
             doc_type="product",
             body=body
         )
-        print(body)
 
         return Response(response)
 
