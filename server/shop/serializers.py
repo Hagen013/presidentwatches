@@ -138,6 +138,19 @@ class AttributeValueSerializer(serializers.ModelSerializer):
         )
 
 
+class AttributeValuePublicSerializer(serializers.ModelSerializer):
+    """
+    Serializer для Value из EAV, отображеине Attribute, используемое в публичном клиентн
+    """
+
+    class Meta:
+        model = AttributeValue
+        fields = (
+            'id',
+            'value'
+        )
+
+
 class AttributeSerializer(serializers.ModelSerializer):
     """
     Serializer для Attribute, предусматривающий отображение вложенных списков

@@ -1,7 +1,11 @@
-import store from '@/store/index.js';
+import store from '@/store/index.js'
 import api from '@/api/index.js'
 
-import Component from '@/lib/component.js';
+import Component from '@/lib/component.js'
+import SimpleBar from 'simplebar'
+
+import getRedirectionUrl from '@/utils/getRedirectionUrl'
+import fuzzy from 'fuzzysearch'
 
 
 export default class filter extends Component {
@@ -16,6 +20,8 @@ export default class filter extends Component {
     initialize() {
         this.bindMethods();
         this.key = this.element.getAttribute('data-key');
+        this.$element = $(this.element);
+        this.initialized = false;
     }
 
     bindMethods() {
@@ -30,7 +36,9 @@ export default class filter extends Component {
         let self = this;
         $(this.element).toggleClass('active');
         if ( $(this.element).hasClass('active') ) {
-            self.getCounts();
+            if (!this.initialized) {
+                self.getCounts();
+            }
         }
     }
 
@@ -48,39 +56,107 @@ export default class filter extends Component {
             })
     }
 
-    handleSuccessfulCountsResponse(response) {
-        let mapping = {};
-        let buckets = response.data.aggregations.facet.buckets;
-        let values = $(this.element).find('.filter-value');
-        console.log(values.length);
-
-        for (let i=0; i<buckets.length; i++) {
-            mapping[buckets[i]['key']] = buckets[i]['doc_count'];
+    getRedirectionCounts(element) {
+        let self = this;
+        let url = `/search/facetes/${this.key}/count/`;
+        let params = {};
+        for (let key in store.state.facetes.active) {
+            params[key] = store.state.facetes.active[key].join(',')
         }
-        for (let c=0; c<values.length; c++) {
-            let id = Number(values[c].getAttribute('data-id'));
-            let count = mapping[id];
-            let countEl = values[c].querySelector('.filter-count');
+        api.get(url, {params: params})
+            .then(response => {
+                let count = response.data.hits.total;
+                let url = getRedirectionUrl();
 
-            count = count == undefined ? 0 : count;
-            $(countEl).text(count);
-        }
-        let sortedValues = $(values).sort(function(a, b) {
-            let aVal = Number($(a).find('.filter-count').text());
-            let bVal = Number($(b).find('.filter-count').text());
-            return bVal - aVal
-        })
-
-        for (let i=0; i<sortedValues.length; i++) {
-            let t = $(sortedValues[i].querySelector('.filter-count')).text();
-        }
-        $(this.element).find('ul').html(sortedValues);
+                $('.filter-result').remove();
+                $('.catalog__filters').prepend(`
+                <div class="filter-result">
+                    <a href="${url}">
+                    Найдено ${count} позиций
+                    <div class="bold filter-result__watch">ПОКАЗАТЬ</div>
+                    </a>
+                </div>
+                `)
+                let offset = element.offset().top - $('.catalog__filters').offset().top - 8;
+                $('.filter-result').css('top', offset);
+            })
+            .catch(error => {
+                console.log(error);
+            })
     }
 
-    handleClick() {
+    handleSuccessfulCountsResponse(response) {
+        let values = response.data.values;
+        let counts = response.data.counts;
+        let mapping = {};
 
+        for (let i=0; i<counts.length; i++) {
+            mapping[counts[i].key] = counts[i].doc_count; 
+        }
+
+        for (let z=0; z<values.length; z++) {
+            let count = mapping[values[z].id];
+            count = count === undefined ? 0 : count
+            values[z].count = count;
+        }
+        this.values = values.sort( (a, b) => {
+            return b.count - a.count
+        })
+        this.render();
     }
 
     render() {
+        let self = this;
+        let valuesList = this.element.querySelector('.filter-values-list');
+        let isScrollable = this.values.length > 8;
+
+        valuesList.innerHTML = `${this.values.map(value => {
+            return `
+            <li class="filter-value" data-id=${value.id}>
+                <span class="filter-text">${value.value}</span>
+                <span class="filter-count">
+                ${value.count}
+                </span>
+            </li>
+            `
+        }).join('')}`;
+        // Привязка активных значений
+        let activeValues = store.state.facetes.active[this.key];
+        if (activeValues !== undefined) {
+            for (let i=0; i<activeValues.length; i++) {
+                let selector = `*[data-id="${activeValues[i]}"]`;
+                $(this.element).find(selector).addClass('active');
+            }
+        }
+        $(valuesList).children('.filter-value').click(function() {
+            let valueId = Number(this.getAttribute('data-id'));
+            let button = $(this);
+            button.toggleClass('active');
+            if (button.hasClass('active')) {
+                store.commit('addActiveOption', {key: self.key, value: valueId});
+            } else {
+                store.commit('removeActiveOption', {key: self.key, value: valueId});
+            }
+            self.getRedirectionCounts(button);
+        })
+        // Если необходим scroll
+        if (isScrollable) {
+            this.element.querySelector('.input filter-input')
+            new SimpleBar(valuesList, { autoHide: false });
+            this.$element.find('.filter-input-box').removeClass('hidden');
+            $('.filter-input').keyup(function() {
+                let search = this.value.toLowerCase();
+                let listValues = self.element.getElementsByClassName('filter-value');
+                for (let i=0; i<listValues.length; i++) {
+                    let value = listValues[i];
+                    let target = value.childNodes[1].innerText.toLowerCase();
+                    if (fuzzy(search, target)) {
+                        $(value).removeClass('hidden');
+                    } else {
+                        $(value).addClass('hidden');
+                    }
+                }
+            })
+        }
     }
 };

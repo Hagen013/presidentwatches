@@ -13,7 +13,6 @@ export default class Component {
         if (props.hasOwnProperty('storeModules')) {
             for (let i=0; i<props.storeModules; i++) {
                 let eventName = `stateChange:${props.storeModules[i]}`;
-                console.log('subscribing to ${eventName}');
                 props.store.events.subscribe(eventName, () => self.render());
             }
         }

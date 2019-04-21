@@ -371,6 +371,7 @@
 }
 
 .catalog__left {
+    position: relative;
     display: none;
     @include mq($from: desktop) {
         display: block;

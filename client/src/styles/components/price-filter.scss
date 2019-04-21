@@ -1,0 +1,29 @@
+.price-filter {
+    padding-bottom: 20px;
+    margin-bottom: 6px;
+    border-bottom: 1px solid $grey;
+}
+
+.price-filter-title {
+    font-size: 14px;
+    margin-bottom: 14px;
+}
+
+.price-filter-box {
+    display: inline-block;
+    height: 36px;
+    width: 80px;
+    @include mq($from: wide) {
+        width: 76px;
+    }
+}
+
+.price-filter-delimeter {
+    display: inline-block;
+}
+
+.price-filter-inputs {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

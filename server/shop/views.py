@@ -1,9 +1,12 @@
 import json
+from itertools import chain
+from collections import defaultdict
 
 import django_filters
 from django_filters import Filter
 from django_filters.fields import Lookup
 
+from django.db.models import Max, Min
 from django.views.generic import TemplateView, ListView
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
@@ -63,6 +66,9 @@ class CategoryPageView(DiggPaginatorViewMixin, ListView):
                 querydict
             )
         self.category = self.get_category(slug=slug)
+
+        self.added_values = []
+
         querylength = len(request.GET.keys())
         if querylength > 0:
             self.exact_category = self.get_exact_category(request)
@@ -107,6 +113,10 @@ class CategoryPageView(DiggPaginatorViewMixin, ListView):
             exact_node = exact_nodes[0]
         except IndexError:
             exact_node = self.category.get_root()
+
+        # Сохранение добавленных через GET-параметры значений для
+        # дальнейшнего использования (оптимизация)
+        self.added_values = self.value_class.objects.filter(id__in=added_values)
         return exact_node
 
     def get_redirect_queryparams(self, node):
@@ -148,7 +158,7 @@ class CategoryPageView(DiggPaginatorViewMixin, ListView):
                 else:
                     queryparams[key] = [value.id]
 
-            qs = self.product_class.objects.filter(is_in_stock=True)
+            qs = self.product_model.objects.filter(is_in_stock=True)
             for key, values in queryparams.items():
                 if key in self.attrs_set:
                     qs = qs.filter(attribute_values__in=values)
@@ -173,22 +183,35 @@ class CategoryPageView(DiggPaginatorViewMixin, ListView):
         self.sorting_option = sort_by[0]
         return self.get_default_queryset(*args, **kwargs).order_by(*sort_by)
 
+    def get_prices(self, qs):
+        prices = qs.aggregate(Min('_price'), Max('_price'))
+        prices['price__gte'] = self.request.GET.get('price__gte', None)
+        prices['price__lte'] = self.request.GET.get('price__lte', None)
+        print(prices)
+        return prices
+
     def get_context_data(self, *args, **kwargs):
         context = super(CategoryPageView, self).get_context_data(**kwargs)
         context['category'] = self.category
 
-        # Node values formating
-        self.node_values = self.value_class.objects.filter(categories=self.category)
-        print(self.node_values)
-        node_values_set = {str(value.id) for value in self.node_values}
-        node_values = list(map(lambda x: {"key": x.attribute.key, "id": x.id}, self.node_values))
-        node_values = json.dumps(node_values)
-
         context['sorting_option'] = self.sorting_option
         context['filters'] = self.get_filters()
-        context['node_values'] = node_values
-        context['tags'] = self.node_values
-        
+
+        # Значения в тегах
+        self.node_values = self.value_class.objects.filter(categories=self.category)
+        node_values_json = list(map(lambda tag: {"key": tag.attribute.key, "id": tag.id}, self.node_values))
+        node_values_json = json.dumps(node_values_json)
+        tags = list(chain(self.node_values, self.added_values))
+        tags = sorted(tags, key=lambda x: x.attribute.order)
+        tags_json = list(map(lambda tag: {"key": tag.attribute.key, "id": tag.id}, tags))
+        tags_json = json.dumps(tags_json)
+        context['tags'] = tags
+        context['tags_json'] = tags_json
+        context['node_values_json'] = node_values_json
+
+        # Цены
+        context['prices'] = self.get_prices(context['products'])
+
         return context
 
 

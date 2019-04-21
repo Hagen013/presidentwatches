@@ -190,6 +190,9 @@ class CategoryPage(AbstractCategoryPage):
         through=inputs_relation_class,
     )
 
+    def get_root(self):
+        return self._tree_manager.filter(_depth=0).order_by('created_at')[0]
+
     # must be implemented by a subclass
     def get_absolute_url(self):
         return '/watches/{slug}/'.format(

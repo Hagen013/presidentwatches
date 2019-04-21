@@ -90,21 +90,22 @@ class NodeManager(TreeManager):
         elif len(values) == 0:
             return self.get_queryset().filter(level=0).order_by("id")
         query = """
-        SELECT "shop_cubes_cubescategorynode"."id", COUNT("shop_cubes_cubescategorynodeattributevaluerelation"."attributevalue_id") AS "len_av"
-        FROM "shop_cubes_cubescategorynode"
-        INNER JOIN "shop_cubes_cubescategorynodeattributevaluerelation"
-        ON ("shop_cubes_cubescategorynodeattributevaluerelation"."category_id"="shop_cubes_cubescategorynode"."id")
-        INNER JOIN "shop_cubes_cubesattributevalue"
-        ON ("shop_cubes_cubesattributevalue"."id"="shop_cubes_cubescategorynodeattributevaluerelation"."attributevalue_id")
-        WHERE "shop_cubes_cubescategorynode"."id" NOT IN (
-            SELECT "shop_cubes_cubescategorynode"."id"
-            FROM "shop_cubes_cubescategorynode"
-            INNER JOIN "shop_cubes_cubescategorynodeattributevaluerelation"
-            ON ("shop_cubes_cubescategorynode"."id" = "shop_cubes_cubescategorynodeattributevaluerelation"."category_id")
-            WHERE "shop_cubes_cubescategorynodeattributevaluerelation"."attributevalue_id" NOT IN {values}
-            GROUP BY "shop_cubes_cubescategorynode"."id"
+        SELECT "shop_categorypage"."id", COUNT("shop_categoryvaluerelation"."value_id") AS "len_av"
+        FROM "shop_categorypage"
+        INNER JOIN "shop_categoryvaluerelation"
+        ON ("shop_categoryvaluerelation"."entity_id"="shop_categorypage"."id")
+        INNER JOIN "shop_attributevalue"
+        ON ("shop_attributevalue"."id"="shop_categoryvaluerelation"."value_id")
+        WHERE "shop_categorypage"."id" NOT IN (
+            SELECT "shop_categorypage"."id"
+            FROM "shop_categorypage"
+            INNER JOIN "shop_categoryvaluerelation"
+            ON ("shop_categorypage"."id" = "shop_categoryvaluerelation"."entity_id")
+            WHERE "shop_categoryvaluerelation"."value_id" NOT IN {values}
+            GROUP BY "shop_categorypage"."id"
         )
-        GROUP BY "shop_cubes_cubescategorynode"."id"
+        GROUP BY "shop_categorypage"."id"
+        ORDER BY "len_av" DESC, "shop_categorypage"."scoring" DESC
         """.format(values=values)
 
         qs = self.raw(query)

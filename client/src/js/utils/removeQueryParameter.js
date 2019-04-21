@@ -21,8 +21,12 @@ export default function removeQueryParameter(url, parameter) {
                 parts.splice(i, 1);
             }
         }
-
-        url = urlBase + '?' + parts.join('&');
+        if (parts.length>0) {
+            url = urlBase + '?' + parts.join('&');
+        }
+        else {
+            url = urlBase;
+        }
     }
 
     return url;

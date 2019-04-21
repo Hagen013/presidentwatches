@@ -23,7 +23,6 @@ export default class sidebarCart extends Component {
         let model = $(target).parents('.card-mini').attr('data-model');
         let quantity = Number($(target).siblings('.item-quantity').text());
         quantity -= 1;
-        console.log(quantity)
         if (quantity <= 0 ) {
             store.dispatch('removeFromCart', {model: model});
         } else {
@@ -59,7 +58,6 @@ export default class sidebarCart extends Component {
     }
 
     render() {
-        console.log('render');
         let self = this;
         let items = [];
         for (let key in store.state.cart.data.items) {

@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 
+{% block css %}
+    {{ super() }}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" type="text/css" media="all" />
+{% endblock css %}
+
 {% block content %}
     <div class="title-area">
         <div class="content-area content-area_block">
@@ -100,8 +105,39 @@
 
     <div class="content-area content-area_block">
         <div class="catalog row">
-            <div class="catalog__left col col-1 d-col-3 w-col-2">
+            <div class="catalog__left catalog__filters col col-1 d-col-3 w-col-2">
+                <div class="price-filter" id="price-filter">
+                    <div class="price-filter-title">
+                        <span class="price">
+                        Цена, 
+                        </span>
+                    </div>
+                    <div class="price-filter-inputs">
+                        <div class="price-filter-box">
+                            <input class="input" value="{{prices['_price__min']}}">
+                        </div>
+                        <div class="price-filter-delimeter">
+                        —
+                        </div>
+                        <div class="price-filter-box">
+                            <input class="input" value="{{prices['_price__max']}}">
+                        </div>
+                        <div class="price-filter-remove">
+                            <i class="icon icon_close">
+                            </i>
+                        </div>
+                    </div>
+                    <div class="price-filter-slider">
 
+<div id="slider-range" class="price-filter-range" name="rangeInput"></div>
+
+<div style="margin:30px auto">
+    <input type="number" min=0 max="9900" oninput="validity.valid||(value='0');" id="min_price" class="price-range-field" />
+    <input type="number" min=0 max="10000" oninput="validity.valid||(value='10000');" id="max_price" class="price-range-field" />
+</div>
+
+                    </div>
+                </div>
                 <div class="filter"
                     data-id="{{filters[0].id}}"
                     data-key={{filters[0].key}}
@@ -114,14 +150,11 @@
                         </i>
                     </div>
                     <div class="filter-panel">
-                        <ul class="filter-values-list scrollable">
-                        {% for value in filters[0].values %}
-                        <div class="filter-value" data-id="{{value.id}}">
-                            <span>{{ value.value }}</span>
-                            <span class="filter-count">
-                            </span>
+                        <div class="filter-input-box hidden">
+                            <input class="input filter-input">
+                            <i class="icon icon_search filter-search-icon"></i>
                         </div>
-                        {% endfor %}
+                        <ul class="filter-values-list">
                         </ul>
                     </div>
                 </div>
@@ -139,12 +172,11 @@
                         </i>
                     </div>
                     <div class="filter-panel">
-                        <ul class="filter-values-list scrollable">
-                        {% for value in item.values %}
-                        <div class="filter-value">
-                            <span>{{ value.value }}</span>
+                        <div class="filter-input-box hidden">
+                            <input class="input filter-input">
+                            <i class="icon icon_search filter-search-icon"></i>
                         </div>
-                        {% endfor %}
+                        <ul class="filter-values-list">
                         </ul>
                     </div>
                 </div>
@@ -153,7 +185,22 @@
             <div class="catalog__right col col-12 d-col-9 w-col-10">
                 <div class="catalog__tags tags row">
                     {% for tag in tags %}
-                    <div class="tag">
+                    <div class="tag"
+                        data-attribute="{{tag.attribute.key}}"
+                        data-value="{{tag.id}}"
+                    >
+                        {{tag.attribute.name}}:{{tag.value}}
+                        <div class="tag__close">
+                            <i class="icon icon_close tag__icon">
+                            </i>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% for tag in added_values %}
+                    <div class="tag" 
+                        data-attribute="{{tag.attribute.key}}"
+                        data-value="{{tag.id}}"
+                    >
                         {{tag.value}}
                         <div class="tag__close">
                             <i class="icon icon_close tag__icon">
@@ -231,9 +278,10 @@
                             СЛЕДУЮЩАЯ
                         </a>
                         {% else %}
-                        <div class="pagination-load_disabled page-btn_next hide-mb">
+                        <a class="page-btn page-btn_next hide-mb page-btn_disabled"
+                        >
                             СЛЕДУЮЩАЯ
-                        </div>
+                        </a>
                         {% endif %}
                         <div class="clearfix">
                         </div>
@@ -325,8 +373,9 @@
 {% block javascript %}
     {{ super() }}
     <script type="text/javascript">
-        var categoryId = {{category.id}};
-        var NODE_VALUES = '{{node_values}}'
+        var TAGS = "{{tags_json}}";
+        var CORE_VALUES = "{{node_values_json}}";
     </script>
+    <script src="{{ static('js/jquery-ui.min.js') }}"></script>
     <script src="{{ static('js/catalogPage.js') }}"></script>
 {% endblock javascript %}

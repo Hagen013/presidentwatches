@@ -43,7 +43,6 @@ export default {
     clearCart(context, payload) {
         api.delete('/cart/')
             .then(response => {
-                console.log(response.data);
                 context.commit('updateCart', response.data);
             })
             .catch(error => {
