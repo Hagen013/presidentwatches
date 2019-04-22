@@ -2,7 +2,7 @@
 
 {% block css %}
     {{ super() }}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" type="text/css" media="all"/>
 {% endblock css %}
 
 {% block content %}
@@ -114,13 +114,27 @@
                     </div>
                     <div class="price-filter-inputs">
                         <div class="price-filter-box">
-                            <input class="input" value="{{prices['_price__min']}}">
+                            <input
+                                min="{{price__min}}"
+                                max="{{price__max-100}}"
+                                oninput="validity.valid||(value='{{price__min}}'"
+                                id="min_price"
+                                class="input"
+                                value="{{price__gte}}"
+                            />
                         </div>
                         <div class="price-filter-delimeter">
                         —
                         </div>
                         <div class="price-filter-box">
-                            <input class="input" value="{{prices['_price__max']}}">
+                            <input
+                                min="{{price__min}}"
+                                max="{{price__max}}"
+                                oninput="validity.valid||(value='{{price__max}}'"
+                                id="max_price"
+                                class="input"
+                                value="{{price__lte}}"
+                            />
                         </div>
                         <div class="price-filter-remove">
                             <i class="icon icon_close">
@@ -128,14 +142,10 @@
                         </div>
                     </div>
                     <div class="price-filter-slider">
-
-<div id="slider-range" class="price-filter-range" name="rangeInput"></div>
-
-<div style="margin:30px auto">
-    <input type="number" min=0 max="9900" oninput="validity.valid||(value='0');" id="min_price" class="price-range-field" />
-    <input type="number" min=0 max="10000" oninput="validity.valid||(value='10000');" id="max_price" class="price-range-field" />
-</div>
-
+	                    <div id="slider-range" 
+                            class="price-filter-range"
+                            name="rangeInput">
+                        </div>
                     </div>
                 </div>
                 <div class="filter"
@@ -184,6 +194,28 @@
             </div>
             <div class="catalog__right col col-12 d-col-9 w-col-10">
                 <div class="catalog__tags tags row">
+                    {% if price__gte != price__min %}
+                    <div class="tag tag-price" data-param="price__gte">
+                        <span class="price">
+                            От {{price__gte}}
+                        </span>
+                        <div class="tag__close">
+                            <i class="icon icon_close tag__icon">
+                            </i>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if price__lte != price__max %}
+                    <div class="tag tag-price" data-param="price__lte">
+                        <span class="price">
+                            До {{price__lte}}
+                        </span>
+                        <div class="tag__close">
+                            <i class="icon icon_close tag__icon">
+                            </i>
+                        </div>
+                    </div>
+                    {% endif %}
                     {% for tag in tags %}
                     <div class="tag"
                         data-attribute="{{tag.attribute.key}}"
@@ -245,6 +277,7 @@
                     {% endfor %}
                 </div>
 
+                {% if is_paginated %}
                 <div class="pagination catalog__pagination">
                     <div class="pagination__load-mobile button button_big button_filled show-mb">
                         ПОКАЗАТЬ ЕЩЁ
@@ -287,6 +320,7 @@
                         </div>
                     </div>
                 </div>
+                {% endif %}
 
             </div>
         </div>
@@ -375,6 +409,8 @@
     <script type="text/javascript">
         var TAGS = "{{tags_json}}";
         var CORE_VALUES = "{{node_values_json}}";
+        var PRICE_MIN = {{price__min}};
+        var PRICE_MAX = {{price__max}};
     </script>
     <script src="{{ static('js/jquery-ui.min.js') }}"></script>
     <script src="{{ static('js/catalogPage.js') }}"></script>

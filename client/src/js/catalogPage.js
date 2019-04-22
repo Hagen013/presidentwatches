@@ -4,6 +4,7 @@ import Filter from '@/components/Filter.js'
 import priceSlider from '@/components/priceSlider.js'
 
 import getRedirectionUrl from '@/utils/getRedirectionUrl'
+import removeQueryParameter from '@/utils/removeQueryParameter'
 
 
 $(document).ready(function() {
@@ -26,11 +27,18 @@ $(document).ready(function() {
 
     $(".tag__close").click(function() {
         let $parent = $(this).parent();
-        let attribute = $parent.attr('data-attribute');
-        let value = Number($parent.attr('data-value'));
-        store.commit('removeActiveOption', {key: attribute, value: value});
-        let url = getRedirectionUrl();
-        window.location = url;
+        if ( !$parent.hasClass('tag-price') ) {
+            let attribute = $parent.attr('data-attribute');
+            let value = Number($parent.attr('data-value'));
+            store.commit('removeActiveOption', {key: attribute, value: value});
+            let url = getRedirectionUrl();
+            window.location = url;
+        } else {
+            let param = $parent.attr('data-param');
+            let query = document.location.search;
+            query = removeQueryParameter(query, param);
+            document.location.search = query;
+        }
     })
     
 })

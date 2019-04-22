@@ -170,7 +170,7 @@
             color: $dark-grey;
             border-left: 1px solid $grey;
             border-right: 1px solid $grey;
-            z-index: 400;
+            z-index: 9900;
             &:after {
                 content: "";
                 position: absolute;

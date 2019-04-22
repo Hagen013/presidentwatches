@@ -167,12 +167,17 @@ class CategoryPageView(DiggPaginatorViewMixin, ListView):
 
         qs = qs.filter(is_in_stock=True)
 
+        self.prices = {}
+        self.prices = qs.aggregate(Min('_price'), Max('_price'))
+        self.prices['price__gte'] = self.request.GET.get('price__gte', self.prices['_price__min'])
+        self.prices['price__lte'] = self.request.GET.get('price__lte', self.prices['_price__max'])
+
         qs = self.filter_class(
             self.request.GET,
             queryset=qs
-        ).qs
+        ).qs.distinct()
 
-        return qs.distinct()
+        return qs
 
     def get_queryset(self, *args, **kwargs):
         sorting_option = self.request.GET.get('sort_by')
@@ -181,14 +186,8 @@ class CategoryPageView(DiggPaginatorViewMixin, ListView):
             self.default_sorting_option
         )
         self.sorting_option = sort_by[0]
-        return self.get_default_queryset(*args, **kwargs).order_by(*sort_by)
-
-    def get_prices(self, qs):
-        prices = qs.aggregate(Min('_price'), Max('_price'))
-        prices['price__gte'] = self.request.GET.get('price__gte', None)
-        prices['price__lte'] = self.request.GET.get('price__lte', None)
-        print(prices)
-        return prices
+        qs = self.get_default_queryset(*args, **kwargs).order_by(*sort_by)
+        return qs
 
     def get_context_data(self, *args, **kwargs):
         context = super(CategoryPageView, self).get_context_data(**kwargs)
@@ -210,7 +209,10 @@ class CategoryPageView(DiggPaginatorViewMixin, ListView):
         context['node_values_json'] = node_values_json
 
         # Цены
-        context['prices'] = self.get_prices(context['products'])
+        context['price__min'] = self.prices['_price__min']
+        context['price__max'] = self.prices['_price__max']
+        context['price__lte'] = self.prices['price__lte']
+        context['price__gte'] = self.prices['price__gte']
 
         return context
 
