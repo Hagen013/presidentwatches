@@ -47,3 +47,12 @@ services:
     env_file:
       - env/postgres_web
 
+  elasticsearch:
+    image: graphmarket/elasticsearch-pw:latest
+    restart: unless-stopped
+    hostname: elasticsearch
+    build:
+      context: .
+      dockerfile: ./compose/elasticsearch/Dockerfile
+    volumes:
+      - /var/graph_market:/var/graph_market
