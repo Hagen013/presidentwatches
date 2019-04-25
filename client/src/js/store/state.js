@@ -1,4 +1,7 @@
 export default {
+    device: {
+        resolutionMode: 'unknown'
+    },
     cart: {
     },
     facetes: {

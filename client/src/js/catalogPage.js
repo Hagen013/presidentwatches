@@ -1,4 +1,5 @@
 import store from '@/store/index.js'
+import state from '@/state/index.js'
 import { SortingController } from './controllers/sortingController.js'
 import Filter from '@/components/Filter.js'
 import priceSlider from '@/components/priceSlider.js'
@@ -21,6 +22,23 @@ $(document).ready(function() {
         let filterSelector = filters[i];
         let filter = new Filter(filterSelector);
     }
+
+    // мобильные фильтры
+    // оптимизировать таким образом, чтобы работало только для мобильного разрешения
+    
+    function dublicateDesktopFilters() {
+        let $drawerFiltersList = $('.drawer-filters-list');
+        $drawerFiltersList.append(filters.clone());
+    }
+    if (state.device._mode === 'mobile') {
+        dublicateDesktopFilters();
+    }
+    state.device.registerListener(function() {
+        if (state.device._mode === 'mobile') {
+
+        }
+    });
+    //
 
     new SortingController('#sorting-bar');
     new priceSlider();

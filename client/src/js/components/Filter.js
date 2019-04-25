@@ -53,6 +53,8 @@ export default class filter extends Component {
                 self.handleSuccessfulCountsResponse(response);
             })
             .catch(error => {
+                console.log('ERROR');
+                console.log(error);
             })
     }
 

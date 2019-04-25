@@ -1,4 +1,12 @@
 export default {
+
+    // DEVICE
+    setResolutionMode(state, payload) {
+        state.device.resolutionMode = payload;
+    },
+    // END DEVICE
+
+    // CART
     addItem(state, payload) {
         state.items.push(payload);
         return state;
@@ -11,6 +19,9 @@ export default {
         state.cart.data = payload;
         return state
     },
+    // END CART
+
+    // FACETES FILTERS -> split to a separate modile
     setActiveFacetes(state, payload) {
         for (let i=0; i<payload.length; i++) {
             let item = payload[i];
@@ -32,7 +43,6 @@ export default {
             }
         }
     },
-
     addActiveOption(state, payload) {
         let key = payload['key'];
         let value = payload['value'];
@@ -105,6 +115,6 @@ export default {
                 }
             }
         }
-        console.log(state.facetes.active)
     },
+    // END FACETES
 };

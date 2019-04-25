@@ -42,20 +42,6 @@
                     </div>
                 </div>
             </div>
-            <div class="title-area__tags tags row">
-                <div class="tag">
-                    От 5500 ₽
-                </div>
-                <div class="tag">
-                    До 98 300 ₽
-                </div>
-                <div class="tag">
-                    США
-                </div>
-                <div class="tag">
-                    Красный
-                </div>
-            </div>
             <div class="title-area__sorting row">
                 <div class="title-area__count-wrap col col-12 d-col-3 w-col-2">
                     <div class="title-area__count">
@@ -267,8 +253,8 @@
                                     {{product.price}} ₽
                                 </div>
                                 <div class="product-card__extra">
-                                    <div class="mini-button mini-button_like">
-                                        <i class="icon icon_heart">
+                                    <div class="product-card__favorite like">
+                                        <i class="icon icon-like">
                                         </i>
                                     </div>
                                 </div>
@@ -342,22 +328,14 @@
             </div>
             <div class="drawer-filters-body">
                 <ul class="drawer-filters-list">
-                    {% for item in filters %}
-                    <div class="filter">
-                        <div class="filter-heading">
-                            <div class="filter-title">
-                                {{item.name}}
-                            </div>
-                        </div>
-                        <div class="filter-panel">
-                        </div>
-                    </div>
-                    {% endfor %}
                 </ul>
             </div>
             <div class="drawer-filters-footer">
                 <div class="button button_accent">
                     Показать 777 товаров
+                </div>
+                <div class="button button_ghost">
+                    Очистить
                 </div>
             </div>
         </div>
