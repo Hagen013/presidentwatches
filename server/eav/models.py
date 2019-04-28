@@ -205,8 +205,16 @@ class EavEntityMixin(models.Model):
         relation.save()
         return relation
         
-    def remove_value(self, values):
-        pass
+    def remove_value(self, value):
+        try:
+            relation = self.value_relation_class(
+                entity=self,
+                value=value
+            )
+            return relation.delete()
+        except:
+            pass
+        
 
     def update_values_from_list(self, values):
         """

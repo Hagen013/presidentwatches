@@ -1,3 +1,5 @@
+from django.core.exceptions import ObjectDoesNotExist
+
 from operator import itemgetter
 
 from django.db import models
@@ -110,6 +112,18 @@ class WatchesProductMixin(models.Model):
         return groups
 
     def save(self):
+        
+        # Скидка
+        if self._price < self.old_price:
+            try:
+                value = self.value_class.objects.get(
+                    attribute__name='Распродажа',
+                    value_bool=True
+                )
+                self.add_value(value)
+            except ObjectDoesNotExist:
+                pass
+
         super(WatchesProductMixin, self).save()
 
 

@@ -169,6 +169,13 @@ class CategoryPageView(DiggPaginatorViewMixin, ListView):
 
         self.prices = {}
         self.prices = qs.aggregate(Min('_price'), Max('_price'))
+
+        if self.prices['_price__min'] is None:
+            self.prices['_price__min'] = 0
+
+        if self.prices['_price__max'] is None:
+            self.prices['_price__max'] = 10000
+
         self.prices['price__gte'] = self.request.GET.get('price__gte', self.prices['_price__min'])
         self.prices['price__lte'] = self.request.GET.get('price__lte', self.prices['_price__max'])
 
@@ -213,7 +220,7 @@ class CategoryPageView(DiggPaginatorViewMixin, ListView):
         context['price__max'] = self.prices['_price__max']
         context['price__lte'] = self.prices['price__lte']
         context['price__gte'] = self.prices['price__gte']
-
+        
         return context
 
 
