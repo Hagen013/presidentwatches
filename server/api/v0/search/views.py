@@ -1,11 +1,30 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from elasticsearch import Elasticsearch
 
 from config.es_client import es_client
 
 from shop.models import AttributeValue
 from shop.serializers import AttributeValuePublicSerializer
+from search.patterns import generate_from_pattern
+
+
+class SearchApiView(APIView):
+
+    def get(self, request):
+        query = request.GET.get('line', '')
+        client = Elasticsearch()
+        body = generate_from_pattern(query)
+        response = client.search(
+            index='store',
+            doc_type='category,product',
+            body=body
+        )
+        return Response(
+            response['hits']['hits'],
+            status=status.HTTP_200_OK
+        )
 
 
 class FacetesApiView(APIView):

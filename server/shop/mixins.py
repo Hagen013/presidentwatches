@@ -72,6 +72,14 @@ class WatchesProductMixin(models.Model):
     )
 
     @property
+    def name(self):
+        return "{brand} {series} {model}".format(
+            self.brand,
+            self.series,
+            self.model
+        )
+
+    @property
     def grouped_attributes(self):
         groups = {}
         for value_instance in self.attribute_values.all().order_by('attribute__group', 'attribute', 'order'):

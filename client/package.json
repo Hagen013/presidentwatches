@@ -18,6 +18,7 @@
     "axios": "^0.18.0",
     "babel-loader": "^8.0.5",
     "browser-sync": "^2.26.3",
+    "debounce": "^1.2.0",
     "fontforge": "0.0.4",
     "fuzzysearch": "^1.0.3",
     "gulp": "^3.9.1",

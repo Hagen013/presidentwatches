@@ -91,7 +91,7 @@ class ProductPage(AbstractOfferPage, EavEntityMixin, WatchesProductMixin, Yandex
     )
 
     def get_absolute_url(self):
-        return '/watches/{slug}/'.format(
+        return '/shop/watches/{slug}'.format(
             slug=self.slug
         )
 
@@ -195,7 +195,7 @@ class CategoryPage(AbstractCategoryPage):
 
     # must be implemented by a subclass
     def get_absolute_url(self):
-        return '/watches/{slug}/'.format(
+        return '/watches/{slug}'.format(
             slug=self.slug
         )
 

@@ -2,14 +2,11 @@ import SimpleBar from 'simplebar';
 
 import SidebarCart from '@/components/sidebarCart.js'
 import SidebarLastSeen from '@/components/sidebarLastSeen.js'
+import SearchBox from '@/components/SearchBox.js'
 
 import STATE from '@/state/index.js';
 
 $(document).ready(function() {
-
-    const sidebarCart = new SidebarCart();
-    const lastSeen = new SidebarLastSeen();
-
 
     let resolutions = {
         tablet: 768,
@@ -67,6 +64,16 @@ $(document).ready(function() {
     }
     // END MEDIA QUERIES
 
+
+    // Components and controllers
+
+    let headerInputBox = document.getElementById('header-input-box');
+
+    const sidebarCart = new SidebarCart();
+    const lastSeen = new SidebarLastSeen();
+    const inputBox = new SearchBox(headerInputBox);
+
+    // End components
 
     // STICKY
     let offsetTop = $('.sticky').offset().top;

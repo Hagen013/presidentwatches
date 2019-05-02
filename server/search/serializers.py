@@ -38,6 +38,7 @@ class ElasticProductPageCustomSerializer:
         es_model = ProductPageIndex
         fields = [
             'id',
+            'name',
             'brand',
             'series',
             'model',
@@ -63,6 +64,61 @@ class ElasticProductPageCustomSerializer:
                 representation[key] = [value.id, ]
             else:
                 representation[key].append(value.id)
+        return representation
+
+    def save(self, using=None, index=None, validate=True, **kwargs):
+        instance = self.es_instance()
+        instance.save(using=using, index=index, validate=validate, **kwargs)
+
+
+    def delete(self, using=None, index=None, **kwargs):
+        instance = self.es_instance()
+        instance.delete(using=using, index=index, **kwargs)
+
+    def get_es_model(self):
+        if not hasattr(self.Meta, 'es_model'):
+            raise ValueError(
+                'Can not find es_model value'
+            )
+        return self.Meta.es_model
+
+    def get_es_instance_pk(self, data):
+        try:
+            return getattr(data, 'id')
+        except KeyError:
+            raise ValueError(
+                'Can not save object without id'
+            )
+
+    def es_repr(self):
+        data = self.to_representation(self.instance)
+        data['meta'] = dict(id=self.get_es_instance_pk(self.instance))
+        model = self.get_es_model()
+        return model(**data)
+
+    def es_instance(self):
+        return self.es_repr()
+
+
+class ElasticCategoryCustomSerializer:
+
+    class Meta:
+        es_model = CategoryIndex
+        fields = [
+            'name',
+            'absolute_url',
+            'search_scoring'
+        ]
+
+    def __init__(self, instance):
+        self.instance = instance
+
+    def to_representation(self, instance):
+        representation = {}
+        for field in self.Meta.fields:
+            representation[field] = str(getattr(instance, field))
+            representation['count'] = instance.products.count()
+
         return representation
 
     def save(self, using=None, index=None, validate=True, **kwargs):

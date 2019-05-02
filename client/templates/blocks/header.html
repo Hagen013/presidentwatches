@@ -61,12 +61,16 @@
                         <img class="logo" src="{{ static('img/logo/logo.svg') }}">
                     </a>
                 </div>
-                <div class="header__search-box">
-                    <i class="icon icon_search header__search-icon">
-                    </i>
-                    <input class="input input_filled header__input"
-                        placeholder="ПОИСК ТОВАРОВ"
-                    >
+                <div class="header__search-box" action="/search">
+                    <div class="header__input-box input-box" id="header-input-box">
+                        <i class="icon icon_search header__search-icon">
+                        </i>
+                        <input class="input input_filled header__input"
+                            placeholder="ПОИСК ТОВАРОВ"
+                        >
+                        <ul class="search-list">
+                        </ul>
+                    </div>
                 </div>
                 <div class="header__controls">
                     <div class="control-button header-auth">

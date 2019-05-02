@@ -13,10 +13,12 @@ from config.celery import app
 from celery.signals import beat_init
 from celery.schedules import crontab
 
-from shop.models import ProductPage
-from search.serializers import ElasticProductPageSerializer, ElasticProductPageCustomSerializer
-from search.indexes import ProductPageIndex
-from search.constants import INDEX_SETTINGS, MAPPING_SETTINGS
+from shop.models import ProductPage, CategoryPage
+from search.serializers import (ElasticProductPageSerializer,
+                                ElasticProductPageCustomSerializer,
+                                ElasticCategoryCustomSerializer)
+from search.indexes import ProductPageIndex, CategoryIndex
+from search.constants import INDEX_SETTINGS, MAPPING_SETTINGS, CATEGORY_MAPPING
 
 ELASTICSEARCH_URL = settings.ELASTICSEARCH_URL
 ELASTICSEARCH_SNAPSHOT_REPO = settings.ELASTICSEARCH_SNAPSHOT_REPO
@@ -53,18 +55,34 @@ def delete_es_product(uuid):
 def setup_settings():
     index = ProductPageIndex.index
     doc_type = ProductPageIndex._doc_type.name
+    category_doc_type = CategoryIndex._doc_type.name
+
     index_url = '{0}{1}'.format(ELASTICSEARCH_URL, index)
     mapping_url = '{0}/{1}/_mapping'.format(index_url, doc_type)
+    category_mapping_url = '{0}/{1}/_mapping'.format(index_url, category_doc_type)
+
     requests.delete(index_url)
     requests.put(index_url, json=INDEX_SETTINGS)
-    requests.put(mapping_url, json=MAPPING_SETTINGS)
+    requests.put(category_mapping_url, json=CATEGORY_MAPPING)
+    requests.put(mapping_url)
+
+
+def rewrite_products():
+    for instance in ProductPage.objects.all():
+        document = ElasticProductPageCustomSerializer(instance)
+        document.save()
+
+    
+def rewrite_categories():
+    for instance in CategoryPage.objects.all():
+        document = ElasticCategoryCustomSerializer(instance)
+        document.save()
 
 
 @app.task
 def rewrite_index():
-    for instance in ProductPage.objects.all():
-        document = ElasticProductPageCustomSerializer(instance)
-        document.save()
+    rewrite_products()
+    rewrite_categories()
 
 
 @app.task

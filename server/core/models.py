@@ -244,7 +244,7 @@ class Node(MPTTModel, EavEntityMixin):
         return '/'.join(slugs_list) + '/'
 
 
-class AbstractCategoryPage(Node, WebPage):
+class AbstractCategoryPage(Node, WebPage, Searchable):
 
     name = NameField()
     description = DescriptionField()

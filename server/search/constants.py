@@ -81,20 +81,59 @@ MAPPING_SETTINGS = {
                     }
                 }
             },
+            "model": {
+                "type": "keyword",
+                "index": "not_analyzed"
+            },
+            "series": {
+                "type": "keyword",
+                "index": "not_analyzed"
+            },
+            "brand": {
+                "type": "keyword",
+                "index": "not_analyzed"
+            },
+            "absolute_url": {
+                "type": "keyword",
+                "index": "not_analyzed"
+            },
+            "search_scoring": {
+                "type": "integer"
+            }
+        }
+    }
+}
+
+
+CATEGORY_MAPPING = {
+    "category": {
+        "properties": {
+            "name": {
+                "type": "text",
+                "analyzer": "standard",
+                "fields": {
+                    "ngrams": {
+                        "type": "text",
+                        "analyzer": "ngram_analyzer"
+                    },
+                    "phonetic": {
+                        "type": "text",
+                        "analyzer": "phonetic_analyzer"
+                    },
+                    "autocomplete": {
+                        "type": "text",
+                        "analyzer": "autocomplete_analyzer",
+                        "search_analyzer": "standard"
+                    }
+                }
+            },
+            "absolute_url": {
+                "type": "keyword",
+                "index": "not_analyzed"
+            },
             "search_scoring": {
                 "type": "integer"
             },
-            "vendor_code": {
-                "type": "keyword",
-                "index": "not_analyzed"
-            },
-            "vendor": {
-                "type": "keyword",
-                "index": "not_analyzed"
-            },
-            "is_in_stock": {
-                "type": "boolean"
-            }
         }
     }
 }
