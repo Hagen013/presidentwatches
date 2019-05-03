@@ -105,6 +105,7 @@ class ElasticCategoryCustomSerializer:
     class Meta:
         es_model = CategoryIndex
         fields = [
+            'id',
             'name',
             'absolute_url',
             'search_scoring'

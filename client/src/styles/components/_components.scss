@@ -156,6 +156,7 @@
     background: $white;
     transition-property: box-shadow;
     transition-duration: .1s;
+    text-decoration: none;
     @include mq($from: tablet) {
         float: left;
         height: auto;
@@ -273,8 +274,12 @@
 
 .product-card__favorite {
     position: absolute;
-    top: 10px;
-    left: 10px !important;
+    width: 20px;
+    top: 20px;
+    right: 20px;
+    .icon {
+        font-size: 24px !important;
+    }
 }
 
 .text_left {

@@ -14,9 +14,8 @@ class SearchApiView(APIView):
 
     def get(self, request):
         query = request.GET.get('line', '')
-        client = Elasticsearch()
         body = generate_from_pattern(query)
-        response = client.search(
+        response = es_client.search(
             index='store',
             doc_type='category,product',
             body=body

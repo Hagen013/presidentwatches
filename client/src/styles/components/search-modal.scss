@@ -2,14 +2,31 @@
 
 }
 
-.search-modal-container {
+.search-modal-form {
     padding: 10px;
 }
+
+.search-modal-container {
+    position: relative;
+    .search-list {
+        padding-top: 12px;
+        top: 41px;
+        box-shadow: none;
+    }
+}
+
+.search-modal-container.active {
+    .search-list {
+        display: block;
+    }
+}
+
 
 .search-modal-input {
     height: 46px;
     width: 100%;
     padding: 0px 20px 0px 50px;
+    color: black !important;
 }
 
 .search-modal__input-box {
@@ -17,10 +34,10 @@
 }
 
 .search-modal__icon {
-    top: 13px;
+    top: 15px;
     left: 20px;
     position: absolute;
-    font-size: 20px;
+    font-size: 16px;
 }
 
 .search-modal-overlay {

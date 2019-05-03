@@ -17,10 +17,6 @@ export default class SearchBox {
             self.input(this.value);
         });
 
-        // this.$input.on('focusout', function(e) {
-        //     self.hide();
-        // })
-
         this.triggerSearch = debounce(function(target) {
             api.get('/search/', {params: {line: target}} )
                 .then(
@@ -41,6 +37,18 @@ export default class SearchBox {
                 self.triggerSearch(self.$input.val());
             }
         })
+
+        $(document).mouseup(function (e) {
+            let container = self.$element;
+            if (!container.is(e.target) && container.has(e.target).length === 0) {
+                self.hide();
+            }
+        })
+
+        this.$element.find('.icon_search').click(function() {
+            self.$element.parent().submit();
+        })
+
     }
 
     input(target) {

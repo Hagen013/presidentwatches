@@ -68,10 +68,12 @@ $(document).ready(function() {
     // Components and controllers
 
     let headerInputBox = document.getElementById('header-input-box');
+    let mobileInputBox = document.getElementById('mobile-input-box');
 
     const sidebarCart = new SidebarCart();
     const lastSeen = new SidebarLastSeen();
-    const inputBox = new SearchBox(headerInputBox);
+    const searchBox = new SearchBox(headerInputBox);
+    const mobileSearchBox = new SearchBox(mobileInputBox); 
 
     // End components
 

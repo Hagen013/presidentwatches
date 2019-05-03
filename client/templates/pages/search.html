@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block css %}
+    {{ super() }}
+{% endblock css %}
+
+{% block content %}
+    <div class="title-area">
+        <div class="content-area content-area_block">
+            <div class="breadcrumbs">
+                <a class="breadcrumbs__item breadcrumbs_first" href="/">
+                Главная
+                </a>
+                <span class="breadcrumbs__delimeter">
+                /
+                </span>
+                <a class="breadcrumbs__item breadcrumbs_last">
+                Поиск
+                </a>
+            </div>
+            <h1 class="title title_catalog">
+                Поиск по запросу: {{query}}
+            </h1>
+        </div>
+
+        <div class="content-area content-area_block">
+            <div class="catalog catalog_search">
+                <div class="catalog__gallery row">
+                    {% for instance in results %}
+                        {% if instance.model %}
+                        <div class="product-card">
+                            <a href="/watches/{{ instance.slug }}/">
+                                <div class="product-card__img-wrap">
+                                    <img class="product-card__img" src="{{ instance.thumbnail.url }}">
+                                </div>
+                            </a>
+                            <div class="product-card__data">
+                                <div class="product-card__info">
+                                    <a href="/watches/{{ instance.slug }}/">
+                                        <div class="product-card__brand">
+                                            {{instance.brand}}
+                                        </div>
+                                        <div class="product-card__series">
+                                            {{instance.series}}
+                                        </div>
+                                        <div class="product-card__model">
+                                            {{ instance.model }}
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="product-card__price">
+                                    {{instance.price}} ₽
+                                </div>
+                                <div class="product-card__extra">
+                                    <div class="product-card__favorite like">
+                                        <i class="icon icon-like">
+                                        </i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% else %}
+                        <a class="product-card" href="/shop/watches/{{instance.slug}}">
+                            <div class="product-card__img-wrap">
+                                <img class="product-card__img" src="{{ instance.preview_image }}">
+                            </div>
+                            <div class="card-category">
+                                <div class="grey card-category__label">
+                                категория
+                                </div>
+                                <div class="card-category__title bold">
+                                {{instance.name}}
+                                </div>
+                            </div>
+                        </a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            {% if is_paginated %}
+            <div class="pagination catalog__pagination">
+                <div class="pagination__load-mobile button button_big button_filled show-mb">
+                    ПОКАЗАТЬ ЕЩЁ
+                </div>
+                <div class="pagination__pages-wrap">
+                    <div class="pagination__pages row">
+                        {% for page in page_obj.page_range %}
+                            {% if not page %}
+                            <div class="page-btn page-btn_disabled hide-mb">
+                                ...
+                            </div>
+                            {% else %}
+                                {% if page == page_obj.number %}
+                                <a class="page-btn page-btn_active">
+                                    {{page}}
+                                </a>
+                                {% else %}
+                                <a class="page-btn"
+                                    href="{{request.path}}{{ update_pagination(querystring=request.GET, kwargs={'page':page}) }}"
+                                >
+                                    {{page}}
+                                </a>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% if page_obj.has_next() %}
+                    <a class="page-btn page-btn_next hide-mb"
+                        href="{{request.path}}{{ update_pagination(querystring=request.GET, kwargs={'page':page_obj.next_page_number()}) }}"
+                    >
+                        СЛЕДУЮЩАЯ
+                    </a>
+                    {% else %}
+                    <a class="page-btn page-btn_next hide-mb page-btn_disabled"
+                    >
+                        СЛЕДУЮЩАЯ
+                    </a>
+                    {% endif %}
+                    <div class="clearfix">
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+        </div>
+
+    </div>
+{% endblock content %}

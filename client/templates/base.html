@@ -216,13 +216,19 @@
         <div class="mobile-catalog">
         </div>
         <div class="search-modal modal" id="search-modal">
-            <div class="search-modal-container">
-                <div class="input-box search-modal__input-box">
+            <form class="search-modal-form" action="/search">
+                <div class="search-modal-container input-box" id="mobile-input-box">
                     <i class="icon icon_search search-modal__icon">
                     </i>
-                    <input class="input search-modal-input">
+                    <input class="input search-modal-input"
+                        placeholder="ПОИСК ТОВАРОВ"
+                        name="q"
+                        autocomplete="off"
+                    >
+                    <ul class="search-list">
+                    </ul>
                 </div>
-            </div>
+            </form>
             <div class="search-modal-overlay">
                 <i class="icon">
                     ×

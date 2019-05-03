@@ -268,3 +268,11 @@ class AbstractCategoryPage(Node, WebPage, Searchable):
                 .annotate(len_av=models.Count("id", distinct=False))
                 .filter(len_av=len(av)).values('id')
             )
+
+    @property
+    def preview_image(self):
+        try:
+            image = self.products[0].thumbnail.url
+        except IndexError:
+            image = self.product_class.objects.first().image.url
+        return image

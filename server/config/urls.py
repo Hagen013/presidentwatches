@@ -7,7 +7,7 @@ urlpatterns = [
     path('', include('shop.urls', namespace='shop')),
     path('api/', include('api.urls', namespace='api')),
     path('cart/', include('cart.urls', namespace='cart')),
-    path('admin/', TemplateView.as_view(template_name='admin.html'))
+    path('search/', include('search.urls', namespace='search')),
 ]
 
 if settings.DEBUG:
