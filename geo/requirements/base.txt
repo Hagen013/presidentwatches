@@ -1,0 +1,23 @@
+Django==1.11.4
+
+# DJANGO
+django-debug-toolbar==1.8
+django-extensions==1.8.1
+djangorestframework==3.6.3
+django-mptt==0.8.7
+django-redis==4.8.0
+django-choices==1.6.0
+django-environ==0.4.3
+django-cors-headers==2.1.0
+
+celery==4.1.0
+kombu==4.1.0
+
+Unidecode==0.4.21
+
+aiohttp==2.3.6
+requests==2.11.1
+
+# Raven
+raven==6.5.0
+urllib3==1.22

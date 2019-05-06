@@ -1,0 +1,5 @@
+-r base.txt
+
+psycopg2==2.7.3.2
+
+docker_compose==1.15.0
