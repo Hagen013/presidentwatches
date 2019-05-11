@@ -132,6 +132,9 @@ class WatchesProductMixin(models.Model):
             except ObjectDoesNotExist:
                 pass
 
+        # Бренд
+        # Серия
+
         super(WatchesProductMixin, self).save()
 
 

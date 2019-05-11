@@ -243,6 +243,27 @@ class Node(MPTTModel, EavEntityMixin):
                 slugs_list.append(difference_list[0])
         return '/'.join(slugs_list) + '/'
 
+    @property
+    def truncated_breadcrumbs(self):
+        """
+        'Рюкзаки женские городские повседневные' ->
+        [{'name': 'Рюкзаки', 'slug': 'ryukzak'},
+        {'name': 'Городские', 'slug': 'ryukzak/gorodskoj'},
+        {'name': 'Женские', 'slug': 'ryukzak/gorodskoj/zhenskij'},
+        {'name': 'Повседневные', 'slug': 'ryukzak/gorodskoj/zhenskij/povsednevnyj'}]
+        """
+        breadcrumbs = []
+        ancestors = self.get_ancestors(include_self=True)
+        breadcrumbs.append(
+            {'name': ancestors[0].name, 'slug': ancestors[0].slug}
+        )
+        for i in range(1, len(ancestors)):
+            name = ancestors[i].name.replace(
+                ancestors[i - 1].name, ''
+            ).strip()
+            breadcrumbs.append({'name': name, 'slug': ancestors[i].slug})
+        return breadcrumbs
+
 
 class AbstractCategoryPage(Node, WebPage, Searchable):
 

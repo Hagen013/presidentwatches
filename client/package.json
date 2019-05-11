@@ -27,6 +27,7 @@
     "gulp-postcss": "^6.2.0",
     "gulp-sass": "^4.0.2",
     "gulp-sass-bulk-import": "^1.0.1",
+    "js-cookie": "^2.2.0",
     "sass-mq": "^5.0.0",
     "simplebar": "^4.0.0-alpha.1",
     "webpack": "^4.30.0",

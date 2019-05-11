@@ -1,0 +1,31 @@
+{#
+Блок хлебных крошек
+ожидает параметры:
+* breadcrumbs: [(name1,url1),(name2,url2)]
+* view: название вьюхи - 'catalog:watches:view'
+* last_crumb: str - неактивная крошка, текущая 
+#}
+<div class="breadcrumbs">
+    <a class="breadcrumbs__item breadcrumbs_first" href="#">
+    Главная
+    </a>
+    <span class="breadcrumbs__delimeter">
+    /
+    </span>
+    {% if breadcrumbs %}
+        {% for crumb in breadcrumbs %}
+            {% if loop.index != loop.length %}
+            <a class="breadcrumbs__item" href="{{ url(view, args=[crumb.slug]) }}">
+            {{crumb.name}}
+            </a>
+            <span class="breadcrumbs__delimeter">
+            /
+            </span>
+            {% else %}
+            <a class="breadcrumbs__item breadcrumbs__item_last" href="{{ url(view, args=[crumb.slug]) }}">
+            {{crumb.name}}
+            </a>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+</div>

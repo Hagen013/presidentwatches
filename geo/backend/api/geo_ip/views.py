@@ -1,7 +1,6 @@
 import ipaddress
 from django.conf import settings
 
-
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -20,8 +19,8 @@ class GeoIpAPIView(APIView):
             serializer = GeoIpSerializer(geo_ip)
             return Response(serializer.data)
         except GeoIp.DoesNotExist:
-            return Response({'kladr_code': '7700000000000',
-                             'kladr_name': 'Москва'})
+            return Response({'city_code': '7700000000000',
+                             'city_name': 'Москва'})
 
     def get_client_ip(self, request):
         """
@@ -29,3 +28,33 @@ class GeoIpAPIView(APIView):
         uwsgi серверу, тот в свою очередь передаёт её django
         """
         return request.META.get('REMOTE_ADDR')
+
+
+class GeoIpExternalRequestAPIView(GeoIpAPIView):
+
+    def get_client_ip(self, request):
+        """
+        Значение ip-адреса передаётся в get-параметра
+        """
+        return request.GET.get('remote_addr')
+
+
+class GeoIpByCode(APIView):
+
+    model = GeoIp
+    serializer_class = GeoIpSerializer
+
+    def get(self, request, code):
+        try:
+            instance = self.model.objects.filter(
+                kladr_code=code
+            )[0]
+        except IndexError:
+            return Response(
+                {
+                    'kladr_code': '7700000000000',
+                    'kladr_name': 'Москва'
+                }
+            )
+        serializer = self.serializer_class(instance)
+        return Response(serializer.data)

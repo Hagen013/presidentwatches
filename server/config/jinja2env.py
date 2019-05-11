@@ -8,6 +8,7 @@ from jinja2 import Environment
 
 from cart.last_seen import LastSeenController
 from cart.cart import Cart
+from geo.locations import locations
 
 
 def update_pagination(querystring, kwargs):
@@ -20,6 +21,10 @@ def update_pagination(querystring, kwargs):
     if len(query.keys()) > 0:
         return "?" + urlencode(query)
     return ""
+
+
+def locations_list():
+    return locations
 
 
 storing_mapping = {
@@ -58,6 +63,7 @@ def environment(**options):
         'last_seen': last_seen,
         'update_pagination': update_pagination,
         'sorting_option_class': sorting_option_class,
-        'session_cart': session_cart
+        'session_cart': session_cart,
+        'locations_list': locations_list
     })
     return env

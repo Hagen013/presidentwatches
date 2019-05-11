@@ -10,7 +10,142 @@
     z-index: 1000;
 }
 
+.modal-container {
+    padding: 20px;
+    background: white;
+    border-radius: 4px;
+}
+
+.modal-placeholder {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    z-index: 0;
+}
+
+.modal_light {
+    background: rgba(0,0,0,0.4) !important;
+}
+
 .modal-close-overlay {
     height: 100%;
     width: 100%;
+}
+
+.modal-close {
+    position: absolute;
+    height: 30px;
+    width: 30px;
+    top: 16px;
+    right: 16px;
+    cursor: pointer;
+}
+
+.location-modal {
+    align-items: center;
+    justify-content: center;
+}
+
+.location-modal-container {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding-bottom: 20px;
+    z-index: 100;
+    @include mq($from: desktop) {
+        height: 481px;
+        max-width: 580px;
+        position: relative;
+    }
+}
+
+.location-modal-box {
+    position: relative;
+    height: 36px;
+    margin: 10px 0px;
+    .icon {
+        position: absolute;
+        top: 12px;
+        left: 10px;
+        font-size: 14px;
+        z-index: 600;
+    }
+    .input {
+        position: relative;
+        padding-left: 30px;
+        color: black;
+        z-index: 500;
+    }
+    .search-item {
+        padding-left: 20px;
+    }
+}
+
+.search-list-wrap {
+    position: absolute;
+    display: none;
+    top: 0px;
+    left: 0px;
+    height: 400px;
+    width: 100%;
+    padding-top: 40px;
+    max-height: 300px;
+    box-shadow: 0 2px 23px 0 rgba(0, 0, 0, 0.2);
+    z-index: 390;
+    background: white;
+    .search-list {
+        display: block;
+        top: 40px;
+        padding-top: 0px;
+        overflow-y: hidden;
+        max-height: 256px;
+        box-shadow: none;
+    }
+    .search-item {
+        line-height: normal;
+        height: auto;
+        padding: 8px 10px;
+    }
+}
+
+.location-modal-box.active {
+    .search-list-wrap {
+        display: block;
+    }
+    .input {
+        border: none;
+    }
+}
+
+.locations-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    overflow-y: scroll;
+    max-height: 350px;
+    padding-top: 20px;
+    @include mq($from: desktop) {
+        overflow-y: hidden;
+        max-height: none;
+    }
+}
+
+.location-item {
+    width: 100%;
+    line-height: 22px;
+    @include mq($from: desktop) {
+        width: 25%;
+    }
+}
+
+.location-link {
+    cursor: pointer;
+    &:hover {
+        text-decoration: underline;
+    }
 }

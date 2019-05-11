@@ -135,12 +135,12 @@
                         </li>
                     </nav>
                     <nav class="nav-list mobile-menu__main-links">
-                        <li class="nav-list-item">
-                            <a class="bold" href="#">
+                        <li class="nav-list-item city-choice">
+                            <a class="bold">
                                 <i class="icon icon_nav">
                                 </i>
-                                <span>
-                                САНКТ-ПЕТЕРБУРГ
+                                <span class="city-name">
+                                {{request.user.city_name}}
                                 </span>
                             </a>
                         </li>
@@ -407,6 +407,38 @@
                 </form>
             </div>
             <div class="modal-close-overlay" id="auth-overlay" href="#">
+            </div>
+        </div>
+        <div class="modal modal_light location-modal" id="location-modal">
+            <div class="modal-container location-modal-container">
+                <div class="title">
+                Ваш регион доставки
+                </div>
+                <div class="input-box location-modal-box">
+                    <i class="icon icon_search">
+                    </i>
+                    <input class="input" placeholder="Поиск">
+                    <div class="search-list-wrap">
+                        <ul class="search-list">
+                        </ul>
+                    </div>
+                </div>
+                <div class="modal-close control-button">
+                    <i class="icon icon_close">
+                    </i>
+                </div>
+                <ul class="locations-list">
+                {% for location in locations_list() %}
+                <li class="location-item"
+                >
+                    <a class="location-link" data-code="{{location.code}}">
+                    {{location.name}}
+                    </a>
+                </li>
+                {% endfor %}
+                </ul>
+            </div>
+            <div class="modal-placeholder">
             </div>
         </div>
         {% endblock modals %}

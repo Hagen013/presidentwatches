@@ -57,7 +57,18 @@
 }
 
 .city-choice {
+    max-width: 134px;
     color: $accent;
+    cursor: pointer;
+    @include mq($from: desktop) {
+        max-width: 155px;
+    }
+    .tab-link__caption {
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 }
 
 
@@ -89,6 +100,7 @@
 
 .control-button {
     display: flex;
+    justify-content: center;
     align-items: center;
     user-select: none;
     cursor: pointer;
@@ -560,4 +572,8 @@
     height: 40px;
     width: percentage(1/3);
     overflow: hidden;
+}
+
+.city-name {
+    text-transform: uppercase;
 }

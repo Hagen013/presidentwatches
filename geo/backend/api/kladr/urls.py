@@ -5,10 +5,10 @@ from .views import (DetalKladrAPIView,
 
 kladr_urls = (
     [
-        url(r'^detal/$',
+        url(r'^detail/$',
             DetalKladrAPIView.as_view()
             ),
-        url(r'^detal/(?P<code>(\d{13})|(\d{17})|(\d{19}))$',
+        url(r'^detail/(?P<code>(\d{13})|(\d{17})|(\d{19}))$',
             DetalKladrAPIView.as_view()
             ),
         url(r'^search/(?P<line>(\w+))$',

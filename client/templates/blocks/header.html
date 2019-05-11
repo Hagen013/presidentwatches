@@ -5,14 +5,15 @@
                 <div class="header__top-menu">
                     <a class="header__top-link tab-link city-choice"
                         id="header-city-link"
-                        href="#"
                     >
                         <i class="icon icon_nav tab-link__icon">
                         </i>
                         <div class="tab-link__caption bold"
                             id="header-city-text"
                         >
-                            САНКТ-ПЕТЕРБУРГ
+                            <span class="city-name">
+                            {{request.user.city_name}}
+                            </span>
                         </div>
                     </a>
                     <a class="header__top-link tab-link"

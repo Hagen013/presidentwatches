@@ -3,8 +3,11 @@ import SimpleBar from 'simplebar';
 import SidebarCart from '@/components/sidebarCart.js'
 import SidebarLastSeen from '@/components/sidebarLastSeen.js'
 import SearchBox from '@/components/SearchBox.js'
+import locationSearch from '@/components/LocationSearch.js'
 
 import STATE from '@/state/index.js';
+import store from '@/store/index.js';
+import LocationSearch from './components/LocationSearch';
 
 $(document).ready(function() {
 
@@ -15,6 +18,8 @@ $(document).ready(function() {
         maximum: 1730,
     }
 
+    store.dispatch('getLocation');
+    
     // PROCESSING MEDIA QUERIES
     let mq = {
         tablet: window.matchMedia(`(max-width: ${resolutions.tablet-1}px)`),
@@ -73,7 +78,8 @@ $(document).ready(function() {
     const sidebarCart = new SidebarCart();
     const lastSeen = new SidebarLastSeen();
     const searchBox = new SearchBox(headerInputBox);
-    const mobileSearchBox = new SearchBox(mobileInputBox); 
+    const mobileSearchBox = new SearchBox(mobileInputBox);
+    const locationSearch = new LocationSearch();
 
     // End components
 

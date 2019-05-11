@@ -62,6 +62,7 @@ LOCAL_APPS = [
     'tasks',
     'blog',
     'search',
+    'geo',
     'api'
 ]
 
@@ -81,6 +82,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     #'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'core.middleware.RequestCookiesMiddleware',
+    'geo.middleware.GeoLocationMiddleware'
 ]
 # ------------------------------------------------------------------------------
 # APPLICATIONS CONFIGURATION END
@@ -218,3 +221,15 @@ ELASTICSEARCH_SNAPSHOT_NAME = 'backup'
 ELASTICSEARCH_SNAPSHOT_DIR = '/var/graph_market/elastic-snapshots/'
 #-------------------------------------------------------------------------------
 # ELASTICSEARCH SETTINGS END
+
+
+# GEO LOCATION API
+# ------------------------------------------------------------------------------
+GEO_LOCATION_HOST = 'localhost'
+GEO_LOCATION_PORT = 8282
+GEO_LOCATION_SERVICE_URL = 'http://{host}:{port}/'.format(
+    host=GEO_LOCATION_HOST,
+    port=GEO_LOCATION_PORT
+)
+# ------------------------------------------------------------------------------
+# GEO LOCATION API END

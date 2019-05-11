@@ -1,4 +1,5 @@
 import api from '@/api'
+import geoApi from '@/api/geo.js'
 
 
 export default {
@@ -48,5 +49,15 @@ export default {
             .catch(error => {
                 console.log(error);
             })
+    },
+    getLocation(context, payload) {
+        geoApi.get('/api/geo_ip/').then(
+            response => {
+                console.log(response);
+            },
+            response => {
+                console.log(response);
+            }
+        )
     }
 };

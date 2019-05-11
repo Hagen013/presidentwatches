@@ -8,14 +8,9 @@
 {% block content %}
     <div class="title-area">
         <div class="content-area content-area_block">
-            <div class="breadcrumbs">
-                <a class="breadcrumbs__item breadcrumbs_first" href="#">
-                Главная
-                </a>
-                <span class="breadcrumbs__delimeter">
-                /
-                </span>
-            </div>
+            {% with view='shop:category', breadcrumbs=category.truncated_breadcrumbs %}
+                {% include 'blocks/breadcrumbs.html' %}
+            {% endwith %}
             <h1 class="title title_catalog">
             {{category.name}}
             </h1>

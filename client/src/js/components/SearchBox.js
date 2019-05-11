@@ -9,7 +9,7 @@ export default class SearchBox {
         let self = this;
         this.$element = $(element);
         this.$input = this.$element.children('input');
-        this.itemsList = this.$element.children('ul');
+        this.$itemsList = this.$element.children('ul');
         this.$parent = this.$element.parent();
         this.items = [];
 
@@ -72,7 +72,8 @@ export default class SearchBox {
             </li>
             `
         }).join('')}`;
-        this.itemsList.html(itemsList);
+        this.$itemsList.html(itemsList);
+
     }
 
     searchRedirect() {
