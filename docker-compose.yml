@@ -39,6 +39,7 @@ services:
     depends_on:
       - postgres_web
 
+  # Postgres
   postgres_web:
     image: postgres:latest
     restart: unless-stopped
@@ -47,6 +48,7 @@ services:
     env_file:
       - env/postgres_web
 
+  # ElasticSearch
   elasticsearch:
     image: graphmarket/elasticsearch-pw:latest
     restart: unless-stopped
@@ -56,3 +58,35 @@ services:
       dockerfile: ./compose/elasticsearch/Dockerfile
     volumes:
       - /var/graph_market:/var/graph_market
+
+  # GEO Service
+  geo:
+  image: graphmarket/geo_pw:latest
+  restart: unless-stopped
+  hostname: geo
+  build:
+    context: .
+    dockerfile: ./compose/geo/Dockerfile
+    env_file:
+      - env/geo
+    links:
+      - rabbit
+      - redis
+    depends_on:
+      - rabbit
+      - redis
+
+  # RABBITMQ
+  rabbit:
+    image: rabbitmq:3.8-rc-management-alpine
+    restart: unless-stopped
+    hostname: rabbit
+    volumes:
+      - "./env/rabbitmq.config:/etc/rabbitmq/rabbitmq.config:rw"
+      - "./env/rabbit_definitions.json:/etc/rabbitmq/definitions.json:rw"
+  
+  # Redis
+  redis:
+    image: redis-latest
+    restart: unless-stopped
+    hostname: redis
