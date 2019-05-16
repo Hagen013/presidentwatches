@@ -1,5 +1,13 @@
-./server/venv
+/server/venv
 /server/venv/
+/server/data
+
+./server/venv
+
+./geo/venv
+/geo/venv
+*.ipynb
+
 /client/node_modules
 /client/src
 /client/static_production

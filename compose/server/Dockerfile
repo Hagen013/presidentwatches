@@ -12,7 +12,7 @@ RUN apk add --no-cache --virtual .build-deps \
     && pip3 install --no-cache-dir psycopg2
 
 # INSTALL UWSGI
-# RUN apk add --no-cache uwsgi uwsgi-python3 uwsgi-python uwsgi-http uwsgi-corerouter uwsgi-stats_pusher_socket
+RUN apk add --no-cache uwsgi uwsgi-python3 uwsgi-python uwsgi-http uwsgi-corerouter uwsgi-stats_pusher_socket
 
 # INSTALL PILLOW 
 RUN apk add --no-cache \
@@ -26,7 +26,6 @@ RUN apk add --update --no-cache bash
 COPY  server/requirements/base.txt base.txt
 COPY  server/requirements/production.txt requirements.txt
 RUN pip3 install --no-cache-dir -r requirements.txt
-RUN pip3 install uwsgi
 
 # COPY ENTRYPOINT AND CODE
 COPY  server /server

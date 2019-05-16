@@ -36,8 +36,10 @@ services:
       - /var/graph_market:/var/graph_market
     links:
       - postgres_web:postgres
+      - geo:geo
     depends_on:
       - postgres_web
+      - geo
 
   elasticsearch:
     image: graphmarket/elasticsearch-pw
@@ -74,7 +76,7 @@ services:
   
   # Redis
   redis:
-    image: redis-latest
+    image: redis:latest
     restart: unless-stopped
     hostname: redis
 

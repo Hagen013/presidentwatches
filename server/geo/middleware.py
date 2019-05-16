@@ -26,8 +26,8 @@ class GeoLocationMiddleware(object):
 
             try:
                 data = requests.get(url, params=params).json()
-                city_code = data['city_code']
-                city_name_ru = data['city_name']
+                city_code = data['kladr_code']
+                city_name_ru = data['kladr_name']
                 city_name_lat = translit(city_name_ru, 'ru', reversed=True)
                 request.set_cookie('city_code', city_code)
                 request.set_cookie('city_name', city_name_lat)
