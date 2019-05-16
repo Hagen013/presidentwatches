@@ -225,7 +225,7 @@ ELASTICSEARCH_SNAPSHOT_DIR = '/var/graph_market/elastic-snapshots/'
 
 # GEO LOCATION API
 # ------------------------------------------------------------------------------
-GEO_LOCATION_HOST = 'localhost'
+GEO_LOCATION_HOST = env('GEO_LOCATION_SERVICE_URL')
 GEO_LOCATION_PORT = 8282
 GEO_LOCATION_SERVICE_URL = 'http://{host}:{port}/'.format(
     host=GEO_LOCATION_HOST,
