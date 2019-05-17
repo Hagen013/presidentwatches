@@ -58,7 +58,6 @@
 
 .city-choice {
     max-width: 134px;
-    color: $accent;
     cursor: pointer;
     @include mq($from: desktop) {
         max-width: 155px;

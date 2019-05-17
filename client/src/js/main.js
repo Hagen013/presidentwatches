@@ -146,29 +146,6 @@ $(document).ready(function() {
     })
     // END SIDEBAR
 
-    // MOBILE MENU
-    function openMobileMenu() {
-        $('#mobile-menu').css('display', 'block');
-        setTimeout(function() {
-            $('#mobile-menu-container').addClass('active');
-        }, 10);
-    }
-    function closeMobileMenu() {
-        $('#mobile-menu').css('display', 'none');
-        $('#mobile-menu-container').find('.drawer-content').removeClass('active');
-        $('.drawer-categories').css('display', 'none');
-    }
-    $('#hamburger').click(function(e) {
-        e.preventDefault();
-        openMobileMenu();
-    })
-    $('.menu-left-close').click(function(e) {
-        $('#mobile-menu-container').removeClass('active');
-        e.preventDefault();
-        closeMobileMenu();
-    })
-    // END MOBILE MENU
-
     // SEARCH-MODAL
     function openSearchModal() {
         $('#search-modal').css('display', 'block');
