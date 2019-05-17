@@ -1,13 +1,14 @@
 import SimpleBar from 'simplebar';
 
-import SidebarCart from '@/components/sidebarCart.js'
-import SidebarLastSeen from '@/components/sidebarLastSeen.js'
-import SearchBox from '@/components/SearchBox.js'
-import locationSearch from '@/components/LocationSearch.js'
+import SidebarCart from '@/components/sidebarCart'
+import SidebarLastSeen from '@/components/sidebarLastSeen'
+import SearchBox from '@/components/SearchBox'
+import LocationSearch from '@/components/LocationSearch'
+import MobileMenu from '@/components/MobileMenu'
 
 import STATE from '@/state/index.js';
 import store from '@/store/index.js';
-import LocationSearch from './components/LocationSearch';
+
 
 $(document).ready(function() {
 
@@ -80,6 +81,7 @@ $(document).ready(function() {
     const searchBox = new SearchBox(headerInputBox);
     const mobileSearchBox = new SearchBox(mobileInputBox);
     const locationSearch = new LocationSearch();
+    const mobileMenu = new MobileMenu('#mobile-menu-container');
 
     // End components
 
@@ -153,6 +155,8 @@ $(document).ready(function() {
     }
     function closeMobileMenu() {
         $('#mobile-menu').css('display', 'none');
+        $('#mobile-menu-container').find('.drawer-content').removeClass('active');
+        $('.drawer-categories').css('display', 'none');
     }
     $('#hamburger').click(function(e) {
         e.preventDefault();

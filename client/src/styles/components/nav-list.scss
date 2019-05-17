@@ -3,14 +3,21 @@
 }
 
 .nav-list-item {
+    position: relative;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
     height: 40px;
     padding: 0px 10px;
     line-height: 40px;
     border-bottom: 1px solid $grey;
     a {
+        position: absolute;
+        padding: 0px 10px;
+        top: 0px;
+        left: 0px;
+        height: 100%;
+        width: 100%;
         text-decoration: none;
         @include rarefied();
     }

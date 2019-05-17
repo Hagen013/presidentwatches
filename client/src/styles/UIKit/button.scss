@@ -14,6 +14,10 @@
     border: 1px solid $dark-grey;
     cursor: pointer;
     user-select: none;
+    .icon {
+        margin: 0px 3px;
+        display: inline-block;
+    }
 }
 
 .button_big {
