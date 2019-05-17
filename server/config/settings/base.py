@@ -63,6 +63,7 @@ LOCAL_APPS = [
     'blog',
     'search',
     'geo',
+    'info',
     'api'
 ]
 
@@ -231,6 +232,5 @@ GEO_LOCATION_SERVICE_URL = 'http://{host}:{port}/'.format(
     host=GEO_LOCATION_HOST,
     port=GEO_LOCATION_PORT
 )
-print(GEO_LOCATION_SERVICE_URL)
 # ------------------------------------------------------------------------------
 # GEO LOCATION API END

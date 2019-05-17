@@ -21,6 +21,13 @@
     }
 }
 
+.breadcrumbs_last {
+    cursor: default;
+    &:hover {
+        text-decoration: none !important;
+    }
+}
+
 .breadcrumbs-area {
     @include mq($from: tablet) {
         padding-top: 20px;
