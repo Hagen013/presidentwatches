@@ -8,6 +8,7 @@ urlpatterns = [
     path('api/', include('api.urls', namespace='api')),
     path('cart/', include('cart.urls', namespace='cart')),
     path('search/', include('search.urls', namespace='search')),
+    path('admin/', TemplateView.as_view(template_name='admin.html'))
 ]
 
 if settings.DEBUG:

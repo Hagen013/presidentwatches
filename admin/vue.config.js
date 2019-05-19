@@ -9,6 +9,7 @@ module.exports = {
             symbolId: 'icon-[name]'
           })
     },
+    publicPath: "admin-static/",
     devServer: {
       proxy: {
         '^/media': {

@@ -1,4 +1,5 @@
 import requests
+from requests.exceptions import ConnectionError
 
 from django.conf import settings
 
@@ -31,8 +32,9 @@ class GeoLocationMiddleware(object):
                 city_name_lat = translit(city_name_ru, 'ru', reversed=True)
                 request.set_cookie('city_code', city_code)
                 request.set_cookie('city_name', city_name_lat)
-            except request.ConnectionError:
-                pass
+            except ConnectionError:
+                city_code = '77777700'
+                city_name_ru = 'Москва'
         elif invalid(city_name_lat):
             url = settings.GEO_LOCATION_SERVICE_URL + 'api/geo_ip/by-code/{code}'.format(
                 code=city_code

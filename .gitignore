@@ -5,6 +5,7 @@ server/venv
 geo/venv
 env/
 compose/nginx/static_production/
+compose/nginx/dist/
 client/static_production/
 *.pyc
 *.env
