@@ -48,13 +48,26 @@ export default class MobileMenu {
             self.closeMobileMenu();
         })
 
+        // Открытие модалки выбора города
+        $('#nav-list-city').click(function() {
+            self.closeMobileMenu();
+            $('#location-modal').css('display', 'flex');
+        })
+
+        this.$menu.find('#mobile-header-auth').click(function() {
+            self.closeMobileMenu();
+            $('#auth-modal').css('display', 'block');
+            setTimeout(function() {
+                $('#auth-modal-container').addClass('active');
+            }, 10);
+        })
+
     }
 
     openMobileMenu() {
         let self = this;
         this.$menu.css('display', 'block');
         setTimeout(function() {
-            console.log(self.$menu);
             self.$element.addClass('active');
         }, 10);
     }

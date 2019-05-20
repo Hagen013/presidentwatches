@@ -72,7 +72,7 @@
                     </div>
                 </div>
                 <div class="mobile-header__right">
-                    <div class="mobile-header__auth header-auth">
+                    <div class="mobile-header__auth" id="mobile-header-auth">
                         <i class="icon icon_user">
                         </i>
                         <span class="rarefied">ВОЙТИ</span>
@@ -135,17 +135,15 @@
                         </li>
                     </nav>
                     <nav class="nav-list mobile-menu__main-links">
-                        <li class="nav-list-item city-choice">
+                        <li class="nav-list-item nav-list-city" id="nav-list-city">
                             <a class="bold">
                                 <i class="icon icon_nav">
                                 </i>
-                                <span class="city-name">
                                 {{request.user.city_name}}
-                                </span>
                             </a>
                         </li>
                         <li class="nav-list-item">
-                            <a href="#">
+                            <a href="/info/delivery-points/">
                                 <i class="icon icon_pin">
                                 </i>
                                 <span>
@@ -154,7 +152,7 @@
                             </a>
                         </li>
                         <li class="nav-list-item">
-                            <a href="#">
+                            <a href="/info/offline-shops/">
                                 <i class="icon icon_bag">
                                 </i>
                                 <span>
@@ -163,7 +161,7 @@
                             </a>
                         </li>
                         <li class="nav-list-item">
-                            <a href="#">
+                            <a href="/info/delivery/">
                                 <i class="icon icon_delivery">
                                 </i>
                                 <span>
@@ -172,7 +170,7 @@
                             </a>
                         </li>
                         <li class="nav-list-item">
-                            <a href="#">
+                            <a href="tel:88002007456">
                                 <i class="icon icon_phone">
                                 </i>
                                 <span>
@@ -553,7 +551,7 @@
                         <div class="tab-pane active" id="login">
                             <form class="form login-form">
                                 <div class="form-title">
-                                    С помощью аккаунта ПрезидентВотчес
+                                    С помощью аккаунта <span class="hide-mb-inline">ПрезидентВотчес</span>
                                 </div>
                                 <div class="input-box form-input-box">
                                     <input class="input input_white" placeholder="E-mail">
@@ -562,7 +560,7 @@
                                     <input class="input input_white" placeholder="Пароль">
                                 </div>
                                 <div>
-                                    <input type="submit" class="button button_accent button_big" value="Войти">
+                                    <input type="submit" class="button button_accent button_big auth-modal-enter" value="Войти">
                                     <a class="link link_underscored login-form__reset" href="#" id="reset-passw">
                                         Напомнить пароль
                                     </a>
@@ -641,14 +639,17 @@
                                 </div>
                             </div>
                             <form class="form register-form">
-                                <div class="form-title">
+                                <div class="form-title hide-mb">
                                     Используя адрес электронной почты
+                                </div>
+                                <div class="form-title show-mb">
+                                    Через электронную почту
                                 </div>
                                 <div class="field">
                                     <div class="field-title">
                                         E-mail
                                     </div>
-                                    <div class="field-input-box">
+                                    <div class="field-input-box form-input-box">
                                         <input class="input">
                                     </div>
                                 </div>
@@ -656,7 +657,7 @@
                                     <div class="field-title">
                                         Пароль
                                     </div>
-                                    <div class="field-input-box">
+                                    <div class="field-input-box form-input-box">
                                         <input class="input">
                                     </div>
                                     <div class="field-hint">
@@ -667,7 +668,7 @@
                                     <div class="field-title">
                                         Имя
                                     </div>
-                                    <div class="field-input-box">
+                                    <div class="field-input-box form-input-box">
                                         <input class="input">
                                     </div>
                                 </div>

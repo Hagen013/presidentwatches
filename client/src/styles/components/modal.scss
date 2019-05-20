@@ -46,6 +46,14 @@
 .location-modal {
     align-items: center;
     justify-content: center;
+    .modal-container {
+        border-radius: 0px;
+    }
+    @include mq($from: tablet) {
+        .modal-container {
+            border-radius: 4px;
+        }
+    }
 }
 
 .location-modal-container {

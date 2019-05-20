@@ -82,10 +82,17 @@
 .mobile-menu__main-links {
     padding-top: 24px;
     .nav-list-item {
-        height: auto;
+        height: 20px;
         border-bottom: none;
+        margin-bottom: 8px;
         line-height: normal;
-        margin-bottom: 18px;
+        a {
+            top: auto;
+            left: auto;
+            position: relative;
+            display: inline-block;
+            height: 100%;
+        }
     }
     .icon {
         display: inline-block;
@@ -94,6 +101,7 @@
         margin-right: 10px;
         text-align: center;
         line-height: 20px;
+        font-size: 15px;
     }
 }
 

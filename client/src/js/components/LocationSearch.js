@@ -73,6 +73,9 @@ export default class LocationSearch {
 
 
     hideModal() {
+        if (this.$modal === undefined) {
+            this.$modal = $('#location-modal');
+        }
         this.$modal.css('display', 'none');
         this.$wrap.find('.input-box').removeClass('active');
     }

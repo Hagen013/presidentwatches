@@ -22,3 +22,9 @@
         @include rarefied();
     }
 }
+
+.nav-list-city {
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-bottom: 10px !important;
+}

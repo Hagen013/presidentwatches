@@ -47,13 +47,16 @@
 }
 
 .tabs-outlet {
-    padding: 30px 0px;
+    padding: 20px 0px;
     line-height: 1.5;
     font-size: 14px;
     h2 {
         margin-bottom: 10px;
         font-size: 24px;
         @include bold();
+    }
+    @include mq($from: tablet) {
+        padding: 30px 0px;
     }
 }
 
