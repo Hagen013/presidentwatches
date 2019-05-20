@@ -1,7 +1,7 @@
 from .base import *
 
-import sentry_sdk
-from sentry_sdk.integrations.django import DjangoIntegration
+# import sentry_sdk
+# from sentry_sdk.integrations.django import DjangoIntegration
 
 
 DEBUG = False
@@ -43,9 +43,9 @@ STATIC_ROOT = str(ROOT_DIR.path('client/static_production'))
 
 # SENTRY START
 # ------------------------------------------------------------------------------
-sentry_sdk.init(
-    dsn="https://0eaf056b3f6b4f758cd68cc7de62e40e@sentry.io/1438577",
-    integrations=[DjangoIntegration()]
-)
+# sentry_sdk.init(
+#     dsn="https://0eaf056b3f6b4f758cd68cc7de62e40e@sentry.io/1438577",
+#     integrations=[DjangoIntegration()]
+# )
 # SENTRY END
 # ------------------------------------------------------------------------------

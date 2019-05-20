@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# VUE-CLI admin application
+cd ./admin/
+npm run build
+cd ..
+cp -r ./admin/dist/ ./compose/nginx/
+
 # FRONTEND
 cd ./client/;
 rm -rf /static /static_production;
