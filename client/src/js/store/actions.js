@@ -50,14 +50,17 @@ export default {
                 console.log(error);
             })
     },
-    getLocation(context, payload) {
-        geoApi.get('/api/geo_ip/').then(
-            response => {
+
+    // Favorites
+    addToFavorites(context, payload) {
+        api.post('/favorites/', payload)
+            .then(response => {
                 console.log(response);
-            },
-            response => {
-                console.log(response);
-            }
-        )
+            })
+            .catch(error => {
+            })
+    },
+    removeFromFavorites(context, payload) {
+
     }
 };

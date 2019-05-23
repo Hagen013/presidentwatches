@@ -13,17 +13,22 @@ class FavoritesController():
         self.session = request.session
         data = self.session.get(self.SESSION_ID)
         if not data:
-            now = datetime.now().isoformat()
-            data = {
-                'created_at': now,
-                'modified_at': now,
-                'items': {},
-                'total_price': 0,
-                'quantity': 0,
-            }
-            self.session[self.SESSION_ID] = data
+            data = self.get_empty_data()
+            self.session[self.CART_SESSION_ID] = data
 
         self.data = data
+
+    def get_empty_data(self):
+        now = datetime.now().isoformat()
+        data = {
+            'created_at': now,
+            'modified_at': now,
+            'items': {},
+            'total_price': 0,
+            'total_quantity': 0,
+            'items_quantity': 0
+        }
+        return data
 
     
     def add_offer(self, offer_identifier):
@@ -34,7 +39,7 @@ class FavoritesController():
         if not item:
             try:
                 instance = ProductPage.objects.get(
-                    model=offer_identifier
+                    id=offer_identifier
                 )
             except ObjectDoesNotExist:
                 instance = None
@@ -49,7 +54,8 @@ class FavoritesController():
                     'slug': instance.slug,
                     'url': instance.absolute_url,
                     'added_at': now,
-                    'brand': instance.brand
+                    'brand': instance.brand,
+                    'series': instance.series
                 }
                 self.data['items'][offer_identifier] = item
                 self.save()
@@ -101,10 +107,14 @@ class FavoritesController():
     def save(self):
         self.refresh()
         self.data['modified_at'] = datetime.now().isoformat()
-        self.session(self.SESSION_ID) = self.data
+        self.session[self.SESSION_ID] = self.data
         self.session.modified = True
 
     # Очистка корзины
     def clear(self):
         del self.session[self.SESSION_ID]
         self.session.modified = True
+
+    @property
+    def items_list(self):
+        return list(self.data['items'].values())

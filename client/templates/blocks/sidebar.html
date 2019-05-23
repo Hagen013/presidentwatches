@@ -168,6 +168,11 @@
                         <span class="sidebar-pane-count">
                         </span>
                     </div>
+                    <ul class="sidebar-list">
+                    {% for item in favorites.items_list %}
+                        {{item['model']}}
+                    {% endfor %}
+                    </ul>
                 </div>
             </div>
         </div>

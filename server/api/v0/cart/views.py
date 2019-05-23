@@ -5,6 +5,7 @@ from rest_framework import status
 from cart.cart import Cart
 from shop.models import ProductPage
 
+
 class BaseCartAPIView(APIView):
 
     def initial(self, request, *args, **kwargs):

@@ -44,6 +44,7 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     'django_extensions',
+    'social_django',
     'rest_framework',
     'corsheaders',
     'django_filters',
@@ -80,6 +81,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     #'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -94,13 +96,31 @@ MIDDLEWARE = [
 # ------------------------------------------------------------------------------
 TEMPLATES = [
     {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
+            ],
+        },
+    },
+    {
         'BACKEND': 'django.template.backends.jinja2.Jinja2',
         'DIRS': [
-            '../client/templates/',
-            '../admin/dist/'
+            '../client/templates/'
         ],
         'OPTIONS': {
             'environment': 'config.jinja2env.environment',
+            'context_processors': [
+                'cart.context_processors.cart_processor',
+                'favorites.context_processors.favorites_processor'
+            ]
         }
     },
 ]

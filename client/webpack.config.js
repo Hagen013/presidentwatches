@@ -1,6 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
-
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 module.exports = (env, argv) => {
 
@@ -19,7 +19,8 @@ module.exports = (env, argv) => {
             main: './main.js',
             productPage: './productPage.js',
             catalogPage: './catalogPage.js',
-            cartPage: './cartPage.js'
+            cartPage: './cartPage.js',
+            profilePage: './profilePage.js'
         },
         output: {
             path: path.resolve(__dirname, './dist/js'),
@@ -29,7 +30,8 @@ module.exports = (env, argv) => {
         resolve: {
             extensions: ['.js', '.json'],
             alias: {
-                '@': path.join(__dirname, './src/js')
+                '@': path.join(__dirname, './src/js'),
+                vue$: "vue/dist/vue.common.js"
             }
         },
         module: {
@@ -40,7 +42,17 @@ module.exports = (env, argv) => {
                     use: {
                     loader: "babel-loader"
                     }
-                }
+                },
+                {
+                    test: /\.vue$/,
+                    loader: "vue-loader",
+                    options: {
+                        loaders: {
+                            scss: "vue-style-loader!css-loader!sass-loader",
+                            js: "babel-loader"
+                        }
+                    }
+                },
             ]
         },
         optimization: {
@@ -70,7 +82,8 @@ module.exports = (env, argv) => {
             new webpack.HotModuleReplacementPlugin(),
             new webpack.DefinePlugin({
                 'GEO_SERVICE_HOST': GEO_SERVICE_HOST
-            })
+            }),
+            new VueLoaderPlugin()
         ]
     }
 }

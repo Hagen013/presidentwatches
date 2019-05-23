@@ -240,9 +240,11 @@
     }
     &:hover {
         color: $red-2 !important;
-        // &:before {
-        //     content: $icon-heart-fill;
-        // } 
+        .icon {
+            &:before {
+                content: $icon-heart-fill;
+            } 
+        }
     }
 }
 

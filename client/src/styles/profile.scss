@@ -1,0 +1,38 @@
+@import '../../node_modules/sass-mq/mq';
+
+$mq-breakpoints: (
+    mobile:  320px,
+    tablet: 768px,
+    desktop: 1032px,
+    wide: 1500px,
+    maximum: 1730px
+);
+
+
+.greeting {
+    margin: 10px 0px 30px 0px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #dcdcdc;
+}
+
+.profile-navigation {
+    @include mq($from: tablet) {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 188px;
+    }
+}
+
+.profile-navigation-link {
+    color: #7f7f7f;
+    user-select: none;
+    cursor: pointer;
+    &:hover {
+        color: black;
+    }
+}
+
+.profile-navigation-link.active {
+    color: black;
+}

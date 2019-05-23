@@ -5,9 +5,9 @@ import SidebarLastSeen from '@/components/sidebarLastSeen'
 import SearchBox from '@/components/SearchBox'
 import LocationSearch from '@/components/LocationSearch'
 import MobileMenu from '@/components/MobileMenu'
+import Likes from '@/components/Likes'
 
 import STATE from '@/state/index.js';
-import store from '@/store/index.js';
 
 
 $(document).ready(function() {
@@ -18,8 +18,6 @@ $(document).ready(function() {
         wide: 1500,
         maximum: 1730,
     }
-
-    store.dispatch('getLocation');
     
     // PROCESSING MEDIA QUERIES
     let mq = {
@@ -82,6 +80,7 @@ $(document).ready(function() {
     const mobileSearchBox = new SearchBox(mobileInputBox);
     const locationSearch = new LocationSearch();
     const mobileMenu = new MobileMenu('#mobile-menu-container');
+    const likes = new Likes();
 
     // End components
 
@@ -249,4 +248,5 @@ $(document).ready(function() {
         hideDrawer(parent);
     })
     // END MOBILE SORTING AND FILTERING
+
 })
