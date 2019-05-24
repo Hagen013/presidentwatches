@@ -21,7 +21,13 @@ class FavoritesListAPIView(BaseFavoritesAPIView):
         return Response({})
 
     def post(self, request):
-        print(request.data)
         pk = request.data['pk']
         self.controller.add_offer(pk)
-        return Response({})
+        return Response(self.controller.data)
+
+
+class FavoritesItemAPIVIew(BaseFavoritesAPIView):
+
+    def delete(self, request, pk):
+        self.controller.delete_offer(pk)
+        return Response(self.controller.data)

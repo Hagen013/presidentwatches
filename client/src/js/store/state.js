@@ -4,6 +4,8 @@ export default {
     },
     cart: {
     },
+    favorites: {
+    },
     facetes: {
         active: {
 

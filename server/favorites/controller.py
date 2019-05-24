@@ -14,9 +14,11 @@ class FavoritesController():
         data = self.session.get(self.SESSION_ID)
         if not data:
             data = self.get_empty_data()
-            self.session[self.CART_SESSION_ID] = data
-
+            self.session[self.SESSION_ID] = data
         self.data = data
+        self.ids = set(self.data['items'].keys())
+        self.ids = {int(pk) for pk in self.ids}
+
 
     def get_empty_data(self):
         now = datetime.now().isoformat()
@@ -46,6 +48,7 @@ class FavoritesController():
             if instance is not None:
                 now = datetime.now().isoformat()
                 item = {
+                    'id': instance.id,
                     'model': instance.model,
                     'price': instance.price,
                     'quantity': 1,
@@ -61,17 +64,17 @@ class FavoritesController():
                 self.save()
         else:
             item['quantity'] += 1
-            item['total_price'] = item['quanity'] * item['price']
+            item['total_price'] = item['quantity'] * item['price']
             self.save()
 
     def delete_offer(self, offer_identifier):
         del self.data['items'][offer_identifier]
         self.save()
 
-    def update_quantity(self, offer_identifier, quanity):
+    def update_quantity(self, offer_identifier, quantity):
         item = self.data['items']['offer_identifier']
-        item['quanity'] = quanity
-        item['total_price'] = item['price'] * quanity
+        item['quantity'] = quantity
+        item['total_price'] = item['price'] * quantity
         self.save()
 
     def calculate_total_price(self):

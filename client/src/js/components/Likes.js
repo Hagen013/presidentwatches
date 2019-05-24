@@ -1,4 +1,4 @@
-import store from '@/store';
+import store from '@/store/favorites/index.js';
 
 
 export default class Likes {
@@ -12,8 +12,10 @@ export default class Likes {
 
         $('.like').click(function() {
             let pk = this.getAttribute('data-id');
-            $(this).addClass('like_active');
-            self.addToFavorites({pk: pk});
+            if ( !$(this).hasClass('like_active') ) {
+                $(this).addClass('like_active');
+                self.addToFavorites({pk: pk});
+            }
         })
     }
 

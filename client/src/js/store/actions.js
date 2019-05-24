@@ -1,5 +1,4 @@
 import api from '@/api'
-import geoApi from '@/api/geo.js'
 
 
 export default {
@@ -50,17 +49,4 @@ export default {
                 console.log(error);
             })
     },
-
-    // Favorites
-    addToFavorites(context, payload) {
-        api.post('/favorites/', payload)
-            .then(response => {
-                console.log(response);
-            })
-            .catch(error => {
-            })
-    },
-    removeFromFavorites(context, payload) {
-
-    }
 };

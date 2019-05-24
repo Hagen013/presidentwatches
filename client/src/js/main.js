@@ -2,6 +2,7 @@ import SimpleBar from 'simplebar';
 
 import SidebarCart from '@/components/sidebarCart'
 import SidebarLastSeen from '@/components/sidebarLastSeen'
+import SidebarFavorites from '@/components/sidebarFavorites'
 import SearchBox from '@/components/SearchBox'
 import LocationSearch from '@/components/LocationSearch'
 import MobileMenu from '@/components/MobileMenu'
@@ -76,6 +77,7 @@ $(document).ready(function() {
 
     const sidebarCart = new SidebarCart();
     const lastSeen = new SidebarLastSeen();
+    const favorites = new SidebarFavorites();
     const searchBox = new SearchBox(headerInputBox);
     const mobileSearchBox = new SearchBox(mobileInputBox);
     const locationSearch = new LocationSearch();

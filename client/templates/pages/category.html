@@ -248,12 +248,21 @@
                                     {{product.price}} ₽
                                 </div>
                                 <div class="product-card__extra">
+                                    {% if product.id not in favorites.ids %}
                                     <div class="product-card__favorite like"
                                         data-id="{{ product.id }}"
                                     >
                                         <i class="icon icon-like">
                                         </i>
                                     </div>
+                                    {% else %}
+                                    <div class="product-card__favorite like like_active"
+                                        data-id="{{ product.id }}"
+                                    >
+                                        <i class="icon icon-like">
+                                        </i>
+                                    </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
