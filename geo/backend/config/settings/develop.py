@@ -24,7 +24,7 @@ INSTALLED_APPS += ('debug_toolbar', )
 
 INTERNAL_IPS = ['127.0.0.1']
 
-MEDIA_ROOT = str('/var/president_media/presidentwatches-original/')
+MEDIA_ROOT = str('/1TB/presidentwatches-original/')
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'

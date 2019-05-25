@@ -4,7 +4,7 @@
     }
     overflow-y: scroll;
     overflow-x: hidden;
-    @include mq($from: tablet) {
+    @include mq($from: desktop) {
         overflow-y: hidden;
     }
 }
@@ -153,8 +153,22 @@
     align-items: center;
 }
 
-.reset-passw-form {
+.auth-modal-submit {
+    width: 100%;
+    @include mq($from: tablet) {
+        width: auto;
+    }
+}
 
+.reset-passw-form {
+    .button {
+        width: 100%;
+        margin-bottom: 20px;
+        @include mq($from: tablet) {
+            width: auto;
+            margin-bottom: 0px;
+        }
+    }
 }
 
 .reset-passw-form__text {
@@ -163,5 +177,13 @@
 }
 
 .reset-passw-form__cancel {
-    margin-left: 20px;
+    display: block;
+    width: 100%;
+    text-align: center;
+    @include mq($from: tablet) {
+        display: inline-block;
+        width: auto;
+        text-align: left;
+        margin-left: 20px;
+    }
 }
