@@ -1,5 +1,7 @@
 import Component from '@/lib/component.js';
 import store from '@/store/index.js';
+import toggleSidebarTab from '@/utils/toggleSidearTab'
+
 
 export default class sidebarLastSeen extends Component {
 
@@ -15,17 +17,9 @@ export default class sidebarLastSeen extends Component {
     }
 
     addItem(target) {
-        let model = target.getAttribute('data-model');
-        store.dispatch('addToCart', {model: model})
-        $('.sidebar-link').each(function(index) {
-            $(this).removeClass('active');
-        })
-        $(this).addClass('active');
-        $('.sidebar-pane').each(function(index) {
-            $(this).removeClass('active');
-        });
-        $('#cart').addClass('active');
-        $('#sidebar-cart-link').addClass('active');
+        let pk = target.getAttribute('data-pk');
+        store.dispatch('addToCart', {pk: pk})
+        toggleSidebarTab('#cart');
     }
 
     bindMethods() {

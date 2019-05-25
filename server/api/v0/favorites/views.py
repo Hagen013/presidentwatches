@@ -31,3 +31,9 @@ class FavoritesItemAPIVIew(BaseFavoritesAPIView):
     def delete(self, request, pk):
         self.controller.delete_offer(pk)
         return Response(self.controller.data)
+
+
+class Favorites2CartTransferAPIView(BaseFavoritesAPIView):
+
+    def post(self, request):
+        return Response({})

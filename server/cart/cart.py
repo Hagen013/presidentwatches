@@ -19,21 +19,22 @@ class Cart():
         self.data = data
 
     
-    def add_offer(self, offer_identifier):
-        item = self.data['items'].get(offer_identifier)
+    def add_offer(self, pk):
+        item = self.data['items'].get(pk)
         # Проверка на наличе в корзине
         # если есть -> инкремент
         # если нет -> создание
         if not item:
             try:
                 instance = ProductPage.objects.get(
-                    model=offer_identifier
+                    pk=pk
                 )
             except ObjectDoesNotExist:
                 instance = None
             if instance is not None:
                 now = datetime.now().isoformat()
                 item = {
+                    'pk': instance.id,
                     'model': instance.model,
                     'price': instance.price,
                     'quantity': 1,
@@ -45,12 +46,16 @@ class Cart():
                     'brand': instance.brand,
                     'series': instance.series
                 }
-                self.data['items'][offer_identifier] = item
+                self.data['items'][pk] = item
                 self.save()
         else:
             item['quantity'] += 1
             item['total_price'] = item['quantity'] * item['price']
             self.save()
+
+    def add_offers(self, pks):
+        
+
 
     def delete_offer(self, offer_identifier):
         del self.data['items'][offer_identifier]

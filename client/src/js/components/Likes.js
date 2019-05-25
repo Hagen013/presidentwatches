@@ -1,4 +1,5 @@
 import store from '@/store/favorites/index.js';
+import toggleSidebarTab from '@/utils/toggleSidearTab'
 
 
 export default class Likes {
@@ -21,6 +22,7 @@ export default class Likes {
 
     addToFavorites(payload) {
         store.dispatch('addToFavorites', payload);
+        toggleSidebarTab('#favorites');
     }
 
 }
