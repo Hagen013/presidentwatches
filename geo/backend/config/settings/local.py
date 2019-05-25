@@ -1,6 +1,6 @@
 from .develop import *
 
-MEDIA_ROOT = str('/var/president_media/presidentwatches-original/')
+MEDIA_ROOT = str('/1TB/presidentwatches-original/')
 
 DATABASES = {
     'default': {

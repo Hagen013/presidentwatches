@@ -1,6 +1,6 @@
 import Component from '@/lib/component.js';
 import store from '@/store/index.js';
-import toggleSidebarTab from '@/utils/toggleSidearTab'
+import toggleSidebarTab from '@/utils/toggleSidebarTab'
 
 
 export default class sidebarLastSeen extends Component {

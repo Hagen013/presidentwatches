@@ -22,13 +22,20 @@ export default {
             context.commit('updateCart', res)
         })
     },
+    transferFavorites2Cart(context, payload) {
+        api.get('/cart/fav2cart/')
+            .then(response => {
+                context.commit('updateCart', response.data);
+            })
+            .catch(error => {
+            })
+    },
     removeFromCart(context, payload) {
         api.delete(`/cart/items/${payload.pk}/`)
             .then(response => {
                 context.commit('updateCart', response.data);
             })
             .catch(error => {
-                console.log(error);
             })
     },
     updateQuantity(context, payload) {
@@ -37,7 +44,6 @@ export default {
                 context.commit('updateCart', response.data);
             })
             .catch(error => {
-                console.log(error);
             })
     },
     clearCart(context, payload) {
@@ -46,7 +52,6 @@ export default {
                 context.commit('updateCart', response.data);
             })
             .catch(error => {
-                console.log(error);
             })
     },
 };

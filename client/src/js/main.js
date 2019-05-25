@@ -9,6 +9,7 @@ import MobileMenu from '@/components/MobileMenu'
 import Likes from '@/components/Likes'
 
 import STATE from '@/state/index.js';
+import toggleSidebarTab from '@/utils/toggleSidebarTab'
 
 
 $(document).ready(function() {
@@ -121,17 +122,10 @@ $(document).ready(function() {
         $('#page-overlay').removeClass('active');
     }
 
-    $('.sidebar-link').click(function(e) {
+    $('.sidebar-link, .control-button_tablet').click(function(e) {
         e.preventDefault();
         let href = this.getAttribute('href');
-        $('.sidebar-link').each(function(index) {
-            $(this).removeClass('active');
-        })
-        $(this).addClass('active');
-        $('.sidebar-pane').each(function(index) {
-            $(this).removeClass('active');
-        });
-        $(href).addClass('active');
+        toggleSidebarTab(href);
 
         if (STATE.device.widthMode !== 'maximum') {
             showSidebar();

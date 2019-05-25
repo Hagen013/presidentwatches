@@ -1,5 +1,7 @@
 import Component from '@/lib/component.js';
 import store from '@/store/index.js';
+import favoritesStore from '@/store/favorites'
+import toggleSidebarTab from '@/utils/toggleSidebarTab'
 
 export default class sidebarCart extends Component {
 
@@ -11,6 +13,7 @@ export default class sidebarCart extends Component {
     }
 
     initialize() {
+        this.$element = $(this.element);
         this.bindMethods();
     }
 
@@ -39,6 +42,11 @@ export default class sidebarCart extends Component {
 
     clearCart() {
         store.dispatch('clearCart');
+    }
+
+    addToFavorites(payload) {
+        favoritesStore.dispatch('addToFavorites', payload);
+        toggleSidebarTab('#favorites');
     }
 
     bindMethods() {
@@ -106,7 +114,9 @@ export default class sidebarCart extends Component {
                     <i class="icon icon_close">
                     </i>
                 </div>
-                <div class="card-mini__favorite like">
+                <div class="card-mini__favorite like"
+                    data-id="${item['pk']}"
+                >
                     <i class="icon icon-like">
                     </i>
                 </div>
@@ -116,6 +126,27 @@ export default class sidebarCart extends Component {
 
         $('#sidebar-total-price').text(store.state.cart.data.total_price);
         $('.cart-count').text(store.state.cart.data.total_quantity);
+        let favoriteItems = $('#sidebar-favorite-items').find('.sidebar-card');
+        let ids = [];
+        for (let i=0; i<favoriteItems.length; i++) {
+            let dataId = favoriteItems[i].getAttribute('data-pk');
+            ids.push(dataId);
+        }
+        let likes = this.$element.find('.like');
+        for (let i=0; i<likes.length; i++) {
+            let dataId = likes[i].getAttribute('data-id');
+            if (ids.indexOf(dataId) !== -1) {
+                $(likes[i]).addClass('like_active');
+            }
+            $(likes[i]).click(function() {
+                if ( !$(this).hasClass('like_active') ) {
+                    let pk = this.getAttribute('data-id');
+                    $(this).addClass('like_active');
+                    self.addToFavorites({pk: pk});
+                }
+            })
+        }
+        
         self.bindMethods()
     }
 };

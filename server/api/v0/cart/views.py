@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from cart.cart import Cart
+from favorites.controller import FavoritesController
 from shop.models import ProductPage
 
 
@@ -26,10 +27,36 @@ class CartApiView(BaseCartAPIView):
 class CartItemsApiView(BaseCartAPIView):
 
     def post(self, request):
+        print(request.data)
+        print('tsoy')
         pk = request.data['pk']
         self.cart.add_offer(pk)
         return Response(self.cart.data)
 
+
+class CartItemsBulkyApiView(BaseCartAPIView):
+
+    def post(self, request):
+        pks = request.data.get('pks', None)
+        if pks is not None:
+            self.cart.add_offers(
+                pks=pks
+            )
+            return Response(self.cart.data)
+        else:
+            return Response(
+                status_code=status.HTTP_400_BAD_REQUEST
+            )
+
+class Fav2CartTransferApiView(BaseCartAPIView):
+    # Remote-procedure-call View actually
+
+    def get(self, request):
+        favorites = FavoritesController(request)
+        pks = list(favorites.ids)
+        self.cart.add_offers(pks=pks)
+        return Response(self.cart.data)
+    
 
 class CartItemDetailsApiView(BaseCartAPIView):
 

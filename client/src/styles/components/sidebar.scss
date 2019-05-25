@@ -1,13 +1,13 @@
 .sidebar {
-    display: none;
+    display: block;
     position: absolute;
     top: 0px;
     right: 0px;
+    width: 0px;
     background: white;
     z-index: 300;
     overflow: hidden;
     @include mq($from: desktop) {
-        display: block;
         height: 100vh;
         height: 100%;
         width: 60px;
@@ -25,6 +25,9 @@
 
 .sidebar.active {
     width: 320px;
+    .sidebar-nav {
+        display: block;
+    }
     .sidebar-tabs {
         width: 320px;
         padding: 0px 20px 0px 20px;
@@ -74,7 +77,11 @@
 }
 
 .sidebar-nav {
+    display: none;
     @include row();
+    @include mq($from: desktop) {
+        display: block;
+    }
     @include mq($from: maximum) {
         height: 80px;
     }

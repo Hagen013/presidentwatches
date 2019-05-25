@@ -1,6 +1,7 @@
 let mapping = {
     '#cart': '#sidebar-cart-link',
-    '#favorites': '#sidebar-favorites-link'
+    '#favorites': '#sidebar-favorites-link',
+    '#viewed': '#sidebar-viewed-link'
 }
 
 export default function toggleSidebarTab(tabSelector) {

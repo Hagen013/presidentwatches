@@ -2,7 +2,6 @@ import api from '@/api'
 
 export default {
     addToFavorites(context, payload) {
-        console.log('inner');
         api.post('/favorites/', payload)
             .then(response => {
                 context.commit('updateFavorites', response.data);
@@ -17,5 +16,5 @@ export default {
             })
             .catch(error => {
             })
-    }
+    },
 }

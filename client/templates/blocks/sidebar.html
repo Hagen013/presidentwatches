@@ -21,7 +21,7 @@
                     </a>
                 </li>
                 <li class="sidebar-nav-tab">
-                    <a class="sidebar-link" href="#viewed">
+                    <a class="sidebar-link" id="sidebar-viewed-link" href="#viewed">
                         <i class="icon icon_eye">
                         </i>
                     </a>
@@ -87,7 +87,9 @@
                                     <i class="icon icon_close">
                                     </i>
                                 </div>
-                                <div class="card-mini__favorite like">
+                                <div class="card-mini__favorite like"
+                                    data-id="{{item['pk']}}"
+                                >
                                     <i class="icon icon-like">
                                     </i>
                                 </div>
@@ -170,7 +172,7 @@
                         </div>
                         <div class="sidebar-pane-count">
                             <span class="favorites-count">
-                            {{ favorites.data['total_quantity'] }}
+                            {{ favorites.data['items_quantity'] }}
                             </span>
                             товара
                         </div>
@@ -214,7 +216,9 @@
                         </ul>
                     </div>
                     <div class="sidebar-pane-footer sidebar-pane-footer_fav">
-                        <div class="button button_accent">
+                        <div class="button button_accent"
+                            id="favorites-2-cart"
+                        >
                             Добавить всё в корзину
                         </div>
                     </div>

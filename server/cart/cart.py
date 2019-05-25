@@ -54,8 +54,31 @@ class Cart():
             self.save()
 
     def add_offers(self, pks):
-        
-
+        qs = ProductPage.objects.filter(
+            pk__in=pks
+        )
+        now = datetime.now().isoformat()
+        for instance in qs:
+            item = self.data['items'].get(instance.id, None)
+            if item is None:
+                item = {
+                    'pk': instance.id,
+                    'model': instance.model,
+                    'price': instance.price,
+                    'quantity': 1,
+                    'total_price': instance.price,
+                    'image': instance.thumbnail.url,
+                    'slug': instance.slug,
+                    'url': instance.absolute_url,
+                    'added_at': now,
+                    'brand': instance.brand,
+                    'series': instance.series
+                }
+                self.data['items'][instance.pk] = item
+            else:
+                item['quantity'] += 1
+                item['total_price'] = item['quantity'] * item['price']
+        self.save()
 
     def delete_offer(self, offer_identifier):
         del self.data['items'][offer_identifier]

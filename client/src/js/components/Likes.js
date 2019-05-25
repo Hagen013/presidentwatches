@@ -1,5 +1,5 @@
 import store from '@/store/favorites/index.js';
-import toggleSidebarTab from '@/utils/toggleSidearTab'
+import toggleSidebarTab from '@/utils/toggleSidebarTab'
 
 
 export default class Likes {

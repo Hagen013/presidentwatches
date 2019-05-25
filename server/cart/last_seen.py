@@ -25,9 +25,9 @@ class LastSeenController():
     
     def push(self, instance):
 
-        offer_identifier = instance.model
+        offer_identifier = instance.id
         now = datetime.now().isoformat()
-        identifier_mapping = set(map(lambda x: x['model'], self.data['items']))
+        identifier_mapping = set(map(lambda x: x['pk'], self.data['items']))
 
         if offer_identifier not in identifier_mapping:
             item = {

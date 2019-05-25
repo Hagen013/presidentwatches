@@ -1,7 +1,7 @@
 import Component from '@/lib/component.js';
 import store from '@/store/favorites/';
 import cartStore from '@/store/index'
-import toggleSidebarTab from '@/utils/toggleSidearTab'
+import toggleSidebarTab from '@/utils/toggleSidebarTab'
 
 
 export default class sidebarFavorites extends Component {
@@ -34,6 +34,10 @@ export default class sidebarFavorites extends Component {
             let pk = $(this).parents('.sidebar-card').attr('data-pk');
             self.addToCart(pk);
         })
+
+        $('#favorites-2-cart').click(function() {
+            self.addAllToCart();
+        })
     }
 
     remove(pk) {
@@ -46,7 +50,8 @@ export default class sidebarFavorites extends Component {
     }
 
     addAllToCart() {
-
+        cartStore.dispatch('transferFavorites2Cart');
+        toggleSidebarTab('#cart');
     }
 
     render() {
@@ -94,7 +99,7 @@ export default class sidebarFavorites extends Component {
             `
         }).join('')}`;
 
-        $('.favorites-count').text(store.state.favorites.total_quantity);
+        $('.favorites-count').text(store.state.favorites.items_quantity);
         this._bindMethods();
     }
 
