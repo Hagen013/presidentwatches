@@ -31,6 +31,7 @@ class LastSeenController():
 
         if offer_identifier not in identifier_mapping:
             item = {
+                'pk': instance.id,
                 'model': instance.model,
                 'price': instance.price,
                 'old_price': instance.old_price,

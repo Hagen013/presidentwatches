@@ -1,5 +1,4 @@
 import api from '@/api'
-import geoApi from '@/api/geo.js'
 
 
 export default {
@@ -24,7 +23,7 @@ export default {
         })
     },
     removeFromCart(context, payload) {
-        api.delete(`/cart/items/${payload.model}/`)
+        api.delete(`/cart/items/${payload.pk}/`)
             .then(response => {
                 context.commit('updateCart', response.data);
             })
@@ -33,7 +32,7 @@ export default {
             })
     },
     updateQuantity(context, payload) {
-        api.put(`/cart/items/${payload.model}/quantity/${payload.quantity}/`)
+        api.put(`/cart/items/${payload.pk}/quantity/${payload.quantity}/`)
             .then(response => {
                 context.commit('updateCart', response.data);
             })
@@ -50,14 +49,4 @@ export default {
                 console.log(error);
             })
     },
-    getLocation(context, payload) {
-        geoApi.get('/api/geo_ip/').then(
-            response => {
-                console.log(response);
-            },
-            response => {
-                console.log(response);
-            }
-        )
-    }
 };

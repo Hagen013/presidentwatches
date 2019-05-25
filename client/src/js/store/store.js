@@ -31,18 +31,12 @@ export default class Store {
         self.state = new Proxy((params.state || {}), {
             set: function(state, key, value) {
                 
-                // Set the value as we would normally
-                state[key] = value;
-                
-                // Trace out to the console. This will be grouped by the related action
-                console.log(`stateChange: ${key}: ${value}`);
-                
-                // Publish the change event for the components that are listening
-                self.events.publish('stateChange', self.state);
-                
                 // Give the user a little telling off if they set a value directly
                 if(self.status !== 'mutation') {
-                    console.warn(`You should use a mutation to set ${key}`);
+                    //console.warn(`You should use a mutation to set ${key}`);
+                } else {
+                    state[key] = value;
+                    self.events.publish('stateChange', self.state);
                 }
                 
                 // Reset the status ready for the next operation

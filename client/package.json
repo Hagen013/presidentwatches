@@ -11,7 +11,11 @@
     "dev_build": "./node_modules/.bin/cross-env ./node_modules/.bin/webpack --progress --hide-modules",
     "build": "webpack --mode production"
   },
-  "dependencies": {},
+  "dependencies": {
+    "vue": "^2.6.10",
+    "vue-loader": "^15.7.0",
+    "vue-template-compiler": "^2.6.10"
+  },
   "devDependencies": {
     "@babel/core": "^7.4.3",
     "@babel/preset-env": "^7.4.3",
@@ -28,6 +32,7 @@
     "gulp-postcss": "^6.2.0",
     "gulp-sass": "^4.0.2",
     "gulp-sass-bulk-import": "^1.0.1",
+    "gulp-sourcemaps": "^2.6.5",
     "js-cookie": "^2.2.0",
     "sass-mq": "^5.0.0",
     "simplebar": "^4.0.0-alpha.1",

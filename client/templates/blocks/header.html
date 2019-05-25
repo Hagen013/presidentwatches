@@ -76,6 +76,15 @@
                     </div>
                 </form>
                 <div class="header__controls">
+                    {% if request.user.is_authenticated %}
+                    <a class="control-button" href="/u/profile/">
+                        <i class="icon icon_user">
+                        </i>
+                        <div class="control-button__text">
+                        ВАШ ПРОФИЛЬ
+                        </div>
+                    </a>
+                    {% else %}
                     <div class="control-button header-auth">
                         <i class="icon icon_user">
                         </i>
@@ -83,6 +92,7 @@
                         ВОЙТИ
                         </div>
                     </div>
+                    {% endif %}
                     <div class="control-button control-button_tablet">
                         <i class="icon icon_eye">
                         </i>

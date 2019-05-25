@@ -37,8 +37,17 @@ return gulp.src("./src/fonts/**/*.{ttf,otf}")
 // DEV =======================================================================
 // css (sass)
 gulp.task('styles', function() {
-	console.log(paths.sass);
 	gulp.src(paths.sass + '/styles.scss')
+	.pipe(sourcemaps.init())
+	.pipe(bulkSass())
+	.pipe(sass().on('error', onError))
+	.pipe(autoprefixer({browsers: ['last 2 version']}))
+	.pipe(sourcemaps.write())
+	.pipe(gulp.dest(paths.css));
+});
+
+gulp.task('profile', function() {
+	gulp.src(paths.sass + '/profile.scss')
 	.pipe(sourcemaps.init())
 	.pipe(bulkSass())
 	.pipe(sass().on('error', onError))
@@ -67,6 +76,7 @@ gulp.task('browserSyncTask', ['runserver'], function() {
 // watch
 gulp.task('watchTask', function() {
 	gulp.watch(paths.sass + '/**/*.scss', ['styles', reload]);
+	gulp.watch(paths.sass + '/**/*.scss', ['profile', reload]);
 	gulp.watch(paths.sass + '/**/**/*.scss', ['styles', reload]);
 	gulp.watch([paths.templates + '/*.html',
 				paths.templates + '/**/*.html',
@@ -74,7 +84,7 @@ gulp.task('watchTask', function() {
 });
 
 // default
-gulp.task('default', ['styles', 'watchTask', 'browserSyncTask']);
+gulp.task('default', ['styles', 'profile', 'watchTask', 'browserSyncTask']);
 
 
 // ==	2. TASKS production	====================================================

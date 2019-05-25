@@ -12,9 +12,12 @@
                     </a>
                 </li>
                 <li class="sidebar-nav-tab">
-                    <a class="sidebar-link" href="#favorites">
+                    <a class="sidebar-link" id="sidebar-favorites-link" href="#favorites">
                         <i class="icon icon_heart-stroke">
                         </i>
+                        <div class="sidebar-nav-count favorites-count">
+                            {{ favorites.data['total_quantity'] }}
+                        </div>
                     </a>
                 </li>
                 <li class="sidebar-nav-tab">
@@ -45,7 +48,7 @@
                     <div class="sidebar-pane-body">
                         <ul class="sidebar-pane-cart" id="sidebar-cart-items">
                             {% for item in cart.items_list %}
-                            <li class='card-mini sidebar-card' data-model="{{item['model']}}">
+                            <li class='card-mini sidebar-card' data-pk="{{item['pk']}}">
                                 <div class="card-mini__img-wrap">
                                     <a class="link-wrap" href="/watches/{{item['slug']}}/">
                                         <img class="card-mini__img" src="{{item['image']}}">
@@ -147,7 +150,7 @@
                                 <div class="card-mini__model">
                                     {{item['model']}}
                                 </div>
-                                <div class="card-mini-buy fab fab-mini fab_accent" data-model="{{ item['model'] }}">
+                                <div class="card-mini-buy fab fab-mini fab_accent" data-pk="{{ item['pk'] }}">
                                     <i class="icon icon_cart">
                                     </i>
                                 </div>
@@ -161,12 +164,59 @@
                     </ul>
                 </div>
                 <div class="sidebar-pane" id="favorites">
-                    <div class="sidebar-pane-heading">
-                        <div class="heading-2 bold">
+                    <div class="sidebar-pane-heading row">
+                        <div class="heading-2 bold sidebar-pane-title">
                             Избранное
                         </div>
-                        <span class="sidebar-pane-count">
-                        </span>
+                        <div class="sidebar-pane-count">
+                            <span class="favorites-count">
+                            {{ favorites.data['total_quantity'] }}
+                            </span>
+                            товара
+                        </div>
+                    </div>
+                    <div class="sidebar-pane-body">
+                        <ul class="sidebar-pane-cart" id="sidebar-favorite-items">
+                            {% for item in favorites.items_list %}
+                            <li class='card-mini sidebar-card' data-pk="{{item['id']}}"
+                            >
+                                <div class="card-mini__img-wrap">
+                                    <a class="link-wrap" href="/watches/{{item['slug']}}/">
+                                        <img class="card-mini__img" src="{{item['image']}}">
+                                    </a>
+                                </div>
+                                <div class="card-mini__content">
+                                    <a class="link-wrap" href="/watches/{{item['slug']}}/">
+                                        <div class="card-mini__brand">
+                                            {{item['brand']}}
+                                        </div>
+                                        <div class="card-mini__series">
+                                            {{item['series']}}
+                                        </div>
+                                        <div class="card-mini__model">
+                                            {{item['model']}}
+                                        </div>
+                                    </a>
+                                    <div class="card-mini-buy fab fab-mini fab_accent" data-pk="{{ item['pk'] }}">
+                                        <i class="icon icon_cart">
+                                        </i>
+                                    </div>
+                                    <div class="card-mini__price">
+                                        <span class="price">{{item['price']}}</span>
+                                    </div>
+                                </div>
+                                <div class="card-mini__delete">
+                                    <i class="icon icon_close">
+                                    </i>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="sidebar-pane-footer sidebar-pane-footer_fav">
+                        <div class="button button_accent">
+                            Добавить всё в корзину
+                        </div>
                     </div>
                 </div>
             </div>

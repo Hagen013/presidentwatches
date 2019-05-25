@@ -15,26 +15,26 @@ export default class sidebarCart extends Component {
     }
 
     removeItem(target) {
-        let model = target.parentNode.getAttribute('data-model');
-        store.dispatch('removeFromCart', {model: model});
+        let pk = target.parentNode.getAttribute('data-pk');
+        store.dispatch('removeFromCart', {pk: pk});
     }
 
     decrementItem(target) {
-        let model = $(target).parents('.card-mini').attr('data-model');
+        let model = $(target).parents('.card-mini').attr('data-pk');
         let quantity = Number($(target).siblings('.item-quantity').text());
         quantity -= 1;
         if (quantity <= 0 ) {
-            store.dispatch('removeFromCart', {model: model});
+            store.dispatch('removeFromCart', {pk: model});
         } else {
-            store.dispatch('updateQuantity', {model: model, quantity: quantity});
+            store.dispatch('updateQuantity', {pk: model, quantity: quantity});
         }
     }
 
     incrementItem(target) {
-        let model = $(target).parents('.card-mini').attr('data-model');
+        let model = $(target).parents('.card-mini').attr('data-pk');
         let quantity = Number($(target).siblings('.item-quantity').text());
         quantity += 1;
-        store.dispatch('updateQuantity', {model: model, quantity: quantity});
+        store.dispatch('updateQuantity', {pk: model, quantity: quantity});
     }
 
     clearCart() {
@@ -43,7 +43,7 @@ export default class sidebarCart extends Component {
 
     bindMethods() {
         let self = this;
-        $('.card-mini__delete').click(function(e) {
+        $(this.element).find('.card-mini__delete').click(function(e) {
             self.removeItem(this);
         })
         $('.quantity_decrement').click(function(e) {
@@ -67,7 +67,7 @@ export default class sidebarCart extends Component {
         self.element.innerHTML = `
         ${items.map(item => {
             return `
-            <li class='card-mini sidebar-card' data-model='${item['model']}'>
+            <li class='card-mini sidebar-card' data-pk='${item['pk']}'>
                 <div class='card-mini__img-wrap'>
                     <a class="link-wrap" href="/watches/${item['slug']}/">
                         <img class='card-mini__img' src='${item['image']}'>

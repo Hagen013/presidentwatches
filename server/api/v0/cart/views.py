@@ -5,6 +5,7 @@ from rest_framework import status
 from cart.cart import Cart
 from shop.models import ProductPage
 
+
 class BaseCartAPIView(APIView):
 
     def initial(self, request, *args, **kwargs):
@@ -25,26 +26,26 @@ class CartApiView(BaseCartAPIView):
 class CartItemsApiView(BaseCartAPIView):
 
     def post(self, request):
-        identifier = request.data['model']
-        self.cart.add_offer(identifier)
+        pk = request.data['pk']
+        self.cart.add_offer(pk)
         return Response(self.cart.data)
 
 
 class CartItemDetailsApiView(BaseCartAPIView):
 
-    def put(self, request, identifier):
+    def put(self, request, pk):
         return Response({})
 
-    def delete(self, request, identifier):
-        self.cart.delete_offer(identifier)
+    def delete(self, request, pk):
+        self.cart.delete_offer(pk)
         return Response(self.cart.data)
 
 
 class CartItemQuantityApiView(BaseCartAPIView):
 
-    def get(self, request, identifier, quantity):
+    def get(self, request, pk, quantity):
         return Response({})
 
-    def put(self, request, identifier, quantity):
-        self.cart.update_quantity(identifier, quantity)
+    def put(self, request, pk, quantity):
+        self.cart.update_quantity(pk, quantity)
         return Response(self.cart.data)

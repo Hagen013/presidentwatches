@@ -53,9 +53,8 @@
             </div>
         </div>
 
-        {% with cart = session_cart(request) %}
-            {% include 'blocks/sidebar.html' %}
-        {% endwith %}
+
+        {% include 'blocks/sidebar.html' %}
 
 
         {% block modals %}
@@ -549,15 +548,15 @@
                     </ul>
                     <div class="tabs-outlet">
                         <div class="tab-pane active" id="login">
-                            <form class="form login-form">
+                            <form class="form login-form" method="post" action="/u/login/">
                                 <div class="form-title">
                                     С помощью аккаунта <span class="hide-mb-inline">ПрезидентВотчес</span>
                                 </div>
                                 <div class="input-box form-input-box">
-                                    <input class="input input_white" placeholder="E-mail">
+                                    <input class="input input_white" type="email" placeholder="E-mail" name="email">
                                 </div>
                                 <div class="input-box form-input-box">
-                                    <input class="input input_white" placeholder="Пароль">
+                                    <input class="input input_white" type="password" placeholder="Пароль" name="password">
                                 </div>
                                 <div>
                                     <input type="submit" class="button button_accent button_big auth-modal-enter" value="Войти">
@@ -565,6 +564,7 @@
                                         Напомнить пароль
                                     </a>
                                 </div>
+                                <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
                             </form>
                             <div class="form">
                                 <div class="form-title">
@@ -638,7 +638,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <form class="form register-form">
+                            <form class="form register-form" method="post" action="/u/register/">
                                 <div class="form-title hide-mb">
                                     Используя адрес электронной почты
                                 </div>
@@ -650,7 +650,7 @@
                                         E-mail
                                     </div>
                                     <div class="field-input-box form-input-box">
-                                        <input class="input">
+                                        <input class="input" type="email" name="email">
                                     </div>
                                 </div>
                                 <div class="field">
@@ -658,7 +658,7 @@
                                         Пароль
                                     </div>
                                     <div class="field-input-box form-input-box">
-                                        <input class="input">
+                                        <input class="input" type="password" name="password">
                                     </div>
                                     <div class="field-hint">
                                         Пароль должен состоять как минимум из 6-ти знаков и содержать хотя бы одну цифру.
@@ -669,10 +669,11 @@
                                         Имя
                                     </div>
                                     <div class="field-input-box form-input-box">
-                                        <input class="input">
+                                        <input class="input" name="name">
                                     </div>
                                 </div>
-                                <input type="submit" class="button button_big button_accent auth-modal-submit" value="ЗАРЕГЕСТРИРОВАТЬСЯ">
+                                <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                                <input type="submit" class="button button_big button_accent" value="ЗАРЕГЕСТРИРОВАТЬСЯ">
                                 <div class="field-hint register-form__hint">
                                     Нажимая на кнопку «Зарегистрироваться» даю согласие на обработку моих персональных данных.
                                 </div>
