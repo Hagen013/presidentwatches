@@ -200,12 +200,16 @@ $(document).ready(function() {
     $('.tabs-link').click(function(e) {
         e.preventDefault();
         let href = this.getAttribute('href');
-        let links = $(this).closest('ul').find('.tabs-link');
+        let tabs = $(this).closest('ul');
+        let links = tabs.find('.tabs-link');
+        let target = tabs.attr('href');
+        console.log(tabs);
+        console.log(target);
         $(links).each(function(index) {
             $(this).removeClass('active');
         })
         $(this).addClass('active');
-        let panes = $('.tab-pane');
+        let panes = $(target).find('.tab-pane');
         panes.each(function(index) {
             $(this).removeClass('active');
         })

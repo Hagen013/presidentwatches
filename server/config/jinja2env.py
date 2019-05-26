@@ -1,3 +1,6 @@
+import locale
+locale.setlocale(locale.LC_ALL, '')
+
 import json
 
 from django.contrib.staticfiles.storage import staticfiles_storage
@@ -25,6 +28,10 @@ def update_pagination(querystring, kwargs):
 
 def locations_list():
     return locations
+
+
+def format_price(value):
+    return '{:,d}'.format(value).replace(',', ' ')
 
 
 storing_mapping = {
@@ -64,6 +71,7 @@ def environment(**options):
         'update_pagination': update_pagination,
         'sorting_option_class': sorting_option_class,
         'session_cart': session_cart,
-        'locations_list': locations_list
+        'locations_list': locations_list,
+        'format_price': format_price
     })
     return env

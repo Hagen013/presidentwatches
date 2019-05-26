@@ -251,16 +251,16 @@
                                 </div>
                                 {% if product.sale_percentage > 0 %}
                                 <div class="product-card__price price price_red">
-                                    {{product.price}}
+                                    {{format_price(product.price)}}
                                 </div>
                                 <div class="product-card__price-wrap">
                                     <div class="product-card__old-price price price_old">
-                                        {{product.old_price}}
+                                        {{format_price(product.old_price)}}
                                     </div>
                                 </div>
                                 {% else %}
                                 <div class="product-card__price price">
-                                    {{product.price}}
+                                    {{format_price(product.price)}}
                                 </div>
                                 {% endif %}
                                 <div class="product-card__extra">

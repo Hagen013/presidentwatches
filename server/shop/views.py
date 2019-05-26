@@ -248,6 +248,7 @@ class ProductPageView(TemplateView):
         context = super(ProductPageView, self).get_context_data(**kwargs)
 
         context[self.instance_context_name] = self.instance
+        context['category'] = CategoryPage.objects.get_by_product(self.instance)
         context['images'] = self.instance.images.all()
 
         return context
