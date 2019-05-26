@@ -27,6 +27,12 @@
         {% endblock css %}
 
         {% block script_head %}
+        <script type="text/javascript">
+        if (!!window.performance && window.performance.navigation.type == 2)
+        {
+            window.location.reload();
+        }
+        </script>
         <script src="{{ static('js/jquery-3.3.1.min.js') }}"></script>
         {% endblock script_head %}
     </head>
@@ -44,6 +50,73 @@
 
                 {% block content %}
                 {% endblock content %}
+
+                {% block subscribes %}
+                <div class="subscribe">
+                    <div class="content-area content-area_block row">
+                        <div class="subscribe-placeholder col t-col-5 d-col-3">
+                            .
+                            <div class="subscribe-girl">
+                            </div>
+                        </div>
+                        <div class="subscribe-content col t-col-7 d-col-9">
+                            <div class="subscribe-text">
+                                <h4 class="subscribe-title bold">
+                                Будем друзьями!
+                                </h4>
+                                <p>
+                                Подпишись на наши новости и получай информацию о новых акциях.
+                                </p>
+                            </div>
+                            <div class="subsribe-controls">
+                                <div class="subscribe-box input-box">
+                                    <input class="input subscribe-input" type="email" placeholder="E-mail">
+                                    <div class="button button_big button_accent subscribe-button">
+                                        ПОДПИСАТЬСЯ
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endblock subscribes %}
+
+                {% block advantages %}
+                <div class="content-area">
+                    <ul class="advantages">
+                        <li class="advantages-item">
+                            <i class="icon icon_delivery-big advantages-icon">
+                            </i>
+                            <p class="advantages-item-text bold">
+                                Есть собственная служба
+                                доставки
+                            </p>
+                        </li>
+                        <li class="advantages-item">
+                            <i class="icon icon_payment-big advantages-icon">
+                            </i>
+                            <p class="advantages-item-text bold">
+                                Оплата любыми способами
+                            </p>
+                        </li>
+                        <li class="advantages-item">
+                            <i class="icon icon_tag-big advantages-icon">
+                            </i>
+                            <p class="advantages-item-text bold">
+                                Более 300 брендов
+                                и свыше 50 000 товаров
+                            </p>
+                        </li>
+                        <li class="advantages-item">
+                            <i class="icon icon_location-big advantages-icon">
+                            </i>
+                            <p class="advantages-item-text bold">
+                                Более 900 точек выдачи товара
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+                {% endblock advantages %}
 
             </div>
             <div class="page__content-bottom">

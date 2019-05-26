@@ -1,0 +1,100 @@
+.subscribe {
+    padding: 30px 0px;
+    background: $blue;
+    color: $white;
+    .content-area {
+        position: relative;
+    }
+    @include mq($from: desktop) {
+        padding: 40px 0px;
+    }
+}
+
+.subscribe-title {
+    font-size: 18px;
+    margin-bottom: 8px;
+    @include mq($from: desktop) {
+        font-size: 24px;
+    }
+}
+
+.subscribe-placeholder {
+    height: 100%;
+    color: $blue;
+}
+
+.subscribe-text {
+    margin-bottom: 18px;
+    p {
+        font-size: 14px;
+        line-height: 1.5;
+        max-width: 310px;
+    }
+    @include mq($from: desktop) {
+        float: left;
+        width: 46%;
+        padding-right: 20px;
+    }
+}
+
+.subsribe-controls {
+    @include mq($from: desktop) {
+        float: left;
+        width: 54%;
+    }
+    @include mq($from: wide) {
+        padding-right: 40px;
+    }
+}
+
+.subscribe-girl {
+    @include mq($from: tablet) {
+        position: absolute;
+        bottom: -30px;
+        left: 38px;
+        height: 223px;
+        width: 314px;
+        background: url(../img/assets/subscribe-girl.png);
+        background-repeat: no-repeat;
+        background-position: bottom left;
+    }
+    @include mq($from: desktop) {
+        width: 200px;
+        background-size: 100%;
+        bottom: -41px;
+    }
+}
+
+.subscribe-box {
+    height: 46px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+    @include mq($from: desktop) {
+        margin-top: 20px;
+    }
+}
+
+.subscribe-input {
+    padding-right: 129px;
+    @include mq($from: tablet) {
+        padding-right: 164px;
+    }
+}
+
+.subscribe-button {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    padding: 0px 10px;
+    min-width: 0px;
+    width: 119px; 
+    color: black;
+    border-radius: 0px;
+    font-size: 12px;
+    @include mq($from: tablet) {
+        width: 154px;
+        font-size: 14px;
+        padding: 0px 20px;
+    }
+}

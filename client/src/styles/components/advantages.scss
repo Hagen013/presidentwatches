@@ -1,0 +1,44 @@
+.advantages {
+    width: 100%;
+    padding-bottom: 10px;
+    @include mq($from: tablet) {
+        display: flex;
+        padding-bottom: 30px;
+        border-top: 1px solid $grey;
+        padding-top: 30px;
+    }
+}
+
+.advantages-item {
+    display: flex;
+    align-items: center;
+    height: 66px;
+    width: 100%;
+    @include mq($from: tablet) {
+        width: 25%;
+        height: auto;
+        flex-direction: column;
+    }
+    @include mq($from: desktop) {
+        flex-direction: row;
+    }
+}
+
+.advantages-icon {
+    display: block !important;
+    height: 66px;
+    width: 66px;
+}
+
+.advantages-item-text {
+    width: 223px;
+    margin-left: 10px;
+    @include mq($from: tablet) {
+        width: 157px;
+        text-align: center;
+    }
+    @include mq($from: desktop) {
+        text-align: left;
+        width: 120px;
+    }
+}

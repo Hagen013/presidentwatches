@@ -202,7 +202,7 @@
                         data-attribute="{{tag.attribute.key}}"
                         data-value="{{tag.id}}"
                     >
-                        {{tag.attribute.name}}:{{tag.value}}
+                        {{tag.tag}}
                         <div class="tag__close">
                             <i class="icon icon_close tag__icon">
                             </i>
@@ -214,7 +214,7 @@
                         data-attribute="{{tag.attribute.key}}"
                         data-value="{{tag.id}}"
                     >
-                        {{tag.value}}
+                        {{tag.tag}}
                         <div class="tag__close">
                             <i class="icon icon_close tag__icon">
                             </i>
@@ -228,6 +228,11 @@
                             <a href="/watches/{{ product.slug }}/">
                                 <div class="product-card__img-wrap">
                                     <img class="product-card__img" src="{{ product.thumbnail.url }}">
+                                    {% if product.sale_percentage > 0 %}
+                                        <div class="product-card__sale-percentage">
+                                        - {{product.sale_percentage}} %
+                                        </div>
+                                    {% endif %}
                                 </div>
                             </a>
                             <div class="product-card__data">
@@ -244,9 +249,20 @@
                                         </div>
                                     </a>
                                 </div>
-                                <div class="product-card__price">
-                                    {{product.price}} ₽
+                                {% if product.sale_percentage > 0 %}
+                                <div class="product-card__price price price_red">
+                                    {{product.price}}
                                 </div>
+                                <div class="product-card__price-wrap">
+                                    <div class="product-card__old-price price price_old">
+                                        {{product.old_price}}
+                                    </div>
+                                </div>
+                                {% else %}
+                                <div class="product-card__price price">
+                                    {{product.price}}
+                                </div>
+                                {% endif %}
                                 <div class="product-card__extra">
                                     {% if product.id not in favorites.ids %}
                                     <div class="product-card__favorite like"

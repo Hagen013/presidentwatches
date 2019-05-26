@@ -14,6 +14,7 @@ from core.db.mixins import (TimeStampedMixin,
 
 from .managers import AttributeValueManager
 from .fields import EavSlugField, EavDatatypeField, AttributeType
+from .mixins import FilterTagMixin
 
 
 class DatatypeRestrictionsMixin(models.Model):
@@ -123,7 +124,7 @@ class AbstractAttribute(DatatypeRestrictionsMixin,
 
 
 class AbstractAttributeValue(DatatypeRestrictionsMixin, OrderableMixin,
-                             TimeStampedMixin, HiddenMixin):
+                             TimeStampedMixin, HiddenMixin, FilterTagMixin):
     """
     """
     class Meta:

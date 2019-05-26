@@ -1,1 +1,574 @@
 {% extends "base.html" %}
+
+{% block content %}
+    <div class="content-area">
+        <div class="index-content">
+            Главная страница
+        </div>
+    </div>
+{% endblock content %}
+
+{% block subscribes %}
+    {{ super() }}
+    
+    <div class="content-area content-area_block">
+        <div class="tabs index-tabs">
+            <ul class="tabs-nav">
+                <li class="tabs-nav-item">
+                    <a class="tabs-link" href="#tabs-mens">
+                        Мужские
+                    </a>
+                </li>
+                <li class="tabs-nav-item">
+                    <a class="tabs-link" href="#tabs-women">
+                        Женские
+                    </a>
+                </li>
+                <li class="tabs-nav-item">
+                    <a class="tabs-link active" href="#tabs-about">
+                        О компании
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="tabs-outlet index-tabs-outlet">
+
+            <div class="tab-pane" id="tabs-mens">
+                <div class="submenu-inner">
+                    <div class="submenu-columns row">
+                        <div class="submenu-col submenu-col-1">
+                            <ul class="submenu-list">
+                                <li class="submenu-title bold">
+                                    КАТЕГОРИИ
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/mens/quarz/">
+                                        Кварцевые
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/mens/mechanical/">
+                                        Механические
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/mens/electronic/">
+                                        Электронные
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/mens/sport/">
+                                        Спортивные
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="#">
+                                        Водонепроницаемые
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="#">
+                                        Рейтинг выше 4 звезд
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="#">
+                                        Больше всего отзывов
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="submenu-col submenu-col-2">
+                            <ul class="submenu-list">
+                                <li class="submenu-title bold">
+                                    СТРАНЫ
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/mens/russian/">
+                                        Российские
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/mens/swiss/">
+                                        Швейцарские
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/mens/japan/">
+                                        Японские
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/mens/american/">
+                                        Американские
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/mens/german/">
+                                        Немецкие
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/mens/fashion/">
+                                        Дизайнерские
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/mens/other/">
+                                        Другие
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="submenu-col submenu-col-3">
+                            <ul class="submenu-list">
+                                <li class="submenu-title bold">
+                                    Бренды
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/japan/casio/mens/">
+                                        Casio
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/japan/casio/casio-gshock/mens/">
+                                        Casio G-Shock
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/mens/orient/">
+                                        Orient
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/fashion/fossil/mens/">
+                                        Fossil
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/russian/vostok/mens/">
+                                        Восток
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/swiss/calvin-klein/mens/">
+                                        Calvin Klein
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/fashion/ben-sherman/">
+                                        Ben Sherman
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="submenu-col submenu-col-4">
+                            <ul class="submenu-list">
+                                <li class="submenu-title bold">
+                                    Цвет
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/mens/white/">
+                                        Белые
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/mens/black/">
+                                        Черные
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/mens/brown/">
+                                        Коричневые
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/mens/yellow/">
+                                        Золотые
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/mens/silver-metallic/">
+                                        Серебряные
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/mens/red/">
+                                        Красные
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/mens/blue/">
+                                        Синие
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="submenu-col submenu-col-5">
+                            <ul class="submenu-list">
+                                <li class="submenu-title bold">
+                                    ПО ЦЕНЕ
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/mens/?price__lte=5000">
+                                        до <span class="price">5000</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/mens/?price__gte=5000&price__lte=10000">
+                                        от <span class="price">5000</span> до <span class="price">10 000</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/mens/?price__gte=10000&price__lte=30000">
+                                        от <span class="price">10 000</span> до <span class="price">30 000</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/mens/?price__gte=30000&price__lte=60000">
+                                        от <span class="price">30 000</span> до <span class="price">60 000</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/mens/?price__gte=60000">
+                                        Дороже <span class="price">60 000</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline red" href="/shop/watches/mens/sale/">
+                                        Со скидкой
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane" id="tabs-women">
+                <div class="submenu-inner">
+                    <div class="submenu-columns row">
+                        <div class="submenu-col submenu-col-1">
+                            <ul class="submenu-list">
+                                <li class="submenu-title bold">
+                                    КАТЕГОРИИ
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/women/quarz/">
+                                        Кварцевые
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/women/mechanical/">
+                                        Механические
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/women/electronic/">
+                                        Электронные
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/women/sport/">
+                                        Спортивные
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/">
+                                        Водонепроницаемые
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="#">
+                                        Рейтинг выше 4 звезд
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="#">
+                                        Больше всего отзывов
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="submenu-col submenu-col-2">
+                            <ul class="submenu-list">
+                                <li class="submenu-title bold">
+                                    СТРАНЫ
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/women/russian/">
+                                        Российские
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/women/swiss/">
+                                        Швейцарские
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/women/japan/">
+                                        Японские
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/women/american/">
+                                        Американские
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/women/german/">
+                                        Немецкие
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/women/fashion/">
+                                        Дизайнерские
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/women/other/">
+                                        Другие
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="submenu-col submenu-col-3">
+                            <ul class="submenu-list">
+                                <li class="submenu-title bold">
+                                    Бренды
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/japan/casio/women/">
+                                        Casio
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/japan/casio/casio-gshock/casio-baby-g/">
+                                        Casio Baby-G
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/japan/orient/women/">
+                                        Orient
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/japan/citizen/women/">
+                                        Citizen
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/japan/qq/women/">
+                                        Q&Q
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/japan/seiko/women/">
+                                        Seiko
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/swiss/calvin-klein/women/">
+                                        Calvin Klein
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="submenu-col submenu-col-4">
+                            <ul class="submenu-list">
+                                <li class="submenu-title bold">
+                                    Цвет
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/women/white/">
+                                        Белые
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/women/black/">
+                                        Черные
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/women/brown/">
+                                        Коричневые
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/women/yellow/">
+                                        Золотые
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/women/silver-metallic/">
+                                        Серебряные
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/women/red/">
+                                        Красные
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/women/blue/">
+                                        Синие
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="submenu-col submenu-col-5">
+                            <ul class="submenu-list">
+                                <li class="submenu-title bold">
+                                    ПО ЦЕНЕ
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/women/?price__lte=5000">
+                                        до <span class="price">5000</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/women/?price__gte=5000&price__lte=10000">
+                                        от <span class="price">5000</span> до <span class="price">10 000</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/women/?price__gte=10000&price__lte=30000">
+                                        от <span class="price">10 000</span> до <span class="price">30 000</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/women/?price__gte=30000&price__lte=60000">
+                                        от <span class="price">30 000</span> до <span class="price">60 000</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline" href="/shop/watches/women/?price__gte=60000">
+                                        Дороже <span class="price">60 000</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="link_underline red" href="/shop/watches/women/sale/">
+                                        Со скидкой
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="tab-pane active row" id="tabs-about">
+
+                <div class="about-desc-1 col w-col-6">
+                    <div class="about-desc-block">
+
+                        <h3>
+                        Время может быть стильным
+                        </h3>
+
+                        <p>
+                        Многие современные люди достаточно неплохо обходятся без 
+                        наручных часов, узнавая, который час, при помощи 
+                        мобильных телефонов, планшетов и ноутбуков. 
+                        Однако гаджеты имеют свойство разряжаться 
+                        и выключаться, ломаться, устаревать. 
+                        Качественные настоящие часы  – это своеобразный 
+                        маяк в мире, где спешка и суета сродни дыханию, 
+                        а технологические достижения устаревают 
+                        через месяц после того, как выходят на рынок.
+                        </p>
+
+                        <p>
+                        Наш интернет-магазин наручных часов предлагает 
+                        вам то, что никогда не подведет и не 
+                        устареет: стильные и износостойкие 
+                        изделия от прославленных отечественных 
+                        и зарубежных производителей часов. 
+                        Они не только в любой момент 
+                        помогут вам сориентироваться 
+                        во времени, но и станут изысканным 
+                        аксессуаром, невольно притягивающим 
+                        внимание окружающих. Сегодня наручные 
+                        часы – это, возможно, не столько 
+                        необходимость, сколько приятная 
+                        роскошь, на которую Вы имеете право.
+                        </p>
+                    </div>
+
+                    <div class="about-desc-block about-desc-3">
+                        <h3>
+                            Посмотрите, прежде чем купить
+                        </h3>
+
+                        <p>
+                        Жители и гости столицы могут также совершить покупку, 
+                        посетив наш магазин часов в Москве. 
+                        На сегодняшний день на станцие 
+                        метро «Тульская» у нас работают 
+                        оффлайн-магазин c широким ассортиментом 
+                        и опытными продавцами-консультантами. 
+                        Если вы хотите полюбоваться на наши 
+                        изделия, прежде чем сделать 
+                        окончательный выбор – будем рады видеть вас в нашем магазине!
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="about-desc-2 col w-col-6">
+                    <div class="about-desc-block">
+
+                        <div class="about-desc-inner">
+                            <h3>
+                            Почему вам не стоит уходить с нашего сайта без покупки?
+                            </h3>
+
+                            <p>
+                            Мы сотрудничаем непосредственно с 
+                            производителями и не продаем подделки. 
+                            Оригинальность каждого изделия 
+                            подтверждается талонами, 
+                            чеками и русифицированной инструкцией, 
+                            которые доставляются вместе с заказом. 
+                            На каждые часы действует собственная гарантия их производителя.
+                            </p>
+
+                            <p>
+                            У нас действительно самый большой выбор 
+                            среди интернет-магазинов наручных 
+                            часов в русском сегменте интернета. 
+                            И если вам будет сложно остановиться 
+                            на конкретной модели, наши менеджеры 
+                            с радостью помогут вам определиться: 
+                            через онлайн-консультант, 
+                            по телефону или электронной почте.
+                            </p>
+
+                            <p>
+                            Мы предлагаем разумные цены на свои товары, 
+                            и они действительно стоят тех денег, которые 
+                            мы за них просим. Дешевле вам обойдутся 
+                            только низкокачественные подделки, 
+                            выходящие из строя через несколько месяцев после покупки.
+                            </p>
+
+                            <p>
+                            Наш интернет-магазин выполняет быструю
+                            доставку по всей России (с курьерской службой, транспортными
+                            компаниями, через систему постаматов, Почту России) и 
+                            принимает различные способы оплаты
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+{% endblock subscribes %}

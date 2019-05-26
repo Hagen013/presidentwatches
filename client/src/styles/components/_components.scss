@@ -191,6 +191,7 @@
 }
 
 .product-card__img-wrap {
+    position: relative;
     float: left;
     height: 100%;
     width: 39%;
@@ -208,6 +209,16 @@
     @include mq($from: wide) {
         height: 282px;
     }
+}
+
+.product-card__sale-percentage {
+    position: absolute;
+    bottom: 0px;
+    left: 20px;
+    font-weight: 600;
+    color: $white;
+    background-color: #fc152e;
+    padding: 3px 8px;
 }
 
 .product-card__img {
@@ -270,6 +281,20 @@
         height: 24px;
         font-size: 18px;
         line-height: 1.33;
+        text-align: center;
+    }
+}
+
+.product-card__price-wrap {
+    @include mq($from: tablet) {
+        text-align: center;
+    }
+}
+
+.product-card__old-price {
+    font-size: 12px;
+    @include mq($from: tablet) {
+        font-size: 14px;
         text-align: center;
     }
 }

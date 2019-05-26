@@ -13,6 +13,8 @@
     line-height: 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .icon_menu {
@@ -230,6 +232,24 @@
     }
 }
 
+.price_red {
+    color: #fc152e !important;
+}
+
+.price_old {
+    display: inline-block;
+    position: relative;
+    &:before {
+        position: absolute;
+        content: "";
+        left: 0;
+        top: 50%;
+        right: 0;
+        border-top: 1px solid;
+        border-color: inherit;
+    }
+}
+
 .like {
     cursor: pointer;
     .icon {
@@ -256,4 +276,21 @@
             content: $icon-heart-fill;
         }
     }
+}
+
+
+.icon_delivery-big {
+    background-image: url('../img/icons/delivery-big.png');
+}
+
+.icon_payment-big {
+    background-image: url('../img/icons/payment-big.png');
+}
+
+.icon_tag-big {
+    background-image: url('../img/icons/tag-big.png');
+}
+
+.icon_location-big {
+    background-image: url('../img/icons/location-big.png');
 }

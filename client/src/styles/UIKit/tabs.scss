@@ -6,6 +6,7 @@
 .tabs-nav-item {
     float: left;
     padding-right: 20px;
+    user-select: none;
     &:last-of-type {
         padding-right: 0px;
     }

@@ -134,7 +134,7 @@ class Offer(DescriptionMixin, DimensionsMixin, ImageMixin):
             if self.old_price == 0:
                 self.sale_percentage = 0
             else:
-                self.sale_percentage = round(self._price/self.old_price) * 100
+                self.sale_percentage = round(((self.old_price-self.price)/self.old_price) * 100)
         else:
             self.sale_percentage = 0
         super(Offer, self).save(*args, **kwargs)
@@ -281,14 +281,19 @@ class AbstractCategoryPage(Node, WebPage, Searchable):
             return self.product_class.objects.all()
         else:
             av = self.attribute_values.all()
-            return self.product_class.objects.filter(
-                id__in=self
-                .product_class
-                .objects.values('id')
-                .filter(attribute_values__in=av)
-                .annotate(len_av=models.Count("id", distinct=False))
-                .filter(len_av=len(av)).values('id')
-            )
+            if len(av) > 1:
+                return self.product_class.objects.filter(
+                    id__in=self
+                    .product_class
+                    .objects.values('id')
+                    .filter(attribute_values__in=av)
+                    .annotate(len_av=models.Count("id", distinct=False))
+                    .filter(len_av=len(av)).values('id')
+                )
+            else:
+                return self.product_class.objects.filter(
+                    attribute_values__in=av
+                )
 
     @property
     def preview_image(self):

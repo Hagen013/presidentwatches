@@ -49,7 +49,7 @@ class CategoryPageView(DiggPaginatorViewMixin, ListView):
     allowed_sorting_options = {'-price': ('-_price', 'id'),
                                'price': ('_price', 'id'),
                                '-scoring': ('-scoring', 'id'),
-                               'sale_percentage': ('sale_percentage', 'id'),
+                               'sale_percentage': ('-sale_percentage', 'id'),
                                'created_at': ('created_at', 'id')
                               }
     default_sorting_option = ('-scoring', 'id')

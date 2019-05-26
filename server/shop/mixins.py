@@ -119,18 +119,20 @@ class WatchesProductMixin(models.Model):
 
         return groups
 
+    def has_value(value_name):
+        pass
+
     def save(self):
         
         # Скидка
-        if self._price < self.old_price:
-            try:
-                value = self.value_class.objects.get(
-                    attribute__name='Распродажа',
-                    value_bool=True
-                )
-                self.add_value(value)
-            except ObjectDoesNotExist:
-                pass
+        value = self.value_class.objects.get(
+            attribute__name='Распродажа',
+            value_bool=True
+        )
+        if self.sale_percentage > 0:
+            self.add_value(value)
+        else:
+            self.remove_value(value)
 
         # Бренд
         # Серия
