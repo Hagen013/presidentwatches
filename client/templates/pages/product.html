@@ -141,11 +141,19 @@
                                 </a> 
                             </div>
                             <div class="product-main__buttons row">
+                                {% if product.id in cart.ids %}
+                                <a class="button button_big button_accent product-main__button float-left"
+                                    href="/cart/"
+                                >
+                                ОФОРМИТЬ ЗАКАЗ
+                                </a>
+                                {% else %}
                                 <div class="button button_big button_accent product-main__button float-left"
                                     id="add-to-cart"
                                 >
                                     ДОБАВИТЬ В КОРЗИНУ
                                 </div>
+                                {% endif %}
                                 <div class="button button_big button_ghost product-main__one-click float-left"
                                     id="fast-buy"
                                 >
@@ -239,23 +247,26 @@
                 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                     <div class="panel">
                         <div class="panel-heading" role="tab" id="headingDesc">
-                            <h2 class="panel-title">
-                                <a
-                                    role="button"
+                            <a class="panel-title"
                                     data-toggle="collapse"
                                     data-parent="#accordion"
                                     href="#collapseDesc"
-                                    aria-expanded="false"
-                                    aria-controls="collapseOne"
+                            >
+                                <span
+                                    data-toggle="collapse"
+                                    data-parent="#accordion"
+                                    href="#collapseDesc"
                                 >
                                     Описание и характеристики
-                                </a>
-                            </h2>
+                                </span>
+                                <i class="icon collapse-icon">
+                                </i>
+                            </a>
                         </div>
-                        <div id="collapseDesc" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                        <div id="collapseDesc" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                             <div class="content-block">
                                 <h2 class="heading-2">Описание</h2>
-                                <p>За 360 долларов это выдающиеся часы. За эти деньги Вы получаете: хорошо выполненный корпус, отличный дизайн, надёжный механизм Miyota 9015, сапфировое стекло и застёжку бабочку. Трудно найти часы дешевле с подобным набором характеристик. Уверен, часы Brathwait Minimalist Automatic получат огромную популярность у любителей часового искусства.</p>
+                                {{product.description|safe}}
                             </div>
                             <div class="content-block">
                                 <h2 class="heading-2">Характеристики</h2>
@@ -314,46 +325,54 @@
                     </div>
                     <div class="panel">
                         <div class="panel-heading">
-                            <h2 class="panel-title">
-                                <a
-                                    role="button"
-                                    href="#collapseDelivery"
-                                    aria-expanded="false"
-                                    aria-controls="collapseTwo"
+                            <a class="panel-title"
+                                data-toggle="collapse"
+                                data-parent="#accordion"
+                                href="#collapseDelivery"
+                            >
+                                <span
                                 >
                                     Наличие и доставка
-                                </a>
-                            </h2>
+                                </span>
+                                <i class="icon collapse-icon">
+                                </i>
+                            </a>
                         </div>
                         <div id="collapseDelivery" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
                         </div>
                     </div>
                     <div class="panel">
                         <div class="panel-heading">
-                            <h2 class="panel-title">
-                                <a
-                                    role="button"
-                                    href="#collapseVideos"
-                                    aria-expanded="false"
+                            <a class="panel-title"
+                                data-toggle="collapse"
+                                data-parent="#accordion"
+                                href="#collapseVideos"
+                            >
+                                <span
                                 >
                                     Видеобзоры
-                                </a>
-                            </h2>
+                                </span>
+                                <i class="icon collapse-icon">
+                                </i>
+                            </a>
                         </div>
                         <div class="panel-collapse collapse">
                         </div>
                     </div>
                     <div class="panel">
                         <div class="panel-heading">
-                            <h2 class="panel-title">
-                                <a
-                                    role="button"
-                                    href="collapseReviews"
-                                    aria-expanded="false"
+                            <a class="panel-title"
+                                data-toggle="collapse"
+                                data-parent="#accordion"
+                                href="#collapseReviews"
+                            >
+                                <span
                                 >
                                     Отзывы
-                                </a>
-                            </h2>
+                                </span>
+                                <i class="icon collapse-icon">
+                                </i>
+                            </a>
                         </div>
                         <div class="panel-collapse collapse">
                         </div>
@@ -382,12 +401,7 @@
                             </li>
                             <li class="tabs-nav-item">
                                 <a class="tabs-link" href="#reviews">
-                                    Отзывы
-                                </a>
-                            </li>
-                            <li class="tabs-nav-item">
-                                <a class="tabs-link" href="#questions">
-                                    Вопросы и ответы
+                                    Отзывы {{reviews|length}}
                                 </a>
                             </li>
                         </ul>
@@ -400,7 +414,7 @@
                                     <div class="content-block">
                                         <h2>Описание</h2>
                                         <div class="content-block__text">
-                                        За 360 долларов это выдающиеся часы. За эти деньги Вы получаете: хорошо выполненный корпус, отличный дизайн, надёжный механизм Miyota 9015, сапфировое стекло и застёжку бабочку. Трудно найти часы дешевле с подобным набором характеристик. Уверен, часы Brathwait Minimalist Automatic получат огромную популярность у любителей часового искусства.
+                                        {{product.description|safe}}
                                         </div>
                                     </div>
                                     <div class="content-block">
@@ -441,10 +455,17 @@
                                     Видеообзоры
                                 </div>
                                 <div class="tab-pane" id="reviews">
-                                    Отзывы
-                                </div>
-                                <div class="tab-pane" id="questions">
-                                    Вопросы и ответы
+                                    {% for review in reviews %}
+                                    <div class="reivew">
+                                        <div class="review-rating">
+                                        </div>
+                                        <div class="review-text">
+                                            {{review.text}}
+                                        </div>
+                                        <div class="reivew-author">
+                                        </div>
+                                    </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>

@@ -51,15 +51,19 @@ export default class sidebarCart extends Component {
 
     bindMethods() {
         let self = this;
-        $(this.element).find('.card-mini__delete').click(function(e) {
+
+        this.$element.find('.card-mini__delete').click(function(e) {
             self.removeItem(this);
         })
-        $('.quantity_decrement').click(function(e) {
-            self.decrementItem(this);
+
+        this.$element.find('.quantity_decrement').click(function(e) {
+             self.decrementItem(this);
         })
-        $('.quantity_increment').click(function(e) {
+
+        this.$element.find('.quantity_increment').click(function(e) {
             self.incrementItem(this);
         })
+
         $('#sidebar-cart-clear').click(function(e) {
             self.clearCart();
         })

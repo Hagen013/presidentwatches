@@ -249,6 +249,7 @@ class ProductPageView(TemplateView):
 
         context[self.instance_context_name] = self.instance
         context['category'] = CategoryPage.objects.get_by_product(self.instance)
+        context['reviews'] = self.instance.reviews.all()
         context['images'] = self.instance.images.all()
 
         return context

@@ -1,0 +1,46 @@
+.panel-group {
+
+}
+
+.panel {
+
+}
+
+.panel-heading {
+    height: 42px;
+    line-height: 42px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-top: 1px solid $grey;
+}
+
+.panel-title {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+}
+
+.panel-collapse {
+    padding: 5px 0px;
+    font-size: 14px;
+}
+
+.collapse {
+    display: none;
+}
+
+.collapse.in {
+    display: block;
+}
+
+
+.content-block {
+    margin-bottom: 30px;
+    h2 {
+        margin-bottom: 20px !important;
+    }
+}

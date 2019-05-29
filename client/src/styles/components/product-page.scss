@@ -206,8 +206,12 @@
 
 .card-footer__mobile {
     padding: 0px 10px;
+    margin-bottom: 30px;
     font-size: 14px;
     line-height: 1.5;
+    .panel-group {
+        border-bottom: 1px solid $grey;
+    }
     @include mq($from: tablet) {
         display: none;
     }

@@ -87,12 +87,21 @@
                                     <i class="icon icon_close">
                                     </i>
                                 </div>
+                                {% if item['pk'] in favorites.ids %}
+                                <div class="card-mini__favorite like like_active"
+                                    data-id="{{item['pk']}}"
+                                >
+                                    <i class="icon icon-like">
+                                    </i>
+                                </div>
+                                {% else %}
                                 <div class="card-mini__favorite like"
                                     data-id="{{item['pk']}}"
                                 >
                                     <i class="icon icon-like">
                                     </i>
                                 </div>
+                                {% endif %}
                             </li>
                             {% endfor %}
                         </ul>

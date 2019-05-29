@@ -17,6 +17,8 @@ class Cart():
             self.session[self.CART_SESSION_ID] = data
 
         self.data = data
+        self.ids = set(self.data['items'].keys())
+        self.ids = {int(pk) for pk in self.ids}
 
     
     def add_offer(self, pk):

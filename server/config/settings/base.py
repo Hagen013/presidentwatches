@@ -63,6 +63,7 @@ LOCAL_APPS = [
     'tasks',
     'blog',
     'search',
+    'reviews',
     'geo',
     'info',
     'api'

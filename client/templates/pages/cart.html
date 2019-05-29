@@ -21,9 +21,9 @@
 
             <div class="row">
                 <div class="cart-items w-col-6">
-                    <ul class="cart-list">
+                    <ul class="cart-list" id="cart-list">
                         {% for item in cart.items_list %}
-                        <li class="cart-item">
+                        <li class="cart-item" data-pk="{{item['pk']}}">
                             <div class="cart-item__img-wrap">
                                 <img class="cart-item__img"
                                     src="{{ item['image'] }}"
@@ -70,7 +70,7 @@
                                 <div class="cart-item__favorite">
                                     <i class="icon icon_favorite"></i>
                                 </div>
-                                <div class="cart-item__delete">
+                                <div class="cart-item__delete" data-pk="{{item['pk']}}">
                                     <i class="icon icon_close">
                                     </i>
                                 </div>
@@ -92,12 +92,16 @@
                         </div>
                         <div class="cart-total">
                             <div class="cart-total__overall">
-                                {{ cart.data['total_quantity'] }} товара на сумму: <span class="price">{{ cart.data['total_price'] }}</span>
+                                <span class="cart-count">{{ cart.data['total_quantity'] }}</span> 
+                                товара на сумму: 
+                                <span class="price">
+                                {{ cart.data['total_price'] }}
+                                </span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="cart-data w-col-6">
+                <div class="cart-data w-col-6" id="cart-form">
                     <div class="cart-data-container">
                         <h2 class="heading-2 cart-data__heading">
                             Оформление заказа
@@ -259,7 +263,7 @@
                                         Товаров
                                     </div>
                                     <div class="cart-sum-cell text_right">
-                                        <span class="price">
+                                        <span class="price" id="cart-items-total">
                                             {{ cart.data['total_price'] }}
                                         </span>
                                     </div>
@@ -270,7 +274,7 @@
                                     </div>
                                     <div class="cart-sum-cell text_right">
                                         <span class="price">
-                                            0 ₽
+                                            0
                                         </span>
                                     </div>
                                 </li>
@@ -278,7 +282,7 @@
                                     <div class="cart-sum-cell">
                                         Итого к оплате
                                     </div>
-                                    <div class="cart-sum-cell text_right">
+                                    <div class="cart-sum-cell text_right" id="cart-total">
                                         <span class="price">
                                             {{cart.data['total_price']}}
                                         </span>
@@ -306,5 +310,5 @@
 
 {% block javascript %}
     {{ super() }}
-    <script src="{{ static('js/cartPage_8c3414e.js') }}"></script>
+    <script src="{{ static('js/cartPage.js') }}"></script>
 {% endblock javascript %}
