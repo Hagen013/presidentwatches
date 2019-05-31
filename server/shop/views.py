@@ -15,6 +15,7 @@ from core.viewmixins import DiggPaginatorViewMixin
 from core.utils import custom_redirect
 
 from cart.last_seen import LastSeenController
+from reviews.models import ReviewStatus
 
 from .models import CategoryPage, ProductPage
 from .models import Attribute, AttributeValue
@@ -249,7 +250,7 @@ class ProductPageView(TemplateView):
 
         context[self.instance_context_name] = self.instance
         context['category'] = CategoryPage.objects.get_by_product(self.instance)
-        context['reviews'] = self.instance.reviews.all()
+        context['reviews'] = self.instance.reviews.filter(status=ReviewStatus.Approved)
         context['images'] = self.instance.images.all()
 
         return context

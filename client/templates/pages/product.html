@@ -410,7 +410,7 @@
                     <div class="row">
                         <div class="card-footer__left">
                             <div class="tabs-outlet" id="product-nav">
-                                <div class="tab-pane active" id="description">
+                                <div class="tab-pane" id="description">
                                     <div class="content-block">
                                         <h2>Описание</h2>
                                         <div class="content-block__text">
@@ -454,18 +454,25 @@
                                 <div class="tab-pane" id="videos">
                                     Видеообзоры
                                 </div>
-                                <div class="tab-pane" id="reviews">
-                                    {% for review in reviews %}
-                                    <div class="reivew">
-                                        <div class="review-rating">
+                                <div class="tab-pane active" id="reviews">
+                                    <div class="content-block">
+                                        <h2 class="bold">
+                                            Отзывы <span class="grey">{{reviews|length}}</span>
+                                        </h2>
+                                        {% for review in reviews %}
+                                        <div class="review">
+                                            <div class="review-rating stars">
+                                            {{rating_stars(review.rating)|safe}}
+                                            </div>
+                                            <div class="review-text">
+                                                {{review.text}}
+                                            </div>
+                                            <div class="review-author">
+                                                {{review.signature}}
+                                            </div>
                                         </div>
-                                        <div class="review-text">
-                                            {{review.text}}
-                                        </div>
-                                        <div class="reivew-author">
-                                        </div>
+                                        {% endfor %}
                                     </div>
-                                    {% endfor %}
                                 </div>
                             </div>
                         </div>

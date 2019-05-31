@@ -62,6 +62,16 @@ def session_cart(request):
     cart = Cart(request)
     return cart
 
+def rating_stars(scoring):
+    template = ""
+    empty_positions = 5 - scoring
+    for i in range(scoring):
+        template += '<div class="star star_full"></div>'
+    for i in range(empty_positions):
+        template += '<div class="star star_hollow"></div>'
+    return template
+
+
 def environment(**options):
     env = Environment(**options)
     env.globals.update({
@@ -72,6 +82,7 @@ def environment(**options):
         'sorting_option_class': sorting_option_class,
         'session_cart': session_cart,
         'locations_list': locations_list,
-        'format_price': format_price
+        'format_price': format_price,
+        'rating_stars': rating_stars
     })
     return env

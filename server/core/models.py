@@ -118,6 +118,10 @@ class Offer(DescriptionMixin, DimensionsMixin, ImageMixin):
         default=False
     )
 
+    rating = models.FloatField(
+        default=0
+    )
+
     @property
     def price(self, *args, **kwargs):
         return self.calculate_price(*args, **kwargs)

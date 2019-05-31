@@ -10,6 +10,7 @@ from eav.models import (AbstractAttribute,
                         AbstractEntityValueRelation,
                         EavEntityMixin,
                         TimeStampedMixin)
+
 from .mixins import WatchesProductMixin, YandexMarketOfferMixin
 
 
@@ -93,6 +94,17 @@ class ProductPage(AbstractOfferPage, EavEntityMixin, WatchesProductMixin, Yandex
     def get_absolute_url(self):
         return '/watches/{slug}'.format(
             slug=self.slug
+        )
+
+    @property
+    def approved_reviews(self):
+        return self.reviews.filter(status=2)
+
+    def get_average_rating(self):
+        return round(
+            self.approved_reviews.aggregate(
+                models.Avg('rating')
+            )['rating__avg'], 1
         )
 
 

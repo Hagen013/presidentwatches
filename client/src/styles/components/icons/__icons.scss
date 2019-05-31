@@ -294,3 +294,27 @@
 .icon_location-big {
     background-image: url('../img/icons/location-big.png');
 }
+
+.star {
+    display: inline-block;
+    height: 10px;
+    width: 10px;
+    margin-right: 3px;
+    color: $orange;
+    &:before {
+        font-size: 10px;
+        font-family: 'Icons';
+    }
+}
+
+.star_full {
+    &:before {
+        content: $icon-star-full;
+    }
+}
+
+.star_hollow {
+    &::before {
+        content: $icon-star-stroke;
+    }
+}
