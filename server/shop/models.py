@@ -101,6 +101,10 @@ class ProductPage(AbstractOfferPage, EavEntityMixin, WatchesProductMixin, Yandex
         return self.reviews.filter(status=2)
 
     def get_average_rating(self):
+        rating = self.approved_reviews.aggregate(
+            models.Avg('rating')
+        )['rating__avg']
+        if type(rating) == 
         return round(
             self.approved_reviews.aggregate(
                 models.Avg('rating')
