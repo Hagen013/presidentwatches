@@ -11,3 +11,34 @@
     margin-top: 10px;
     color: $dark-grey;
 }
+
+.rating-bar-progress {
+    height: 100%;
+    background: #f57e39;
+}
+
+.rating-bar {
+    height: 5px;
+    width: 201px;
+    float: left;
+    background: #ededed;
+}
+
+.rating-row {
+    height: 20px;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    &:last-of-type {
+        margin-bottom: 0px;
+    }
+}
+
+.rating-percentage {
+    width: 26px;
+    margin-left: 10px;
+}
+
+.rating-label {
+    margin-left: 20px;
+}

@@ -89,9 +89,18 @@
 }
 
 .index-main {
+    position: relative;
     height: 210px;
     width: 100%;
-    background-image: url('../img/banners/01.jpg');
+    background-size: cover;
+    background-position: left center;
+    background-repeat: no-repeat;
+    background-image: url('../img/banners/main.jpg');
+    .button {
+        position: absolute;
+        top: 68%;
+        left: 32px;
+    }
     @include mq($from: tablet) {
         height: 500px;
     }
@@ -119,9 +128,10 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-image: url('../img/banners/04.jpg');
+    background-image: url('../img/banners/03.jpg');
     .button {
         margin-top: 60px;
+        min-width: auto !important;
         color: black;
     }
     @include mq($from: tablet) {
@@ -152,9 +162,10 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-image: url('../img/banners/05.jpg');
+    background-image: url('../img/banners/02.jpg');
     .button {
         margin-top: 60px;
+        min-width: auto !important;
         color: black;
     }
     @include mq($from: tablet) {
@@ -217,15 +228,18 @@
     height: 160px;
     width: 100%;
     padding: 24px;
+    float: left;
     margin-bottom: 10px;
     border-radius: 4px;
     border: 1px solid $grey;
     font-size: 14px;
     color: $white;
     background-color: #ba0001;
+    user-select: none;
+    overflow: hidden;
     .index-heading {
-        font-size: 32px;
-        margin-bottom: 20px;
+        font-size: 22px;
+        margin-bottom: 10px;
     }
     .index-link {
         display: block;
@@ -236,28 +250,53 @@
     }
     .percentage {
         position: absolute;
-        bottom: -20px;
+        bottom: 0px;
         right: 10px;
-        font-size: 124px;
+        font-size: 64px;
+    }
+    p {
+        font-size: 13px;
     }
     @include mq($from: tablet) {
         height: 217px;
         margin-bottom: 20px;
+        .index-heading {
+            margin-bottom: 20px;
+        }
+        .percentage {
+            bottom: 0px;
+            font-size: 64px;
+        }
     }
     @include mq($from: desktop) {
         height: 208px;
     }
     @include mq($from: wide) {
         height: 309px;
+        .index-heading {
+            font-size: 32px;
+        }
+        p {
+            font-size: 14px;
+        }
+        .percentage {
+            bottom: -20px;
+            font-size: 124px;
+        }
     }
 }
 
 .index-5 {
+    position: relative;
     height: 160px;
     width: 100%;
     margin-bottom: 10px;
     border-radius: 4px;
+    float: left;
     border: 1px solid $grey;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-image: url('../img/banners/09.jpg');
     @include mq($from: tablet) {
         height: 217px;
         float: left;
@@ -273,11 +312,13 @@
 }
 
 .index-6 {
+    position: relative;
     height: 160px;
     width: 100%;
     margin-bottom: 10px;
     border-radius: 4px;
     border: 1px solid $grey;
+    overflow: hidden;
     @include mq($from: tablet) {
         height: 217px;
         margin-bottom: 20px;
@@ -293,35 +334,50 @@
 
 .index-7 {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; 
     justify-content: center;
     align-items: center;
     height: 160px;
     width: 100%;
     margin-bottom: 10px;
-    font-size: 38px;
+    font-size: 26px;
     border-radius: 4px;
     border: 1px solid $grey;
     letter-spacing: 1px;
+    user-select: none;
     .codes {
         margin-top: -4px;
-        font-size: 46px;
+        font-size: 30px;
     }
     .button {
+        margin-top: 10px;
         min-width: 190px;
         letter-spacing: 1px;
         width: 190px !important;
-        margin-top: 20px;
         font-size: 16px;
     }
     @include mq($from: tablet) {
         height: 217px;
         width: percentage(4/12);
+        font-size: 31px;
         margin-bottom: 20px;
         float: left;
+        .button {
+            margin-top: 20px;
+        }
+        .codes {
+            font-size: 38px;
+        }
     }
     @include mq($from: desktop) {
         height: 208px;
+        font-size: 38px;
+        .codes {
+            font-size: 46px;
+        }
+        .button {
+            margin-top: 10px;
+        }
     }
     @include mq($from: wide) {
         height: 309px;
@@ -329,15 +385,19 @@
 }
 
 .index-8 {
+    position: relative;
     height: 160px;
     width: 100%;
     margin-bottom: 10px;
     border-radius: 4px;
     border: 1px solid $grey;
+    text-align: center;
+    overflow: hidden;
     @include mq($from: tablet) {
         height: 217px;
         width: 100%;
         float: left;
+        text-align: center;
     }
     @include mq($from: desktop) {
         height: 436px;
@@ -361,5 +421,194 @@
         &:last-of-type {
             padding-right: 20px !important;
         }
+    }
+}
+
+.index-w-1 {
+    position: relative;
+    display: none;
+    margin-left: 0px;
+    background-size: cover;
+    background-image: url('../img/banners/06.jpg');
+    z-index: 200;
+    @include mq($from: desktop) {
+        display: inline-block;
+        height: 200px;
+        width: 130px;
+        margin-left: 8%;
+    }
+    @include mq($from: wide) {
+        width: 255px;
+        height: 385px;
+        margin-left: 9%;
+    }
+}
+
+.index-w-2 {
+    position: absolute;
+    width: 100%;
+    bottom: 10px;
+    text-align: center;
+    z-index: 100;
+    @include mq($from: tablet) {
+        bottom: 18px;
+    }
+    @include mq($from: desktop) {
+        bottom: 38px;
+    }
+}
+
+.index-w-3 {
+    position: absolute;
+    bottom: 0px;
+    height: 50%;
+    width: 100%;
+    background: #bb0000;
+    @include mq($from: desktop) {
+        height: 153px;
+    }
+}
+
+.index-w-4 {
+    display: inline-block;
+    bottom: 0px;
+    height: 110px;
+    width: 150px;
+    background-size: cover;
+    background-image: url('../img/banners/07.png');
+    z-index: 100;
+    @include mq($from: tablet) {
+        height: 142px;
+        width: 204px;
+    }
+}
+
+.index-w-5 {
+    position: absolute;
+    bottom: 0px;
+    left: -26px;
+    height: 200px;
+    width: 150px;
+    background-size: cover;
+    background-image: url('../img/banners/08.jpg');
+    @include mq($from: tablet) {
+        height: 300px;
+        width: 200px;
+        bottom: -20px;        
+    }
+    @include mq($from: desktop) {
+        left: -36px;
+    }
+    @include mq($from: wide) {
+        bottom: -30px;
+        left: -26px;
+        height: 548px;
+        width: 364px;
+    }
+}
+
+.index-w-6 {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    @include mq($from: tablet) {
+        top: 30px;
+        right: 40px;
+    }
+    @include mq($from: desktop) {
+        top: 20px;
+        right: 30px;
+    }
+    @include mq($from: wide) {
+        top: 30px;
+        right: 40px;
+    }
+}
+
+.index-w-7 {
+    text-align: right;
+    font-size: 14px;
+    @include mq($from: tablet) {
+        font-size: 24px;
+    }
+}
+
+.index-w-8 {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    text-align: left;
+    margin-top: 6px;
+    font-size: 14px;
+    .icon {
+        margin-left: 4px;
+        display: inline-block;
+    }
+}
+
+.index-w-9 {
+    margin-top: 20px;
+    padding: 5px;
+    font-size: 16px;
+    letter-spacing: 1px;
+    color: white;
+    background-color: #282828;
+    @include mq($from: tablet) {
+        margin-top: 10px;
+        padding: 12px;
+        font-size: 24px;
+    }
+    @include mq($from: wide) {
+        margin-top: 50px;
+        padding: 20px;
+        font-size: 28px;
+    }
+}
+
+.index-w-10 {
+    position: absolute;
+    padding: 5px;
+    right: 30px;
+    bottom: 0px;
+    background: white;
+    border-top: 1px solid $grey;
+    border-left: 1px solid $grey;
+    border-right: 1px solid $grey;
+    @include mq($from: tablet) {
+        padding: 0px;
+        bottom: 8px;
+        border: none;
+    }
+}
+
+.index-w-11 {
+    font-size: 18px;
+}
+
+.index-w-12 {
+    font-size: 12px;
+    .icon {
+        line-height: 18px;
+        display: inline-block;
+    }
+}
+
+.index-w-13 {
+    margin-top: 12px;
+    font-size: 14px;
+    display: inline-block;
+    .icon {
+        display: inline-block;
+    }
+    @include mq($from: tablet) {
+        width: 100%;
+        margin-top: 20px;
+    }
+}
+
+.index-unpadded {
+    padding-right: 0px !important;
+    @include mq($from: tablet) {
+        padding-right: 20px !important;
     }
 }

@@ -250,7 +250,15 @@ class ProductPageView(TemplateView):
 
         context[self.instance_context_name] = self.instance
         context['category'] = CategoryPage.objects.get_by_product(self.instance)
-        context['reviews'] = self.instance.reviews.filter(status=ReviewStatus.Approved)
+
+        # Reviews
+        reviews = self.instance.reviews.filter(status=ReviewStatus.Approved)
+        count = reviews.count()
+
+        context['reviews'] = reviews
+        context['reviews_count'] = count
+        context['rating_overall'] = self.instance.get_rating_overall(count)
+
         context['images'] = self.instance.images.all()
 
         return context

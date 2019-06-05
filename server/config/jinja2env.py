@@ -14,6 +14,23 @@ from cart.cart import Cart
 from geo.locations import locations
 
 
+NOUN_MAPPING_MASCULINE = {
+    '1': '',
+    '2': 'а',
+    '3': 'а',
+    '4': 'а',
+    '5': 'ов',  
+}
+
+NOUN_MAPPING_FEMININE = {
+    '1': 'а',
+    '2': 'ы',
+    '3': 'ы',
+    '4': 'ы',
+    '5': ''
+}
+
+
 def update_pagination(querystring, kwargs):
     query = querystring.dict()
     page = kwargs.get('page')
@@ -72,6 +89,47 @@ def rating_stars(scoring):
     return template
 
 
+def ratings_stars_float(scoring):
+    template = ""
+    rounded = round(scoring)
+    empty_positions = 5 - rounded
+    for i in range(rounded):
+        template += '<div class="icon icon_star-full"></div>'
+    for i in range(empty_positions):
+        template += '<div class="icon icon_star-stroke"></div>'
+    return template
+
+
+def normalize_noun_masculine(value, noun):
+    if value < 21:
+        value=str(value)
+        ending = NOUN_MAPPING_MASCULINE.get(value, 'ов')
+        return noun + ending
+    elif value < 101:
+        value = str(value)[1:]
+        ending = NOUN_MAPPING_MASCULINE.get(value, 'ов')
+        return noun + ending
+    else:
+        value = str(value)[2:]
+        ending = NOUN_MAPPING_MASCULINE.get(value, 'ов')
+        return noun + ending
+
+
+def normalize_noun_feminine(value, noun):
+    if value < 21:
+        value=str(value)
+        ending = NOUN_MAPPING_FEMININE.get(value, '')
+        return noun + ending
+    elif value < 101:
+        value = str(value)[1:]
+        ending = NOUN_MAPPING_FEMININE.get(value, '')
+        return noun + ending
+    else:
+        value = str(value)[2:]
+        ending = NOUN_MAPPING_FEMININE.get(value, '')
+        return noun + ending
+
+
 def environment(**options):
     env = Environment(**options)
     env.globals.update({
@@ -83,6 +141,9 @@ def environment(**options):
         'session_cart': session_cart,
         'locations_list': locations_list,
         'format_price': format_price,
-        'rating_stars': rating_stars
+        'rating_stars': rating_stars,
+        'ratings_stars_float': ratings_stars_float,
+        'normalize_noun_masculine': normalize_noun_masculine,
+        'normalize_noun_feminine': normalize_noun_feminine,
     })
     return env

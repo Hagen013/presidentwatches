@@ -100,16 +100,36 @@ class ProductPage(AbstractOfferPage, EavEntityMixin, WatchesProductMixin, Yandex
     def approved_reviews(self):
         return self.reviews.filter(status=2)
 
+    def get_rating_overall(self, total_count):
+        stars = self.approved_reviews.values('rating')\
+        .annotate(count=models.Count('rating'))\
+        .distinct().order_by()
+
+        mapping = {}
+        for item in stars:
+            mapping[item['rating']] = item['count']
+
+        ratings = []
+        for i in range(1,6):
+            count = mapping.get(i, 0)
+            percentage = round((count/total_count)*100)
+            ratings.append({
+                'rating': i,
+                'count': count,
+                'percentage': percentage
+            })
+
+        return ratings[::-1]
+
+
     def get_average_rating(self):
         rating = self.approved_reviews.aggregate(
             models.Avg('rating')
         )['rating__avg']
-        if type(rating) == 
-        return round(
-            self.approved_reviews.aggregate(
-                models.Avg('rating')
-            )['rating__avg'], 1
-        )
+        if rating is not None:
+            return round(rating, 1)
+        else:
+            return 0
 
 
 class ProductImage(ImageMixin):

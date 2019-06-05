@@ -108,19 +108,10 @@
                                 <div class="row">
                                     <div class="rating float-left">
                                         <div class="rating__stars">
-                                            <i class="icon icon_star-full">
-                                            </i>
-                                            <i class="icon icon_star-full">
-                                            </i>
-                                            <i class="icon icon_star-full">
-                                            </i>
-                                            <i class="icon icon_star-full">
-                                            </i>
-                                            <i class="icon icon_star-stroke">
-                                            </i>
+                                            {{ratings_stars_float(product.rating)|safe}}
                                         </div>
                                         <div class="rating__overall">
-                                            4,1
+                                            {{product.rating}}
                                         </div>
                                     </div>
                                     <div class="interaction-links float-left">
@@ -137,7 +128,7 @@
                                     </div>
                                 </div>
                                 <a class="link link_dotted product-main__reviews-count">
-                                22 отзыва
+                                {{reviews_count}} {{normalize_noun_masculine(reviews_count, 'отзыв')}}
                                 </a> 
                             </div>
                             <div class="product-main__buttons row">
@@ -207,19 +198,10 @@
                                 <div class="row">
                                     <div class="rating float-left">
                                         <div class="rating__stars">
-                                            <i class="icon icon_star-full">
-                                            </i>
-                                            <i class="icon icon_star-full">
-                                            </i>
-                                            <i class="icon icon_star-full">
-                                            </i>
-                                            <i class="icon icon_star-full">
-                                            </i>
-                                            <i class="icon icon_star-stroke">
-                                            </i>
+                                            {{ratings_stars_float(product.rating)|safe}}
                                         </div>
                                         <div class="rating__overall">
-                                            4,1
+                                            {{product.rating}}
                                         </div>
                                     </div>
                                     <div class="interaction-links float-left">
@@ -236,7 +218,7 @@
                                     </div>
                                 </div>
                                 <a class="link link_dotted product-main__reviews-count">
-                                22 отзыва
+                                {{reviews_count}} {{normalize_noun_masculine(reviews_count, 'отзыв')}}
                                 </a>
                             </div>
                         </div>
@@ -459,6 +441,32 @@
                                         <h2 class="bold">
                                             Отзывы <span class="grey">{{reviews|length}}</span>
                                         </h2>
+                                        <div class="row">
+                                            <div class="rating__stars">
+                                                {{ratings_stars_float(product.rating)|safe}}
+                                            </div>
+                                            <div class="rating__overall">
+                                                {{product.rating}} из 5 звёзд
+                                            </div>
+                                        </div>
+                                        <div class="rating-panel">
+                                            {% for item in rating_overall %}
+                                            <div class="rating-row row">
+                                                <div class="rating-bar">
+                                                    <div class="rating-bar-progress"
+                                                        style="width:{{item['percentage']}}%"
+                                                    >
+                                                    </div>
+                                                </div>
+                                                <div class="rating-percentage">
+                                                    {{item['percentage']}}%
+                                                </div>
+                                                <div class="rating-label grey">
+                                                    {{item['rating']}} {{normalize_noun_feminine(item['rating'], 'звезд')}}
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
                                         {% for review in reviews %}
                                         <div class="review">
                                             <div class="review-rating stars">

@@ -34,9 +34,26 @@
 }
 
 .button_ghost {
-    background: white;
     color: black;
     border: 1px solid black;
+    transition: .2s;
+    &:hover {
+        background: black;
+        border-color: black;
+        color: white;
+    }
+}
+
+.button_ghost-inverse {
+    color: $white;
+    color: $white !important;
+    border: 1px solid $white;
+    transition: .2s;
+    &:hover {
+        background: white;
+        border-color: white;
+        color: black !important;
+    }
 }
 
 .button_filled {

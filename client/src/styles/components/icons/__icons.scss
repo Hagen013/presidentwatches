@@ -140,12 +140,14 @@
 
 
 .icon_star-stroke {
+    color: $orange;
     &:before {
         content: $icon-star-stroke;
     }
 }
 
 .icon_star-full {
+    color: $orange;
     &:before {
         content: $icon-star-full;
     }
