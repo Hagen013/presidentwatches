@@ -89,6 +89,7 @@
 }
 
 .index-main {
+    display: flex;
     position: relative;
     height: 210px;
     width: 100%;
@@ -96,43 +97,60 @@
     background-position: left center;
     background-repeat: no-repeat;
     background-image: url('../img/banners/main.jpg');
+    text-decoration: none;
     .button {
-        position: absolute;
-        top: 68%;
-        left: 32px;
+        margin-top: 8%;
+        margin-left: 8%;
+        min-width: auto !important;
+        background: white;
+        &:hover {
+            background: black;
+        }
+    }
+    @include mq($from: mobile-big) {
+        height: 240px;
     }
     @include mq($from: tablet) {
         height: 500px;
+        .button {
+            margin: 0px;
+            position: absolute;
+            top: 68.8%;
+            left: 60px;
+        }
     }
     @include mq($from: desktop) {
         height: 420px;
         width: 63%;
         float: left;
+        .button {
+            top: 67.8%;
+            left: 50px;
+        }
     }
     @include mq($from: wide) {
         height: 500px;
         width: 50%;
     }
 
-    // Удалить
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 24px;
-    font-weight: 600;
 }
 
 .index-mens {
+    display: flex;
     height: 140px;
     width: 100%;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-image: url('../img/banners/03.jpg');
+    background-image: url('../img/banners/mens-small.jpg');
+    text-decoration: none;
     .button {
-        margin-top: 60px;
+        margin-top: 12%;
+        margin-left: 8%;
         min-width: auto !important;
-        color: black;
+    }
+    @include mq($from: mobile-big) {
+        height: 240px;
     }
     @include mq($from: tablet) {
         height: 210px;
@@ -143,30 +161,34 @@
         width: 100%;
     }
     @include mq($from: wide) {
+        background-image: url('../img/banners/03.jpg');
         height: 100%;
         width: 50%;
+        justify-content: center;
+        align-items: flex-start;
+        .button {
+            margin-top: 60px;
+            color: black;
+        }
     }
-
-    // Удалить
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    font-size: 24px;
-    font-weight: 600;
-    color: white;    
 }
 
 .index-women {
+    display: flex;
     height: 140px;
     width: 100%;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-image: url('../img/banners/02.jpg');
+    background-image: url('../img/banners/women-small.jpg');
+    text-decoration: none;
     .button {
-        margin-top: 60px;
+        margin-top: 12%;
+        margin-left: 8%;
         min-width: auto !important;
-        color: black;
+    }
+    @include mq($from: mobile-big) {
+        height: 240px;
     }
     @include mq($from: tablet) {
         height: 210px;
@@ -177,40 +199,32 @@
         width: 100%;
     }
     @include mq($from: wide) {
+        background-image: url('../img/banners/02.jpg');
         height: 100%;
         width: 50%;
+        justify-content: center;
+        align-items: flex-start;
+        .button {
+            margin-top: 60px;
+            color: black;
+        }
     }
-
-    // Удалить
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    font-size: 24px;
-    font-weight: 600;
-    color: white;    
 }
 
 .index-brands {
-    height: 140px;
     width: 100%;
+    margin-top: 10px;
     margin-bottom: 34px;
+    white-space: wrap;
     @include mq($from: tablet) {
-        margin-bottom: 40px;
+        margin-bottom: 30px;
     }
     @include mq($from: desktop) {
-        height: 164px;
-        margin-bottom: 60px;
+        margin-bottom: 50px;
     }
     @include mq($from: wide) {
-        height: 96px;
     }
 
-    // Удалить
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 24px;
-    font-weight: 600;
 }
 
 .index-3 {
@@ -237,6 +251,7 @@
     background-color: #ba0001;
     user-select: none;
     overflow: hidden;
+    text-decoration: none;
     .index-heading {
         font-size: 22px;
         margin-bottom: 10px;
@@ -333,7 +348,7 @@
 }
 
 .index-7 {
-    display: flex;
+    display: flex !important;
     flex-direction: column; 
     justify-content: center;
     align-items: center;
@@ -610,5 +625,80 @@
     padding-right: 0px !important;
     @include mq($from: tablet) {
         padding-right: 20px !important;
+    }
+}
+
+.index-brand-item {
+    height: 50px;
+    width: percentage(1/3);
+    float: left;
+    background-repeat: no-repeat;
+    background-position: center;
+    @include mq($from: tablet) {
+        width: percentage(1/6);
+    }
+    @include mq($from: wide) {
+        width: percentage(1/12);
+    }
+}
+
+.index-brand-01 {
+    background-image: url('../img/brands/casio.png');
+}
+
+.index-brand-02 {
+    background-image: url('../img/brands/orient.png');
+}
+
+.index-brand-03 {
+    background-image: url('../img/brands/seiko.png');
+}
+
+.index-brand-04 {
+    background-image: url('../img/brands/romanson.png');
+}
+
+.index-brand-05 {
+    background-image: url('../img/brands/vostok.png');
+}
+
+.index-brand-06 {
+    background-image: url('../img/brands/fossil.png');
+}
+
+.index-brand-07 {
+    background-image: url('../img/brands/ingersoll.png');
+}
+
+.index-brand-08 {
+    background-image: url('../img/brands/michael-kors.png');
+}
+
+.index-brand-09 {
+    background-image: url('../img/brands/smh.png');
+}
+
+.index-brand-10 {
+    background-image: url('../img/brands/anne-klein.png');
+}
+
+.index-brand-11 {
+    background-image: url('../img/brands/dkny.png');
+}
+
+.index-brand-12 {
+    background-image: url('../img/brands/diesel.png');
+}
+
+.index-hovered-link {
+    position: relative;
+    display: block;
+    transition-property: box-shadow;
+    transition-duration: .1s;
+    cursor: pointer;
+    &:hover {
+        box-shadow: 0 14px 38px 0 rgba(51, 38, 38, 0.15);
+        border-color: darken($grey, 5%);
+        z-index: 100;
     }
 }

@@ -69,14 +69,20 @@ def setup_settings():
 
 def rewrite_products():
     for instance in ProductPage.objects.all():
-        document = ElasticProductPageCustomSerializer(instance)
-        document.save()
+        try:
+            document = ElasticProductPageCustomSerializer(instance)
+            document.save()
+        except:
+            pass
 
     
 def rewrite_categories():
     for instance in CategoryPage.objects.all():
-        document = ElasticCategoryCustomSerializer(instance)
-        document.save()
+        try:
+            document = ElasticCategoryCustomSerializer(instance)
+            document.save()
+        except:
+            pass
 
 
 @app.task

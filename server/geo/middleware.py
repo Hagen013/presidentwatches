@@ -32,7 +32,7 @@ class GeoLocationMiddleware(object):
                 city_name_lat = translit(city_name_ru, 'ru', reversed=True)
                 request.set_cookie('city_code', city_code)
                 request.set_cookie('city_name', city_name_lat)
-            except ConnectionError:
+            except:
                 city_code = '77777700'
                 city_name_ru = 'Москва'
         elif invalid(city_name_lat):
