@@ -154,6 +154,10 @@
     }
 }
 
+.product-main__notavailable {
+    font-size: 20px;
+}
+
 .product-main__button {
     width: 100%;
     @include mq($from: tablet) {
