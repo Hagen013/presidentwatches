@@ -222,7 +222,7 @@ STATICFILES_DIRS = (
 # STATIC FILES END
 
 
-# ELASTICSEARCH SETTINGS
+# ELASTICSEARCH SETTINGS START
 # ------------------------------------------------------------------------------
 ELASTICSEARCH_HOST = 'elasticsearch'
 ELASTICSEARCH_PORT = 9200
@@ -234,13 +234,14 @@ ELASTICSEARCH_SNAPSHOT_DIR = '/var/graph_market/elastic-snapshots/'
 # ELASTICSEARCH SETTINGS END
 
 
-# GEO LOCATION API
+# GEO LOCATION API START
 # ------------------------------------------------------------------------------
-GEO_LOCATION_HOST = env('GEO_LOCATION_SERVICE_HOST')
+GEO_LOCATION_HOST = 'localhost'
 GEO_LOCATION_PORT = 8282
 GEO_LOCATION_SERVICE_URL = 'http://{host}:{port}/'.format(
     host=GEO_LOCATION_HOST,
     port=GEO_LOCATION_PORT
 )
+DEFAULT_KLADR_CODE = '7700000000000'
 # ------------------------------------------------------------------------------
 # GEO LOCATION API END

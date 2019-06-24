@@ -1,11 +1,13 @@
 import json
 from itertools import chain
 from collections import defaultdict
+import requests
 
 import django_filters
 from django_filters import Filter
 from django_filters.fields import Lookup
 
+from django.conf import settings
 from django.db.models import Max, Min
 from django.views.generic import TemplateView, ListView
 from django.core.exceptions import ObjectDoesNotExist
@@ -245,6 +247,30 @@ class ProductPageView(TemplateView):
         except ObjectDoesNotExist:
             raise Http404
 
+    def get_delivery_data(self):
+        url = settings.GEO_LOCATION_SERVICE_URL + 'api/delivery/one_product/'
+
+        kladr = self.request.COOKIES.get(
+            'city_code',
+            settings.DEFAULT_KLADR_CODE
+        )
+        product = {
+            'product_type': 'CUBE',
+            'price': self.instance._price,
+            'purchase_price': self.instance._purchase_price,
+            'vendor': self.instance.brand
+        }
+        data = {
+            'kladr': kladr,
+            'product': product
+        }
+        try:
+            response = requests.post(url, json=data)
+            delivery_data = response.json()
+        except:
+            delivery_data = {}
+        return delivery_data
+
     def get_context_data(self, *args, **kwargs):
         context = super(ProductPageView, self).get_context_data(**kwargs)
 
@@ -258,6 +284,7 @@ class ProductPageView(TemplateView):
         context['reviews'] = reviews
         context['reviews_count'] = count
         context['rating_overall'] = self.instance.get_rating_overall(count)
+        context['delivery_data'] = self.get_delivery_data()
 
         context['images'] = self.instance.images.all()
 

@@ -81,6 +81,11 @@ class Offer(DescriptionMixin, DimensionsMixin, ImageMixin):
         default=0,
     )
 
+    # Цена оптовой закупки
+    _purchase_price = models.PositiveIntegerField(
+        default=0
+    )
+
     old_price = models.PositiveIntegerField(
         default=0
     )

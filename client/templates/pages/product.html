@@ -156,7 +156,16 @@
                                     Информация о доставке
                                 </div>
                                 <div class="product-main__info-block-text">
-                                    За 100 ₽ в Санкт-Петербург курьером, в течении 3 — 5 дней
+                                    <p class="delivery-curier">
+                                        За <span class="price">{{delivery_data['curier']['price']}}</span>
+                                        в г. {{request.user.city_name}} курьером, в течении 3 дней
+                                    </p>
+                                    <p class="delivery-points">
+                                        Пункты выдачи — от <span class="price">{{delivery_data['delivery_point']['price']}}</span>
+                                    </p>
+                                    <p class="delivery-rupost">
+                                        Почтой России — <span class="price">{{delivery_data['postal_service']['price']}}</span>
+                                    </p>
                                 </div>
                             </div>
                             <div class="product-main__info-block">

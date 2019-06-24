@@ -8,10 +8,14 @@ from django.urls import reverse
 from urllib.parse import urlencode
 
 from jinja2 import Environment
+from jinja2 import nodes
+from jinja2.ext import Extension
 
 from cart.last_seen import LastSeenController
 from cart.cart import Cart
 from geo.locations import locations
+
+from .jinja2htmlcompress import HTMLCompress
 
 
 NOUN_MAPPING_MASCULINE = {
@@ -131,6 +135,7 @@ def normalize_noun_feminine(value, noun):
 
 
 def environment(**options):
+    options['extensions'] = ['config.jinja2htmlcompress.SelectiveHTMLCompress']
     env = Environment(**options)
     env.globals.update({
         'static': staticfiles_storage.url,

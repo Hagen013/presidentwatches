@@ -33,7 +33,7 @@ class GeoLocationMiddleware(object):
                 request.set_cookie('city_code', city_code)
                 request.set_cookie('city_name', city_name_lat)
             except:
-                city_code = '77777700'
+                city_code = '7700000000000'
                 city_name_ru = 'Москва'
         elif invalid(city_name_lat):
             url = settings.GEO_LOCATION_SERVICE_URL + 'api/geo_ip/by-code/{code}'.format(

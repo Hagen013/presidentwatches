@@ -1,3 +1,6 @@
+import re
+from collections import OrderedDict
+
 from mptt.models import TreeForeignKey
 
 from django.db import models
@@ -12,6 +15,14 @@ from eav.models import (AbstractAttribute,
                         TimeStampedMixin)
 
 from .mixins import WatchesProductMixin, YandexMarketOfferMixin
+
+
+class AvailableManager(models.Manager):
+
+    use_for_related_fields = True
+
+    def available(self, **kwargs):
+        return self.filter(is_in_stock=True, **kwargs)
 
 
 class AttributeValue(AbstractAttributeValue):
@@ -81,6 +92,8 @@ class ProductPage(AbstractOfferPage, EavEntityMixin, WatchesProductMixin, Yandex
     value_class = AttributeValue
     value_relation_class = ProductValueRelation
 
+    objects = AvailableManager()
+
     class Meta:
         abstract = False
 
@@ -101,25 +114,34 @@ class ProductPage(AbstractOfferPage, EavEntityMixin, WatchesProductMixin, Yandex
         return self.reviews.filter(status=2)
 
     def get_rating_overall(self, total_count):
-        stars = self.approved_reviews.values('rating')\
-        .annotate(count=models.Count('rating'))\
-        .distinct().order_by()
+        if total_count > 0:
+            stars = self.approved_reviews.values('rating')\
+            .annotate(count=models.Count('rating'))\
+            .distinct().order_by()
 
-        mapping = {}
-        for item in stars:
-            mapping[item['rating']] = item['count']
+            mapping = {}
+            for item in stars:
+                mapping[item['rating']] = item['count']
 
-        ratings = []
-        for i in range(1,6):
-            count = mapping.get(i, 0)
-            percentage = round((count/total_count)*100)
-            ratings.append({
-                'rating': i,
-                'count': count,
-                'percentage': percentage
-            })
+            ratings = []
+            for i in range(1,6):
+                count = mapping.get(i, 0)
+                percentage = round((count/total_count)*100)
+                ratings.append({
+                    'rating': i,
+                    'count': count,
+                    'percentage': percentage
+                })
 
-        return ratings[::-1]
+            return ratings[::-1]
+        else:
+            return [
+                {'rating': 5, 'count': 0, 'percentage': 0},
+                {'rating': 4, 'count': 0, 'percentage': 0},
+                {'rating': 3, 'count': 0, 'percentage': 0},
+                {'rating': 2, 'count': 0, 'percentage': 0},
+                {'rating': 1, 'count': 0, 'percentage': 0},
+            ]
 
 
     def get_average_rating(self):
@@ -130,6 +152,23 @@ class ProductPage(AbstractOfferPage, EavEntityMixin, WatchesProductMixin, Yandex
             return round(rating, 1)
         else:
             return 0
+
+    @property
+    def attributes(self):
+        result = OrderedDict()
+        for av in self.attribute_values.select_related().order_by(
+                'attribute__order',
+                'order'
+            ):
+            result[av.attribute.name] = result.get(
+                av.attribute,
+                []
+            ) + [av]
+        return result
+
+    @property
+    def html_free_description(self):
+        return re.sub("<.*?>", "", self.description).strip()
 
 
 class ProductImage(ImageMixin):

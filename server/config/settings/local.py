@@ -29,3 +29,10 @@ MEDIA_URL = '/media/'
 STATIC_ROOT = str(ROOT_DIR.path('client/static_production'))
 # MEDIA FILES CONFIGURATION END
 # ------------------------------------------------------------------------------
+
+
+# YML INTEGRATIONS START
+# ------------------------------------------------------------------------------
+YML_PATH = MEDIA_ROOT + "yml/"
+# ------------------------------------------------------------------------------
+# YML LOCATION API END
