@@ -48,12 +48,17 @@ YML_PATH = MEDIA_ROOT + "yml/"
 # YML LOCATION API END
 
 
-# GEO LOCATION API
+# GEO LOCATION API START
 # ------------------------------------------------------------------------------
 GEO_LOCATION_HOST = 'geo'
+GEO_LOCATION_PORT = 8282
+GEO_LOCATION_SERVICE_URL = 'http://{host}:{port}/'.format(
+    host=GEO_LOCATION_HOST,
+    port=GEO_LOCATION_PORT
+)
+DEFAULT_KLADR_CODE = '7700000000000'
 # ------------------------------------------------------------------------------
 # GEO LOCATION API END
-
 
 # SENTRY START
 # ------------------------------------------------------------------------------
