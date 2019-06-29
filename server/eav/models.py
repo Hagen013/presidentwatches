@@ -199,7 +199,7 @@ class EavEntityMixin(models.Model):
         abstract = True
 
     def add_value(self, value):
-        relation =  self.value_relation_class(
+        relation = self.value_relation_class(
             entity=self,
             value=value
         )
@@ -213,10 +213,10 @@ class EavEntityMixin(models.Model):
                 value=value
             )
             return relation.delete()
-        except:
-            pass
+        except ObjectDoesNotExist:
+            return None
         
-
+    
     def update_values_from_list(self, values):
         """
         Метод, обновляющий M2M таблицу связей между Entity и

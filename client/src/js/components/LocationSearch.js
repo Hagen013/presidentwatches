@@ -81,7 +81,6 @@ export default class LocationSearch {
     }
 
     changeLocation(payload) {
-        console.log(payload);
         Cookies.set('city_name', payload.name);
         Cookies.set('city_code', payload.code);
         this.hideModal();

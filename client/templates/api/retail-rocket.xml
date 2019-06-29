@@ -34,19 +34,12 @@
             <url>{{base_url}}{{p.absolute_url}}</url>
             <price>{{p.price}}</price>
             <currencyId>RUR</currencyId>
-            {% if p.product_type %}
-            <categoryId>{{ get_product_category(p).id }}</categoryId>
-            {% else %}
-            <categoryId>1</categoryId>
-            {% endif %}
-            {% if p.has_image %}
-            <picture>{{base_url}}{{p.image.url}}</picture>
-            {% endif %}
-            {% for photo in p.images.all()[:9] %}
-            {% if photo.has_image %}
-            <picture>{{base_url}}{{photo.image.url}}</picture>
-            {% endif %}
-            {% endfor %}
+            {% with category = get_product_category(p) %}
+              {% for node in category.breadcrumbs %}
+              <categoryId>{{node.id}}</categoryId>
+              {% endfor %}
+            {% endwith %}
+            <picture>{{base_url}}{{p.rr_thumbnail.url}}</picture>
             <delivery>true</delivery>
             <name>{{p.name}}</name>
             <vendor>{{p.brand}}</vendor>

@@ -5,6 +5,15 @@
     <link rel="stylesheet" href="{{ static('css/jquery.fancybox.min.css') }}" />
 {% endblock css %}
 
+{% block script_head %}
+    {{ super() }}
+    <script type="text/javascript">
+        (window["rrApiOnReady"] = window["rrApiOnReady"] || []).push(function() {
+            try{ rrApi.view("{{product.id}}"); } catch(e) {}
+        })
+    </script>
+{% endblock script_head %}
+
 {% block content %}
     <div class="content-area content-area_block">
         <div class="breadcrumbs-area">
@@ -508,6 +517,46 @@
         </div>
     </div>
 {% endblock content %}
+
+{% block modals %}
+    {{ super() }}
+    <div class="modal fast-buy-modal" id="fast-buy-modal">
+        <div class="modal-container fast-buy-container">
+            <div class="modal-title bold">
+            Обратный звонок
+            </div>
+            <div class="fast-buy-main">
+                <div class="fast-buy-form">
+                    <div class="fast-buy-caption bold">
+                    Введите номер вашего телефона
+                    </div>
+                    <div class="input-box">
+                        <input class="input" id="fast-buy-input"
+                            placeholder='+7 (___) ___-____'
+                        >
+                        <div class="fast-buy-error" id="fast-buy-error">
+                        Укажите номер телефона, включая код города (10 цифр)
+                        </div>
+                    </div>
+                </div>
+            </div>            
+            <div class="button button_big button_accent"
+                id="fast-buy-submit"
+            >
+            ОСТАВИТЬ ЗАЯВКУ
+            </div>
+            <div class="button button_ghost button_big fast-buy-close-btn">
+            ЗАКРЫТЬ
+            </div>
+            <div class="modal-close control-button">
+                <i class="icon icon_close" id="fast-buy-close">
+                </i>
+            </div>
+        </div>
+        <div class="modal-placeholder">
+        </div>
+    </div>
+{% endblock modals %}
 
 {% block javascript %}
     {{ super() }}

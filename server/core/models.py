@@ -253,6 +253,10 @@ class Node(MPTTModel, EavEntityMixin):
         return '/'.join(slugs_list) + '/'
 
     @property
+    def breadcrumbs(self):
+        return self.get_ancestors(include_self=True)
+
+    @property
     def truncated_breadcrumbs(self):
         """
         'Рюкзаки женские городские повседневные' ->

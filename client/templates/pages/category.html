@@ -5,6 +5,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" type="text/css" media="all"/>
 {% endblock css %}
 
+{% block script_head %}
+    {{ super() }}
+    <script type="text/javascript">
+        (window["rrApiOnReady"] = window["rrApiOnReady"] || []).push(function() {
+            try { rrApi.categoryView("{{ category.id }}"); } catch(e) {}
+        })
+    </script>
+{% endblock script_head %}
+
 {% block content %}
     <div class="title-area">
         <div class="content-area content-area_block">

@@ -21,6 +21,7 @@ class OrderableManager(models.Manager):
 class NodeManager(TreeManager):
 
     def rebuild(self):
+        super(NodeManager, self).rebuild()
         for node in self.get_queryset():
             node.set_depth()
             node.save()
@@ -65,6 +66,7 @@ class NodeManager(TreeManager):
                     slug=old_url
                 )
                 instance.save()
+        
 
     def get_by_product(self, product_instance):
         if product_instance.pk:

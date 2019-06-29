@@ -1,5 +1,5 @@
 import store from '@/store/index.js';
-
+import FastBuy from '@/components/FastBuy.js';
 
 $(document).ready(function() {
 
@@ -51,6 +51,8 @@ $(document).ready(function() {
     $('.gallery-btn_prev').click(function() {
         prevSlide();
     })
+
+    let fastBuy = new FastBuy();
 
     function nextSlide() {
         let track = $('#gallery-track');

@@ -12,6 +12,7 @@
     "build": "webpack --mode production"
   },
   "dependencies": {
+    "inputmask": "^4.0.8",
     "vue": "^2.6.10",
     "vue-loader": "^15.7.0",
     "vue-template-compiler": "^2.6.10"

@@ -19,7 +19,8 @@ export default {
         )
         .then(res => res.json())
         .then(res => {
-            context.commit('updateCart', res)
+            context.commit('updateCart', res);
+            try { rrApi.addToBasket(payload.pk) } catch(e) {}
         })
     },
     transferFavorites2Cart(context, payload) {

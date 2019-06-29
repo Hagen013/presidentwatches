@@ -5,7 +5,8 @@ from .views import (CartApiView,
                     CartItemDetailsApiView,
                     CartItemQuantityApiView,
                     CartItemsBulkyApiView,
-                    Fav2CartTransferApiView)
+                    Fav2CartTransferApiView,
+                    FastBuyApiView)
 
 
 app_name = 'api'
@@ -17,4 +18,5 @@ urlpatterns = [
     path('items/', CartItemsApiView.as_view()),
     path('items/<str:pk>/', CartItemDetailsApiView.as_view()),
     path('items/<str:pk>/quantity/<int:quantity>/', CartItemQuantityApiView.as_view()),
+    path('fast-buy/<str:pk>/', FastBuyApiView.as_view())
 ]

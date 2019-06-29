@@ -76,3 +76,9 @@ class CartItemQuantityApiView(BaseCartAPIView):
     def put(self, request, pk, quantity):
         self.cart.update_quantity(pk, quantity)
         return Response(self.cart.data)
+
+
+class FastBuyApiView(BaseCartAPIView):
+
+    def post(self, request, pk):
+        return Response({})

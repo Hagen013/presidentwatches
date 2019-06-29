@@ -1,3 +1,6 @@
+from imagekit.models import ImageSpecField, ProcessedImageField
+from imagekit.processors import ResizeToFit
+
 from django.core.exceptions import ObjectDoesNotExist
 
 from operator import itemgetter
@@ -150,4 +153,34 @@ class YandexMarketOfferMixin(models.Model):
 
     is_yml_offer = models.BooleanField(
         default=False
+    )
+
+
+class ProductRetailRocketMixin(models.Model):
+    """
+    Класс, реализующий функционал, необходимый для интеграции
+    с RetailRocket
+    """
+    class Meta:
+        abstract = True
+
+    upload_image_to = None
+    image_key_attribute = None
+
+    # Изображеине для фида RetailRocket
+    rr_thumbnail_width = 400
+    rr_thumbnail_height = 400
+    rr_thumbnail_upscale = True
+    rr_thumbnail_quality = 90
+
+    rr_thumbnail = ImageSpecField(
+        source='image',
+        processors=[
+            ResizeToFit(
+                width=rr_thumbnail_width,
+                height=rr_thumbnail_height,
+                upscale=rr_thumbnail_upscale,
+            )
+        ],
+        options={'quality': rr_thumbnail_quality}
     )

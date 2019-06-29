@@ -1,0 +1,60 @@
+.fast-buy-modal {
+    text-align: center;
+    .input-box {
+        position: relative;
+        height: 40px;
+    }
+    .button {
+        margin-top: 30px;
+    }
+    .modal-title {
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+    .input {
+        color: $black;
+        letter-spacing: 1px;
+    }
+    .input::placeholder {
+        font-family: 'IBM Plex Sans', sans-serif;
+        color: $black;
+        letter-spacing: 1px;
+    }
+}
+
+.fast-buy-container {
+    position: relative;
+    display: inline-block;
+    padding: 20px;
+    margin-top: 20px;
+    width: 300px;
+    text-align: left;
+    z-index: 100;
+    @include mq($from: tablet) {
+        margin-top: 40px;
+        width: 600px;
+    }
+}
+
+.fast-buy-caption {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.fast-buy-error {
+    display: none;
+    position: absolute;
+    font-size: 14px;
+    color: $red;
+    bottom: -22px;
+}
+
+.fast-buy-placeholder {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.fast-buy-close-btn {
+    display: none;
+    margin-top: 40px !important;
+}

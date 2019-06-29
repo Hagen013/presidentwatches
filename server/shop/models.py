@@ -14,7 +14,9 @@ from eav.models import (AbstractAttribute,
                         EavEntityMixin,
                         TimeStampedMixin)
 
-from .mixins import WatchesProductMixin, YandexMarketOfferMixin
+from .mixins import (WatchesProductMixin,
+                     YandexMarketOfferMixin,
+                     ProductRetailRocketMixin)
 
 
 class AvailableManager(models.Manager):
@@ -86,7 +88,8 @@ class CategoryValueRelation(AbstractEntityValueRelation):
     )
 
 
-class ProductPage(AbstractOfferPage, EavEntityMixin, WatchesProductMixin, YandexMarketOfferMixin):
+class ProductPage(AbstractOfferPage, EavEntityMixin,
+    WatchesProductMixin, YandexMarketOfferMixin, ProductRetailRocketMixin):
 
     attribute_class = Attribute
     value_class = AttributeValue
@@ -207,6 +210,7 @@ class CategoryNodeInputRelation(models.Model):
         blank=True,
         related_name='output_node_reverse',
     )
+
 
 class CategoryNodeOutdatedUrl(TimeStampedMixin):
 
