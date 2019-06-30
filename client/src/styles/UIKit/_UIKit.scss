@@ -6,6 +6,12 @@
     color: $red-2;
 }
 
+.asterisk {
+    display: inline-block;
+    margin: 0px 2px;
+    color: $red;
+}
+
 @mixin bold() {
     font-weight: 600;
 }

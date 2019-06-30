@@ -9,7 +9,7 @@
     {{ super() }}
     <script type="text/javascript">
         (window["rrApiOnReady"] = window["rrApiOnReady"] || []).push(function() {
-            try{ rrApi.view("{{product.id}}"); } catch(e) {}
+            try{ rrApi.view({{product.id}}); } catch(e) {}
         })
     </script>
 {% endblock script_head %}

@@ -309,6 +309,15 @@
     }
 }
 
+.cart-errors {
+    margin-top: 10px;
+    font-size: 14px;
+    color: $red;
+    @include mq($from: tablet) {
+        padding: 0px 20px;
+    }
+}
+
 .cart-sum-list {
     display: table;
     width: 100%;
@@ -407,6 +416,42 @@
     .price {
         &:after {
             font-size: 12px;
+        }
+    }
+}
+
+.aftercheck {
+    padding: 40px 0px;
+    @include mq($from: desktop) {
+        margin: 60px 0px 100px 0px;
+    }
+}
+
+.aftercheck-title {
+    font-size: 26px;
+    margin-bottom: 20px;
+    @include mq($from: tablet) {
+        font-size: 36px;
+    }
+}
+
+.aftercheck-text {
+    font-size: 16px;
+    margin-bottom: 30px;
+    p {
+        margin-bottom: 10px;
+    }
+}
+
+.aftercheck-buttons {
+    .button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    @include mq($from: tablet) {
+        .button {
+            width: auto;
+            margin-right: 10px;
         }
     }
 }

@@ -2,7 +2,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
+
 from cart.cart import Cart
+from cart.models import Order
 from favorites.controller import FavoritesController
 from shop.models import ProductPage
 
@@ -27,8 +30,6 @@ class CartApiView(BaseCartAPIView):
 class CartItemsApiView(BaseCartAPIView):
 
     def post(self, request):
-        print(request.data)
-        print('tsoy')
         pk = request.data['pk']
         self.cart.add_offer(pk)
         return Response(self.cart.data)
@@ -82,3 +83,34 @@ class FastBuyApiView(BaseCartAPIView):
 
     def post(self, request, pk):
         return Response({})
+
+
+class CreateOrderAPIView(BaseCartAPIView):
+
+    def post(self, request):
+        cart = self.cart.data
+
+        user = request.user if request.user.is_authenticated else None
+        order = Order(
+            cart=cart,
+            user=user
+        )
+        public_id = Order._generate_public_id()
+        order.public_id = public_id
+        order.uuid = Order._generate_uuid()
+
+        try:
+            order.full_clean()
+        except ValidationError as e:
+            print(e.messages)
+            return Response(status=400, data=e.messages)
+
+        order.save()
+        self.cart.clear()
+
+        data = {
+            'cart': order.cart,
+            'uuid': order.uuid,
+            'public_id': order.public_id
+        }
+        return Response(data)

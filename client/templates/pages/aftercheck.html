@@ -1,1 +1,36 @@
 {% extends "base.html" %}
+
+{% block content %}
+    <div class="aftercheck">
+        <div class="content-area content-area_block">
+            <h1 class="aftercheck-title">
+            Спасибо за ваш заказ!
+            </h1>
+            <div class="aftercheck-text">
+                <p>
+                В ближайшее время с Вами свяжутся наши операторы.
+                </p>
+                <p>
+                Напоминаем, что магазин работает с 10:00 до 20:00 часов по Московскому времени.
+                </p>
+            </div>
+            <div class="aftercheck-buttons">
+                <a class="button button_big button_accent"
+                    href="/"
+                >
+                НА ГЛАВНУЮ
+                </a>
+                <a class="button button_big button_ghost"
+                    href="/shop/watches/mens/"
+                >
+                МУЖСКИЕ ЧАСЫ
+                </a>
+                <a class="button button_big button_ghost"
+                    href="/shop/watches/women/"
+                >
+                ЖЕНСКИЕ ЧАСЫ
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

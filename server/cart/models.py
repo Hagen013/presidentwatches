@@ -1,3 +1,7 @@
+import uuid
+import datetime
+from random import randint
+
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.contrib.postgres.fields import JSONField
@@ -11,18 +15,28 @@ class Order(models.Model):
         abstract = True
 
     public_id = models.IntegerField(
+        db_index=True
+    )
+
+    uuid = models.CharField(
+        max_length=128,
+        db_index=True
     )
 
     manager_notes = models.TextField(
+        blank=True
     )
 
     client_notes = models.TextField(
+        blank=True
     )
 
     state = models.CharField(
+        blank=True
     )
 
     source = models.CharField(
+        blank=True
     )
 
     user = models.ForeignKey(
@@ -34,13 +48,21 @@ class Order(models.Model):
 
     # JSON FIELDS
     cart = JSONField()
-    location = JSONField()
-    customer = JSONField()
-    delivery = JSONField()
-    cpa = JSONField()
-    store = JSONField()
-    tracking = JSONField()
-    payment = JSONField()
+
+    location = JSONField(blank=True)
+
+    customer = JSONField(blank=True)
+
+    delivery = JSONField(blank=True)
+
+    cpa = JSONField(blank=True)
+
+    store = JSONField(blank=True)
+
+    tracking = JSONField(blank=True)
+
+    payment = JSONField(blank=True)
+
 
     CART_JSONSCHEMA = {
     }
@@ -83,7 +105,27 @@ class Order(models.Model):
 
     @classmethod
     def _generate_public_id(cls):
-        pass
+        date = datetime.datetime.now()
+        number = str(randint(1000, 9999))
+        year = str(date.year)[2:]
+        month = str(date.month)
+        day = str(date.day)
+        if len(day) == 1:
+            day = "0" + day
+        if len(month) == 1:
+            month = "0" + month
+        code = "{0}{1}{2}{3}{4}".format(
+            year,
+            number[:2],
+            month,
+            day,
+            number[2:]
+        )
+        return int(code)
+
+    @classmethod
+    def _generate_uuid(cls):
+        return uuid.uuid4().hex
 
     def __init__(self, *args, **kwargs):
         super(Order, self).__init__(*args, **kwargs)

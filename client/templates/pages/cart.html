@@ -116,15 +116,17 @@
                                         E-mail
                                     </div>
                                     <div class="field-input-box">
-                                        <input class="input">
+                                        <input class="input" type="email" id="cart-email">
                                     </div>
                                 </div>
                                 <div class="field cart-field cart-recipient__phone cart-receipient__field">
                                     <div class="field-title">
-                                        Телефон
+                                        Телефон<span class="asterisk">*</span>
                                     </div>
                                     <div class="field-input-box">
-                                        <input class="input">
+                                        <input class="input cart-input" id="cart-phone"
+                                            placeholder='+7 (___) ___-____'
+                                        >
                                     </div>
                                 </div>
                                 <div class="field cart-field cart-recipient__name cart-receipient__field">
@@ -146,7 +148,9 @@
                                     Населенный пункт
                                 </div>
                                 <div class="cart-delivery__city bordered">
-                                    Санкт-Петербург
+                                    <span class="city-name">
+                                    {{request.user.city_name}}
+                                    </span>
                                 </div>
                             </div>
                             <ul class="cart-delivery-options radio-group">
@@ -219,7 +223,7 @@
                                     <input type="radio"
                                         id="radio-4" 
                                         name="payment" 
-                                        value="cash"/>
+                                        value="cash" checked/>
                                     <label for="radio-4">
                                         <i class="icon icon_pay-cash cart-payment-icon cart-payment-icon_1">
                                         </i>
@@ -293,10 +297,13 @@
                                 <input class="button button_big button_accent cart-submit"
                                     type="submit"
                                     value="ПОДТВЕРДИТЬ ЗАКАЗ"
+                                    id="cart-submit"
                                 >
                                 <div class="cart-policy">
                                     Нажимая на кнопку «Подтвердить заказ» даю согласие на обработку моих персональных данных.
                                 </div>
+                            </div>
+                            <div class="cart-errors" id="cart-errors">
                             </div>
                         </div>
                     </div>
