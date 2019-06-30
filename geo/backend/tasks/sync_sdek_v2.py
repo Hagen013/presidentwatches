@@ -77,25 +77,30 @@ def sdek_req_data(tariff_id, receiver_city_id, weight):
 
 async def calculate_row(index, tariff_id, receiver_city_id, weight, session):
     req_data = sdek_req_data(tariff_id, receiver_city_id, weight)
-    async with session.post(
-        CALCULATE_URL,
-        json=req_data,
-        timeout=None,
-    ) as resp:
-        # print(tariff_id, weight, index)
-        if resp.status == 200:
-            data = await resp.json()
-            #print(data)
-            result = data.get("result", None)
-            error = data.get("error", None)
-            #print(result)
-            if error is not None:
-                error_code = error[0].get('code')
-                if error_code == 18:
-                    print(data)
-            return tariff_id, weight, index, data
-        else:
-            return tariff_id, weight, index, None
+    for i in range(10):
+        try:
+            async with session.post(
+                CALCULATE_URL,
+                json=req_data,
+                timeout=None,
+            ) as resp:
+                # print(tariff_id, weight, index)
+                if resp.status == 200:
+                    data = await resp.json()
+                    #print(data)
+                    result = data.get("result", None)
+                    error = data.get("error", None)
+                    #print(result)
+                    if error is not None:
+                        error_code = error[0].get('code')
+                        if error_code == 18:
+                            print(data)
+                    return tariff_id, weight, index, data
+                else:
+                    return tariff_id, weight, index, None
+            break
+        except AttributeError:
+            pass
 
 
 async def caclulate_sdek(tariff_id, weight, df):
