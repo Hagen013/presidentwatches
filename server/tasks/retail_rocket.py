@@ -12,7 +12,7 @@ FILEPATH = settings.YML_PATH + "retail-rocket.xml"
 
 
 def generate_yml_file():
-    products = ProductPage.objects.all()
+    products = ProductPage.objects.available()
     categories = CategoryPage.objects.all()
     date = now().astimezone(pytz.timezone(settings.TIME_ZONE)).strftime('%Y-%m-%d %H:%M')
 
