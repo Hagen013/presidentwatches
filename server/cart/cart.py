@@ -9,12 +9,16 @@ class Cart():
 
     CART_SESSION_ID = 'cart'
 
-    def __init__(self, request):
-        self.session = request.session
-        data = self.session.get(self.CART_SESSION_ID)
-        if not data:
+    def __init__(self, request=None):
+        if request is not None:
+            self.session = request.session
+            data = self.session.get(self.CART_SESSION_ID)
+            if not data:
+                data = self.get_empty_data()
+                self.session[self.CART_SESSION_ID] = data
+        else:
             data = self.get_empty_data()
-            self.session[self.CART_SESSION_ID] = data
+            self.CART_SESSION_ID = None
 
         self.data = data
         self.ids = set(self.data['items'].keys())
@@ -141,8 +145,9 @@ class Cart():
     def save(self):
         self.refresh_cart()
         self.data['modified_at'] = datetime.now().isoformat()
-        self.session[self.CART_SESSION_ID] = self.data
-        self.session.modified = True
+        if self.CART_SESSION_ID is not None:
+            self.session[self.CART_SESSION_ID] = self.data
+            self.session.modified = True
 
     # Очистка корзины
     def clear(self):

@@ -12,7 +12,7 @@ User = get_user_model()
 class Order(models.Model):
 
     class Meta:
-        abstract = True
+        abstract = False
 
     public_id = models.IntegerField(
         db_index=True
@@ -32,11 +32,13 @@ class Order(models.Model):
     )
 
     state = models.CharField(
-        blank=True
+        blank=True,
+        max_length=128
     )
 
     source = models.CharField(
-        blank=True
+        blank=True,
+        max_length=128
     )
 
     user = models.ForeignKey(
@@ -49,19 +51,40 @@ class Order(models.Model):
     # JSON FIELDS
     cart = JSONField()
 
-    location = JSONField(blank=True)
+    location = JSONField(
+        blank=True,
+        default=dict
+    )
 
-    customer = JSONField(blank=True)
+    customer = JSONField(
+        blank=True,
+        default=dict
+    )
 
-    delivery = JSONField(blank=True)
+    delivery = JSONField(
+        blank=True,
+        default=dict
+    )
 
-    cpa = JSONField(blank=True)
+    cpa = JSONField(
+        blank=True,
+        default=dict
+    )
 
-    store = JSONField(blank=True)
+    store = JSONField(
+        blank=True,
+        default=dict
+    )
 
-    tracking = JSONField(blank=True)
+    tracking = JSONField(
+        blank=True,
+        default=dict
+    )
 
-    payment = JSONField(blank=True)
+    payment = JSONField(
+        blank=True,
+        default=dict
+    )
 
 
     CART_JSONSCHEMA = {
@@ -103,6 +126,22 @@ class Order(models.Model):
     def cpa_admitad_comment(self):
         pass
 
+    @property
+    def rr_items(self):
+
+        items = []
+
+        for key in self.cart['items']:
+            item = self.cart['items'][key]
+            items.append({
+                "id": item['pk'],
+                "qnt": item['quantity'],
+                "price": item['price']
+            })
+
+        return items
+        
+
     @classmethod
     def _generate_public_id(cls):
         date = datetime.datetime.now()
@@ -135,5 +174,5 @@ class Order(models.Model):
         pass
 
     def save(self, *args, **kwargs):
-        pass
+        super(Order, self).save(*args, **kwargs)
 

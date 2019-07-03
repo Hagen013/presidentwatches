@@ -82,8 +82,35 @@ class CartItemQuantityApiView(BaseCartAPIView):
 class FastBuyApiView(BaseCartAPIView):
 
     def post(self, request, pk):
-        return Response({})
+        
+        product = request.data['product']
+        user = request.user if request.user.is_authenticated else None
 
+        cart = Cart()
+        cart.add_offer(product['pk'])
+
+        order = Order(
+            cart=cart.data,
+            user=user
+        )
+
+        public_id = Order._generate_public_id()
+        order.public_id = public_id
+        order.uuid = Order._generate_uuid()
+
+        try:
+            order.full_clean()
+        except ValidationError as e:
+            print(e.messages)
+            return Response(status=400, data=e.messages)
+        order.save()
+
+        data = {
+            'cart': order.cart,
+            'uuid': order.uuid,
+            'public_id': order.public_id
+        }
+        return Response(data)
 
 class CreateOrderAPIView(BaseCartAPIView):
 
@@ -102,11 +129,10 @@ class CreateOrderAPIView(BaseCartAPIView):
         try:
             order.full_clean()
         except ValidationError as e:
-            print(e.messages)
             return Response(status=400, data=e.messages)
 
-        order.save()
         self.cart.clear()
+        order.save()
 
         data = {
             'cart': order.cart,

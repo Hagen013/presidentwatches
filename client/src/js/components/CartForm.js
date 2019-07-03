@@ -130,36 +130,13 @@ export default class CartForm {
 
     handleSuccessfulResponse(response) {
         let data = response.data;
-        let transactionId = data.public_id;
-        let items = [];
-
-        for (let key in data.cart.items) {
-            let item = data.cart.items[key];
-            items.push({
-                id: item.pk,
-                qnt: item.quantity,
-                price: item.price
-            })
-        }
-
-        // RetailRocket
-        (window["rrApiOnReady"] = window["rrApiOnReady"] || []).push(function() {
-            try { 
-              rrApi.order({
-                 transaction: 1235421421,
-                 items: [
-                    { id: 12312, qnt: 4, price: 130 },
-                    { id: 64532, qnt: 1, price: 220 }
-                 ]
-              });
-            } catch(e) {} 
-        })
-
-        window.location.href = '/cart/aftercheck/';
+        let url = `/cart/aftercheck/${data.uuid}/`
+        window.location.href = url;
     }
 
     handleFailedResponse(response) {
-
+        console.log("ERROR");
+        console.log(response);
     }
 
     recalculate() {

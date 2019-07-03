@@ -9,7 +9,11 @@
     {{ super() }}
     <script type="text/javascript">
         (window["rrApiOnReady"] = window["rrApiOnReady"] || []).push(function() {
-            try { rrApi.categoryView({{category.id}}); } catch(e) {}
+            try {
+                rrApi.categoryView({{category.id}});
+                {% for node in category.rr_nodes %}rrApi.categoryView({{node.id}});
+                {% endfor %}
+            } catch(e) {}
         })
     </script>
 {% endblock script_head %}

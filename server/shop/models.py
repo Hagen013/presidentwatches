@@ -16,7 +16,8 @@ from eav.models import (AbstractAttribute,
 
 from .mixins import (WatchesProductMixin,
                      YandexMarketOfferMixin,
-                     ProductRetailRocketMixin)
+                     ProductRetailRocketMixin,
+                     CategoryRetailRocketMixin)
 
 
 class AvailableManager(models.Manager):
@@ -234,7 +235,7 @@ class CategoryNodeOutdatedUrl(TimeStampedMixin):
     )
     
 
-class CategoryPage(AbstractCategoryPage):
+class CategoryPage(AbstractCategoryPage, CategoryRetailRocketMixin):
 
     attribute_class = Attribute
     value_class = AttributeValue

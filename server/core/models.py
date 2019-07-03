@@ -205,6 +205,7 @@ class Node(MPTTModel, EavEntityMixin):
             id__in=self
             ._meta.default_manager
             .values('id')
+            .filter(is_published=True)
             .filter(attribute_values__in=values.values('id'))
             .annotate(len_av=models.Count("id", distinct=False))
             .filter(len_av=values.count() - 1)

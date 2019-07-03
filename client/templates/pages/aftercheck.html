@@ -1,5 +1,21 @@
 {% extends "base.html" %}
 
+{% block script_head %}
+    {{ super() }}
+        <script type="text/javascript">
+        (window["rrApiOnReady"] = window["rrApiOnReady"] || []).push(function() {
+            try { 
+            rrApi.order({
+                transaction: "{{order.public_id}}",
+                items: [
+                    {% for item in order.rr_items %}{ id: {{item['id'] }}, qnt: {{item['qnt']}}, price: {{item['price']}} }{% endfor %}
+                ]
+            });
+            } catch(e) {} 
+        })
+        </script>
+{% endblock script_head %}
+
 {% block content %}
     <div class="aftercheck">
         <div class="content-area content-area_block">

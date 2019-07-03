@@ -40,6 +40,32 @@ export default class FastBuy {
                 let url = `/cart/fast-buy/${PRODUCT.pk}/`;
                 api.post(url, data).then(
                     response => {
+
+                        // RetailRocket
+                        let transactionId = response.data.public_id;
+                        let data = response.data.cart.items
+                        let items = [];
+                        for (let key in data) {
+                            let item = data[key];
+
+                            items.push({
+                                'id': item.pk,
+                                'qnt': item.quantity,
+                                'price': item.price
+                            })
+                        }
+
+                        (window["rrApiOnReady"] = window["rrApiOnReady"] || []).push(function() {
+                            try { 
+                            rrApi.order({
+                                transaction: transactionId,
+                                items: items
+                            });
+                            } catch(e) {} 
+                        })
+                        // RetailRocket end
+
+
                         $('.fast-buy-main').html(
                             `
                             <div class="fast-buy-placeholder">
@@ -54,7 +80,6 @@ export default class FastBuy {
                         );
                         $('#fast-buy-submit').css('display', 'none');
                         $('.fast-buy-close-btn').css('display', 'inline-block');
-                        try { rrApi.addToBasket(`${PRODUCT.pk}`) } catch(e) {}
                     },
                     response => {
     
@@ -67,6 +92,7 @@ export default class FastBuy {
     }
 
     showModal() {
+        try { rrApi.addToBasket(`${PRODUCT.pk}`) } catch(e) {}
         $('#fast-buy-modal').css('display', 'block');
     }
 

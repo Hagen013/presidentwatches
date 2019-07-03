@@ -184,3 +184,16 @@ class ProductRetailRocketMixin(models.Model):
         ],
         options={'quality': rr_thumbnail_quality}
     )
+
+
+class CategoryRetailRocketMixin(models.Model):
+    """
+    Класс, реализующий функционал, необходимый для интеграции
+    с RetailRocket по категориям
+    """
+    class Meta:
+        abstract=True
+
+    @property
+    def rr_nodes(self):
+        return self.outputs.filter(is_published=True)

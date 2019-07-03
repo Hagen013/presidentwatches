@@ -74,6 +74,7 @@ class NodeManager(TreeManager):
                 return self.get(id=self
                                 .get_queryset()
                                 .values('id')
+                                .filter(is_published=True)
                                 .filter(attribute_values__in=product_instance
                                         .attribute_values
                                         .all())
@@ -92,7 +93,7 @@ class NodeManager(TreeManager):
         elif len(values) == 0:
             return self.get_queryset().filter(level=0).order_by("id")
         query = """
-        SELECT "shop_categorypage"."id", COUNT("shop_categoryvaluerelation"."value_id") AS "len_av"
+        SELECT "shop_categorypage"."id", "shop_categorypage"."is_published", COUNT("shop_categoryvaluerelation"."value_id") AS "len_av"
         FROM "shop_categorypage"
         INNER JOIN "shop_categoryvaluerelation"
         ON ("shop_categoryvaluerelation"."entity_id"="shop_categorypage"."id")
@@ -106,6 +107,7 @@ class NodeManager(TreeManager):
             WHERE "shop_categoryvaluerelation"."value_id" NOT IN {values}
             GROUP BY "shop_categorypage"."id"
         )
+        AND "shop_categorypage"."is_published"=TRUE
         GROUP BY "shop_categorypage"."id"
         ORDER BY "len_av" DESC, "shop_categorypage"."scoring" DESC
         """.format(values=values)
