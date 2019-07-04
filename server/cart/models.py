@@ -9,6 +9,15 @@ from django.contrib.postgres.fields import JSONField
 User = get_user_model()
 
 
+def _empty_customer():
+    return {
+        "name": "",
+        "email": "",
+        "phone": "",
+        "address": ""
+    }    
+
+
 class Order(models.Model):
 
     class Meta:
@@ -57,8 +66,7 @@ class Order(models.Model):
     )
 
     customer = JSONField(
-        blank=True,
-        default=dict
+        default=_empty_customer
     )
 
     delivery = JSONField(
@@ -91,12 +99,39 @@ class Order(models.Model):
     }
 
     LOCATION_JSONSCHEMA = {
+        # "type": "object",
+        # "properties": {
+        #     "city": {
+        #         "type": "object",
+        #         "properties": {
+        #             "code": {
+        #                 "type": "string",
+        #                 "pattern": "^([0-9]{13})|([0-9]{17})|([0-9]{19})$"
+        #             },
+        #         }.
+        #         "required": ["city"],
+        #         "additionalProperties": False,
+        #     }
+        # }
     }
 
+    EMAIL_REGEXP = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+
     CUSTOMER_JSONSCHEMA = {
+        # "type": "object",
+        # "properties": {
+        #     "name": {"type": "string"},
+        #     "email": {
+        #         "type": "string",
+        #         "pattern": "(^$)|({EMAIL_REGEXP})".format(EMAIL_REGEXP=EMAIL_REGEXP)},
+        #     },
+        #     "phone": {"type": "string"},
+        #     "address": {"type": "string"}
+        # }
     }
 
     DELIVERY_JSONSCHEMA = {
+        "type": "object"
     }
 
     CPA_JSONSCHEMA = {
@@ -127,6 +162,12 @@ class Order(models.Model):
         pass
 
     @property
+    def rr_email_available(self):
+        if self.user is None and len(self.customer['email']) > 0:
+            return True
+        return False
+
+    @property
     def rr_items(self):
 
         items = []
@@ -140,7 +181,6 @@ class Order(models.Model):
             })
 
         return items
-        
 
     @classmethod
     def _generate_public_id(cls):

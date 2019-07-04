@@ -115,12 +115,15 @@ class FastBuyApiView(BaseCartAPIView):
 class CreateOrderAPIView(BaseCartAPIView):
 
     def post(self, request):
+
+        customer = request.data.get('customer')
         cart = self.cart.data
 
         user = request.user if request.user.is_authenticated else None
         order = Order(
             cart=cart,
-            user=user
+            user=user,
+            customer=customer
         )
         public_id = Order._generate_public_id()
         order.public_id = public_id

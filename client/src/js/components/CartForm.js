@@ -25,9 +25,12 @@ export default class CartForm {
         im.mask(inputSelector);
 
         this.orderData = {
-            email: '',
-            phone: '',
-            name: '',
+            customer: {
+                email: '',
+                phone: '',
+                name: '',
+                address: ''
+            },
             location: {
 
             },
@@ -63,7 +66,7 @@ export default class CartForm {
         if ( phoneValue.length === 12 ) {
             phoneIsValid = true;
             self.removePhoneError();
-            self.orderData.phone = phoneValue;
+            self.orderData.customer.phone = phoneValue;
         } else {
             self.highlightPhoneError();
         }
@@ -71,7 +74,7 @@ export default class CartForm {
         // Проверка E-mail
         let emailValue = $('#cart-email').val();
         if (validateEmail(emailValue)) {
-            this.orderData.email = emailValue;
+            this.orderData.customer.email = emailValue;
             this.removeEmailError();
         } else {
             this.highlightEmailError();
@@ -114,10 +117,6 @@ export default class CartForm {
     processOrder() {
         let self = this;
 
-        // Проверка E-mail для отправки в RetailRocket
-        let email = $('#cart-email').val();
-        (window["rrApiOnReady"] = window["rrApiOnReady"] || []).push(function() { rrApi.setEmail(email);});
-
         api.post('/cart/create-order/', this.orderData).then(
             response => {
                 self.handleSuccessfulResponse(response);
@@ -135,8 +134,7 @@ export default class CartForm {
     }
 
     handleFailedResponse(response) {
-        console.log("ERROR");
-        console.log(response);
+
     }
 
     recalculate() {
