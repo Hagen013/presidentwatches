@@ -1,4 +1,4 @@
-import uuid
+1import uuid
 import datetime
 from random import randint
 
@@ -99,45 +99,92 @@ class Order(models.Model):
     }
 
     LOCATION_JSONSCHEMA = {
-        # "type": "object",
-        # "properties": {
-        #     "city": {
-        #         "type": "object",
-        #         "properties": {
-        #             "code": {
-        #                 "type": "string",
-        #                 "pattern": "^([0-9]{13})|([0-9]{17})|([0-9]{19})$"
-        #             },
-        #         }.
-        #         "required": ["city"],
-        #         "additionalProperties": False,
-        #     }
-        # }
+        "type": "objects",
+        "properties": {
+            "city": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
     }
 
     EMAIL_REGEXP = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
 
     CUSTOMER_JSONSCHEMA = {
-        # "type": "object",
-        # "properties": {
-        #     "name": {"type": "string"},
-        #     "email": {
-        #         "type": "string",
-        #         "pattern": "(^$)|({EMAIL_REGEXP})".format(EMAIL_REGEXP=EMAIL_REGEXP)},
-        #     },
-        #     "phone": {"type": "string"},
-        #     "address": {"type": "string"}
-        # }
+        "type": "object",
+        "properties": {
+            "name": {
+                "type": "string",
+            },
+            "email": {
+                "type": "string",
+            }
+            "phone": {
+                "type": "string"
+            },
+            "address": {
+                "type": "string"
+            }
+        },
     }
 
     DELIVERY_JSONSCHEMA = {
-        "type": "object"
+        "type": "object",
+        "properties": {
+            "is_selected": {"type": "boolean"},
+            "type": {
+                "type": ["string", "null"],
+                "pvz_code": {
+                    "type": ["string", "null"]
+                },
+                "pvz_service": {
+                    "type": ["string", "null"]
+                },
+                "price": {
+                    "type": ["integer", "null"]
+                },
+            }
+        }
+    }
+
+    TRACKING_JSONSCHEMA = {
+
     }
 
     CPA_JSONSCHEMA = {
+        "type": "object",
+        "properties": {
+            "networks": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                }
+            }
+        }
     }
 
     STORE_JSONSCHEMA = {
+        "type": "array",
+        "items": {
+            "type": "object",
+            "properties": {
+                "vendor_code": {"type": "string"},
+                "amount": {"type": "integer"},
+                "stored": {"type": "boolean"}
+            },
+            "required": [
+                "vendor_code",
+                "amount",
+                "stored"
+            ]
+        }
     }
 
     STATE_ORDERING = {
