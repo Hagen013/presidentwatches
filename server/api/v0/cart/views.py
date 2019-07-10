@@ -6,6 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist, ValidationError
 
 from cart.cart import Cart
 from cart.models import Order
+from cart.serializers import OrderCreateSerializer
 from favorites.controller import FavoritesController
 from shop.models import ProductPage
 
@@ -112,14 +113,20 @@ class FastBuyApiView(BaseCartAPIView):
         }
         return Response(data)
 
+
 class CreateOrderAPIView(BaseCartAPIView):
 
     def post(self, request):
+
+        print(self.cart.data)
+        print(request.data)
+        serializer = OrderCreateSerializer(request.data, request)
 
         customer = request.data.get('customer')
         cart = self.cart.data
 
         user = request.user if request.user.is_authenticated else None
+
         order = Order(
             cart=cart,
             user=user,
@@ -132,6 +139,7 @@ class CreateOrderAPIView(BaseCartAPIView):
         try:
             order.full_clean()
         except ValidationError as e:
+            print(e.messages)
             return Response(status=400, data=e.messages)
 
         self.cart.clear()
@@ -143,3 +151,25 @@ class CreateOrderAPIView(BaseCartAPIView):
             'public_id': order.public_id
         }
         return Response(data)
+
+
+    # def post(self, request):
+
+    #     serializer = OrderCreateSerializer(request.data, request)
+    #     try:
+    #         serializer.validate()
+    #     except ValidationError as e:
+    #         print(e.messages)
+    #         return Response(
+    #             status=status.HTTP_400_BAD_REQUEST,
+    #             data=e.messages
+    #         )
+        
+    #     instance = serializer.save()
+        
+    #     data = {
+    #         'cart': instance.cart,
+    #         'uuid': instance.uuid,
+    #         'public_id': instance.public_id
+    #     }
+    #     return Response(data)

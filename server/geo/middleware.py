@@ -49,5 +49,9 @@ class GeoLocationMiddleware(object):
 
         request.user.city_code = city_code
         request.user.city_name = city_name_ru
+        request.location = {
+            "name": city_name_ru,
+            "code": city_code
+        }
 
         return self.get_response(request)

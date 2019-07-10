@@ -11,17 +11,15 @@
     </currencies>
     
     <categories>
-      {% for c in categories %}
-        {% if loop.index == 1 %}
-        <category id="{{c.id}}" 
-        >Каталог наручных часов
+      {% for node in categories %}
+        {% if node._depth == 0 %}
+        <category id="{{node.id}}" 
+        >{{node.name}}
         </category>
         {% else %}
-        <category id="{{c.id}}" 
-                {% if c.parent %}
-                  parentId="{{c.parent.id}}"
-                {% endif %}
-        >{{c.name}}
+        <category id="{{node.id}}" 
+          parentId="{{node.parent.id}}"
+        >{{node.name}}
         </category>
         {% endif %}
       {% endfor %}
@@ -34,9 +32,9 @@
             <url>{{base_url}}{{p.absolute_url}}</url>
             <price>{{p.price}}</price>
             <currencyId>RUR</currencyId>
-            {% with category = get_product_category(p) %}
-              {% for node in category.breadcrumbs %}
-              <categoryId>{{node.id}}</categoryId>
+            {% with nodes = get_nodes_by_product(categories, p) %}
+              {% for node in nodes %}
+            <categoryId>{{node.id}}</categoryId>
               {% endfor %}
             {% endwith %}
             <picture>{{base_url}}{{p.rr_thumbnail.url}}</picture>
@@ -49,7 +47,7 @@
             {% endif %}
             <manufacturer_warranty>true</manufacturer_warranty>
             
-            {% for key, values_list in p.attributes.items() %}
+            {% for key, values_list in p.rr_attributes.items() %}
                 {% for value in values_list %}
                 <param name="{{key}}">{{value.value}}</param>
                 {% endfor %}

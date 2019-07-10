@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 from imagekit.models import ImageSpecField, ProcessedImageField
 from imagekit.processors import ResizeToFit
 
@@ -184,6 +186,21 @@ class ProductRetailRocketMixin(models.Model):
         ],
         options={'quality': rr_thumbnail_quality}
     )
+
+    @property
+    def rr_attributes(self):
+        result = OrderedDict()
+        for av in self.attribute_values.exclude(
+            attribute__name='Бренд'
+        ).select_related().order_by(
+                'attribute__order',
+                'order'
+            ):
+            result[av.attribute.name] = result.get(
+                av.attribute,
+                []
+            ) + [av]
+        return result
 
 
 class CategoryRetailRocketMixin(models.Model):
