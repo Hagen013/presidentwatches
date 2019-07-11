@@ -1,19 +1,33 @@
-from rest_framework.views import APIView
+from rest_framework.pagination import LimitOffsetPagination
+from rest_framework import filters
+from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
+from django_filters.rest_framework import DjangoFilterBackend
+
 
 from cart.models import Order
+from cart.serializers import OrderPrivateSerializer
+
+from api.views import ModelViewSet
 
 
-class OrdersListApiView(APIView):
+class OrderViewSet(ModelViewSet):
 
-    def get(self, request, *args, **kwargs):
-        return Response({
-        })
+    model = Order
+    queryset = Order.objects.all()
+    serializer_class = OrderPrivateSerializer
+    pagination_class = LimitOffsetPagination
 
+    filter_backends = (
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter
+    )
 
-class OrderDetailApiView(APIView):
-
-    def get(self, pk, *args, **kwargs):
-        return Response({
-        })
+    filter_fields = (
+    )
+    search_fields = (
+    )
+    ordering_fields = (
+    )

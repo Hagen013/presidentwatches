@@ -35,9 +35,18 @@ def get_nodes_by_product(qs, product):
     return nodes
 
 
+def sorting_function(node):
+    try:
+        order = node.attribute_values.last().attribute.order
+    except AttributeError:
+        order = 0
+    return (node._depth, order)
+
+
 def generate_yml_file():
 
-    gender_values = Value.objects.filter(attribute__name='Тип часов')
+    attr_names = ['Тип часов', 'Цвет']
+    gender_values = Value.objects.filter(attribute__name__in=attr_names)
 
     values_l_2 = Value.objects.filter(
         value_enum__in=[
@@ -62,7 +71,21 @@ def generate_yml_file():
     nodes.append(root.id)
     qs = Node.objects.filter(id__in=nodes).exclude(name__contains='Swiss Military')
     nodes = list(qs)
-    nodes.sort(key=lambda x: x._depth)
+    nodes.sort(key=sorting_function)
+
+    for category in Node.objects.all():
+        cat_av = category.attribute_values.all()
+        cat_av_set = {v.id for v in cat_av}
+
+        for node in nodes:
+            node_av = node.attribute_values.all()
+            node_av_set = {v.id for v in node_av}
+            difference = node_av_set.difference(cat_av_set)
+            if len(difference) == 0 and node._depth != 0:
+                category.add_rr_node(node)
+                
+    category = Node.objects.get(_depth=0)
+    category.add_rr_node(category)
 
     products = Product.objects.available()
     date = now().astimezone(pytz.timezone(settings.TIME_ZONE)).strftime('%Y-%m-%d %H:%M')

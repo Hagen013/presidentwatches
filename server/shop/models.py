@@ -4,6 +4,7 @@ from collections import OrderedDict
 from mptt.models import TreeForeignKey
 
 from django.db import models
+from django.core.exceptions import ObjectDoesNotExist
 
 from core.models import AbstractOfferPage, AbstractCategoryPage
 from core.db.mixins import ImageMixin
@@ -213,6 +214,31 @@ class CategoryNodeInputRelation(models.Model):
     )
 
 
+class CategoryNodeRetailRocketRelation(models.Model):
+
+    node_class = 'CategoryPage'
+
+    class Meta:
+        abstract = False
+
+    input_node = models.ForeignKey(
+        node_class,
+        on_delete=models.CASCADE,
+        db_index=True,
+        blank=True,
+        related_name='rr_input_node_reverse',
+    )
+
+    output_node = models.ForeignKey(
+        node_class,
+        on_delete=models.CASCADE,
+        db_index=True,
+        blank=True,
+        related_name='rr_output_node_reverse',
+    )
+    
+
+
 class CategoryNodeOutdatedUrl(TimeStampedMixin):
 
     node_class = 'CategoryPage'
@@ -245,6 +271,7 @@ class CategoryPage(AbstractCategoryPage, CategoryRetailRocketMixin):
 
     inputs_relation_class = CategoryNodeInputRelation
     outdated_url_class = CategoryNodeOutdatedUrl
+    rr_relation_class = CategoryNodeRetailRocketRelation
 
     parent = TreeForeignKey(
         'self',
@@ -269,6 +296,39 @@ class CategoryPage(AbstractCategoryPage, CategoryRetailRocketMixin):
         related_name='outputs',
         through=inputs_relation_class,
     )
+
+    rr_nodes = models.ManyToManyField(
+        'self',
+        blank=True,
+        symmetrical=False,
+        related_name='rr_outputs',
+        through=rr_relation_class
+    )
+
+    def add_rr_node(self, node):
+        try:
+            relation = self.rr_relation_class.objects.get(
+                input_node=self,
+                output_node=node
+            )
+            return None
+        except ObjectDoesNotExist:
+            relation = self.rr_relation_class(
+                input_node=self,
+                output_node=node
+            )
+            relation.save()
+            return relation
+
+    def remove_rr_node(self, node):
+        try:
+            relation = self.rr_relation_class.objects.get(
+                input_node=self,
+                output_node=node
+            )
+            return relation.delete()
+        except ObjectDoesNotExist:
+            pass
 
     def get_root(self):
         return self._tree_manager.filter(_depth=0).order_by('created_at')[0]

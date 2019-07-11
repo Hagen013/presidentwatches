@@ -211,6 +211,10 @@ class CategoryRetailRocketMixin(models.Model):
     class Meta:
         abstract=True
 
+    rr_node = models.BooleanField(
+        default=False
+    )
+
     @property
     def rr_nodes(self):
         return self.outputs.filter(is_published=True)

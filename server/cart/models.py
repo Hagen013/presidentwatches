@@ -12,6 +12,8 @@ from django.contrib.postgres.fields import JSONField
 
 from djchoices import DjangoChoices, ChoiceItem
 
+from core.db.mixins import TimeStampedMixin
+
 
 User = get_user_model()
 
@@ -47,7 +49,7 @@ class OrderSource(DjangoChoices):
     Catalog = ChoiceItem(4, 'Страница категории')
 
 
-class Order(models.Model):
+class Order(TimeStampedMixin):
 
     class Meta:
         abstract = False

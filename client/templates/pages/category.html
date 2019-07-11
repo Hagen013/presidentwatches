@@ -7,15 +7,18 @@
 
 {% block script_head %}
     {{ super() }}
-    <script type="text/javascript">
-        (window["rrApiOnReady"] = window["rrApiOnReady"] || []).push(function() {
-            try {
-                rrApi.categoryView({{category.id}});
-                {% for node in category.rr_nodes %}rrApi.categoryView({{node.id}});
-                {% endfor %}
-            } catch(e) {}
-        })
-    </script>
+    {% with nodes = category.rr_nodes.all() %}
+        {% if nodes|length > 0 %}
+        <script type="text/javascript">
+            (window["rrApiOnReady"] = window["rrApiOnReady"] || []).push(function() {
+                try {
+                    {% for node in nodes %}rrApi.categoryView({{node.id}});
+                    {% endfor %}
+                } catch(e) {}
+            })
+        </script>
+        {% endif %}
+    {% endwith %}
 {% endblock script_head %}
 
 {% block content %}

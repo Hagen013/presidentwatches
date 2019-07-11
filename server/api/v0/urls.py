@@ -8,6 +8,7 @@ urlpatterns = [
     path('eav/', include('api.v0.eav.urls', namespace='eav')),
     path('search/', include('api.v0.search.urls', namespace='search')),
     path('cart/', include('api.v0.cart.urls', namespace='cart')),
-    path('favorites/', include('api.v0.favorites.urls', namespace='favorites'))
+    path('favorites/', include('api.v0.favorites.urls', namespace='favorites')),
+    path('orders/', include('api.v0.orders.urls', namespace='orders'))
 ]
 

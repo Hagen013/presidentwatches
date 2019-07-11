@@ -1,5 +1,6 @@
 from .cart import Cart
 
+from core.serializers import DynamicFieldsModelSerializer
 from cart.models import Order
 
 
@@ -50,19 +51,19 @@ class OrderCreateSerializer():
         return data.get('delivery')
 
     def get_payment_data(self, data):
-        return {}
+        return data.get('payment')
     
     def get_cpa_data(self, data):
-        return {}
+        return data.get('cpa')
     
     def get_store_data(self):
         return {}
 
     def get_client_notes(self, data):
-        return {}
+        return data.get('client_notes')
 
     def get_source(self, data):
-        return {}
+        return data.get('source')
     
     def validate(self):
         self._instance.full_clean()
@@ -74,3 +75,62 @@ class OrderCreateSerializer():
     def save(self):
         self._instance.save()
         return self._instance
+
+
+class OrderSerializer(DynamicFieldsModelSerializer):
+
+    class Meta:
+        model = Order
+        fields = (
+            'id',
+            'public_id',
+            'uuid',
+            'state',
+            'cart',
+            'user',
+            'location',
+            'customer',
+            'delivery',
+            'payment',
+            'tracking',
+            'created_at',
+            'modified_at',
+            'client_notes',
+        )
+        read_only_fields = (
+            'id',
+            'user',
+            'public_id'
+        )
+
+
+class OrderPrivateSerializer(DynamicFieldsModelSerializer):
+
+    class Meta:
+        model = Order
+        fields = (
+            'id',
+            'public_id',
+            'uuid',
+            'state',
+            'cart',
+            'source',
+            'user',
+            'location',
+            'customer',
+            'delivery',
+            'cpa',
+            'payment',
+            'tracking',
+            'created_at',
+            'modified_at',
+            'client_notes',
+            'manager_notes',
+            'store',
+            'cpa'
+        )
+        read_only_fields = (
+            'id',
+            'user',
+            'public_id'
+        )

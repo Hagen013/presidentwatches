@@ -95,10 +95,6 @@ class ProductValuesViewSet(viewsets.ViewSet):
     def create(self, request, product_pk):
         data = request.data
 
-        import pickle
-        with open('values.pickle', 'wb') as fp:
-            pickle.dump(data, fp)
-
         queryparams = request.query_params
         bulk_mode = queryparams.get('bulk', False)
         if bulk_mode:
