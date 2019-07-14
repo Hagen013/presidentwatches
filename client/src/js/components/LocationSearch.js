@@ -139,7 +139,7 @@ export default class LocationSearch {
           if (value > 0) {
             return `${prefix}<span class="price">${value}</span>`;
           } else {
-            return "бесплатно";
+            return "Бесплатно";
           }
         } else {
           return "";
