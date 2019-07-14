@@ -134,6 +134,41 @@ def normalize_noun_feminine(value, noun):
         return noun + ending
 
 
+def price_filter(value):
+    if value is not None:
+        if (value > 0):
+            return 'За <span class="price">{price}</span>'.format(price=int(value))
+        else:
+            return 'Бесплатно'
+    else:
+        return ''
+
+def time_filter(time_min, time_max):
+    print(time_min)
+    print(time_max)
+    if time_min is not None or time_max is not None:
+        if time_min != time_max:
+            if time_min is None:
+                from_time = ''
+            else:
+                from_time = 'от {days}'.format(days=time_min)
+            if time_max is None:
+                to_time = ''
+            else:
+                to_time = ' до {days} дней'.format(days=time_max)
+            return '{0}{1}'.format(
+                from_time,
+                to_time
+            )
+        else:
+            if (time_min == 1):
+                return 'от 1 дня'
+            else:
+                return 'от {0} дней'.format(time_min)
+    else:
+        return ''
+
+
 def environment(**options):
     options['extensions'] = ['config.jinja2htmlcompress.SelectiveHTMLCompress']
     env = Environment(**options)
@@ -150,5 +185,7 @@ def environment(**options):
         'ratings_stars_float': ratings_stars_float,
         'normalize_noun_masculine': normalize_noun_masculine,
         'normalize_noun_feminine': normalize_noun_feminine,
+        'price_filter': price_filter,
+        'time_filter': time_filter
     })
     return env

@@ -24,6 +24,10 @@ html {
   box-sizing: border-box;
 }
 
+ul {
+  padding: 0px;
+}
+
 #app{
   height: 100%;
 }
@@ -79,4 +83,54 @@ a:hover {
 .app-container {
   position: relative;
   padding: 20px;
+}
+
+
+
+.pagination {
+  display: flex;
+}
+.pagination {
+  display: flex;
+  align-items: center;
+}
+.pagination__delimeter {
+  margin-right: 8px;
+  margin-left: 8px;
+}
+.pagination__pagezise-label {
+  margin-right: 24px;
+}
+.gallery__controls {
+  display: flex;
+  justify-content: space-between;
+}
+.pagination__info {
+  display: flex;
+  align-items: center;
+  margin-left: 24px;
+}
+.pagination__buttons {
+  display: flex;
+  align-items: center;
+  margin-left: 32px;
+}
+.pagination__button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  height: 30px;
+  width: 30px;
+  border-radius: 15px;
+}
+.pagination__button_disabled {
+  cursor: default;
+  color: rgba(0,0,0,.32);
+}
+.pagination__button_next {
+  margin-left: 8px;
+}
+.pagination__button_prev {
+
 }

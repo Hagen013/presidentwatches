@@ -46,7 +46,16 @@ export const constantRouterMap = [
         name: 'Orders',
         component: () => import('@/views/orders/index'),
         meta: { title: 'Заказы', icon: 'shopping-cart' }
-      }
+      },
+
+      {
+        path: ':id',
+        name: 'Order',
+        hidden: true,
+        component: () => import('@/views/forms/order'),
+        meta: { title: 'Редактирование заказа' }
+      },
+
     ]
   },
 

@@ -170,16 +170,16 @@
                                 <div class="bold product-main__info-block-title">
                                     Информация о доставке
                                 </div>
-                                <div class="product-main__info-block-text">
+                                <div class="product-main__info-block-text" id="delivery-product">
                                     <p class="delivery-curier">
-                                        За <span class="price">{{delivery_data['curier']['price']}}</span>
-                                        в г. {{request.user.city_name}} курьером, в течении 3 дней
+                                        {{price_filter(delivery_data['curier']['price'])|safe}}
+                                        в г. {{request.user.city_name}} курьером, {{time_filter(delivery_data['curier']['time_min'], delivery_data['curier']['time_max'])}}
                                     </p>
                                     <p class="delivery-points">
-                                        Пункты выдачи — от <span class="price">{{delivery_data['delivery_point']['price']}}</span>
+                                        Пункты выдачи — от <span class="price">{{delivery_data['delivery_point']['price']}}</span>, {{time_filter(delivery_data['delivery_point']['time_min'], delivery_data['delivery_point']['time_max'])}}
                                     </p>
                                     <p class="delivery-rupost">
-                                        Почтой России — <span class="price">{{delivery_data['postal_service']['price']}}</span>
+                                        Почтой России — <span class="price">{{delivery_data['postal_service']['price']}}</span>, от 5 до 7 дней
                                     </p>
                                 </div>
                             </div>
@@ -567,6 +567,12 @@
             pk: '{{product.id}}',
             model: '{{ product.model }}',
             slug: '{{ product.slug }}',
-        }
+        };
+        var DELIVERY = {
+            'product_type': 'CUBE',
+            'price': {{product._price}},
+            'purchase_price': {{product._purchase_price}},
+            'vendor': '{{product.brand}}'
+        };
     </script>
 {% endblock javascript %}

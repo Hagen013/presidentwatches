@@ -81,10 +81,87 @@ export default class LocationSearch {
     }
 
     changeLocation(payload) {
+        let self = this;
         Cookies.set('city_name', payload.name);
         Cookies.set('city_code', payload.code);
         this.hideModal();
         $('.city-name').text(payload.name);
+
+        // КОСТЫЛЬ - ПЕРЕНЕСТИ
+        if (DELIVERY !== undefined) {
+            let data = {
+                'kladr': payload.code,
+                'product': DELIVERY
+            };
+            geoApi.post('/api/delivery/one_product/', data).then(
+                response => {
+                    let data = response.data;
+
+                    let curierPrice = data.curier.price;
+                    let curierTimeMin = data.curier.time_min;
+                    let curierTimeMax = data.curier.time_max;
+                    let filteredPriceCurier = self.priceFilter(curierPrice);
+                    let filteredDateCurier = self.timeFilter(curierTimeMin, curierTimeMax);
+
+                    let pointsPrice = data.delivery_point.price;
+                    let pointsTimeMin = data.delivery_point.time_min;
+                    let pointsTimeMax = data.delivery_point.time_max;
+                    let filteredPricePoints = self.priceFilter(pointsPrice, '');
+                    let filteredDatePoints = self.timeFilter(pointsTimeMin, pointsTimeMax);
+
+                    $('#delivery-product').html(
+
+                        `
+                        <p class="delivery-curier">
+                        ${filteredPriceCurier} в г. ${payload.name} курьером, ${filteredDateCurier}
+                        </p>
+                        <p class="delivery-points">
+                        Пункты выдачи — от ${filteredPricePoints}, ${filteredDatePoints}
+                        </p>
+                        <p class="delivery-rupost">
+                            Почтой России — <span class="price">300</span>, от 5 до 7 дней
+                        </p>
+                        `
+                    )
+                },
+                response => {
+
+                }
+            )
+        }
+    }
+
+    priceFilter(value, prefix) {
+        if (prefix === undefined) {
+            prefix = 'За '
+        }
+        if (value !== null) {
+          if (value > 0) {
+            return `${prefix}<span class="price">${value}</span>`;
+          } else {
+            return "бесплатно";
+          }
+        } else {
+          return "";
+        }
+    }
+
+    timeFilter(from_time, to_time) {
+        if (from_time || to_time) {
+          if (from_time != to_time) {
+            from_time = from_time ? `от ${from_time}` : "";
+            to_time = to_time ? ` до ${to_time}` : "";
+            return `${from_time}${to_time} дней`;
+          } else {
+            if (from_time == 1) {
+              return `от 1 дня`;
+            } else {
+              return `от ${from_time} дней`;
+            }
+          }
+        } else {
+          return "";
+        }
     }
     
     renderCityList() {

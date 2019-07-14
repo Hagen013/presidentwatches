@@ -15,6 +15,23 @@ from delivery.models import (SdekCityList,
                              DeliveryDelay,
                              )
 
+FREE_VENDORS = {
+    'Level', 
+    'Восток', 
+    'Заря',
+    'Михаил Москвин', 
+    'Casio', 
+    'Orient', 
+    'Q&Q',
+    'Diesel', 
+    'Fossil', 
+    'DKNY',
+    'Michael Kors',
+}
+
+def roundup(x):
+    return x if x % 10 == 0 else x + 10 - x % 10
+
 
 class DeliveryController():
     PRODUCT_TYPES = [
@@ -287,7 +304,14 @@ class DeliveryController():
         """
         СДЕК
         """
-        return self._get_sdek_delivery_data()
+        data = self._get_sdek_delivery_data()
+        if self.vendor in FREE_VENDORS:
+            data['price'] = 0
+        elif data['price'] < 500:
+            data['price'] = 300
+        elif data['price'] >= 500:
+            data['price'] = roundup(data['price'] * 0.7)
+        return data
 
     def get_postal_service_data(self):
         """

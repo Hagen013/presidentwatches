@@ -30,9 +30,9 @@ def get_nodes_by_product(qs, product):
         if len(difference) == 0:
             nodes.append(node)
     
-    if len(nodes) > 1:
-        return nodes[1:]
-    return nodes
+    ids = [node.id for node in nodes]
+    qs = Node.objects.filter(id__in=ids).exclude(outputs__in=ids)
+    return qs
 
 
 def sorting_function(node):

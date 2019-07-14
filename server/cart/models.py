@@ -291,7 +291,6 @@ class Order(TimeStampedMixin):
         }
     }
 
-
     STATE_ORDERING = {
         "новый": 0,
         "недозвон": 1,
