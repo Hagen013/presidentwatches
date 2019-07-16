@@ -9,6 +9,6 @@ urlpatterns = [
     path('search/', include('api.v0.search.urls', namespace='search')),
     path('cart/', include('api.v0.cart.urls', namespace='cart')),
     path('favorites/', include('api.v0.favorites.urls', namespace='favorites')),
-    path('orders/', include('api.v0.orders.urls', namespace='orders'))
+    path('orders/', include('api.v0.orders.urls', namespace='orders')),
+    path('auth/', include('api.v0.auth.urls', namespace='auth'))
 ]
-

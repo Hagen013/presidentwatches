@@ -1,7 +1,10 @@
 <template>
   <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-      <h3 class="title">Вход</h3>
+      <div class="logo">
+        <svg-icon icon-class="logo" class="logo-svg">
+        </svg-icon>
+      </div>
       <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon-class="user" />
@@ -24,7 +27,13 @@
         </span>
       </el-form-item>
       <el-form-item>
-        <el-button :loading="loading" type="primary" style="width:100%;" @click.native.prevent="handleLogin">
+        <el-button
+          :loading="loading"
+          type="primary"
+          style="width:100%;"
+          @click.native.prevent="handleLogin"
+          class="login-button"
+        >
           Войти
         </el-button>
       </el-form-item>
@@ -116,9 +125,8 @@ $light_gray:#eee;
       background: transparent;
       border: 0px;
       -webkit-appearance: none;
-      border-radius: 0px;
+      border-radius: 4px;
       padding: 12px 5px 12px 15px;
-      color: $light_gray;
       height: 47px;
       &:-webkit-autofill {
         -webkit-box-shadow: 0 0 0px 1000px $bg inset !important;
@@ -127,17 +135,47 @@ $light_gray:#eee;
     }
   }
   .el-form-item {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    color: #454545;
+    border-radius: 4px;
+    border: 1px solid #dcdcdc;
+  }
+}
+
+.logo {
+  height: 50px;
+  overflow: hidden;
+  width: 448px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.logo-svg {
+  height: 50px;
+  font-size: 300px;
+}
+.login-button {
+  background: #f6de32;
+  color: black;
+  font-weight: 600;
+  letter-spacing: 2px;
+  font-size: 18px;
+  text-transform: uppercase;
+  border: 1px solid #f6de32;
+  &:hover {
+    color: black;
+    background: lighten(#f6de32, 10);
+    border: 1px solid #f6de32;
+  }
+  &:focus {
+    background: darken(#f6de32, 5);
+    border: 1px solid #f6de32;
   }
 }
 
 </style>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-$bg:#2d3a4b;
+$bg:white;
 $dark_gray:#889aa4;
 $light_gray:#eee;
 .login-container {

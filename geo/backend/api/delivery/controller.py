@@ -15,7 +15,7 @@ from delivery.models import (SdekCityList,
                              DeliveryDelay,
                              )
 
-FREE_VENDORS = {
+PAID_VENDORS = {
     'Level', 
     'Восток', 
     'Заря',
@@ -305,7 +305,7 @@ class DeliveryController():
         СДЕК
         """
         data = self._get_sdek_delivery_data()
-        if self.vendor in FREE_VENDORS:
+        if self.vendor not in PAID_VENDORS:
             data['price'] = 0
         elif data['price'] < 500:
             data['price'] = 300
