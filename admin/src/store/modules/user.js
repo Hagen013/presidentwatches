@@ -1,135 +1,62 @@
 import request from '@/utils/request'
+import { login } from '@/api/login'
+import { getToken, setToken, removeToken } from '@/utils/auth'
+import { getRefreshToken, setRefreshToken, removeRefreshToken } from '@/utils/auth'
 
 
-const user = {
-  
-  state: {
-    'name': '',
-    'avatar': '',
-    'roles': [],
+const state = {
+  token: getToken,
+  refreshToken: getRefreshToken,
+  name: ''
+}
+
+const mutations = {
+
+  SET_ACCESS_TOKEN(staste, token) {
+    state.token = token;
   },
-
-  mutations: {
-
-    SET_NAME: (state, name) => {
-      state.name = name;
-    },
-
+  SET_REFRESH_TOKEN(state, token) {
+    state.refreshToken = token;
   },
-
-  actions: {
-
-    Login({ commit }, userInfo) {
-
-      const username = userInfo.username.trim();
-      const password = userInfo.password;
-
-      let data = {
-        username: username,
-        password: password
-      }
-
-      return new Promise((resolve, reject) => {
-        request.post('/auth/login/', data).then(
-          response => {
-            const data = response.data;
-            commit('SET_NAME', data.username);
-            resolve()
-          },
-          response => {
-            console.log('teleport failed');
-            reject()
-          }
-        )
-      })
-
-    },
-
-    Logout({ commit }) {
-
-    } 
-
+  SET_NAME(state, name) {
+    state.name = name;
   }
 
 }
 
-export default user
+const actions = {
 
-// import { login, logout, getInfo } from '@/api/login'
-// import { getToken, setToken, removeToken } from '@/utils/auth'
+  login({commit}, payload) {
+    const { username, password } = payload
+    return new Promise((resolve, reject) => {
+      login({username: username.trim(), password: password}).then(response => {
+        const { data } = response
+        commit('SET_ACCESS_TOKEN', data.access)
+        commit('SET_REFRESH_TOKEN', data.refresh)
+        setToken(data.access);
+        setRefreshToken(data.refresh);
+        resolve()
+      }).catch(error => {
+        reject(error);
+      })
+    })
+  },
 
-// const user = {
-//   state: {
-//     token: getToken(),
-//     name: '',
-//     avatar: '',
-//     roles: []
-//   },
+  logout({ commit, state }) {
+    return new Promise((resolve, reject) => {
+      commit('SET_ACCESS_TOKEN', '')
+      commit('SET_REFRESH_TOKEN', '')
+      removeToken()
+      removeRefreshToken()
+      resolve()
+    })
+  }
 
-//   mutations: {
-//     SET_TOKEN: (state, token) => {
-//       state.token = token
-//     },
-//     SET_NAME: (state, name) => {
-//       state.name = name
-//     },
-//     SET_AVATAR: (state, avatar) => {
-//       state.avatar = avatar
-//     },
-//     SET_ROLES: (state, roles) => {
-//       state.roles = roles
-//     }
-//   },
+}
 
-//   actions: {
-//     Login({ commit }, userInfo) {
-//       const username = userInfo.username.trim()
-//       return new Promise((resolve, reject) => {
-//         login(username, userInfo.password).then(response => {
-//           const data = response.data;
-//           setToken(data.token)
-//           commit('SET_TOKEN', data.token)
-//           resolve()
-//         }).catch(error => {
-//           reject(error)
-//         })
-//       })
-//     },
-
-//     GetInfo({ commit, state }) {
-//       return new Promise((resolve, reject) => {
-//         getInfo(state.token).then(response => {
-//           const data = response.data
-//           commit('SET_NAME', data.name)
-//           commit('SET_AVATAR', data.avatar)
-//           resolve(response)
-//         }).catch(error => {
-//           reject(error)
-//         })
-//       })
-//     },
-
-//     LogOut({ commit, state }) {
-//       return new Promise((resolve, reject) => {
-//         logout(state.token).then(() => {
-//           commit('SET_TOKEN', '')
-//           commit('SET_ROLES', [])
-//           removeToken()
-//           resolve()
-//         }).catch(error => {
-//           reject(error)
-//         })
-//       })
-//     },
-
-//     FedLogOut({ commit }) {
-//       return new Promise(resolve => {
-//         commit('SET_TOKEN', '')
-//         removeToken()
-//         resolve()
-//       })
-//     }
-//   }
-// }
-
-// export default user
+export default {
+  namespaced: true,
+  state,
+  mutations,
+  actions
+}

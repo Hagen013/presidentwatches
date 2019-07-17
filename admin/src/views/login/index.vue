@@ -9,7 +9,13 @@
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
-        <el-input v-model="loginForm.username" name="username" type="text" auto-complete="on" placeholder="username" />
+        <el-input v-model="loginForm.username"
+          name="username"
+          type="text"
+          auto-complete="on"
+          placeholder="username"
+          class="input"
+        />
       </el-form-item>
       <el-form-item prop="password">
         <span class="svg-container">
@@ -21,7 +27,8 @@
           name="password"
           auto-complete="on"
           placeholder="password"
-          @keyup.enter.native="handleLogin" />
+          @keyup.enter.native="handleLogin"
+          class="tsoy"/>
         <span class="show-pwd" @click="showPwd">
           <svg-icon icon-class="eye" />
         </span>
@@ -95,10 +102,11 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$store.dispatch('Login', this.loginForm).then(() => {
+          this.$store.dispatch('user/login', this.loginForm).then(() => {
             this.loading = false
-            this.$router.push({ path: this.redirect || '/' })
+            this.$router.push({ path: this.redirect || '/orders' })
           }).catch(() => {
+            console.log('pidar tsoy matsoy');
             this.loading = false
           })
         } else {
@@ -112,7 +120,7 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
-$bg:#2d3a4b;
+$bg:white;
 $light_gray:#eee;
 
 /* reset element-ui css */
@@ -129,8 +137,8 @@ $light_gray:#eee;
       padding: 12px 5px 12px 15px;
       height: 47px;
       &:-webkit-autofill {
-        -webkit-box-shadow: 0 0 0px 1000px $bg inset !important;
-        -webkit-text-fill-color: #fff !important;
+        -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+        -webkit-text-fill-color: black !important;
       }
     }
   }

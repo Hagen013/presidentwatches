@@ -8,6 +8,8 @@ import App from './App'
 import router from './router'
 import store from './store'
 
+import './permission' // permission control
+
 import '@/icons' // icon
 
 

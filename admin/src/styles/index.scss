@@ -7,6 +7,8 @@
 @import url("https://fonts.googleapis.com/css?family=IBM+Plex+Sans");
 
 
+$accent: #f6de32;
+
 body {
   height: 100%;
   -moz-osx-font-smoothing: grayscale;
@@ -133,4 +135,8 @@ a:hover {
 }
 .pagination__button_prev {
 
+}
+
+#nprogress .bar {
+  background: $accent !important;
 }

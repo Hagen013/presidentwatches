@@ -26,6 +26,7 @@ django-js-asset==1.1.0
 django-mptt==0.9.1
 django-rest-elasticsearch==0.4.1
 djangorestframework==3.9.0
+djangorestframework-simplejwt==4.3.0
 drf-nested-routers==0.91
 elasticsearch==6.3.1
 elasticsearch-dsl==6.0.0

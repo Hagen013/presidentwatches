@@ -18,11 +18,6 @@ class SessionBasedLoginApiView(APIView):
         username = request.data.get('username')
         password = request.data.get('password')
 
-        print('matsoy')
-        print(username)
-        print(password)
-        print('tsoy')
-
         user = authenticate(request, username=username, password=password)
         if user is None:
             return Response({}, status=status.HTTP_401_UNAUTHORIZED)
