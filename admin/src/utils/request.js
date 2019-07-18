@@ -4,7 +4,7 @@ import store from '../store'
 import { getToken } from '@/utils/auth'
 
 
-let baseURL = 'http://http://5.189.227.162/api/v0'
+let baseURL = 'http://5.189.227.162/api/v0'
 
 if (process.env.NODE_ENV === 'development') {
   baseURL = 'http://localhost:8000/api/v0'
