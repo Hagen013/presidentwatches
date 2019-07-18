@@ -12,7 +12,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 const service = axios.create({
-  baseURL: "http://localhost:8000/api/v0",
+  baseURL: baseURL,
   timeout: 5000,
   headers: {
     'Accept': 'application/json',
