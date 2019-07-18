@@ -2,20 +2,18 @@
     <div class="dashboard-container">
         <div class="view-placeholder">
             <div class="view-placeholder-container">
-                Главная
+                Промокоды
             </div>
         </div>
     </div>
 </template>
-
 <script>
 export default {
-    name: 'Dashboard',
+    name: 'Promocodes',
     computed: {
     }
 }
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-
 </style>

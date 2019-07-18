@@ -60,13 +60,26 @@ export const constantRouterMap = [
   },
 
   {
+    path: '/promocodes',
+    component: Layout,
+    children: [
+      {
+        path: '',
+        name: 'Promocodes',
+        component: () => import('@/views/promocodes/index'),
+        meta: { title: 'Промокоды', icon: 'shopping-cart' }
+      },
+    ]
+  },
+
+  {
     path: '/payments',
     component: Layout,
     children: [
       {
         path: '',
         name: 'Payments',
-        component: () => import('@/views/users/index'),
+        component: () => import('@/views/payments/index'),
         meta: { title: 'Оплаты', icon: 'user' }
       }
     ]
@@ -177,7 +190,7 @@ export const constantRouterMap = [
       {
         path: '',
         name: 'Comments',
-        component: () => import('@/views/users/index'),
+        component: () => import('@/views/reviews/index'),
         meta: { title: 'Отзывы', icon: 'user' }
       }
     ]
@@ -203,7 +216,7 @@ export const constantRouterMap = [
       {
         path: '',
         name: 'Staff',
-        component: () => import('@/views/users/index'),
+        component: () => import('@/views/staff/index'),
         meta: { title: 'Работники', icon: 'user' }
       }
     ]
@@ -216,7 +229,7 @@ export const constantRouterMap = [
       {
         path: '',
         name: 'News',
-        component: () => import('@/views/users/index'),
+        component: () => import('@/views/news/index'),
         meta: { title: 'Новости', icon: 'user' }
       }
     ]
@@ -229,7 +242,7 @@ export const constantRouterMap = [
       {
         path: '',
         name: 'Reviews',
-        component: () => import('@/views/users/index'),
+        component: () => import('@/views/reviews/index'),
         meta: { title: 'Обзоры', icon: 'user' }
       }
     ]

@@ -2,20 +2,18 @@
     <div class="dashboard-container">
         <div class="view-placeholder">
             <div class="view-placeholder-container">
-                Главная
+                Отзывы
             </div>
         </div>
     </div>
 </template>
-
 <script>
 export default {
-    name: 'Dashboard',
+    name: 'Reviews',
     computed: {
     }
 }
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-
 </style>

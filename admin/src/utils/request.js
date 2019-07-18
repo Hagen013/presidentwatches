@@ -34,12 +34,29 @@ service.interceptors.request.use(
 
 
 service.interceptors.response.use(
+
   response => {
+
     return response
+
   },
   error => {
-    return Promise.reject(error)
+
+    if ( (error.response.code === 401) || (error.response.code == 403) ) {
+      store.dispatch('user/logout').then(() => {
+        location.reload()
+      })
+    } else {
+      Message({
+        message: error.message,
+        type: 'error',
+        duration: 5 * 1000
+      })
+    }
+    return Promise.reject(error);
+
   }
+
 )
 
 export default service

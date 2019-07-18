@@ -50,6 +50,7 @@
 
 <script>
 import { isvalidUsername } from '@/utils/validate'
+import { Message } from 'element-ui'
 
 export default {
   name: 'Login',
@@ -105,12 +106,15 @@ export default {
           this.$store.dispatch('user/login', this.loginForm).then(() => {
             this.loading = false
             this.$router.push({ path: this.redirect || '/orders' })
-          }).catch(() => {
-            console.log('pidar tsoy matsoy');
+          }).catch((error) => {
+            console.log(error)
+            Message({
+              message: 'Логин или пароль указаны неверно',
+              type: 'error',
+            })
             this.loading = false
           })
         } else {
-          console.log('error submit!!')
           return false
         }
       })

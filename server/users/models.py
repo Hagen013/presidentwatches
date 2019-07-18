@@ -20,7 +20,7 @@ class UserType(DjangoChoices):
     Observer       = ChoiceItem(2, 'Observer')
     Packager       = ChoiceItem(3, 'Packager')
     ArticleWriter  = ChoiceItem(4, 'ArticleWriter')
-    ContentManager = ChoiceItem(5, 'ContentMager')
+    ContentManager = ChoiceItem(5, 'ContentManager')
     Operator       = ChoiceItem(6, 'Operator')
     Superviser     = ChoiceItem(7, 'Superviser')
 
@@ -28,31 +28,53 @@ class UserType(DjangoChoices):
 class User(AbstractBaseUser, PermissionsMixin):
 
     class Meta:
-        abstract = True
+        abstract = False
+
+    role = models.PositiveIntegerField(
+        choices=UserType.choices,
+        default=UserType.Client
+    )
     
     username = models.CharField(
+        max_length=256,
+        unique=True,
+        error_messages={
+            'unique': ('Пользователь с такими данными уже существует')
+        }
     )
 
     email = models.EmailField(
+        blank=True,
     )
 
     first_name = models.CharField(
+        max_length=64,
+        blank=True
     )
 
     last_name = models.CharField(
+        max_length=64,
+        blank=True
     )
 
     patronymic = models.CharField(
+        max_length=64,
+        blank=True
     )
 
-    phone_number = PhoneNumberField(
-    )
+    phone_number = PhoneNumberField()
     
     is_staff = models.BooleanField(
+        default=False
+    )
+
+    is_active = models.BooleanField(
+        default=True
     )
 
     birth_date = models.DateTimeField(
-        blank=True
+        blank=True,
+        null=True
     )
 
     date_joined = models.DateTimeField(
@@ -67,24 +89,11 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     EMAIL_FIELD = 'email'
     USERNAME_FIELD = 'username' 
-    REQUIRED_FIELDS = ['username',]
+    REQUIRED_FIELDS = ['email',]
 
     def save(self, *args, **kwargs):
         super(User, self).save(*args, **kwargs)
         return self
-
-
-class Profile(models.Model):
-
-    class Meta:
-        abstract = True
-
-    user = models.OneToOneField(
-        User,
-        on_delete=models.CASCADE,
-        blank=True,
-        verbose_name="нативный юзер"
-    )
 
 
 class Action(models.Model):
@@ -96,14 +105,3 @@ class Action(models.Model):
     """
     class Meta:
         abstract = True
-
-
-@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
- 
-
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    instance.profile.save()

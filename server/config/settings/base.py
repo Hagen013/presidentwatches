@@ -4,6 +4,8 @@
 
 import os
 import environ
+from datetime import timedelta
+
 
 env = environ.Env()
 env.read_env()
@@ -33,7 +35,6 @@ SECRET_KEY = env('DJANGO_SECRET_KEY')
 # APPLICATIONS CONFIGURATION
 # ------------------------------------------------------------------------------
 DJANGO_APPS = [
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -44,7 +45,7 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     'django_extensions',
-    'social_django',
+    #'social_django',
     'rest_framework',
     'corsheaders',
     'django_filters',
@@ -247,3 +248,39 @@ GEO_LOCATION_SERVICE_URL = 'http://{host}:{port}/'.format(
 DEFAULT_KLADR_CODE = '7700000000000'
 # ------------------------------------------------------------------------------
 # GEO LOCATION API END
+
+
+# CUSTOM AUTH START
+# ------------------------------------------------------------------------------
+AUTH_USER_MODEL = 'users.User'
+# ------------------------------------------------------------------------------
+# CUSTOM AUTH END
+
+
+# SIMPLE_JWT START
+# ------------------------------------------------------------------------------
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=5),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'VERIFYING_KEY': None,
+
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
+
+    'JTI_CLAIM': 'jti',
+
+    'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
+    'SLIDING_TOKEN_LIFETIME': timedelta(days=5),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=5),
+}
+# SIMPLE_JWT END
+# ------------------------------------------------------------------------------
