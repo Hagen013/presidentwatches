@@ -1,0 +1,79 @@
+.info-page {
+    margin-bottom: 40px;
+    font-size: 14px;
+    line-height: 1.8;
+    @include mq($from: desktop) {
+        margin-bottom: 100px;
+    }
+}
+
+.info-page-content {
+    max-width: 900px;
+    p {
+        margin-bottom: 10px;
+    }
+    .list-block {
+        padding: 15px 0px;
+    }
+    .list-block-title {
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+    .list {
+        padding-left: 10px;
+    }
+    .list-item {
+        &:before {
+            display: inline-block;
+            content: "—";
+            margin-right: 10px;
+        }
+    }
+    .info-page-block-title {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+    .info-page-block {
+        margin-bottom: 20px;
+    }
+}
+
+.guarantees-assets {
+    display: flex;
+}
+
+.guarantees-asset {
+    display: block;
+    height: 464px;
+    img {
+        height: 100%;
+        width: auto;
+    }
+}
+
+.disclaimer {
+    font-size: 14px;
+}
+
+.table {
+    width: 100%;
+    margin-bottom: 10px;
+    text-align: left;
+    border-collapse: collapse;
+    th {
+        padding: 8px;
+        border: 1px solid $grey;
+    }
+    td {
+        padding: 8px;
+        border: 1px solid $grey;
+    }
+    t
+    a {
+        color: $blue;
+    }
+}
+
+.table-bordered {
+    border: 1px solid $grey;
+}
