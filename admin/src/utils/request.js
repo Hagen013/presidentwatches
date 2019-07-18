@@ -3,12 +3,11 @@ import { Message, MessageBox } from 'element-ui'
 import store from '../store'
 import { getToken } from '@/utils/auth'
 
-console.log('tsoy')
-console.log(process.env)
+
+let baseURL = 'http://http://5.189.227.162/api/v0'
+
 if (process.env.NODE_ENV === 'development') {
-  const baseURL = 'http://localhost:8000/api/v0'
-} else {
-  const baseURL = 'http://http://5.189.227.162/api/v0'
+  baseURL = 'http://localhost:8000/api/v0'
 }
 
 const service = axios.create({
