@@ -15,7 +15,6 @@ from .controller import (DeliveryController,
 class OneProductDeliveryAPIView(APIView):
 
     def post(self, request):
-        print(request.data)
         try:
             kladr_code = request.data['kladr']
         except KeyError:

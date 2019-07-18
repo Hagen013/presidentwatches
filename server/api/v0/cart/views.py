@@ -118,8 +118,6 @@ class CreateOrderAPIView(BaseCartAPIView):
 
     def post(self, request):
 
-        print(self.cart.data)
-        print(request.data)
         serializer = OrderCreateSerializer(request.data, request)
 
         customer = request.data.get('customer')

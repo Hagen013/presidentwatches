@@ -45,7 +45,6 @@ class ModelViewSet(viewsets.ViewSet):
         return self.paginator.get_paginated_response(data)
 
     def list(self, request):
-        print(request.user)
         qs = self.filter_queryset(self.get_queryset())
         qs = self.paginate_queryset(qs, request)
         serializer = self.serializer_class(qs, many=True)
