@@ -9,6 +9,8 @@ RUN apk add --no-cache --virtual .build-deps \
     libffi-dev \
     linux-headers \
     && pip3 install --upgrade pip \
+    && pip3 install numpy \
+    && pip3 install pandas \
     && pip3 install --no-cache-dir psycopg2
 
 # INSTALL UWSGI
