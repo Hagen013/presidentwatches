@@ -5,6 +5,7 @@
 import os
 import environ
 from datetime import timedelta
+from kombu import Queue, Exchange
 
 
 env = environ.Env()
@@ -45,7 +46,7 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     'django_extensions',
-    #'social_django',
+    'social_django',
     'rest_framework',
     'corsheaders',
     'django_filters',
@@ -282,5 +283,66 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME': timedelta(days=5),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=5),
 }
-# SIMPLE_JWT END
 # ------------------------------------------------------------------------------
+# SIMPLE_JWT END
+
+
+# REDIS SETTINGS START
+# ------------------------------------------------------------------------------
+REDIS_PORT = 6379
+REDIS_DB = 0
+REDIS_HOST = 'redis'
+# ------------------------------------------------------------------------------
+# REDIS SETTINGS END
+
+
+# RABBIT SETTINGS START
+# ------------------------------------------------------------------------------
+RABBIT_HOSTNAME = 'rabbit'
+RABBIT_USER = os.environ.get('RABBIT_USER', 'RABBIT_USER')
+RABBIT_PASS = os.environ.get('RABBIT_PASS', 'RABBIT_PASS')
+RABBIT_VHOST = os.environ.get('RABBIT_VHOST', 'RABBIT_VHOST')
+
+BROKER_URL = 'amqp://{user}:{password}@{hostname}/{vhost}'.format(
+    user=RABBIT_USER,
+    password=RABBIT_PASS,
+    hostname=RABBIT_HOSTNAME,
+    vhost=RABBIT_VHOST,
+)
+# We don't want to have dead connections stored on rabbitmq,
+# so we have to negotiate using heartbeats
+BROKER_HEARTBEAT = '?heartbeat=30'
+
+if not BROKER_URL.endswith(BROKER_HEARTBEAT):
+    BROKER_URL += BROKER_HEARTBEAT
+BROKER_POOL_LIMIT = 10
+BROKER_CONNECTION_TIMEOUT = 10
+# ------------------------------------------------------------------------------
+# RABBIT SETTINGS END
+
+
+# CELERY SETTINGS START
+# ------------------------------------------------------------------------------
+CELERY_RESULT_BACKEND = 'redis://%s:%d/%d' % (REDIS_HOST, REDIS_PORT, REDIS_DB)
+CELERY_IMPORTS = (
+    'tasks.warehouse',
+)
+CELERY_QUEUES = (
+    Queue('default', Exchange('default'), routing_key='default'),
+    Queue('media', Exchange('media'), routing_key='media')
+)
+
+CELERY_DEFAULT_QUEUE = 'default'
+CELERY_DEFAULT_EXCHANGE = 'default'
+CELERY_DEFAULT_ROUTING_KEY = 'default'
+CELERY_ROUTES = {
+}
+CELERY_REDIS_MAX_CONNECTIONS = 8
+CELERY_TASK_SERIALIZER = "json"
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_ALWAYS_EAGER = False
+CELERY_IGNORE_RESULT = False
+CELERY_ENABLE_UTC = True
+CELERY_TIMEZONE = 'Europe/Moscow'
+# ------------------------------------------------------------------------------
+# CELERY SETTINGS END

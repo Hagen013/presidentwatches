@@ -11,5 +11,6 @@ urlpatterns = [
     path('favorites/', include('api.v0.favorites.urls', namespace='favorites')),
     path('orders/', include('api.v0.orders.urls', namespace='orders')),
     path('auth/', include('api.v0.auth.urls', namespace='auth')),
-    path('jwt/', include('api.v0.jwt.urls', namespace='jwt'))
+    path('jwt/', include('api.v0.jwt.urls', namespace='jwt')),
+    path('tasks/', include('api.v0.tasks.urls', namespace='tasks'))
 ]

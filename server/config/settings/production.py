@@ -37,6 +37,7 @@ DATABASES = {
 MEDIA_ROOT = "/var/president_media/presidentwatches-original/"
 MEDIA_URL = '/media/'
 STATIC_ROOT = str(ROOT_DIR.path('client/static_production'))
+ADMIN_UPLOADS = MEDIA_ROOT + 'admin/uploads/'
 # MEDIA FILES CONFIGURATION END
 # ------------------------------------------------------------------------------
 
@@ -59,6 +60,7 @@ GEO_LOCATION_SERVICE_URL = 'http://{host}:{port}/'.format(
 DEFAULT_KLADR_CODE = '7700000000000'
 # ------------------------------------------------------------------------------
 # GEO LOCATION API END
+
 
 # SENTRY START
 # ------------------------------------------------------------------------------
