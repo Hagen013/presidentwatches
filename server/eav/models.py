@@ -208,7 +208,7 @@ class EavEntityMixin(models.Model):
         
     def remove_value(self, value):
         try:
-            relation = self.value_relation_class(
+            relation = self.value_relation_class.objects.get(
                 entity=self,
                 value=value
             )

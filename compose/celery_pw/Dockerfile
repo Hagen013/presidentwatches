@@ -32,8 +32,8 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 # COPY ENTRYPOINT AND CODE
 COPY  server /server
 COPY  client /client
-
-COPY  compose/server/entrypoint.sh entrypoint.sh
+COPY  compose/celery_pw/uwsgi.ini uwsgi.ini
+COPY  compose/celery_pw/entrypoint.sh entrypoint.sh
 RUN sed -i 's/\r//' /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 

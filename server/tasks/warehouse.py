@@ -35,8 +35,11 @@ def process_warehouse_file(path):
         for index, row in df.iterrows():
 
             model = row['Модель']
-            price = row['Цена']
+            price = int(row['Цена'])
             base_price = row['Оптовая цена']
+            if np.isnan(base_price):
+                base_price = 0
+
             is_in_stock = bool(row['В наличии'])
             is_bestseller = bool(row['Бестселлер'])
             is_new = bool(row['Новинка'])
@@ -87,10 +90,13 @@ def process_warehouse_file(path):
                     report['new_changed'] += 1
                     has_changed = True
 
-                if instance.series != series:
-                    instance.series = series
-                    report['series_changed'] += 1
-                    has_changed = True
+                if str(series) != 'nan' and str(series) != '':
+                        
+                    if instance.series != series :
+                        print(series)
+                        instance.series = series
+                        report['series_changed'] += 1
+                        has_changed = True
 
                 if instance.is_published != is_published:
                     instance.is_published = is_published

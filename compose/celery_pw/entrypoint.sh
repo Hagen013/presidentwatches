@@ -50,6 +50,33 @@ except requests.exceptions.RequestException:
 END
 }
 
+function redis_ready(){
+python3 << END
+import redis
+import sys
+rs = redis.Redis('redis')
+try:
+    response = rs.client_list()
+except redis.ConnectionError:
+    sys.exit(-1)
+sys.exit(0)
+END
+}
+
+function rabbit_ready(){
+python3 << END
+from kombu import Connection
+import sys
+rabbit_url = 'amqp://$RABBIT_USER:$RABBIT_PASS@$RABBIT_HOSTNAME/$RABBIT_VHOST'
+conn = Connection(rabbit_url)
+try:
+    conn.connect()
+except:
+    sys.exit(-1)
+sys.exit(0)
+END
+}
+
 
 until postgres_ready; do
   >&2 echo "Postgres is unavailable - sleeping"
@@ -63,8 +90,20 @@ until elasticsearch_ready; do
 done
 >&2 echo "Elasticsearch is up - continuing..."
 
+until redis_ready; do
+  >&2 echo "Redis is unavailable - sleeping"
+  sleep 1
+done
+>&2 echo "Redis is up - continuing..."
+
+until rabbit_ready; do
+  >&2 echo "Rabbit is unavailable - sleeping"
+  sleep 1
+done
+>&2 echo "Rabbit is up - continuing..."
+
 >&2 cd server
 
->&2 celery -A config worker -l info -E -Q default -n default_worker.%h --concurrency=2 -B &
+>&2 celery -A config worker -l info -E -Q default -n default_worker.%h --concurrency=2 -B
 
 exec $cmd
