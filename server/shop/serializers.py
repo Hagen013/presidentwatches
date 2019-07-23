@@ -24,6 +24,8 @@ class ProductPageSerializer(DynamicFieldsModelSerializer):
             'id',
             'model',
             'name',
+            'brand',
+            'series',
             'slug',
             'absolute_url',
             '_title',

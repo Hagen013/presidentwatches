@@ -12,6 +12,37 @@ from cart.serializers import OrderPrivateSerializer
 from api.views import ModelViewSet
 
 
+class CustomOrdersFilter(filters.BaseFilterBackend):
+    
+    def filter_queryset(self, request, qs, view):
+        params  = request.query_params
+        public_id = params.get('public_id', None)
+        phone     = params.get('phone', None)
+        name      = params.get('name', None)
+        email     = params.get('email', None)
+
+        if public_id is not None:
+            qs = qs.filter(
+                public_id__icontains=public_id
+            )
+
+        if name is not None:
+            qs = qs.filter(
+                customer__name__icontains=name
+            )
+
+        if phone is not None:
+            qs = qs.filter(
+                customer__phone__icontains=phone
+            )
+
+        if email is not None:
+            qs = qs.filter(
+                customer__email__icontains=email
+            )
+        return qs
+
+
 class OrderViewSet(ModelViewSet):
 
     model = Order
@@ -20,8 +51,7 @@ class OrderViewSet(ModelViewSet):
     pagination_class = LimitOffsetPagination
 
     filter_backends = (
-        DjangoFilterBackend,
-        filters.SearchFilter,
+        CustomOrdersFilter,
         filters.OrderingFilter
     )
 
@@ -30,4 +60,5 @@ class OrderViewSet(ModelViewSet):
     search_fields = (
     )
     ordering_fields = (
+        '_order',
     )

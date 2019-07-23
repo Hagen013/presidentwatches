@@ -96,6 +96,7 @@ class OrderSerializer(DynamicFieldsModelSerializer):
             'created_at',
             'modified_at',
             'client_notes',
+            'sale'
         )
         read_only_fields = (
             'id',
@@ -112,6 +113,7 @@ class OrderPrivateSerializer(DynamicFieldsModelSerializer):
             'id',
             'public_id',
             'uuid',
+            '_order',
             'state',
             'cart',
             'source',
@@ -127,6 +129,7 @@ class OrderPrivateSerializer(DynamicFieldsModelSerializer):
             'client_notes',
             'manager_notes',
             'store',
+            'sale',
             'cpa'
         )
         read_only_fields = (

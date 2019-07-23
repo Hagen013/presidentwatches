@@ -1,6 +1,6 @@
 <template>
     <div class="app-container order"
-        v-if="initialized"
+        v-if="isReady"
         v-loading="loading"
     >
         <div class="order-topbar">
@@ -131,14 +131,20 @@
                                         Скидка:
                                     </div>
                                     <div class="field-value-box">
-                                        <el-input type="numeric">
-                                        </el-input>
+                                        <el-input-number
+                                            v-model="instance.sale.amount"
+                                            :min="0"
+                                            size="medium"
+                                            controls-position="right"
+                                        >
+                                        </el-input-number>
                                     </div>
                                 </div>
                             </el-col>
                             <el-col :span="12">
                                 <div class="field">
                                     <el-input
+                                        v-model="instance.sale.promocode"
                                         placeholder="Промокод"
                                     >
                                     </el-input>
@@ -177,6 +183,8 @@
                                     </div>
                                     <div class="field-value-box">
                                         <el-input
+                                            v-model="totalPrice"
+                                            :disabled="true"
                                         >
                                         </el-input>
                                     </div>
@@ -248,6 +256,16 @@
                                     <div class="cart-item-total">
                                         {{item.total_price}} ₽
                                     </div>
+
+                                    <el-button 
+                                        class="btn-delete"
+                                        type="danger"
+                                        icon="el-icon-delete" 
+                                        circle
+                                        @click="triggerDelete(item)"
+                                    >
+                                    </el-button>
+                            
                                 </div>
 
                             </li>
@@ -255,8 +273,14 @@
                         <div class="field">
                             <div class="field-value-box">
                                 <el-autocomplete 
+                                    v-model="queryLine"
                                     placeholder="Добавить товар"
-                                    :trigger-on-focus="false">
+                                    :fetch-suggestions="querySearch"
+                                    valueKey="name"
+                                    :trigger-on-focus="false"
+                                    @select="handleProductSelect"
+                                    class="product-autocomplete"
+                                >
                                 </el-autocomplete>
                             </div>
                         </div>
@@ -285,12 +309,13 @@
                             </div>
                             <div class="field-value-box">
                                 <el-select
+                                    v-model="instance.delivery.type"
                                 >
                                     <el-option v-for="service in deliveryServices"
                                         :key="service.value"
                                         :value="service.value"
+                                        :label="service.name"
                                     >
-                                        {{service.name}}
                                     </el-option>
                                 </el-select>
                             </div>
@@ -350,12 +375,13 @@
                             </div>
                             <div class="field-value-box">
                                 <el-select
+                                    v-model="curier"
                                 >
                                     <el-option v-for="option in curierOptions"
                                         :key="option.value"
                                         :value="option.value"
+                                        :label="option.name"
                                     >
-                                        {{option.name}}
                                     </el-option>
                                 </el-select>
                             </div>
@@ -380,12 +406,13 @@
                             </div>
                             <div class="field-value-box">
                                 <el-select
+                                    v-model="instance.payment.type"
                                 >
                                     <el-option v-for="option in paymentOptions"
                                         :key="option.value"
                                         :value="option.value"
+                                        :label="option.name"
                                     >
-                                        {{option.name}}
                                     </el-option>
                                 </el-select>
                             </div>
@@ -429,6 +456,7 @@ export default {
     },
     mixins: [crudMixin],
     data: () => ({
+        curier: 'not_selected',
         listApiUrl: '/orders/',
         statusOptions: [
             {name: 'Новый', value: 1},
@@ -445,23 +473,44 @@ export default {
         deliveryServices: [
             {name: 'Не выбрано', value: 'not_selected'},
             {name: 'Курьером', value: 'curier'},
-            {name: 'Пункт самовывоза', value: 'delivery_points'},
+            {name: 'Пункт самовывоза', value: 'pvz'},
             {name: 'Почтой России', value: 'rupost'}
         ],
         paymentOptions: [
             {name: 'Не выбрано', value: 'not_selected'},
             {name: 'Наличными', value: 'cash'},
-            {name: 'Картой при получении', value: 'card_on_receipt'},
-            {name: 'Картой онлайн', value: 'card'}
+            {name: 'Картой при получении', value: 'card_offline'},
+            {name: 'Картой онлайн', value: 'card_online'}
         ],
         curierOptions: [
             {name: '---', value: 'not_selected'},
-            {name: 'tsoy', value: 'matsoy'}
-        ]
+        ],
+        queryLine: ""
     }),
     computed: {
+        isReady() {
+            if (this.instanceId !== null) {
+                return !(Object.keys(this.instance).length === 0);
+            }
+            return true
+        },
+        itemsPrice() {
+            return this.instance.cart.total_price
+        },
+        deliveryPrice() {
+            return this.instance.delivery['price']
+        },
+        saleAmount() {
+            return this.instance.sale.amount
+        },
+        totalPrice() {
+            let total = this.itemsPrice + this.deliveryPrice - this.saleAmount
+            total = total > 0 ? total : 0
+            return total
+        }
     },
     created() {
+        this.notificationMessage = `Заказ успешно сохранен`;
     },
     methods: {
         redirectToOrdersList() {
@@ -475,15 +524,84 @@ export default {
                 let quantity = item['quantity'];
                 let price = item['price'];
                 item['total_price'] = price * quantity;
-                totalPrice += item['total_price'];
+                total_price += item['total_price'];
             }
-            this.instance.cart.total_price = total_price;
+            this.$set(this.instance.cart, 'total_price', total_price)
+
+        },
+        postInitialize() {
+            this.notificationTitle = `${this.instance.public_id}`;
         },
         setDeliveryDateToday() {
 
         },
         setDeliveryDateTommorrow() {
             
+        },
+        querySearch(query, cb) {
+            let lines = [{name: ''}];
+            api.get('/search/', {params: {line: query}}).then(
+                response => {
+                    lines = response.data;
+                    lines.forEach(function(item) {
+                        item.name = item._source.name
+                    })
+                    cb(lines)
+                },
+                response => {
+
+                }
+            )
+        },
+        handleProductSelect(item) {
+            this.queryLine = '';
+            api.get(`/products/${item._source.id}/`).then(
+                response => {
+                    let product = response.data;
+                    if (this.instance.cart.items[product.id] == undefined) {
+                        let item = {
+                            brand: product.brand,
+                            image: product.image,
+                            model: product.model,
+                            pk: product.id,
+                            price: product._price,
+                            quantity: 1,
+                            series: product.series,
+                            slug: product.slug,
+                            total_price: product._price,
+                            url: product.url
+                        }
+                        this.$set(this.instance.cart.items, product.id, item);
+                        this.calculatePrices();
+                    } else {
+                        this.$notify({
+                            title: 'Ошибка',
+                            message: 'Данный товар уже есть в составе заказа',
+                            type: 'error'
+                        });
+                    }
+                },
+                response => {
+
+                }
+            )
+        },
+        triggerDelete(item) {
+            this.$confirm(`Удалить ${item.model}?`, 'Подвтерждение', {
+                confirmButtonText: 'Да',
+                cancelButtonText: 'Отмена',
+                type: 'warning'
+            }).then(() => {
+                this.deleteFromCart(item);
+            }).catch(() => {
+
+            })
+        },
+        deleteFromCart(item) {
+            let identifier = String(item.pk);
+            this.$delete(this.instance.cart.items, identifier);
+            this.$forceUpdate();
+            this.calculatePrices();
         }
     }
 }
@@ -575,10 +693,16 @@ export default {
         border-radius: 4px;
     }
     .cart-item {
+        position: relative;
         height: 122px;
         padding: 10px;
         display: flex;
         list-style: none;
+    }
+    .btn-delete {
+        // position: absolute;
+        // bottom: 10px;
+        // right: 20px;
     }
     .cart-item-name {
         display: flex;
@@ -613,5 +737,8 @@ export default {
         flex-grow: 1;
         align-items: center;
         justify-content: space-between;
+    }
+    .product-autocomplete {
+        width: 100%;
     }
 </style>

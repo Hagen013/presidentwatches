@@ -14,12 +14,14 @@ export default {
         responseReceived: false,
         requestError: false,
         hasChanged: false,
-        showDeleteDialog: false
+        showDeleteDialog: false,
+        notificationTitle: 'Успешно',
+        notificationMessage: 'Запись успешно сохранена'
     }),
     computed: {
         instanceApiUrl() {
             if (this.instanceId !== null) {
-                return `${this.listApiUrl}${this.instanceId}`
+                return `${this.listApiUrl}${this.instanceId}/`
             }
             return null
         },
@@ -52,6 +54,7 @@ export default {
         },
         rollbackChanges() {
             this.instanceProxy = JSON.parse(JSON.stringify(this.instance));
+            this.checkChanges();
         },
         // Changes handling methods END
         //-------------------------------
@@ -133,10 +136,14 @@ export default {
             this.instanceProxy = JSON.parse(JSON.stringify(this.instance));
             this.responseReceived = true;
             this.requestError = false;
+            this.postInitialize();
         },
         handleFailedGetInstanceResponse(response) {
             this.responseReceived = true;
             this.requestError = true;
+        },
+        postInitialize() {
+
         },
         // UPDATE handlers
         handleSuccessfulUpdateResponse(response) {
@@ -144,6 +151,11 @@ export default {
             this.instanceProxy = JSON.parse(JSON.stringify(this.instance));
             this.responseReceived = true;
             this.requestError = false;
+            this.$notify({
+                title: this.notificationTitle,
+                message: this.notificationMessage,
+                type: 'success'
+              });
         },
         handleFailedUpdateResponse(response) {
             this.responseReceived = true;

@@ -4,19 +4,31 @@
             <div class="orders-filters">
                 <el-row :gutter="20">
                     <el-col :span="6">
-                        <el-input placeholder="Номер заказа">
+                        <el-input placeholder="Номер заказа"
+                            v-model="filters.public_id"
+                            @input="triggerSearch"
+                        >
                         </el-input>
                     </el-col>
                     <el-col :span="6">
-                        <el-input placeholder="Номер телефона">
+                        <el-input placeholder="Номер телефона"
+                            v-model="filters.phone"
+                            @input="triggerSearch"
+                        >
                         </el-input>
                     </el-col>
                     <el-col :span="6">
-                        <el-input placeholder="Имя клиента">
+                        <el-input placeholder="Имя клиента"
+                            v-model="filters.name"
+                            @input="triggerSearch"
+                        >
                         </el-input>
                     </el-col>
                     <el-col :span="6">
-                        <el-input placeholder="E-mail">
+                        <el-input placeholder="E-mail"
+                            v-model="filters.email"
+                            @input="triggerSearch"
+                        >
                         </el-input>
                     </el-col>
                 </el-row>
@@ -62,8 +74,9 @@
                 <tr class="table-row" v-for="order in items"
                     :key="order.id"
                     @click="handleRedirect(order)"
+                    :class="calculateClass(order.state)"
                 >
-                    <td class="table-cell">
+                    <td class="table-cell table-cell--colored">
                         <div class="table-container">
                             <div class="public_id">
                             {{order.public_id}}
@@ -79,7 +92,7 @@
 
                     <td class="table-cell">
                         <div class="table-container">
-                            {{order.cart.total_price}} ₽
+                            {{order.cart.total_price|priceFilter}} ₽
                         </div>
                     </td>
 
@@ -89,36 +102,51 @@
                                 {{order.customer.name}}
                             </div>
                             <div>
+                                {{order.location.city.name}}
+                            </div>
+                            <div>
+                                {{order.customer.email}}
+                            </div>
+                            <div>
                                 {{order.customer.phone}}
                             </div>
                         </div>
                     </td>
 
-                    <td class="table-cell">
-                        <div class="table-container">
+                    <td class="table-cell table-cell--colored">
+                        <div class="table-container order-state">
                             {{order.state|statusFilter}}
                         </div>
                     </td>
 
                     <td class="table-cell">
                         <div class="table-container">
-                            <div v-if="order.delivery.price !== null">
-                                <div>{{order.delivery.price}}</div>
-                                <div>{{order.delivery.type|deliveryFilter}}</div>
+                            <div>{{order.delivery.price|priceFilter}} ₽</div>
+                            <div>{{order.delivery.type|deliveryFilter}}</div>
+                            <div v-if="order.delivery.type=='pvz'">
+                                {{order.delivery.pvz.service|serviceFilter}}
                             </div>
                         </div>
                     </td>
 
                     <td class="table-cell">
                         <div class="table-container">
-                            {{order.payment|paymentFilter}}
+                            <div>
+                            {{order.payment.type|paymentFilter}}
+                            </div>
+                            <div v-if="order.payment.type=='card_online'"
+                                class="paid"
+                                :class="{ paid_done : order.payment.is_paid }"
+                            >
+                            {{order.payment.is_paid|paidFilter}}
+                            </div>
                         </div>
                     </td>
 
                 </tr>
             </table>
 
-            <div class="orders-controls">
+            <!-- <div class="orders-controls">
                 <div class="pagination">
                     <div class="pagination__pagezise-label">
                         Отображать по:
@@ -160,18 +188,42 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
         </div>
     </div>
 </template>
 
 <script>
+import debounce from 'debounce';
+
 import normalizeNumber from '@/utils/normalizeNumber'
 import request from '@/utils/request'
 
 const STATUS_MAPPING = {
-    1: 'Новый'
+    1: 'Новый',
+    2: 'Недозвон',
+    3: 'Недозвон 2',
+    4: 'Доставка',
+    5: 'Согласован',
+    6: 'Выполнен',
+    7: 'Отменен',
+    8: 'Отменён: недозвон',
+    9: 'Вручен',
+    10: 'Отказ'
+}
+
+const STYLES_MAPPING = {
+    1: 'table-row--success-1',
+    2: 'table-row--failure-1',
+    3: 'table-row--failure-1',
+    4: 'table-row--pending',
+    5: 'table-row--pending',
+    6: '',
+    7: 'table-row--failure-2',
+    8: 'table-row--failure-2',
+    9: 'table-row--success-2',
+    10: 'table-row--failure-3'
 }
 
 export default {
@@ -192,6 +244,12 @@ export default {
         statusMap: {
             1: 'Новый'
         },
+        filters: {
+            'publid_id': '',
+            'phone': '',
+            'name': '',
+            'email': ''
+        }
     }),
     created() {
         this.initialize();
@@ -205,6 +263,18 @@ export default {
         },
         hasNextPage() {
             return this.currentCount < this.totalCount;
+        },
+        queryParams() {
+            let params = {
+                'ordering': '_order'
+            };
+            for (let key in this.filters) {
+                let value = this.filters[key];
+                if (value !== '') {
+                    params[key] = value
+                }
+            }
+            return params
         }
     },
     methods: {
@@ -247,6 +317,12 @@ export default {
             this.offset = 0;
             this.limit = this.pageSize;
         },
+        calculateClass(state) {
+            return STYLES_MAPPING[state]
+        },
+        triggerSearch: debounce(function () {
+            this.getList();
+        }, 500)
     },
     filters: {
         dateFilter(dataString) {
@@ -269,24 +345,48 @@ export default {
         paymentFilter(mode) {
             if (mode === "cash") {
                 return "наличными"
-            } else if (mode == "card") {
-                return "онлайн"
-            }
-            else {
-                return "картой при получении"
+            } else if (mode === 'card_online') {
+                return 'онлайн'
+            } else if (mode === 'card_offline') {
+                return 'картой при получении'
+            } else {
+                return 'не выбрано'
             }
         },
         deliveryFilter(deliveryType) {
-            if (deliveryType === "delivery_points") {
+            if (deliveryType === "pvz") {
                 return "пункт выдачи"
             }
-            else if (deliveryType === "curier") {
+            else if (deliveryType === 'curier') {
                 return "курьер"
             }
-            else {
+            else if (deliveryType === 'rupost') {
                 return "почта"
+            } else {
+                return "не выбрано"
             }
         },
+        paidFilter(is_paid) {
+            if (is_paid) {
+                return 'оплачен'
+            } else {
+                return 'не оплачен'
+            }
+        },
+        serviceFilter(service) {
+            if (service === 'sdek') {
+                return 'СДЭК'
+            } else {
+                return 'PickPoint'
+            }
+        },
+        priceFilter(num) {
+            return (
+                num
+                .toString()
+                .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ')
+            ) // use . as a separator
+        }
     }
 }
 </script>
@@ -346,5 +446,53 @@ export default {
         max-width: 150px;
         padding: 6px 32px 6px 24px;
         line-height: 1.6;
+    }
+    .table-row--success-1 {
+        .table-cell--colored {
+            color: #67C23A;
+        }
+        background: rgba(103,194,58,0.015);
+    }
+    .table-row--success-2 {
+        .table-cell--colored {
+            color: #67C23A;
+        }
+        background: rgba(103,194,58,0.2);
+    }
+    .table-row--failure-1 {
+        .table-cell--colored {
+            color: #f82c4b;
+        }
+        background: rgba(248,44,75,0.015);
+    }
+    .table-row--failure-2 {
+        .table-cell--colored {
+            color: #f82c4b;
+        }
+        background: rgba(248,44,75,0.04);
+    }
+    .table-row--failure-3 {
+        .table-cell--colored {
+            color: #f82c4b;
+        }
+        background: rgba(248,44,75,0.2);
+    }
+    .table-row--pending {
+        background: rgba(246,222,50,.1);
+    }
+    .order-state {
+        font-size: 14px;
+        max-width: 140px;
+    }
+    .paid {
+        color: rgba(0,0,0,0.5)
+    }
+    .paid_done {
+        color: #67C23A
+    }
+    .public_id {
+        font-size: 15px;
+        font-weight: 600;
+        letter-spacing: 1px;
     }
 </style>

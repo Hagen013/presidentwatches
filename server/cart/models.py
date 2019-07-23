@@ -63,6 +63,11 @@ class Order(TimeStampedMixin):
         db_index=True
     )
 
+    _order = models.IntegerField(
+        default=10,
+        verbose_name='порядок'
+    )
+
     manager_notes = models.TextField(
         blank=True
     )
@@ -121,6 +126,11 @@ class Order(TimeStampedMixin):
     )
 
     payment = JSONField(
+        blank=True,
+        default=dict
+    )
+
+    sale = JSONField(
         blank=True,
         default=dict
     )
@@ -292,9 +302,9 @@ class Order(TimeStampedMixin):
     }
 
     STATE_ORDERING = {
-        "новый": 0,
-        "недозвон": 1,
-        "недозвон": 2
+        '1': 0, # новый
+        '2': 1, # недозвон
+        '3': 2, # недозвон 2
     }
 
     state_2_admitad_status_mapping = {
@@ -369,6 +379,10 @@ class Order(TimeStampedMixin):
     def _generate_uuid(cls):
         return uuid.uuid4().hex
 
+    def _get_order(self):
+        default_order = self._meta.get_field('_order').default
+        return self.STATE_ORDERING.get(str(self.state), default_order)
+
     def __init__(self, *args, **kwargs):
         super(Order, self).__init__(*args, **kwargs)
         self.__original_state = self.state
@@ -396,6 +410,7 @@ class Order(TimeStampedMixin):
             raise ValidationError(message=e.message)
 
     def save(self, *args, **kwargs):
+        self._order = self._get_order()
         super(Order, self).save(*args, **kwargs)
 
 
