@@ -82,9 +82,6 @@ export default class PriceFilter {
     redirect(leftValue, rightValue) {
         let query = document.location.search;
 
-        console.log(rightValue);
-        console.log(PRICE_MAX);
-
         if (leftValue === PRICE_MIN) {
             query = removeQueryParameter(query, 'price__gte');
         } else {
