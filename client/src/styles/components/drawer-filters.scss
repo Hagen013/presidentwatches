@@ -5,11 +5,13 @@
 }
 
 .drawer-filters-header {
+    position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
     height: 60px;
     line-height: 60px;
+    z-index: 100;
 }
 
 .drawer-filters-body {
@@ -22,6 +24,7 @@
 
 .drawer-filters-clear {
     font-size: 14px;
+    text-decoration: none;
 }
 
 .drawer-filters-body {
@@ -36,4 +39,39 @@
 .drawer-filters-list {
     height: 100%;
     overflow-y: scroll;
+}
+
+.drawer-filters-submit {
+    display: none;
+    width: auto !important;
+    min-width: 0px !important;
+    font-size: 10px;
+    padding: 0px 10px;
+    @include mq($from: tablet) {
+        width: 100% !important;
+    }
+}
+
+.drawer-filters-clear-btn {
+    display: inline-block;
+    width: 100%;
+    min-width: 0px !important;
+    font-size: 10px;
+    padding: 0px 10px;
+}
+
+.drawer-filters-clear-btn.active {
+    margin-left: 10px;
+    width: auto !important;
+}
+
+.drawer-filters-close {
+    cursor: pointer;
+    height: 30px;
+    width: 30px;
+    text-align: center;
+    line-height: 30px;
+    .icon {
+        display: inline-block;
+    }
 }

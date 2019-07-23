@@ -116,5 +116,26 @@ export default {
             }
         }
     },
+    clearActiveOptions(state) {
+
+        for (let key in state.facetes.active) {
+            if (state.facetes.base[key] !== undefined) {
+                if (state.facetes.removedBase[key] !== undefined) {
+                    for (let i=0; i<state.facetes.base[key].length; i++) {
+                        let value = state.facetes.base[key][i];
+                        let removedIndex = state.facetes.removedBase[key].indexOf(value);
+                        if (removedIndex !== -1) {
+                            state.facetes.removedBase[key].push(value);
+                            console.log('HUY')
+                        }
+                    }
+                }
+                state.facetes.base = {};
+            }
+        }
+
+        state.facetes.active = {}
+
+    }
     // END FACETES
 };

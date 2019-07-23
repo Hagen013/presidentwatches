@@ -243,6 +243,11 @@ $(document).ready(function() {
         let target = this.getAttribute('href');
         showDrawer(target);
     })
+    $('.drawer-close').click(function(e) {
+        e.preventDefault();
+        let target = this.getAttribute('href');
+        hideDrawer(target);
+    })
     $('.drawer-overlay').click(function() {
         let parent = $(this).parent();
         hideDrawer(parent);

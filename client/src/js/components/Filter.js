@@ -10,11 +10,12 @@ import fuzzy from 'fuzzysearch'
 
 export default class filter extends Component {
 
-    constructor(element) {
+    constructor(element, selectionFunction) {
         super({
             store,
             element: element
         });
+        this.selectionFunction = selectionFunction;
     }
 
     initialize() {
@@ -22,6 +23,17 @@ export default class filter extends Component {
         this.key = this.element.getAttribute('data-key');
         this.$element = $(this.element);
         this.initialized = false;
+
+        if (this.selectionFunction === undefined) {
+            this.selectionFunction = this.getRedirectionCounts;
+        }
+
+        if (store.state.facetes.active[this.key] !== undefined) {
+            console.log(this.key)
+            let count = this.$element.find('.round-count');
+            count.text(store.state.facetes.active[this.key].length)
+            count.css('display', 'inline-block');
+        }
     }
 
     bindMethods() {
@@ -53,7 +65,6 @@ export default class filter extends Component {
                 self.handleSuccessfulCountsResponse(response);
             })
             .catch(error => {
-                console.log('ERROR');
                 console.log(error);
             })
     }
@@ -139,7 +150,7 @@ export default class filter extends Component {
             } else {
                 store.commit('removeActiveOption', {key: self.key, value: valueId});
             }
-            self.getRedirectionCounts(button);
+            self.selectionFunction(button);
         })
         // Если необходим scroll
         if (isScrollable) {

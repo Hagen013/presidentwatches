@@ -25,6 +25,10 @@
     align-items: center;
     padding: 14px 0px;
     cursor: pointer;
+    .round-count {
+        display: none;
+        margin: 0px 4px;
+    }
 }
 
 .filter-panel {

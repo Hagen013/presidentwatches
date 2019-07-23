@@ -1,5 +1,6 @@
 import store from '@/store/index.js'
 import state from '@/state/index.js'
+import api from '@/api/index.js'
 import { SortingController } from './controllers/sortingController.js'
 import Filter from '@/components/Filter.js'
 import priceSlider from '@/components/priceSlider.js'
@@ -28,16 +29,63 @@ $(document).ready(function() {
     
     function dublicateDesktopFilters() {
         let $drawerFiltersList = $('.drawer-filters-list');
-        $drawerFiltersList.append(filters.clone());
+        let mobFilters = $drawerFiltersList.find('.filter');
+        if (mobFilters.length === 0) {
+            $drawerFiltersList.append(filters.clone());
+        }
     }
-    if (state.device._mode === 'mobile') {
+
+    function getFacetesCounts() {
+        let self = this;
+        let url = `/search/facetes/${this.key}/count/`;
+        let params = {};
+        for (let key in store.state.facetes.active) {
+            params[key] = store.state.facetes.active[key].join(',')
+        }
+        api.get(url, {params: params})
+            .then(response => {
+                let count = response.data.hits.total;
+                let url = getRedirectionUrl();
+                let $submitButton = $('#filters-submit');
+                $submitButton.html(`ПОКАЗАТЬ ${count} ТОВАРОВ`);
+                $submitButton.attr('href', url);
+                $submitButton.css('display', 'inline-block');
+                $('#drawer-filters-clear-btn').addClass('active');
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    }
+
+    function createMobileFilters() {
         dublicateDesktopFilters();
+        let mobileFilters = $('.drawer-filters-list').find('.filter');
+        for (let i=0; i<mobileFilters.length; i++) {
+            let filterSelector = mobileFilters[i];
+            let filter = new Filter(filterSelector, getFacetesCounts);
+        }
+    }
+
+    if (window.innerWidth < 1032) {
+        createMobileFilters();
     }
     state.device.registerListener(function() {
-        if (state.device._mode === 'mobile') {
-
+        if (window.innerWidth < 1032) {
+            createMobileFilters();
         }
     });
+
+    function clearFilters() {
+        // console.log('clearing filters');
+        // store.commit('clearActiveOptions');
+        // let url = getRedirectionUrl();
+        // console.log(url);
+        //window.location.href = url;
+    }
+    
+    // $('.drawer-filters-clear-btn, .drawer-filters-clear').click(function() {
+    //     clearFilters();
+    // })
     //
 
     new SortingController('#sorting-bar');
