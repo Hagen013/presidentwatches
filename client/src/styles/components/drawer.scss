@@ -23,7 +23,7 @@
 }
 
 .drawer-content {
-    position: absolute;
+    position: fixed;
     background: $white;
     transition: transform .45s cubic-bezier(.19,1,.22,1);
     z-index: 100;
