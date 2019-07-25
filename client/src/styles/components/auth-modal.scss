@@ -135,12 +135,12 @@
 }
 
 .register-form {
-    padding-top: 20px;
-    margin-top: 20px;
-    border-top: 1px solid $grey;
+    // padding-top: 20px;
+    // margin-top: 20px;
+    // border-top: 1px solid $grey;
     @include mq($from: tablet) {
-        padding-top: 30px;
-        margin-top: 30px;
+        // padding-top: 30px;
+        // margin-top: 30px;
     }
 }
 

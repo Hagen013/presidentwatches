@@ -341,3 +341,21 @@ class CategoryPage(AbstractCategoryPage, CategoryRetailRocketMixin):
 
     class Meta:
         abstract = False
+
+
+class ProductVideo(TimeStampedMixin):
+
+    class Meta:
+        ordering = ['-created_at']
+        abstract=False
+        unique_together = (("product", "slug"),)
+
+    slug = models.SlugField(
+        db_index=True
+    )
+
+    product = models.ForeignKey(
+        ProductPage,
+        on_delete=models.CASCADE,
+        related_name='videos'
+    )

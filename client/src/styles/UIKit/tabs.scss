@@ -48,6 +48,7 @@
 }
 
 .tabs-outlet {
+    width: 100%;
     padding: 20px 0px;
     line-height: 1.5;
     font-size: 14px;
@@ -62,9 +63,18 @@
 }
 
 .tab-pane {
+    position: relative;
     display: none;
 }
 
 .tab-pane.active {
     display: block;
+}
+
+.tab-pane-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    @include mq($from: wide) {
+        margin-bottom: 30px;
+    }
 }

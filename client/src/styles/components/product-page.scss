@@ -227,11 +227,31 @@
 
 .card-footer__left {
     float: left;
-    @include mq($from: wide) {
-        width: 747px;
+    @include mq($from: desktop) {
+        width: 100%;
     }
 }
 
 .card-footer__right {
     float: left;
+}
+
+.videos {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.video {
+    width: 100%;
+    @include mq($from: wide) {
+        height: 359px;
+    }
+}
+
+.card-videos {
+    width: 100%;
+}
+
+.card-description {
+    max-width: 738px;
 }

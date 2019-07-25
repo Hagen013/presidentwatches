@@ -31,7 +31,7 @@ class ProductPageFilter(django_filters.FilterSet):
 
     class Meta:
         model = ProductPage
-        exclude = ['image', 'thumbnail', 'manual', 'certificate']
+        exclude = ['image', 'thumbnail', 'manual', 'certificate', 'summary']
 
 
 class CategoryPageView(DiggPaginatorViewMixin, ListView):
@@ -285,6 +285,7 @@ class ProductPageView(TemplateView):
         context['reviews_count'] = count
         context['rating_overall'] = self.instance.get_rating_overall(count)
         context['delivery_data'] = self.get_delivery_data()
+        context['videos'] = self.instance.videos.all()
 
         context['images'] = self.instance.images.all()
 

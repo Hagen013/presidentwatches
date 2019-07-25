@@ -1,5 +1,6 @@
 .review {
     padding: 29px 0px;
+    max-width: 738px;
     border-top: 1px solid $grey;
 }
 
@@ -41,4 +42,15 @@
 
 .rating-label {
     margin-left: 20px;
+}
+
+.rating-summary {
+    width: 320px;
+    overflow: hidden;
+    margin-bottom: 28px;
+    @include mq($from: wide) {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+    }
 }

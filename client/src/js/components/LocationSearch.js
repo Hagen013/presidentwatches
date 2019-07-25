@@ -109,7 +109,7 @@ export default class LocationSearch {
                     let filteredPricePoints = self.priceFilter(pointsPrice, '');
                     let filteredDatePoints = self.timeFilter(pointsTimeMin, pointsTimeMax);
 
-                    $('#delivery-product').html(
+                    $('.delivery-product').html(
 
                         `
                         <p class="delivery-curier">

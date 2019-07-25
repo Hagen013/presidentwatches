@@ -4,11 +4,65 @@ from imagekit.models import ImageSpecField, ProcessedImageField
 from imagekit.processors import ResizeToFit
 
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.postgres.fields import JSONField
 
 from operator import itemgetter
 
 from django.db import models
 from django.conf import settings
+
+
+BRACELET_MAP = {
+    'Титан + керамика': 'Браслет из титана и керамики',
+    'Текстиль + кожа': 'Браслет из текстиля и кожи',
+    'Нерж. сталь + кожа': 'Браслет из стали и кожи',
+    'Пластик + карбон': 'Браслет из пластика и карбона',
+    'Нерж. сталь + алюминий': 'Браслет из стали и алюминия',
+    'Нерж. сталь + силикон': 'Браслет из стали и силикона',
+    'Нерж. сталь + платик': 'Браслет из стали и пластика',
+    'Нерж. сталь + позолота': 'Браслет из стали с позолотой',
+    'Нерж. сталь + дерево': 'Браслет из стали и дерева',
+    'Нерж. сталь + керамика': 'Браслет из стали и керамики',
+    'Алюминий': 'Алюминиевый браслет',
+    'Золото': 'Золотой браслет',
+    'Силикон': 'Силиконовый браслет',
+    'Нейлон': 'Нейлоновый браслет',
+    'Резина': 'Резиновый браслет',
+    'Латунь': 'Браслет из латуни',
+    'Текстиль': 'Браслет из текстиля',
+    'Кожа': 'Кожаный браслет',
+    'Каучук': 'Браслет из каучука',
+    'Нерж. сталь': 'Стальной браслет',
+    'Титан': 'Титановый браслет',
+    'Керамика': 'Керамический браслет',
+    'Пластик': 'Пластиковый браслет'
+}
+
+MATERIAL_MAP = {
+    'Титан + керамика': 'Корпус из титана и керамики',
+    'Титан + пластик': 'Корпус из титана и пластика',
+    'Алюминий + пластик': 'Корпус из алюминия и пластика',
+    'Нерж. сталь + силикон': 'Корпус из стали и силикона',
+    'Нерж. сталь + кожа': 'Корпус из стали и кожи',
+    'Нерж. сталь + дерево': 'Корпус из стали и дерева',
+    'Нерж. сталь + пластик': 'Корпус из стали и пластика',
+    'Нерж. сталь + керамика': 'Корпус из стали и керамики',
+    'Нерж. сталь + позолота': 'Корпус из стали с позолотой',
+    'Нерж. сталь + стразы': 'Корпус из стали со стразами',
+    'Цинково-алюминиевый сплав': 'Корпус из цинково-алюминиевого сплава',
+    'Вольфрамовый сплав': 'Корпус из вольфрамового сплава',
+    'Дерево': 'Деревянный корпус',
+    'Алюминий': 'Алюминиевый корпус',
+    'Медь': 'Медный корпус',
+    'Карбон': 'Корпус из карбона',
+    'Серебро': 'Серебряный корпус',
+    'Золото': 'Корпус из золота',
+    'Латунь': 'Корпус из латуни',
+    'Нерж. сталь': 'Стальной корпус',
+    'Титан': 'Титановый корпус',
+    'Керамика': 'Керамический корпус',
+    'Пластик': 'Пластиковый корпус'
+}
 
 
 class WatchesProductMixin(models.Model):
@@ -76,6 +130,15 @@ class WatchesProductMixin(models.Model):
         blank=True
     )
 
+    summary = JSONField(
+        default=list,
+        blank=True,
+    )
+
+    @property
+    def has_summary(self):
+        return len(self.summary) > 0
+
     @property
     def name(self):
         return "{brand} {series} {model}".format(
@@ -124,8 +187,60 @@ class WatchesProductMixin(models.Model):
 
         return groups
 
-    def has_value(value_name):
-        pass
+    def get_short_descriptions(self):
+        attributes = self.attributes
+        descriptions = []
+        
+        #  Стекло
+        try:
+            glass = attributes['Стекло'][0].value
+        except (IndexError, KeyError):
+            glass = None
+            
+        if glass is not None:
+            glass = glass + ' стекло'
+            descriptions.append(glass)
+            
+        # Браслет
+        try:
+            bracelet = attributes['Браслет'][0].value
+        except (IndexError, KeyError):
+            bracelet = None
+            
+        if bracelet is not None:
+            bracelet = BRACELET_MAP.get(bracelet, None)
+            if bracelet is not None:
+                descriptions.append(bracelet)
+                
+        # Водонепроницаемость
+        try:
+            waterproof = attributes['Водонепроницаемые'][0].value
+        except (IndexError, KeyError):
+            waterproof = None
+            
+        if waterproof is not None:
+            if waterproof == '100 м' or waterproof == '200 м':
+                descriptions.append('Водонепроницаемые')
+                
+        if len(descriptions) < 3:
+            
+            # Материал
+            try:
+                material = attributes['Материал'][0].value
+            except (IndexError, KeyError):
+                material = None
+            
+            if material is not None:
+                material = MATERIAL_MAP.get(material, None)
+                if material is not None:
+                    descriptions.append(material)
+                    
+        dimensions = self.dimensions
+        if dimensions != '':
+            descriptions.append(dimensions)
+            
+        return descriptions
+
 
     def save(self):
         
@@ -138,6 +253,9 @@ class WatchesProductMixin(models.Model):
             self.add_value(value)
         else:
             self.remove_value(value)
+        
+        # Короткое описание
+        self.summary = self.get_short_descriptions()
 
         # Бренд
         # Серия

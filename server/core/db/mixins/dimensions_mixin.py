@@ -33,22 +33,18 @@ class DimensionsMixin(models.Model):
     )
 
     @property
-    def dimensions(self):
-        dims = [('Д', fields.get('height')), ('Ш', fields.get('width')), ('Ш', fields.get('thickness'))]
-        dims = [d for d in dims if d[1]>0]
-        dims_labels = [d[0] for d in dims]
-        dims_values = [d[1] for d in dims]
-        title = 'Габариты {dimensions}'.format(
-            dimensions='x'.join(dims_labels)
-        )
-        value = '{value} {measure}'.format(
-            value=' x '.join(dims_values),
-            measure=self.dimensions_measure
-        )
-        return {
-            'title': title,
-            'value': value
-        }
+    def dimensions(self):        
+        dims = [self.height, self.width, self.thickness]
+        dims = [str(d) for d in dims if d > 0]
+        for i in range(len(dims)):
+            if dims[i].endswith('.0'):
+                dims[i] = dims[i][:-2]
+        if len(dims) == 0:
+            return ''
+        else:
+            dims = ' x '.join(dims)
+            dims = 'Габариты ' + dims
+            return dims
         
 
     @property
