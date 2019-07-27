@@ -147,70 +147,137 @@
                                 <div class="field-title">
                                     Населенный пункт
                                 </div>
-                                <div class="cart-delivery__city bordered">
-                                    <span class="city-name">
+                                <div class="cart-delivery__city bordered city-choice">
+                                    <span class="city-name" id="cart-city">
                                     {{request.user.city_name}}
                                     </span>
                                 </div>
                             </div>
                             <ul class="cart-delivery-options radio-group">
                                 <li class="radio-group-container">
+                                    {% if curier_is_available %}
                                     <input type="radio"
                                         id="radio-1" 
                                         name="delivery" 
-                                        value="courier" checked/>
+                                        value="curier"
+                                        checked
+                                    />
                                     <label for="radio-1" class="flex-column">
                                         <div class="rarefied">
                                             КУРЬЕРОМ
                                         </div>
                                         <div class="grey">
-                                            Завтра
+                                            {{time_filter(delivery_data['curier']['time_min'], delivery_data['curier']['time_max'])}}
                                         </div>
                                     </label>
+                                    {% else %}
+                                    <input type="radio"
+                                        id="radio-1" 
+                                        name="delivery" 
+                                        value="curier"
+                                        disabled
+                                    />
+                                    <label for="radio-1" class="flex-column">
+                                        <div class="rarefied">
+                                            КУРЬЕРОМ
+                                        </div>
+                                        <div class="red">
+                                            недоступно
+                                        </div>
+                                    </label>
+                                    {% endif %}
                                 </li>
+                                {% if delivery_points_is_available %}
                                 <li class="radio-group-container">
                                     <input type="radio"
                                         id="radio-2" 
                                         name="delivery" 
-                                        value="pickup"/>
+                                        value="delivery_point"/>
                                     <label for="radio-2" class="flex-column">
                                         <div class="rarefied">
-                                            САМОВЫВОЗ
+                                            ИЗ ПУНКТА ВЫДАЧИ
                                         </div>
                                         <div class="grey">
-                                            Завтра
+                                            {{time_filter(delivery_data['delivery_point']['time_min'], delivery_data['delivery_point']['time_max'])}}
                                         </div>
                                     </label>
                                 </li>
+                                {% else %}
+                                <li class="radio-group-container">
+                                    <input type="radio"
+                                        id="radio-2" 
+                                        name="delivery" 
+                                        value="delivery_point"
+                                        disabled
+                                    />
+                                    <label for="radio-2" class="flex-column">
+                                        <div class="rarefied">
+                                            ИЗ ПУНКТА ВЫДАЧИ
+                                        </div>
+                                        <div class="red">
+                                            недоступно
+                                        </div>
+                                    </label>
+                                </li>
+                                {% endif %}
+                                {% if request.user.city_name == 'Москва' %}
                                 <li class="radio-group-container">
                                     <input type="radio"
                                         id="radio-3" 
                                         name="delivery" 
-                                        value="post"/>
+                                        value="pickup"/>
                                     <label for="radio-3" class="flex-column">
                                         <div class="rarefied">
-                                            ПОЧТА
+                                            САМОВЫВОЗ
                                         </div>
                                         <div class="grey">
-                                            До 27 сентября
+                                        завтра/послезавтра
                                         </div>
                                     </label>
                                 </li>
+                                {% else %}
+                                <li class="radio-group-container">
+                                    {% if curier_is_available %}
+                                    <input type="radio"
+                                        id="radio-3" 
+                                        name="delivery" 
+                                        value="post"
+                                    />
+                                    {% else %}
+                                    <input type="radio"
+                                        id="radio-3" 
+                                        name="delivery" 
+                                        value="post"
+                                        checked
+                                    />
+                                    {% endif %}
+                                    <label for="radio-3" class="flex-column">
+                                        <div class="rarefied">
+                                            ПОЧТОЙ
+                                        </div>
+                                        <div class="grey">
+                                            от 5 до 7 дней
+                                        </div>
+                                    </label>
+                                </li>
+                                {% endif %}
                             </ul>
-                            <div class="field cart-field">
-                                <div class="field-title">
-                                    Адрес
+                            <div class="delivery-options-outlet">
+                                <div class="field cart-field">
+                                    <div class="field-title">
+                                        Адрес
+                                    </div>
+                                    <div class="field-input-box">
+                                        <input class="input" id="address">
+                                    </div>
                                 </div>
-                                <div class="field-input-box">
-                                    <input class="input">
-                                </div>
-                            </div>
-                            <div class="field cart-field">
-                                <div class="field-title">
-                                    Пожелания
-                                </div>
-                                <div class="field-input-box">
-                                    <input class="input">
+                                <div class="field cart-field">
+                                    <div class="field-title">
+                                        Пожелания
+                                    </div>
+                                    <div class="field-input-box" id="client-notes">
+                                        <input class="input">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -223,8 +290,9 @@
                                     <input type="radio"
                                         id="radio-4" 
                                         name="payment" 
-                                        value="cash" checked/>
-                                    <label for="radio-4">
+                                        value="cash"/>
+                                    <label for="radio-4"
+                                    >
                                         <i class="icon icon_pay-cash cart-payment-icon cart-payment-icon_1">
                                         </i>
                                         <span class="rarefied">
@@ -236,7 +304,7 @@
                                     <input type="radio"
                                         id="radio-5" 
                                         name="payment" 
-                                        value="card"/>
+                                        value="card_offline"/>
                                     <label for="radio-5">
                                         <i class="icon icon_pay-card cart-payment-icon cart-payment-icon_2">
                                         </i>
@@ -249,12 +317,15 @@
                                     <input type="radio"
                                         id="radio-6" 
                                         name="payment" 
-                                        value="online"/>
+                                        value="card_online"
+                                        disabled
+                                        />
                                     <label for="radio-6">
-                                        <i class="icon icon_pay-online cart-payment-icon cart-payment-icon_3">
+                                        <i class="icon icon_pay-online cart-payment-icon cart-payment-icon_3 grey">
                                         </i>
-                                        <span class="rarefied">
+                                        <span class="rarefied grey">
                                             КАРТОЙ ОНЛАЙН
+                                            <span class="grey cart-on-label">временно недоступно</span>
                                         </span>
                                     </label>
                                 </li>
@@ -267,9 +338,7 @@
                                         Товаров
                                     </div>
                                     <div class="cart-sum-cell text_right">
-                                        <span class="price" id="cart-items-total">
-                                            {{ cart.data['total_price'] }}
-                                        </span>
+                                        <span class="price" id="cart-items-total">{{ cart.data['total_price'] }}</span>
                                     </div>
                                 </li>
                                 <li class="cart-sum-item">
@@ -277,19 +346,15 @@
                                         Доставка
                                     </div>
                                     <div class="cart-sum-cell text_right">
-                                        <span class="price">
-                                            0
-                                        </span>
+                                        <span class="price" id="delivery-price-sum">{{delivery_price}}</span>
                                     </div>
                                 </li>
                                 <li class="cart-sum-item cart-sum-item_overall bold">
                                     <div class="cart-sum-cell">
                                         Итого к оплате
                                     </div>
-                                    <div class="cart-sum-cell text_right" id="cart-total">
-                                        <span class="price">
-                                            {{cart.data['total_price']}}
-                                        </span>
+                                    <div class="cart-sum-cell text_right">
+                                        <span class="price" id="cart-total">{{total_price}}</span>
                                     </div>
                                 </li>
                             </ul>
@@ -315,7 +380,32 @@
 
 {% endblock content %}
 
+{% block modals %}
+    {{super()}}
+    <div class="modal delivery-points-modal" id="pickup-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <div class="modal-close control-button">
+                    <i class="icon icon_close" id="fast-buy-close">
+                    </i>
+                </div>
+            </div>
+            <div class="ymaps-map" id="ymaps-map">
+            </div>
+        </div>
+        <div class="modal-placeholder">
+        </div>
+    </div>
+    <div class="modal" id="loader-modal">
+        <div class="loader">
+        </div>
+    </div>
+{% endblock modals %}
+
 {% block javascript %}
     {{ super() }}
+    <script type="text/javascript">
+    var PRODUCTS = "{{products}}"
+    </script>
     <script src="{{ static('js/cartPage.js') }}"></script>
 {% endblock javascript %}

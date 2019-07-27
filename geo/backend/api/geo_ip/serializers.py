@@ -10,3 +10,15 @@ class GeoIpSerializer(serializers.ModelSerializer):
         fields = ('kladr_code',
                   'kladr_name',
                   )
+
+
+class GeoIpExtendedSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = GeoIp
+        fields = (
+            'kladr_code',
+            'kladr_name',
+            'longitude',
+            'latitude'
+        )

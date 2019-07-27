@@ -11,9 +11,11 @@
 }
 
 .modal-container {
+    position: relative;
     padding: 20px;
     background: white;
     border-radius: 4px;
+    z-index: 100;
 }
 
 .modal-placeholder {

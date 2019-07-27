@@ -1,4 +1,8 @@
 import store from '@/store/index.js';
+import locationStore from '@/store/location/index.js'
+import geoApi from '@/api/geo'
+import { priceFilter, timeFilter } from '@/utils/filters.js'
+
 import FastBuy from '@/components/FastBuy.js';
 
 $(document).ready(function() {
@@ -14,6 +18,8 @@ $(document).ready(function() {
     $('#add-to-cart').click(function() {
         store.dispatch('addToCart', PRODUCT);
     })
+
+    locationStore.events.subscribe('stateChange', () => changeLocation());
 
     $('.thumb').click(function(e) {
         if ( !$(this).hasClass('thumb_active') ) {
@@ -77,6 +83,52 @@ $(document).ready(function() {
         if (offset < 0) {
             let newValue = offset + (thumbHeight + 10);
             track.css({'top': newValue});
+        }
+    }
+
+    function changeLocation() {
+        if (DELIVERY !== undefined) {
+            let city_name = locationStore.state.location.city_name;
+            let city_code = locationStore.state.location.city_code;
+            let data = {
+                'kladr': city_code,
+                'product': DELIVERY
+            };
+            geoApi.post('/api/delivery/one_product/', data).then(
+                response => {
+                    let data = response.data;
+
+                    let curierPrice = data.curier.price;
+                    let curierTimeMin = data.curier.time_min;
+                    let curierTimeMax = data.curier.time_max;
+                    let filteredPriceCurier = priceFilter(curierPrice);
+                    let filteredDateCurier = timeFilter(curierTimeMin, curierTimeMax);
+
+                    let pointsPrice = data.delivery_point.price;
+                    let pointsTimeMin = data.delivery_point.time_min;
+                    let pointsTimeMax = data.delivery_point.time_max;
+                    let filteredPricePoints = priceFilter(pointsPrice, '');
+                    let filteredDatePoints = timeFilter(pointsTimeMin, pointsTimeMax);
+
+                    $('.delivery-product').html(
+
+                        `
+                        <p class="delivery-curier">
+                        ${filteredPriceCurier} в г. ${city_name} курьером, ${filteredDateCurier}
+                        </p>
+                        <p class="delivery-points">
+                        Пункты выдачи — от ${filteredPricePoints}, ${filteredDatePoints}
+                        </p>
+                        <p class="delivery-rupost">
+                            Почтой России — <span class="price">300</span>, от 5 до 7 дней
+                        </p>
+                        `
+                    )
+                },
+                response => {
+
+                }
+            )
         }
     }
 

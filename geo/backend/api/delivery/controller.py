@@ -305,12 +305,13 @@ class DeliveryController():
         СДЕК
         """
         data = self._get_sdek_delivery_data()
-        if self.vendor not in PAID_VENDORS:
-            data['price'] = 0
-        elif data['price'] < 500:
-            data['price'] = 300
-        elif data['price'] >= 500:
-            data['price'] = roundup(data['price'] * 0.7)
+        if data is not None:
+            if self.vendor not in PAID_VENDORS:
+                data['price'] = 0
+            elif data['price'] < 500:
+                data['price'] = 300
+            elif data['price'] >= 500:
+                data['price'] = roundup(data['price'] * 0.7)
         return data
 
     def get_postal_service_data(self):

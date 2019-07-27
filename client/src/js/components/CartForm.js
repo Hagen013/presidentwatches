@@ -1,7 +1,12 @@
+import Cookies from 'js-cookie'
+
 import Inputmask from 'inputmask';
 
 import store from '@/store/'
+import locationStore from '@/store/location/index'
 import api from '@/api'
+import geoApi from '@/api/geo'
+import { priceFilter, timeFilter } from '@/utils/filters'
 
 
 function validateEmail(email) {
@@ -16,7 +21,12 @@ export default class CartForm {
         let self = this;
         let inputSelector = $('#cart-phone');
 
+        this.locationLoading = false;
+        this.coordinatesOutdated = true;
+        this.coordinates = [];
+
         store.events.subscribe('stateChange', () => self.recalculate());
+        locationStore.events.subscribe('stateChange', () => self.changeLocation());
 
         let im = new Inputmask(
             '+7 (999) 999-9999',
@@ -40,6 +50,14 @@ export default class CartForm {
             paymentType: '',
         }
 
+        this.deliveryData = {
+            points: []
+        }
+
+        this.cityName = $('#cart-city').text();
+        this.products = PRODUCTS.replace(/&#34;/g, '"');
+        this.products = JSON.parse(this.products);
+        this.getDeliveryData();
         this._bindMethods();
     }
 
@@ -54,6 +72,392 @@ export default class CartForm {
             self.submit();
         })
 
+        this._bindDeliveryOptionsChange();
+
+        let paymentOptions = $('input[type=radio][name=payment]');
+
+        paymentOptions.on('change', function() {
+            switch ($(this).val()) {
+                case 'cash':
+                    break
+                case 'card_offline':
+                    break
+                case 'card_online':
+                    break
+            }
+        })
+
+        let pickupModal = $('#pickup-modal')
+
+        pickupModal.find('.modal-placeholder').click(function() {
+            self.hideModal();
+        })
+
+        pickupModal.find('.modal-close').click(function() {
+            self.hideModal();
+        })
+
+    }
+
+    _bindDeliveryOptionsChange() {
+        console.log('hoy tsoy');
+        let self = this;
+        let deliveryOptions = $('input[type=radio][name=delivery]');
+
+        deliveryOptions.on('change', function() {
+            switch ($(this).val()) {
+                case 'curier':
+                    self.setDeliveryTypeCurier();
+                    break
+                case 'delivery_point':
+                    self.setDeliveryTypeDeliveryPoint();
+                    break
+                case 'post':
+                    self.setDeliveryTypeRupost()
+                    break
+                case 'pickup':
+                    self.setDeliveryTypePickup()
+                    break
+            }
+        })
+    }
+
+    ymapsInitialize(self) {
+        return function() {
+            
+            self.map=new ymaps.Map(self.$map.get(0), {
+                center: self.coordinates,
+                zoom: 11,
+                behaviors: ['default', 'scrollZoom'],
+                controls: ['zoomControl', 'fullscreenControl', 'searchControl']
+            });
+
+            let collection = [];
+
+            for (let i=0; i<self.deliveryData.points.sdek_points.length; i++) {
+                let point = self.deliveryData.points.sdek_points[i];
+                let marker = new ymaps.Placemark(
+                    [point.latitude, point.longitude],
+                    {
+                        hintContent: point.address,
+                        balloonContentHeader: `
+                        <h2 class="bold">Пункт выдачи СДЭК</h2><br/>
+                        `,
+                        balloonContentBody:
+                        `
+                        <span class="bold">Адрес:</span>${point.address}<br/>
+                        <span class="bold">Срок поставки:</span>${timeFilter([point.time_min, point.time_max])}<br/>
+                        <span class="bold">Стоимость:</span>${priceFilter(point.price)}<br/><br/>
+                        `,
+                        balloonContentFooter: `
+                        <button 
+                            id="js-balloone-btn"
+                            data-code="${point.code}"
+                            data-type="sdek"
+                            data-address="${point.address}"
+                            data-price="${point.price}"
+                            class="button button_accent"
+                            style="padding:0px 20px"
+                        >  
+                            ВЫБРАТЬ ПУНКТ
+                        </button>
+                    `,
+                    clusterCaption: "СДЕК",
+                    },
+                    {
+                        balloonContentLayout: self.getBalloonContentLayout(),
+                        iconColor: "#00a16d",
+                        zIndex: 10000
+                    }
+                )
+                collection.push(marker);
+            }
+
+            for (let i=0; i<self.deliveryData.points.pick_point_points.length; i++) {
+                let point = self.deliveryData.points.pick_point_points[i];
+                let marker = new ymaps.Placemark(
+                    [point.latitude, point.longitude],
+                    {
+                        hintContent: point.address,
+                        balloonContentHeader: `
+                        <h2 class="bold">Пункт выдачи PickPoint</h2><br/>
+                        `,
+                        balloonContentBody:
+                        `
+                        <span class="bold">Адрес:</span>${point.address}<br/>
+                        <span class="bold">Срок поставки:</span>${timeFilter([point.time_min, point.time_max])}<br/>
+                        <span class="bold">Стоимость:</span>${priceFilter(point.price)}<br/><br/>
+                        `,
+                        balloonContentFooter: `
+                        <button 
+                            id="js-balloone-btn"
+                            data-code="${point.code}"
+                            data-type="pickpoint"
+                            data-address="${point.address}"
+                            data-price="${point.price}"
+                            class="button button_accent"
+                            style="padding:0px 20px"
+                        >  
+                            ВЫБРАТЬ ПУНКТ
+                        </button>
+                    `,
+                    clusterCaption: "PickPoint",
+                    },
+                    {
+                        balloonContentLayout: self.getBalloonContentLayout(),
+                        iconColor: "#f68e56",
+                        zIndex: 10000
+                    }
+                )
+                collection.push(marker);
+            }
+
+            let clusterer = new ymaps.Clusterer({
+                preset: 'islands#invertedVioletClusterIcons',
+                clusterIconLayout: 'default#pieChart',
+                clusterBalloonItemContentLayout: self.getBalloonContentLayout(),
+                clusterDisableClickZoom: false
+            });
+
+            clusterer.add(collection);
+            self.map.geoObjects.add(clusterer);
+
+
+            self.hideLoader();
+            self.showModal();
+        }
+    }
+
+    getBalloonContentLayout() {
+        let self = this;
+        return ymaps.templateLayoutFactory.createClass(
+            '<div style="padding: 4px">' +
+            '<p>$[properties.balloonContentHeader]</p>' +
+            '<p>$[properties.balloonContentBody]</p>' +
+            '<p>$[properties.balloonContentFooter]</p>' +
+            '</div>',
+            {
+              build: function(){
+                this.constructor.superclass.build.call(this);
+                let btn = document.getElementById(`js-balloone-btn`)
+                btn.addEventListener("click", function () {
+                    let type = btn.getAttribute('data-type');
+                    let code = btn.getAttribute('data-code');
+                    let address = btn.getAttribute('data-address');
+                    let price = btn.getAttribute('data-price');
+                    let payload = {
+                        type: type,
+                        code: code,
+                        address: address,
+                        price: price
+                    }
+                    self.setDeliveryPoint(payload);
+                    self.map.balloon.close();
+                    self.map.container.exitFullscreen();
+                    self.hideModal();
+                });
+              }
+            });
+    }
+
+    setDeliveryPoint(payload) {
+        let type = {'sdek': 'СДЭК', 'pickpoint': 'ПикПоинт'}[payload.type];
+        let address = `Пункт ${type}, ${payload.address}`;
+        $('#delivery-point-address').text(
+            address
+        )
+    }
+
+    setDeliveryTypeCurier() {
+        $('#delivery-price-sum').text(
+            this.deliveryData.curier.price
+        )
+        $('.delivery-options-outlet').html(
+            `
+            <div class="field cart-field">
+                <div class="field-title">
+                    Адрес
+                </div>
+                <div class="field-input-box">
+                    <input class="input" id="address">
+                </div>
+            </div>
+            <div class="field cart-field">
+                <div class="field-title">
+                    Пожелания
+                </div>
+                <div class="field-input-box" id="client-notes">
+                    <input class="input">
+                </div>
+            </div>
+            `
+        )
+        this.recalculate();
+    }
+
+    setDeliveryTypePickup() {
+        $('#delivery-price-sum').text(
+            0
+        )
+        $('.delivery-options-outlet').html(
+            `
+            <div class="field cart-field">
+                <div class="field-title">
+                    Адрес магазина
+                </div>
+                <div class="field cart-field">
+                    <div class="cart-address-placeholder disabled">
+                    Торговый центр "РоллХолл" Холодильный переулок, 3, Ряд 4, Бутик 79-80 
+                    </div>
+                </div>
+            </div>
+            <div class="field cart-field">
+                <div class="field-title">
+                    Пожелания
+                </div>
+                <div class="field-input-box" id="client-notes">
+                    <input class="input">
+                </div>
+            </div>
+            `
+        )
+        this.recalculate()
+    }
+
+    setDeliveryTypeRupost() {
+        $('#delivery-price-sum').text(
+            this.deliveryData.postal_service.price
+        )
+        $('.delivery-options-outlet').html(
+            `
+            <div class="field cart-field">
+                <div class="field-title">
+                    Адрес
+                </div>
+                <div class="field-input-box">
+                    <input class="input" id="address">
+                </div>
+            </div>
+            <div class="field cart-field">
+                <div class="field-title">
+                    Пожелания
+                </div>
+                <div class="field-input-box" id="client-notes">
+                    <input class="input">
+                </div>
+            </div>
+            `
+        )
+        this.recalculate();
+    }
+
+    setDeliveryTypeDeliveryPoint() {
+        let self = this;
+        let cityName = $('#cart-city').text();
+        this.$map = $('#ymaps-map');
+
+        self.showLoader();
+        $.getScript('https://api-maps.yandex.ru/2.1/?lang=ru-RU', function() {
+            if ( (self.coordinatesOutdated) || (self.coordinates.length == 0) ) {
+                self.getCoordinates().then(() => {
+                    ymaps.ready(self.ymapsInitialize(self));
+                })
+            } else {
+                ymaps.ready(self.ymapsInitialize(self));
+            }
+        });
+
+        $('.delivery-options-outlet').html(
+            `
+            <div class="field cart-field">
+                <div class="field-title">
+                    Адрес пункта выдачи
+                </div>
+                <div class="field-input-box">
+                    <div class="cart-address-placeholder" id="delivery-point-address">
+                    Выбрать пункт выдачи
+                    </div>
+                </div>
+            </div>
+            <div class="field cart-field">
+                <div class="field-title">
+                    Пожелания
+                </div>
+                <div class="field-input-box" id="client-notes">
+                    <input class="input">
+                </div>
+            </div>
+            `
+        )
+
+        $('#delivery-point-address').click(function(){
+            self.showModal();
+        })
+    }
+
+    getDeliveryData() {
+        let self = this;
+        let kladr = Cookies.get('city_code');
+        let products = this.products;
+
+        if (store.state.cart.total_price !== undefined) {
+            products = [];
+            for (let key in store.state.cart.items) {
+                let item = store.state.cart.items[key];
+                products.push({
+                    price: item.price,
+                    purchase_price: item.price,
+                    vendor: item.brand,
+                    product_type: 'CUBE'
+                })
+            }
+        }
+
+        let data =  {
+            'kladr': kladr,
+            'products': this.products
+        }
+        geoApi.post('/api/delivery/meny_products/', data).then(
+            response => {
+                self.handleSuccessfulGeoResponse(response);
+            },
+            response => {
+                self.hanldeFailedGeoResponse(response);
+            }
+        )
+
+    }
+
+    handleSuccessfulGeoResponse(response) {
+        this.deliveryData = response.data;
+        if (this.locationLoading) {
+            this.hideLoader();
+            this.updateDeliveryOptions();
+        }
+        this.locationLoading = false;
+    }
+
+    hanldeFailedGeoResponse(response) {
+        if (this.locationLoading) {
+            this.hideLoader();
+        }
+        this.locationLoading = false;
+    }
+
+    showModal() {
+        $('#pickup-modal').css('display', 'block');
+    }
+
+    hideModal() {
+        $('#pickup-modal').css('display', 'none');
+    }
+
+    showLoader() {
+        $('#loader-modal').css('display', 'block');
+    }
+
+    hideLoader() {
+        $('#loader-modal').css('display', 'none');
     }
 
     validateOrder() {
@@ -139,9 +543,256 @@ export default class CartForm {
 
     recalculate() {
         let total = 0;
-        total += store.state.cart.data['total_price'];
-        $('#cart-items-total').html(total);
-        $('#cart-total').html(total);
+        let deliveryPrice = parseInt($('#delivery-price-sum').text());
+        let productsPrice = 0;
+
+        if (store.state.cart.data !== undefined) {
+            productsPrice = store.state.cart.data['total_price'];
+        } else {
+            productsPrice = parseInt($('#cart-items-total').text());
+        }
+
+        total += productsPrice;
+        total += deliveryPrice;
+        total = Math.floor(total);
+        $('#cart-items-total').text(productsPrice);
+        $('#cart-total').text(total);
+    }
+
+    changeLocation() {
+        this.cityName = locationStore.state.location.city_name
+        $('#cart-city').text(this.cityName);
+        this.locationLoading = true;
+        this.showLoader();
+        this.getDeliveryData();
+        this.coordinatesOutdated = true;
+    }
+
+    getCoordinates() {
+        let kladr = Cookies.get('city_code');
+        return new Promise((resolve, reject) => {
+            geoApi.get('/api/geo_ip/coordinates/', {params: {kladr_code: kladr}}).then(
+                response => {
+                    this.coordinates = [
+                        response.data.latitude,
+                        response.data.longitude
+                    ];
+                    resolve();
+                },
+                response => {
+                    reject();
+                }
+            )
+        })
+    }
+
+    updateDeliveryOptions() {
+        let self = this;
+        let deliveryOptions = $('.cart-delivery-options');
+        let deliveryOptionsTemplate = '';
+
+        if (this.cityName === 'Москва') {
+            deliveryOptionsTemplate = `
+            <li class="radio-group-container">
+                <input type="radio"
+                    id="radio-1" 
+                    name="delivery" 
+                    value="curier"
+                    checked
+                />
+                <label for="radio-1" class="flex-column">
+                    <div class="rarefied">
+                        КУРЬЕРОМ
+                    </div>
+                    <div class="grey">
+                        ${timeFilter(self.deliveryData['curier']['time_min'], self.deliveryData['curier']['time_max'])}
+                    </div>
+                </label>
+            </li>
+            <li class="radio-group-container">
+                <input type="radio"
+                    id="radio-2" 
+                    name="delivery" 
+                    value="delivery_point"/>
+                <label for="radio-2" class="flex-column">
+                    <div class="rarefied">
+                        ИЗ ПУНКТА ВЫДАЧИ
+                    </div>
+                    <div class="grey">
+                        ${timeFilter(self.deliveryData['delivery_point']['time_min'], self.deliveryData['delivery_point']['time_max'])}
+                    </div>
+                </label>
+            </li>
+            <li class="radio-group-container">
+                <input type="radio"
+                    id="radio-3" 
+                    name="delivery" 
+                    value="pickup"/>
+                <label for="radio-3" class="flex-column">
+                    <div class="rarefied">
+                        САМОВЫВОЗ
+                    </div>
+                    <div class="grey">
+                    завтра/послезавтра
+                    </div>
+                </label>
+            </li>
+            `
+        } else {
+
+            let curierIsAvailable = false;
+            let deliverPointIsAvailable = false;
+
+            // Проверка на доступность курьерской службы
+            if (this.deliveryData['curier'] !== null) {
+                curierIsAvailable = true;
+                deliveryOptionsTemplate += `
+                <li class="radio-group-container">
+                    <input type="radio"
+                        id="radio-1" 
+                        name="delivery" 
+                        value="curier"
+                        checked
+                    />
+                    <label for="radio-1" class="flex-column">
+                        <div class="rarefied">
+                            КУРЬЕРОМ
+                        </div>
+                        <div class="grey">
+                            ${timeFilter(self.deliveryData['curier']['time_min'], self.deliveryData['curier']['time_max'])}
+                        </div>
+                    </label>
+                </li>
+                `
+            } else {
+                deliveryOptionsTemplate += `
+                <li class="radio-group-container">
+                    <input type="radio"
+                        id="radio-1" 
+                        name="delivery" 
+                        value="curier"
+                        disabled
+                    />
+                    <label for="radio-1" class="flex-column">
+                        <div class="rarefied">
+                            КУРЬЕРОМ
+                        </div>
+                        <div class="red">
+                            недоступно
+                        </div>
+                    </label>
+                </li>
+                `
+            }
+
+            // Проверка на доступность точек доставки
+            if (this.deliveryData['delivery_point'] !== null) {
+                deliverPointIsAvailable = true;
+                deliveryOptionsTemplate += `
+                <li class="radio-group-container">
+                    <input type="radio"
+                        id="radio-2" 
+                        name="delivery" 
+                        value="delivery_point"
+                    />
+                    <label for="radio-2" class="flex-column">
+                        <div class="rarefied">
+                            ИЗ ПУНКТА ВЫДАЧИ
+                        </div>
+                        <div class="grey">
+                            ${timeFilter(self.deliveryData['delivery_point']['time_min'], self.deliveryData['delivery_point']['time_max'])}
+                        </div>
+                    </label>
+                </li>
+                `
+            } else {
+                deliveryOptionsTemplate += `
+                <li class="radio-group-container">
+                    <input type="radio"
+                        id="radio-2" 
+                        name="delivery" 
+                        value="delivery_point"
+                        disabled
+                    />
+                    <label for="radio-2" class="flex-column">
+                        <div class="rarefied">
+                            ИЗ ПУНКТА ВЫДАЧИ
+                        </div>
+                        <div class="red">
+                            недоступно
+                        </div>
+                    </label>
+                </li>
+                `
+            }
+
+            if (!curierIsAvailable) {
+                deliveryOptionsTemplate += `
+                <li class="radio-group-container">
+                    <input type="radio"
+                        id="radio-3" 
+                        name="delivery" 
+                        value="post"
+                        checked
+                    />
+                    <label for="radio-3" class="flex-column">
+                        <div class="rarefied">
+                            ПОЧТОЙ
+                        </div>
+                        <div class="grey">
+                            от 5 до 7 дней
+                        </div>
+                    </label>
+                </li>
+                `
+            } else {
+                deliveryOptionsTemplate += `
+                <li class="radio-group-container">
+                    <input type="radio"
+                        id="radio-3" 
+                        name="delivery" 
+                        value="post"
+                    />
+                    <label for="radio-3" class="flex-column">
+                        <div class="rarefied">
+                            ПОЧТОЙ
+                        </div>
+                        <div class="grey">
+                            от 5 до 7 дней
+                        </div>
+                    </label>
+                </li>
+                `
+            }
+
+        }
+
+        $('.delivery-options-outlet').html(
+            `
+            <div class="delivery-options-outlet">
+                <div class="field cart-field">
+                    <div class="field-title">
+                        Адрес
+                    </div>
+                    <div class="field-input-box">
+                        <input class="input" id="address">
+                    </div>
+                </div>
+                <div class="field cart-field">
+                    <div class="field-title">
+                        Пожелания
+                    </div>
+                    <div class="field-input-box" id="client-notes">
+                        <input class="input">
+                    </div>
+                </div>
+            </div>
+            `
+        )
+
+        deliveryOptions.html(deliveryOptionsTemplate);
+
+        this._bindDeliveryOptionsChange()
     }
 
 }
