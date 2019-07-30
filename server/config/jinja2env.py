@@ -144,8 +144,6 @@ def price_filter(value):
         return ''
 
 def time_filter(time_min, time_max):
-    print(time_min)
-    print(time_max)
     if time_min is not None or time_max is not None:
         if time_min != time_max:
             if time_min is None:

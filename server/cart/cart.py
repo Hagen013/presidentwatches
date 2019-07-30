@@ -152,5 +152,6 @@ class Cart():
     # Очистка корзины
     def clear(self):
         data = self.get_empty_data()
-        self.session[self.CART_SESSION_ID] = data
+        if self.CART_SESSION_ID:
+            self.session[self.CART_SESSION_ID] = data
         self.data = data

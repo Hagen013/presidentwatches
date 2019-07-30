@@ -50,27 +50,31 @@ class CartPageView(TemplateView):
         return delivery_data
 
     def get_context_data(self, *args, **kwargs):
-        context = super(CartPageView, self).get_context_data(*args, **kwargs)
         products = self.products
-        delivery_data = self.get_delivery_data(products)
-        context['delivery_data'] = delivery_data
-        context['products'] = json.dumps(products)
+        context = super(CartPageView, self).get_context_data(*args, **kwargs)
 
-        curier_is_available = False
-        if delivery_data['curier'] is not None:
-            curier_is_available = True
-            price = int(delivery_data['curier']['price'])
+        if (len(products)) == 0:
+            self.template_name = 'pages/cart.empty.html'
         else:
-            price = 0
+            delivery_data = self.get_delivery_data(products)
+            context['delivery_data'] = delivery_data
+            context['products'] = json.dumps(products)
 
-        delivery_points_is_available = False
-        if delivery_data['delivery_point'] is not None:
-            delivery_points_is_available = True
+            curier_is_available = False
+            if delivery_data['curier'] is not None:
+                curier_is_available = True
+                price = int(delivery_data['curier']['price'])
+            else:
+                price = 0
 
-        context['delivery_price'] = price
-        context['total_price'] = price + self.cart.data['total_price']
-        context['curier_is_available'] = curier_is_available
-        context['delivery_points_is_available'] = delivery_points_is_available
+            delivery_points_is_available = False
+            if delivery_data['delivery_point'] is not None:
+                delivery_points_is_available = True
+
+            context['delivery_price'] = price
+            context['total_price'] = price + self.cart.data['total_price']
+            context['curier_is_available'] = curier_is_available
+            context['delivery_points_is_available'] = delivery_points_is_available
 
         return context
 

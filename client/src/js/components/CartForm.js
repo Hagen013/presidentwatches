@@ -41,14 +41,29 @@ export default class CartForm {
                 name: '',
                 address: ''
             },
-            location: {
-
+            delivery: {
+                type: 'not_seslected',
+                price: 0,
+                pvz_code: null,
+                pvz_service: null,
+                pvz_address: null
             },
-            delivery: '',
-            address: '',
-            notes: '',
-            paymentType: '',
+            payment: {
+                type: 'not_selected'
+            },
+            client_notes: '',
+            source: 2
         }
+
+        let value = $('input[type=radio][name=delivery]:checked').val();
+        let price = parseInt($('#delivery-price-sum').text());
+
+        this.orderData.delivery.price = price;
+
+        if (value !== undefined) {
+            this.orderData.delivery.type = value;
+        }
+
 
         this.deliveryData = {
             points: []
@@ -79,10 +94,13 @@ export default class CartForm {
         paymentOptions.on('change', function() {
             switch ($(this).val()) {
                 case 'cash':
+                    self.orderData.payment.type = 'cash';
                     break
                 case 'card_offline':
+                    self.orderData.payment.type = 'card_offline';
                     break
                 case 'card_online':
+                    self.orderData.payment.type = 'card_online'
                     break
             }
         })
@@ -100,7 +118,6 @@ export default class CartForm {
     }
 
     _bindDeliveryOptionsChange() {
-        console.log('hoy tsoy');
         let self = this;
         let deliveryOptions = $('input[type=radio][name=delivery]');
 
@@ -125,6 +142,11 @@ export default class CartForm {
     ymapsInitialize(self) {
         return function() {
             
+
+            if (self.map !== undefined) {
+                self.map.destroy()
+            }
+
             self.map=new ymaps.Map(self.$map.get(0), {
                 center: self.coordinates,
                 zoom: 11,
@@ -244,7 +266,7 @@ export default class CartForm {
                     let type = btn.getAttribute('data-type');
                     let code = btn.getAttribute('data-code');
                     let address = btn.getAttribute('data-address');
-                    let price = btn.getAttribute('data-price');
+                    let price = parseInt(btn.getAttribute('data-price'));
                     let payload = {
                         type: type,
                         code: code,
@@ -263,12 +285,30 @@ export default class CartForm {
     setDeliveryPoint(payload) {
         let type = {'sdek': 'СДЭК', 'pickpoint': 'ПикПоинт'}[payload.type];
         let address = `Пункт ${type}, ${payload.address}`;
+
+        this.orderData.delivery.pvz_code = payload.code;
+        this.orderData.delivery.pvz_service = payload.type;
+        this.orderData.delivery.pvz_address = payload.address;
+        this.orderData.delivery.type = 'pvz';
+        this.orderData.delivery.price = payload.price;
+
+        $('#delivery-price-sum').text(
+            payload.price
+        )
+
         $('#delivery-point-address').text(
             address
         )
     }
 
     setDeliveryTypeCurier() {
+
+        this.orderData.delivery.pvz_code = null;
+        this.orderData.delivery.pvz_service = null;
+        this.orderData.delivery.pvz_address = null;
+        this.orderData.delivery.type = 'curier';
+        this.orderData.delivery.price = this.deliveryData.curier.price;
+
         $('#delivery-price-sum').text(
             this.deliveryData.curier.price
         )
@@ -279,7 +319,7 @@ export default class CartForm {
                     Адрес
                 </div>
                 <div class="field-input-box">
-                    <input class="input" id="address">
+                    <input class="input" id="cart-address">
                 </div>
             </div>
             <div class="field cart-field">
@@ -296,6 +336,13 @@ export default class CartForm {
     }
 
     setDeliveryTypePickup() {
+
+        this.orderData.delivery.pvz_code = null;
+        this.orderData.delivery.pvz_service = null;
+        this.orderData.delivery.pvz_address = null;
+        this.orderData.delivery.type = 'pickup';
+        this.orderData.delivery.price = 0;
+
         $('#delivery-price-sum').text(
             0
         )
@@ -325,6 +372,13 @@ export default class CartForm {
     }
 
     setDeliveryTypeRupost() {
+
+        this.orderData.delivery.pvz_code = null;
+        this.orderData.delivery.pvz_service = null;
+        this.orderData.delivery.pvz_address = null;
+        this.orderData.delivery.type = 'rupost';
+        this.orderData.delivery.price = this.deliveryData.postal_service.price;
+
         $('#delivery-price-sum').text(
             this.deliveryData.postal_service.price
         )
@@ -335,7 +389,7 @@ export default class CartForm {
                     Адрес
                 </div>
                 <div class="field-input-box">
-                    <input class="input" id="address">
+                    <input class="input" id="cart-address">
                 </div>
             </div>
             <div class="field cart-field">
@@ -356,6 +410,11 @@ export default class CartForm {
         let cityName = $('#cart-city').text();
         this.$map = $('#ymaps-map');
 
+        this.orderData.delivery.pvz_code = '';
+        this.orderData.delivery.pvz_service = '';
+        this.orderData.delivery.pvz_address = '';
+        this.orderData.delivery.type = 'pvz';
+
         self.showLoader();
         $.getScript('https://api-maps.yandex.ru/2.1/?lang=ru-RU', function() {
             if ( (self.coordinatesOutdated) || (self.coordinates.length == 0) ) {
@@ -366,6 +425,10 @@ export default class CartForm {
                 ymaps.ready(self.ymapsInitialize(self));
             }
         });
+
+        $('#delivery-price-sum').text(
+            0
+        )
 
         $('.delivery-options-outlet').html(
             `
@@ -483,6 +546,19 @@ export default class CartForm {
         } else {
             this.highlightEmailError();
         }
+
+        // Сохранение имени
+        let name = $('#cart-name').val();
+        let address = $('#cart-address').val();
+        let notes = $('#client-notes').val();
+
+        if (address == undefined) {
+            address = '';
+        }
+
+        this.orderData.customer.name = name;
+        this.orderData.customer.address = address;
+        this.orderData.client_notes = notes;
 
         if ( phoneIsValid === true ) {
             return true
@@ -775,7 +851,7 @@ export default class CartForm {
                         Адрес
                     </div>
                     <div class="field-input-box">
-                        <input class="input" id="address">
+                        <input class="input" id="cart-address">
                     </div>
                 </div>
                 <div class="field cart-field">

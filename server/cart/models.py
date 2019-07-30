@@ -177,9 +177,13 @@ class Order(TimeStampedMixin):
                     "name": {
                         "type": "string"
                     }
-                }
+                },
+                "required": ["code", "name"],
+                "additionalProperties": False
             }
-        }
+        },
+        "required": ["city",],
+        "additionalProperties": False
     }
 
     EMAIL_REGEXP = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
@@ -198,38 +202,53 @@ class Order(TimeStampedMixin):
             },
             "address": {
                 "type": "string"
-            }
+            },
         },
+        "required": ["name", "email", "phone", "address"],
+        "additionalProperties": False
     }
 
     DELIVERY_JSONSCHEMA = {
         "type": "object",
         "properties": {
-            "is_selected": {"type": "boolean"},
             "type": {
+                "type": "string",
+                "pattern": "^(not_selected|curier|pvz|rupost|pickup)$"
+            },
+            "pvz_code": {
+                "type": ["string", "null"]
+            },
+            "pvz_service": {
                 "type": ["string", "null"],
-                "pvz_code": {
-                    "type": ["string", "null"]
-                },
-                "pvz_service": {
-                    "type": ["string", "null"]
-                },
-                "price": {
-                    "type": ["integer", "null"]
-                },
-            }
-        }
+            },
+            "pvz_address": {
+                "type": ["string", "null"],
+            },
+            "price": {
+                "type": ["integer",],
+                "minimum": 0
+            },
+        },
+        "required": [
+            "type",
+            "pvz_code",
+            "pvz_service",
+            "pvz_address",
+            "price"
+        ],
+        "additionalProperties": False
     }
 
     PAYMENT_JSONSCHEMA = {
         "type": "object",
         "properties": {
-            "is_selected": {"type": "boolean"},
             "type": {
                 "type": "string",
-                "pattern": "^(cash|card_on_receipt|card)$"
-            }
-        }
+                "pattern": "^(not_selected|cash|card_offline|card_online)$"
+            },
+        },
+        "required": ["type",],
+        "additionalProperties": False
     }
 
     TRACKING_JSONSCHEMA = {
@@ -391,25 +410,16 @@ class Order(TimeStampedMixin):
         try:
             
             jsonschema_validate(self.cart, self.CART_JSONSCHEMA)
-            print('Cart is valid')
-
             jsonschema_validate(self.location, self.LOCATION_JSONSCHEMA)
-            print('Location is valid')
-
             jsonschema_validate(self.customer, self.CUSTOMER_JSONSCHEMA)
-            print('Customer is valid')
-
             jsonschema_validate(self.delivery, self.DELIVERY_JSONSCHEMA)
-            print('Delivery is valid')
-
             jsonschema_validate(self.payment, self.PAYMENT_JSONSCHEMA)
-            print('Payment is valid')
 
         except JsonSchemaValidationError as e:
-            print("JSJOSJSSOJSOSJSOSJS")
             raise ValidationError(message=e.message)
 
     def save(self, *args, **kwargs):
+
         self._order = self._get_order()
         super(Order, self).save(*args, **kwargs)
 

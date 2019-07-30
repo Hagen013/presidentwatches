@@ -1,5 +1,6 @@
 import store from '@/store/index.js';
 import locationStore from '@/store/location/index.js'
+import favoritesStore from '@/store/favorites/index.js'
 import geoApi from '@/api/geo'
 import { priceFilter, timeFilter } from '@/utils/filters.js'
 
@@ -56,6 +57,10 @@ $(document).ready(function() {
 
     $('.gallery-btn_prev').click(function() {
         prevSlide();
+    })
+    
+    $('.product-like').click(function() {
+        toggleFavorite(this);
     })
 
     let fastBuy = new FastBuy();
@@ -132,4 +137,107 @@ $(document).ready(function() {
         }
     }
 
+    function toggleFavorite(button) {
+        let $button = $(button);
+        let payload = {
+            pk: PRODUCT.pk
+        }
+
+        if ( $button.hasClass('active') ) {
+            favoritesStore.dispatch('removeFromFavorites', payload);
+        } else {
+            favoritesStore.dispatch('addToFavorites', payload);
+        }
+    }
+
+    function renderFavorites() {
+        if (PRODUCT.pk in favoritesStore.state.favorites.items) {
+            $('.product-like').addClass('active')
+        } else {
+            $('.product-like').removeClass('active')
+        }
+    }
+
+    favoritesStore.events.subscribe('stateChange', () => renderFavorites());
+
+    // Работа с мобильными вкладками
+    $('.panel-title').click(function(e) {
+        e.preventDefault();
+        let $this = $(this);
+        let $panel = $($this.parents('.panel'));
+
+        if ($this.hasClass('active')) {
+            $this.removeClass('active');
+        } else {
+            $this.addClass('active');
+        }
+
+        $panel.find('.collapse').slideToggle(300);
+    })
+
+    function scrollTo(selector) {
+        if (window.innerWidth <= 768) {
+            $('html, body').animate({ scrollTop: $(selector).offset().top-64}, 1000);
+        } else {
+            $('html, body').animate({ scrollTop: $(selector).offset().top-80}, 500);
+        }
+    }
+
+    // Быстрые скроллы
+    function transitToDescription() {
+        let $tabsNav = $('.tabs-nav');
+        let links = $tabsNav.find('.tabs-link');
+        let tabs = $('.tab-pane');
+
+        for (let i=0; i<links.length; i++) {
+            $(links[i]).removeClass('active')
+        }
+
+        for (let i=0; i<tabs.length; i++) {
+            $(tabs[i]).removeClass('active')
+        }
+
+        $('#descriptionLink').addClass('active');
+        $('#description').addClass('active');
+        scrollTo('#description');
+    }
+
+    function transitToReviews() {
+        if (window.innerWidth <= 768) {
+            let $title = $('#collapseReviewsTitle');
+            let $panel = $title.parents('.panel');
+
+            if ($title.hasClass('active')) {
+                $panel.find('.collapse').slideToggle(300);
+            } else {
+                $title.addClass('active');
+            }
+            $panel.find('.collapse').slideToggle(300);
+            scrollTo('#collapseReviewsTitle');
+        } else {
+            let $tabsNav = $('.tabs-nav');
+            let links = $tabsNav.find('.tabs-link');
+            let tabs = $('.tab-pane');
+
+            for (let i=0; i<links.length; i++) {
+                $(links[i]).removeClass('active')
+            }
+
+            for (let i=0; i<tabs.length; i++) {
+                $(tabs[i]).removeClass('active')
+            }
+
+            $('#reviewsTabLink').addClass('active');
+            $('#reviews').addClass('active');
+            scrollTo('#reviews');
+        }
+    }
+
+    $('.product-main__reviews-count').click(function() {
+        transitToReviews();
+    })
+
+    $('.product-card__show-descr').click(function() {
+        transitToDescription();
+    })
 })

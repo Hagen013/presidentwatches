@@ -124,16 +124,24 @@
                                         </div>
                                     </div>
                                     <div class="interaction-links float-left">
-                                        <a class="interaction-link">
-                                            <i class="icon icon_heart-stroke">
+                                        {% if product.id in favorites.ids %}
+                                        <a class="interaction-link product-like active">
+                                            <i class="icon icon_heart">
                                             </i>
                                             <span>В ИЗБРАННОЕ</span>
                                         </a>
-                                        <a class="interaction-link">
+                                        {% else %}
+                                        <a class="interaction-link product-like">
+                                            <i class="icon icon_heart">
+                                            </i>
+                                            <span>В ИЗБРАННОЕ</span>
+                                        </a>
+                                        {% endif %}
+                                        {#<a class="interaction-link">
                                             <i class="icon icon_share">
                                             </i>
                                             <span>ПОДЕЛИТЬСЯ</span>
-                                        </a>
+                                        </a>#}
                                     </div>
                                 </div>
                                 <a class="link link_dotted product-main__reviews-count">
@@ -205,7 +213,7 @@
                                         — {{item}}
                                     {% endfor %}
                                 </ul>
-                                <a class="link link_grey link_dotted">
+                                <a class="link link_grey link_dotted product-card__show-descr">
                                     Все характеристики
                                 </a>
                                 {% endif %}
@@ -223,11 +231,19 @@
                                         </div>
                                     </div>
                                     <div class="interaction-links float-left">
-                                        <a class="interaction-link">
-                                            <i class="icon icon_heart-stroke">
+                                        {% if product.id in favorites.ids %}
+                                        <a class="interaction-link active product-like">
+                                            <i class="icon icon_heart">
                                             </i>
                                             <span>В ИЗБРАННОЕ</span>
                                         </a>
+                                        {% else %}
+                                        <a class="interaction-link product-like">
+                                            <i class="icon icon_heart">
+                                            </i>
+                                            <span>В ИЗБРАННОЕ</span>
+                                        </a>
+                                        {% endif %}
                                         {#<a class="interaction-link">
                                             <i class="icon icon_share">
                                             </i>
@@ -247,7 +263,7 @@
                 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                     <div class="panel">
                         <div class="panel-heading" role="tab" id="headingDesc">
-                            <a class="panel-title"
+                            <a class="panel-title active"
                                     data-toggle="collapse"
                                     data-parent="#accordion"
                                     href="#collapseDesc"
@@ -263,7 +279,7 @@
                                 </i>
                             </a>
                         </div>
-                        <div id="collapseDesc" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                        <div id="collapseDesc" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" style="display: block;">
                             <div class="content-block">
                                 <h2 class="heading-2">Описание</h2>
                                 {{product.description|safe}}
@@ -298,7 +314,7 @@
                                     <a class="link link_grey" href="#">Сообщите нам</a>
                                 </div>
                             </div>
-                            <div class="content-block">
+                            {#<div class="content-block">
                                 <div class="brand-info">
                                     <div class="brand-info-heading row">
                                         <div class="brand-info-title">
@@ -320,7 +336,7 @@
                                         </p>
                                     </div>
                                 </div>
-                            </div>
+                            </div>#}
                         </div>
                     </div>
                     <div class="panel">
@@ -339,6 +355,46 @@
                             </a>
                         </div>
                         <div id="collapseDelivery" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                            <div class="description-block">
+                                <div class="title bold">
+                                Наличие
+                                </div>
+                                <div>
+                                    <p>
+                                    {% if product.is_in_stock %}
+                                    В наличии в интернет-магазине
+                                    {% else %}
+                                    Нет в наличии в интернет-магазине
+                                    {% endif %}
+                                    </p>
+                                    <p>
+                                    {% if product.is_in_store %}
+                                    В наличии в магазине на Тульской
+                                    {% else %}
+                                    Нет в наличии в магазине на Тульской
+                                    {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="description-block">
+                                <div class="title bold">
+                                Доставка
+                                </div>
+                                <div>
+                                    <div class="product-main__info-block-text delivery-product">
+                                        <p class="delivery-curier">
+                                            {{price_filter(delivery_data['curier']['price'])|safe}}
+                                            в г. {{request.user.city_name}} курьером, {{time_filter(delivery_data['curier']['time_min'], delivery_data['curier']['time_max'])}}
+                                        </p>
+                                        <p class="delivery-points">
+                                            Пункты выдачи — от <span class="price">{{delivery_data['delivery_point']['price']}}</span>, {{time_filter(delivery_data['delivery_point']['time_min'], delivery_data['delivery_point']['time_max'])}}
+                                        </p>
+                                        <p class="delivery-rupost">
+                                            Почтой России — <span class="price">{{delivery_data['postal_service']['price']}}</span>, от 5 до 7 дней
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="panel">
@@ -350,13 +406,28 @@
                             >
                                 <span
                                 >
-                                    Видеобзоры
+                                    Видеобзоры {{videos|length}}
                                 </span>
                                 <i class="icon collapse-icon">
                                 </i>
                             </a>
                         </div>
                         <div class="panel-collapse collapse">
+                            <div class="row">
+                                {% for video in videos %}
+                                <div class="col col-12 d-col-6">
+                                    <div class="video">
+                                        <iframe type="text/html"
+                                            width="100%"
+                                            height="100%"
+                                            src="https://www.youtube.com/embed/{{video.slug}}?autohide=1&amp;modestbranding=1&amp;rel=0&amp;showinfo=0"
+                                            frameborder="0"
+                                            allowfullscreen="">
+                                        </iframe>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                     <div class="panel">
@@ -365,16 +436,58 @@
                                 data-toggle="collapse"
                                 data-parent="#accordion"
                                 href="#collapseReviews"
+                                id="collapseReviewsTitle"
                             >
                                 <span
                                 >
-                                    Отзывы
+                                    Отзывы {{reviews|length}}
                                 </span>
                                 <i class="icon collapse-icon">
                                 </i>
                             </a>
                         </div>
                         <div class="panel-collapse collapse">
+                            <div class="rating-summary">
+                                <div class="row">
+                                    <div class="rating__stars">
+                                        {{ratings_stars_float(product.rating)|safe}}
+                                    </div>
+                                    <div class="rating__overall">
+                                        {{product.rating}} из 5 звёзд
+                                    </div>
+                                </div>
+                                <div class="rating-panel">
+                                    {% for item in rating_overall %}
+                                    <div class="rating-row row">
+                                        <div class="rating-bar">
+                                            <div class="rating-bar-progress"
+                                                style="width:{{item['percentage']}}%"
+                                            >
+                                            </div>
+                                        </div>
+                                        <div class="rating-percentage">
+                                            {{item['percentage']}}%
+                                        </div>
+                                        <div class="rating-label grey">
+                                            {{item['rating']}} {{normalize_noun_feminine(item['rating'], 'звезд')}}
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% for review in reviews %}
+                            <div class="review">
+                                <div class="review-rating stars">
+                                {{rating_stars(review.rating)|safe}}
+                                </div>
+                                <div class="review-text">
+                                    {{review.text}}
+                                </div>
+                                <div class="review-author">
+                                    {{review.signature}}
+                                </div>
+                            </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
@@ -385,7 +498,7 @@
                     <div class="tabs">
                         <ul class="tabs-nav" href="#product-nav">
                             <li class="tabs-nav-item">
-                                <a class="tabs-link active" href="#description">
+                                <a class="tabs-link active" href="#description" id="descriptionLink">
                                     Описание и характеристики
                                 </a>
                             </li>
@@ -400,7 +513,7 @@
                                 </a>
                             </li>
                             <li class="tabs-nav-item">
-                                <a class="tabs-link" href="#reviews">
+                                <a class="tabs-link" href="#reviews" id="reviewsTabLink">
                                     Отзывы {{reviews|length}}
                                 </a>
                             </li>
@@ -449,15 +562,50 @@
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="delivery">
-                                    <div class="tab-pane-title bold">
-                                    Наличие
+                                    <div class="description-block">
+                                        <div class="title bold">
+                                        Наличие
+                                        </div>
+                                        <div>
+                                            <p>
+                                            {% if product.is_in_stock %}
+                                            В наличии в интернет-магазине
+                                            {% else %}
+                                            Нет в наличии в интернет-магазине
+                                            {% endif %}
+                                            </p>
+                                            <p>
+                                            {% if product.is_in_store %}
+                                            В наличии в магазине на Тульской
+                                            {% else %}
+                                            Нет в наличии в магазине на Тульской
+                                            {% endif %}
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div class="tab-pane-title bold">
-                                    Доставка
+                                    <div class="description-block">
+                                        <div class="title bold">
+                                        Доставка
+                                        </div>
+                                        <div>
+                                            <div class="product-main__info-block-text delivery-product">
+                                                <p class="delivery-curier">
+                                                    {{price_filter(delivery_data['curier']['price'])|safe}}
+                                                    в г. {{request.user.city_name}} курьером, {{time_filter(delivery_data['curier']['time_min'], delivery_data['curier']['time_max'])}}
+                                                </p>
+                                                <p class="delivery-points">
+                                                    Пункты выдачи — от <span class="price">{{delivery_data['delivery_point']['price']}}</span>, {{time_filter(delivery_data['delivery_point']['time_min'], delivery_data['delivery_point']['time_max'])}}
+                                                </p>
+                                                <p class="delivery-rupost">
+                                                    Почтой России — <span class="price">{{delivery_data['postal_service']['price']}}</span>, от 5 до 7 дней
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="tab-pane card-videos" id="videos">
                                     <div class="tab-pane-title bold">
+                                    Видеобзоры
                                     </div>
                                     <div class="videos row">
                                     {% for video in videos %}
@@ -577,8 +725,6 @@
 
 {% block javascript %}
     {{ super() }}
-    <script src="{{ static('js/jquery.fancybox.min.js') }}"></script>
-    <script src="{{ static('js/productPage.js') }}"></script>
     <script type="text/javascript">
         var PRODUCT = {
             pk: '{{product.id}}',
@@ -592,4 +738,6 @@
             'vendor': '{{product.brand}}'
         };
     </script>
+    <script src="{{ static('js/jquery.fancybox.min.js') }}"></script>
+    <script src="{{ static('js/productPage.js') }}"></script>
 {% endblock javascript %}

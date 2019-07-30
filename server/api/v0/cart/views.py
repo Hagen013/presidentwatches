@@ -85,89 +85,79 @@ class FastBuyApiView(BaseCartAPIView):
     def post(self, request, pk):
         
         product = request.data['product']
-        user = request.user if request.user.is_authenticated else None
 
         cart = Cart()
         cart.add_offer(product['pk'])
 
-        order = Order(
-            cart=cart.data,
-            user=user
-        )
+        data = {
+            'customer': {
+                'email': '',
+                'phone': request.data.get('phone'),
+                'name': '',
+                'address': ''
+            },
+            'delivery': {
+                'type': 'not_selected',
+                'price': 0,
+                'pvz_code': 'None',
+                'pvz_service': 'None',
+                'pvz_address': ''
+            },
+            'payment': {
+                'type': 'not_selected',
+            },
+            'client_notes': '',
+            'source': 3
+        }
 
-        public_id = Order._generate_public_id()
-        order.public_id = public_id
-        order.uuid = Order._generate_uuid()
+        serializer = OrderCreateSerializer(data, request, cart=cart)
 
         try:
-            order.full_clean()
+            serializer.validate()
         except ValidationError as e:
-            print(e.messages)
-            return Response(status=400, data=e.messages)
-        order.save()
+            return Response(
+                status=status.HTTP_400_BAD_REQUEST,
+                data=e.messages
+            )
+
+
+        instance = serializer.save()
+        public_id = Order._generate_public_id()
+        instance.public_id = public_id
+        instance.uuid = Order._generate_uuid()
 
         data = {
-            'cart': order.cart,
-            'uuid': order.uuid,
-            'public_id': order.public_id
+            'cart': instance.cart,
+            'uuid': instance.uuid,
+            'public_id': instance.public_id
         }
         return Response(data)
 
 
 class CreateOrderAPIView(BaseCartAPIView):
 
+    serializer_class = OrderCreateSerializer
+    model_classs = Order
+
     def post(self, request):
 
-        serializer = OrderCreateSerializer(request.data, request)
-
-        customer = request.data.get('customer')
-        cart = self.cart.data
-
-        user = request.user if request.user.is_authenticated else None
-
-        order = Order(
-            cart=cart,
-            user=user,
-            customer=customer
+        serializer = self.serializer_class(
+            request.data,
+            request
         )
-        public_id = Order._generate_public_id()
-        order.public_id = public_id
-        order.uuid = Order._generate_uuid()
 
         try:
-            order.full_clean()
+            serializer.validate()
         except ValidationError as e:
-            print(e.messages)
-            return Response(status=400, data=e.messages)
-
-        self.cart.clear()
-        order.save()
-
+            return Response(
+                status=status.HTTP_400_BAD_REQUEST,
+                data=e.messages
+            )
+    
+        instance = serializer.save()
         data = {
-            'cart': order.cart,
-            'uuid': order.uuid,
-            'public_id': order.public_id
+            'cart': instance.cart,
+            'uuid': instance.uuid,
+            'public_id': instance.public_id
         }
         return Response(data)
-
-
-    # def post(self, request):
-
-    #     serializer = OrderCreateSerializer(request.data, request)
-    #     try:
-    #         serializer.validate()
-    #     except ValidationError as e:
-    #         print(e.messages)
-    #         return Response(
-    #             status=status.HTTP_400_BAD_REQUEST,
-    #             data=e.messages
-    #         )
-        
-    #     instance = serializer.save()
-        
-    #     data = {
-    #         'cart': instance.cart,
-    #         'uuid': instance.uuid,
-    #         'public_id': instance.public_id
-    #     }
-    #     return Response(data)

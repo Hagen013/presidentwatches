@@ -522,6 +522,8 @@
     margin-right: 3px;
     letter-spacing: 1px;
     line-height: 24px;
+    cursor: pointer;
+    user-select: none;
     .icon {
         position: absolute;
         top: 0px;
@@ -549,7 +551,6 @@
         display: block;
     }
 }
-
 
 .page-overlay {
     position: fixed;
@@ -613,6 +614,7 @@
     align-items: center;
     height: 20px;
     width: 20px;
+    transition: .3s;
     &:before {
         content: $icon-chevron-down;
     }

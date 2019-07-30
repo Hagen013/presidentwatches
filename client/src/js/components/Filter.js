@@ -15,7 +15,11 @@ export default class filter extends Component {
             store,
             element: element
         });
-        this.selectionFunction = selectionFunction;
+        if ( (selectionFunction === null) || (selectionFunction === undefined) ) {
+            this.selectionFunction = this.getRedirectionCounts;
+        } else {
+            this.selectionFunction = selectionFunction;
+        }
     }
 
     initialize() {
@@ -24,12 +28,7 @@ export default class filter extends Component {
         this.$element = $(this.element);
         this.initialized = false;
 
-        if (this.selectionFunction === undefined) {
-            this.selectionFunction = this.getRedirectionCounts;
-        }
-
         if (store.state.facetes.active[this.key] !== undefined) {
-            console.log(this.key)
             let count = this.$element.find('.round-count');
             count.text(store.state.facetes.active[this.key].length)
             count.css('display', 'inline-block');
@@ -119,6 +118,7 @@ export default class filter extends Component {
     }
 
     render() {
+
         let self = this;
         let valuesList = this.element.querySelector('.filter-values-list');
         let isScrollable = this.values.length > 8;

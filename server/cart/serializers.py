@@ -6,10 +6,13 @@ from cart.models import Order
 
 class OrderCreateSerializer():
     
-    def __init__(self, data, request):
+    def __init__(self, data, request, cart=None):
         
         self._user = self.get_user(request)
-        self._cart = self.get_cart(request)
+        if cart is None:
+            self._cart = self.get_cart(request)
+        else:
+            self._cart = cart
         self._location = self.get_location(request)
         self._customer = self.get_customer_data(data)
         self._delivery = self.get_delivery_data(data)
@@ -21,7 +24,7 @@ class OrderCreateSerializer():
         self._source = self.get_source(data)
         
         self._instance = Order(
-            cart=self._cart,
+            cart=self._cart.data,
             user=self._user,
             location=self._location,
             customer=self._customer,
@@ -38,7 +41,12 @@ class OrderCreateSerializer():
         return Cart(request)
     
     def get_location(self, request):
-        return request.location
+        return {
+            'city': {
+                'name': request.location['name'],
+                'code': request.location['code']
+            }
+        }
     
     def get_customer_data(self, data):
         return data.get('customer')
@@ -54,7 +62,7 @@ class OrderCreateSerializer():
         return data.get('payment')
     
     def get_cpa_data(self, data):
-        return data.get('cpa')
+        return data.get('cpa', {})
     
     def get_store_data(self):
         return {}
@@ -66,6 +74,9 @@ class OrderCreateSerializer():
         return data.get('source')
     
     def validate(self):
+        import pickle
+        with open('order.pickle', 'wb') as fp:
+            pickle.dump(self, fp)
         self._instance.full_clean()
     
     @property
@@ -73,6 +84,7 @@ class OrderCreateSerializer():
         pass
     
     def save(self):
+        self._cart.clear()
         self._instance.save()
         return self._instance
 

@@ -61,4 +61,5 @@ class OrderViewSet(ModelViewSet):
     )
     ordering_fields = (
         '_order',
+        'id'
     )

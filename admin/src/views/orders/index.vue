@@ -124,7 +124,7 @@
                             <div>{{order.delivery.price|priceFilter}} ₽</div>
                             <div>{{order.delivery.type|deliveryFilter}}</div>
                             <div v-if="order.delivery.type=='pvz'">
-                                {{order.delivery.pvz.service|serviceFilter}}
+                                {{order.delivery.pvz_service|serviceFilter}}
                             </div>
                         </div>
                     </td>
@@ -266,7 +266,7 @@ export default {
         },
         queryParams() {
             let params = {
-                'ordering': '_order'
+                'ordering': '_order,-id'
             };
             for (let key in this.filters) {
                 let value = this.filters[key];
@@ -376,8 +376,10 @@ export default {
         serviceFilter(service) {
             if (service === 'sdek') {
                 return 'СДЭК'
-            } else {
+            } else if (service == 'PickPoint') {
                 return 'PickPoint'
+            } else {
+                return 'не указано'
             }
         },
         priceFilter(num) {

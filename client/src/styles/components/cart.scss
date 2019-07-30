@@ -492,3 +492,15 @@
     display: block;
     letter-spacing: 0px;
 }
+
+.cart-placeholder {
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: $dark-grey;
+    text-align: center;
+    padding: 120px 0px;
+    @include mq($from: tablet) {
+        font-size: 48px;
+    }
+}
