@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="mobile-page" id="last-seen-mobile">
+        <div class="content-area content-area_block">
+            <div class="sidebar-pane-heading">
+                <div class="heading-2 bold">
+                    Вы смотрели
+                </div>
+                <span class="sidebar-pane-count">
+                </span>
+            </div>
+            <ul class="sidebar-list">
+            {% if last_seen(request)|length == 0 %}
+            {% else %}
+                {% for item in last_seen(request) %}
+                <div class="card-mini card-mini_sidebar"
+                >
+                    <div class="card-mini__img-wrap">
+                        <a class="link-wrap" href="/watches/{{item['slug']}}/">
+                            <img class="card-mini__img" src="{{item['image']}}">
+                        </a>
+                    </div>
+                    <div class="card-mini__content">
+                        <a class="link-wrap" href="/watches/{{item['slug']}}/">
+                            <div class="card-mini__brand">
+                                {{item['brand']}}
+                            </div>
+                            <div class="card-mini__series">
+                                G-Shock
+                            </div>
+                            <div class="card-mini__model">
+                                {{item['model']}}
+                            </div>
+                        </a>
+                        <div class="card-mini-buy fab fab-mini fab_accent" data-pk="{{ item['pk'] }}">
+                            <i class="icon icon_cart">
+                            </i>
+                        </div>
+                        <div class="card-mini__price">
+                            <span class="price">{{item['price']}}</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% endif %}
+            </ul>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block subscribes %}
+{% endblock subscribes %}
+
+{% block javascript %}
+    {{ super() }}
+    <script src="{{ static('js/lastseenPage.js') }}"></script>
+{% endblock javascript %}

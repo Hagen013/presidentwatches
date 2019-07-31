@@ -167,18 +167,25 @@
                         <span class="rarefied">ВОЙТИ</span>
                     </div>
                     <div class="mobile-header__controls">
-                        <div class="control-button">
+                        <a class="control-button"
+                            href="/cart/last-seen/"
+                        >
                             <i class="icon icon_eye">
                             </i>
-                        </div>
-                        <div class="control-button">
+                        </a>
+                        <a class="control-button"
+                            href="/cart/favorites/"
+                        >
                             <i class="icon icon_heart-stroke">
                             </i>
-                        </div>
-                        <div class="control-button">
+                        </a>
+                        <a class="control-button" href="/cart/">
                             <i class="icon icon_cart">
                             </i>
-                        </div>
+                            <div class="cart-count">
+                            {{ cart.data['total_quantity'] }}
+                            </div>
+                        </a>
                     </div>
                 </div>
             </div>

@@ -48,9 +48,9 @@
                     </div>
                     <div class="col col-6">
                         <div class="button button_grey mobile-catalog-button drawer-btn"
+                            id="drawer-sorting-link"
                             href="#drawer-sorting"
                         >
-                            По популярности
                         </div>
                     </div>
                 </div>
@@ -398,27 +398,41 @@
                 Сортировать...
                 </div>
                 <ul class="sorting-list">
-                    <li class="sorting-list-item">
+                    <li class="sorting-list-item"
+                        data-option="-price"
+                    >
                         <span>
                         по цене
                         </span>
+                        <i class="icon icon_arrow-down">
+                        </i>
                     </li>
-                    <li class="sorting-list-item">
+                    <li class="sorting-list-item"
+                        data-option="price"
+                    >
                         <span>
                         по цене
                         </span>
+                        <i class="icon icon_arrow-up">
+                        </i>
                     </li>
-                    <li class="sorting-list-item">
+                    <li class="sorting-list-item active"
+                        data-option="scoring"
+                    >
                         <span>
-                        поп популярности
+                        по популярности
                         </span>
                     </li>
-                    <li class="sorting-list-item">
+                    <li class="sorting-list-item"
+                        data-option="created_at"
+                    >
                         <span>
                         по новинкам
                         </span>
                     </li>
-                    <li class="sorting-list-item">
+                    <li class="sorting-list-item"
+                        data-option="sale_percentage"
+                    >
                         <span>
                         по скидкам
                         </span>

@@ -149,18 +149,22 @@
                         <div class="card-mini card-mini_sidebar"
                         >
                             <div class="card-mini__img-wrap">
-                                <img class="card-mini__img" src="{{item['image']}}">
+                                <a class="link-wrap" href="/watches/{{item['slug']}}/">
+                                    <img class="card-mini__img" src="{{item['image']}}">
+                                </a>
                             </div>
                             <div class="card-mini__content">
-                                <div class="card-mini__brand">
-                                    {{item['brand']}}
-                                </div>
-                                <div class="card-mini__series">
-                                    G-Shock
-                                </div>
-                                <div class="card-mini__model">
-                                    {{item['model']}}
-                                </div>
+                                <a class="link-wrap" href="/watches/{{item['slug']}}/">
+                                    <div class="card-mini__brand">
+                                        {{item['brand']}}
+                                    </div>
+                                    <div class="card-mini__series">
+                                        G-Shock
+                                    </div>
+                                    <div class="card-mini__model">
+                                        {{item['model']}}
+                                    </div>
+                                </a>
                                 <div class="card-mini-buy fab fab-mini fab_accent" data-pk="{{ item['pk'] }}">
                                     <i class="icon icon_cart">
                                     </i>

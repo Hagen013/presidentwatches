@@ -7,9 +7,11 @@ import priceSlider from '@/components/priceSlider.js'
 
 import getRedirectionUrl from '@/utils/getRedirectionUrl'
 import removeQueryParameter from '@/utils/removeQueryParameter'
-
+import getParameterByName from '@/utils/getParameterByName'
+import updateQueryString from '@/utils/updateQueryString.js';
 
 $(document).ready(function() {
+
     let tags = TAGS.replace(/&#34;/g, '"');
     let coreValues = CORE_VALUES.replace(/&#34;/g, '"');
     tags = JSON.parse(tags);
@@ -57,7 +59,61 @@ $(document).ready(function() {
             })
     }
 
+    function getOptionName(option) {
+        console.log(option)
+        let sortingText = 'По популярности';
+        switch (option) {
+            case 'price':
+                sortingText = 'По цене <i class="icon icon_arrow-up"></i>'
+                break
+            case '-price':
+                sortingText = 'По цене <i class="icon icon_arrow-down"></i>'
+                break
+            case 'scoring':
+                sortingText = 'По популярности'
+                break
+            case 'created_at':
+                sortingText = 'По новизне'
+                break
+            case 'sale_percentage':
+                sortingText = 'По скидкам'
+                break
+        }
+        return sortingText
+    }
+
     function createMobileFilters() {
+        // Сортировочка
+        let sortingOption = getParameterByName('sort_by');
+        let sortingText = 'По популярности';
+        if (sortingOption === null) {
+            sortingOption = 'scoring'
+        } else {
+            sortingText = getOptionName(sortingOption);
+        }
+        $('#drawer-sorting-link').html(sortingText);
+        let sortingOptions = $('.sorting-list-item');
+        for (let i=0; i<sortingOptions.length; i++) {
+            let $currentOption = $(sortingOptions[i]);
+            let data = $currentOption.attr('data-option');
+            if (data === sortingOption) {
+                $currentOption.addClass('active');
+            } else {
+                $currentOption.removeClass('active');
+            }
+        }
+
+        $('.sorting-list-item').click(function() {
+            let data = this.getAttribute('data-option');
+            let newSortingtext = getOptionName(data);
+            $('#drawer-sorting-link').html(sortingText);
+            let currentQuery = location.search;
+            currentQuery = updateQueryString(currentQuery, 'sort_by', data);
+            currentQuery = removeQueryParameter(currentQuery, 'page');
+            document.location.search = currentQuery;
+        })
+
+        // Фильтры
         dublicateDesktopFilters();
         let mobileFilters = $('.drawer-filters-list').find('.filter');
         for (let i=0; i<mobileFilters.length; i++) {

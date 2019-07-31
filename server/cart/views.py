@@ -100,3 +100,13 @@ class CartOrderAfterCheckView(TemplateView):
         context = super(CartOrderAfterCheckView, self).get_context_data(*args, **kwargs)
         context['order'] = self.order
         return context
+
+
+class FavoritesView(TemplateView):
+
+    template_name = 'pages/favorites.html'
+
+
+class LastSeenView(TemplateView):
+
+    template_name = 'pages/last-seen.html'

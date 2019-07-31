@@ -98,13 +98,19 @@
 }
 
 .control-button {
+    height: 40px;
+    width: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
     user-select: none;
     cursor: pointer;
     text-decoration: none;
-    padding: 2px;
+    text-align: center;
+    line-height: 40px;
+    .icon {
+        display: inline-block;
+    }
 }
 
 .control-button__text {
@@ -116,6 +122,13 @@
 }
 
 .control-button_tablet {
+    position: relative;
+    .cart-count {
+        position: absolute;
+        top: 4px;
+        right: 3px;
+        line-height: normal;
+    }
     @include mq($from: desktop) {
         display: none;
     }
@@ -618,4 +631,10 @@
     &:before {
         content: $icon-chevron-down;
     }
+}
+
+
+.mobile-page {
+    padding: 20px 0px;
+    border-top: 1px solid $light-grey;
 }

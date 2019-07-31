@@ -68,14 +68,21 @@
 .mobile-header__controls {
     display: flex;
     padding: 0px 20px;
+    align-items: center;
     .control-button {
-        margin-right: 20px;
+        position: relative;
         &:last-of-type {
             margin-right: 0px;
         }
     }
     .icon {
-        font-size: 15px;
+        font-size: 16px;
+    }
+    .cart-count {
+        position: absolute;
+        top: 4px;
+        right: 3px;
+        line-height: normal;
     }
 }
 
