@@ -1,0 +1,69 @@
+.offline-shop {
+    padding-bottom: 60px;
+    font-size: 14px;
+    p {
+        margin-top: 5px;
+        line-height: 1.5;
+        margin-bottom: 10px;
+    }
+    .subtitle {
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+    .left {
+        @include mq($until: desktop) {
+            padding-right: 0px;
+        }
+    }
+    .right {
+        min-height: 556px;
+    }
+}
+
+.offline-shop-title {
+    margin-bottom: 20px;
+}
+
+.offline-shop-map-1 {
+    height: 460px;
+    width: 100%;
+}
+
+.offline-shop-map-2 {
+    height: 400px;
+    width: 100%;
+}
+
+.offline-shop-pane {
+    width: 100%;
+}
+
+.offline-shop-interactions {
+    margin-top: 20px;
+    margin-bottom: 40px;
+    .button {
+        width: 100%;
+    }
+    @include mq($from: tablet) {
+        .button {
+            width: auto;
+        }
+    }
+}
+
+.offline-shop-img {
+    width: 100%;
+    img {
+        width: 100%;
+        height: auto;
+    }
+}
+
+.offline-shop-card {
+    font-size: 12px;
+    margin-bottom: 20px;
+    text-align: justify;
+    @include mq($from: wide) {
+        font-size: 13px;
+    }
+}

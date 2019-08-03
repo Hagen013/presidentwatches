@@ -16,15 +16,10 @@
 
 {% block content %}
     <div class="content-area content-area_block">
-        <div class="breadcrumbs-area">
-            <div class="breadcrumbs breadcrumb_tablet">
-                <a class="breadcrumbs__item breadcrumbs_first" href="#">
-                Главная
-                </a>
-                <span class="breadcrumbs__delimeter">
-                /
-                </span>
-            </div>
+        <div class="title-area">
+            {% with view='shop:category', breadcrumbs=category.truncated_breadcrumbs[:4] %}
+                {% include 'blocks/breadcrumbs.html' %}
+            {% endwith %}
         </div>
     </div>
 
@@ -311,7 +306,7 @@
                                 </div>
                                 <div class="grey-block">
                                     Нашли ошибку в описании или характеристиках? 
-                                    <a class="link link_grey" href="#">Сообщите нам</a>
+                                    <a class="link link_grey" href="tel:88002007456">Сообщите нам</a>
                                 </div>
                             </div>
                             {#<div class="content-block">
@@ -557,7 +552,7 @@
                                         </div>
                                         <div class="grey-block">
                                             Нашли ошибку в описании или характеристиках? 
-                                            <a class="link link_grey" href="#">Сообщите нам</a>
+                                            <a class="link link_grey" href="tel:88002007456">Сообщите нам</a>
                                         </div>
                                     </div>
                                 </div>

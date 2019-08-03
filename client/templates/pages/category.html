@@ -24,7 +24,7 @@
 {% block content %}
     <div class="title-area">
         <div class="content-area content-area_block">
-            {% with view='shop:category', brea5dcrumbs=category.truncated_breadcrumbs %}
+            {% with view='shop:category', breadcrumbs=category.truncated_breadcrumbs %}
                 {% include 'blocks/breadcrumbs.html' %}
             {% endwith %}
             <h1 class="title title_catalog">
@@ -50,8 +50,7 @@
                         <div class="button button_grey mobile-catalog-button drawer-btn"
                             id="drawer-sorting-link"
                             href="#drawer-sorting"
-                        >
-                        </div>
+                        ></div>
                     </div>
                 </div>
             </div>
@@ -257,11 +256,23 @@
                             <a href="/watches/{{ product.slug }}/">
                                 <div class="product-card__img-wrap">
                                     <img class="product-card__img" src="{{ product.thumbnail.url }}">
-                                    {% if product.sale_percentage > 0 %}
-                                        <div class="product-card__sale-percentage">
-                                        - {{product.sale_percentage}} %
-                                        </div>
-                                    {% endif %}
+                                    <div class="product-card__ribbons row">
+                                        {% if product.sale_percentage > 0 %}
+                                            <div class="ribbon product-card__sale-percentage">
+                                            - {{product.sale_percentage}} %
+                                            </div>
+                                        {% endif %}
+                                        {% if product.is_bestseller %}
+                                            <div class="ribbon product-card-bestseller">
+                                            ХИТ
+                                            </div>
+                                        {% endif %}
+                                        {% if product.is_new %}
+                                            <div class="ribbon product-card-new">
+                                            Новинка
+                                            </div>
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </a>
                             <div class="product-card__data">
@@ -316,9 +327,9 @@
 
                 {% if is_paginated %}
                 <div class="pagination catalog__pagination">
-                    <div class="pagination__load-mobile button button_big button_filled show-mb">
+                    {#<div class="pagination__load-mobile button button_big button_filled show-mb">
                         ПОКАЗАТЬ ЕЩЁ
-                    </div>
+                    </div>#}
                     <div class="pagination__pages-wrap">
                         <div class="pagination__pages row">
                             {% for page in page_obj.page_range %}

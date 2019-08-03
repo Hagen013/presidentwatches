@@ -22,7 +22,8 @@ module.exports = (env, argv) => {
             cartPage: './cartPage.js',
             profilePage: './profilePage.js',
             favoritesPage: './favoritesPage.js',
-            lastseenPage: './lastseenPage.js'
+            lastseenPage: './lastseenPage.js',
+            shopsPage: './shopsPage.js'
         },
         output: {
             path: path.resolve(__dirname, './dist/js'),

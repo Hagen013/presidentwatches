@@ -1,7 +1,12 @@
 {% extends "base.html" %}
 
+{% block css %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ static('css/jquery.fancybox.min.css') }}" />
+{% endblock css %}
+
 {% block content %}
-<div class="title-area">
+<div class="title-area title-area_short">
     <div class="content-area content-area_block">
         <div class="breadcrumbs">
             <a class="breadcrumbs__item breadcrumbs_first" href="/">
@@ -16,14 +21,273 @@
 
 <div class="offline-shop">
     <div class="content-area content-area_block">
-        <div class="offline-shop-left">
-            <div class="offline-shop-title">
+
+        <div class="row">
+            <div class="col col-12 d-col-5 left">
+                <h1 class="title offline-shop-title">
+                Магазин часов «ПрезидентВотчес»<br>
+                в ТЦ «Ролл Холл», метро Тульская
+                </h1>
+                <p>
+                Метро: Тульская
+                </p>
+                <p>
+                Адрес: ТЦ «РоллХолл», Холодильный переулок, 3, Ряд 4, Бутик 79-80
+                </p>
+                <p>
+                Телефон: +7 968 364-68-11
+                </p>
+                <p>
+                Время работы:  с 10:00 до 21:00
+                </p>
+                
+                <div class="offline-shop-interactions">
+                    <a class="button button_big button_accent" href="/shop/watches/?is_in_store=True">
+                    АССОРТИМЕНТ МАГАЗИНА
+                    </a>
+                </div>
 
             </div>
+
+            <div class="col col-12 d-col-7 hide-mb right">
+
+                    <div class="tabs">
+                        <ul class="tabs-nav" href="#product-nav">
+                            <li class="tabs-nav-item">
+                                <a class="tabs-link tabs-link-mini active" href="#map">
+                                    КАРТА
+                                </a>
+                            </li>
+                            <li class="tabs-nav-item">
+                                <a class="tabs-link tabs-link-mini" href="#photos">
+                                    ФОТО 3
+                                </a>
+                            </li>
+                            <li class="tabs-nav-item">
+                                <a class="tabs-link tabs-link-mini" href="#way">
+                                    КАК ДОБРАТЬСЯ 6
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="tabs-outlet" id="product-nav">
+                        <div class="tab-pane active offline-shop-pane" id="map">
+                            <div class="offline-shop-map-1">
+                                <script type="text/javascript" charset="utf-8" src="//api-maps.yandex.ru/services/constructor/1.0/js/?sid=7YlsIOP3WqnP7M2_K3Y1-w8n3MaHJbo_&width=100%&height=100%">
+                                </script>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="photos">
+                            <div class="row">
+                                <div class="col col-4">
+                                    <a class="offline-shop-img"
+                                        href="{{ static('img/offline-shop/1.jpg') }}"
+                                        data-fancybox="gallery"
+                                    >
+                                        <img src="{{ static('img/offline-shop/1.jpg') }}">
+                                    </a>
+                                </div>
+                                <div class="col col-4">
+                                    <a class="offline-shop-img"
+                                        href="{{ static('img/offline-shop/2.jpg') }}"
+                                        data-fancybox="gallery"
+                                    >
+                                        <img src="{{ static('img/offline-shop/1.jpg') }}">
+                                    </a>
+                                </div>
+                                <div class="col col-4">
+                                    <a class="offline-shop-img"
+                                        href="{{ static('img/offline-shop/3.jpg') }}"
+                                        data-fancybox="gallery"
+                                    >
+                                        <img src="{{ static('img/offline-shop/1.jpg') }}">
+                                    </a>
+                                </div>
+                                <div class="col">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="way">
+                            <h3 class="subtitle bold">
+                            Как добраться от метро Тульская
+                            </h3>
+                            <div class="row">
+                                <div class="col col-4">
+                                    <div class="offline-shop-card">
+                                    <a class="offline-shop-img"
+                                        href="{{ static('img/offline-shop/4.jpg') }}"
+                                        data-fancybox="gallery"
+                                    >
+                                        <img src="{{ static('img/offline-shop/4.jpg') }}">
+                                    </a>
+                                        <p>
+                                        1. Выходите из метро в сторону Большой Тульской улицы, Площадь Серпуховской Заставы
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col col-4">
+                                    <div class="offline-shop-card">
+                                    <a class="offline-shop-img"
+                                        href="{{ static('img/offline-shop/5.jpg') }}"
+                                        data-fancybox="gallery"
+                                    >
+                                        <img src="{{ static('img/offline-shop/5.jpg') }}">
+                                    </a>
+                                        <p>
+                                        2. Идете в сторону Торгово-делового центра "Тульский"
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col col-4">
+                                    <div class="offline-shop-card">
+                                    <a class="offline-shop-img"
+                                        href="{{ static('img/offline-shop/6.jpg') }}"
+                                        data-fancybox="gallery"
+                                    >
+                                        <img src="{{ static('img/offline-shop/6.jpg') }}">
+                                    </a>
+                                        <p>
+                                        3. Идете по тротуару вдоль здания
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col col-4">
+                                    <div class="offline-shop-card">
+                                    <a class="offline-shop-img"
+                                        href="{{ static('img/offline-shop/7.jpg') }}"
+                                        data-fancybox="gallery"
+                                    >
+                                        <img src="{{ static('img/offline-shop/7.jpg') }}">
+                                    </a>
+                                        <p>
+                                        4. Дойдя до трамвайных путей, поворачиваете направо
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col col-4">
+                                    <div class="offline-shop-card">
+                                    <a class="offline-shop-img"
+                                        href="{{ static('img/offline-shop/8.jpg') }}"
+                                        data-fancybox="gallery"
+                                    >
+                                        <img src="{{ static('img/offline-shop/8.jpg') }}">
+                                    </a>
+                                        <p>
+                                        5. Идете вдоль трамвайных путей. Через 100 метров Вы окажетесь напротив ТЦ "РоллХолл"
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col col-4">
+                                    <div class="offline-shop-card">
+                                    <a class="offline-shop-img"
+                                        href="{{ static('img/offline-shop/9.jpg') }}"
+                                        data-fancybox="gallery"
+                                    >
+                                        <img src="{{ static('img/offline-shop/9.jpg') }}">
+                                    </a>
+                                        <p>
+                                        8. Входите в Торговый центр "РоллХолл"
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+            </div>
+
+            <div class="col col-12 show-mb">
+                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel">
+                        <div class="panel-heading" role="tab" id="headingDesc">
+                            <a class="panel-title active"
+                                    data-toggle="collapse"
+                                    data-parent="#accordion"
+                                    href="#collapseDesc"
+                            >
+                                <span
+                                    data-toggle="collapse"
+                                    data-parent="#accordion"
+                                    href="#collapseDesc"
+                                >
+                                    КАРТА
+                                </span>
+                                <i class="icon collapse-icon">
+                                </i>
+                            </a>
+                        </div>
+                        <div id="collapseDesc" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" style="display: block;">
+                            <div class="offline-shop-map-2">
+                                <script type="text/javascript" charset="utf-8" src="//api-maps.yandex.ru/services/constructor/1.0/js/?sid=7YlsIOP3WqnP7M2_K3Y1-w8n3MaHJbo_&width=100%&height=100%">
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-heading" role="tab">
+                            <a class="panel-title"
+                                    data-toggle="collapse"
+                                    data-parent="#accordion"
+                                    href="#collapsePhotos"
+                            >
+                                <span
+                                    data-toggle="collapse"
+                                    data-parent="#accordion"
+                                    href="#collapsePhotos"
+                                >
+                                    ФОТО 3
+                                </span>
+                                <i class="icon collapse-icon">
+                                </i>
+                            </a>
+                        </div>
+                        <div id="collapsePhotos" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-heading" role="tab">
+                            <a class="panel-title"
+                                    data-toggle="collapse"
+                                    data-parent="#accordion"
+                                    href="#collapseWay"
+                            >
+                                <span
+                                    data-toggle="collapse"
+                                    data-parent="#accordion"
+                                    href="#collapseWay"
+                                >
+                                    КАК ДОБРАТЬСЯ 6
+                                </span>
+                                <i class="icon collapse-icon">
+                                </i>
+                            </a>
+                        </div>
+                        <div id="collapseWay" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
-        <div class="offline-shop-right">
-        </div>
+
     </div>
 </div>
 
 {% endblock content %}
+
+
+{% block subscribes %}
+{% endblock subscribes %}
+
+{% block javascript %}
+    {{ super() }}
+    <script src="{{ static('js/jquery.fancybox.min.js') }}"></script>
+    <script src="{{ static('js/shopsPage.js') }}"></script>
+{% endblock javascript %}

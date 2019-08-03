@@ -227,14 +227,30 @@
     }
 }
 
-.product-card__sale-percentage {
+.product-card__ribbons {
     position: absolute;
     bottom: 0px;
     left: 20px;
+    text-align: left;
+}
+
+.ribbon {
+    display: inline-block;
     font-weight: 600;
     color: $white;
-    background-color: #fc152e;
     padding: 3px 8px;
+}
+
+.product-card__sale-percentage {
+    background-color: #fc152e;
+}
+
+.product-card-bestseller {
+    background-color: #f57e39;
+}
+
+.product-card-new {
+    background-color: #4c4dc1;
 }
 
 .product-card__img {
@@ -368,7 +384,12 @@
     }
 }
 
+.title-area_short {
+    padding-bottom: 0px;
+}
+
 .title-area__buttons {
+    height: 60px;
     padding: 10px 0px;
     @include mq($from: desktop) {
         display: none;
@@ -446,6 +467,10 @@
 
 .catalog__right {
 
+}
+
+.catalog__pagination {
+    margin-bottom: 30px;
 }
 
 .grey-block {

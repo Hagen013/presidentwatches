@@ -29,6 +29,7 @@ class ProductPageFilter(django_filters.FilterSet):
     price__gte = django_filters.NumberFilter(field_name='_price', lookup_expr='gte')
     price__lte = django_filters.NumberFilter(field_name='_price', lookup_expr='lte')
     rating_gte = django_filters.NumberFilter(field_name='rating', lookup_expr='gte')
+    is_in_store = django_filters.BooleanFilter(field_name='is_in_store')
 
     class Meta:
         model = ProductPage

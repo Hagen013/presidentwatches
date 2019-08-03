@@ -101,9 +101,6 @@ class LoginView(TemplateView):
         print(email)
         print(password)
 
-        print(user)
-        print('Цэ юзэр')
-
         if user:
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('/')

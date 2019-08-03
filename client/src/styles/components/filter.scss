@@ -135,3 +135,13 @@
 .filter-count {
     color: $dark-grey;
 }
+
+.filter-placeholder {
+    height: 80px;
+    padding: 10px;
+    text-align: center;
+    img {
+        height: 100%;
+        width: auto;
+    }
+}

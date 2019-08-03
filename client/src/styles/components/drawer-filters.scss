@@ -1,6 +1,14 @@
 .drawer-filters {
     .drawer-content {
+        @include mq($until: tablet) {
+            width: 100%;
+        }
         padding: 0px 10px;
+    }
+    .drawer-footer--full {
+        @include mq($until: tablet) {
+            width: 100%;
+        }
     }
 }
 
@@ -43,10 +51,11 @@
 
 .drawer-filters-submit {
     display: none;
-    width: auto !important;
+    width: 55% !important;
     min-width: 0px !important;
     font-size: 10px;
     padding: 0px 10px;
+    transition-property: background, color;
     @include mq($from: tablet) {
         width: 100% !important;
     }
@@ -58,11 +67,12 @@
     min-width: 0px !important;
     font-size: 10px;
     padding: 0px 10px;
+    transition: none;
 }
 
 .drawer-filters-clear-btn.active {
     margin-left: 10px;
-    width: auto !important;
+    width: 35% !important;
 }
 
 .drawer-filters-close {

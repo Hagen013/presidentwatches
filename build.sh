@@ -44,6 +44,7 @@ STATIC_FILE_PATHS=(
     "js/cartPage.js"
     "js/favoritesPage.js"
     "js/lastseenPage.js"
+    "js/shopsPage.js"
 )
 
 # REPLACE STATIC FILES AND TEMPLATES

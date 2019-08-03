@@ -56,6 +56,7 @@ export default class filter extends Component {
     getCounts() {
         let self = this;
         let params = {key: this.key};
+        this.showPlaceholder();
         for (let key in store.state.facetes.active) {
             params[key] = store.state.facetes.active[key].join(',')
         }
@@ -97,6 +98,16 @@ export default class filter extends Component {
             })
     }
 
+    showPlaceholder() {
+        console.log('hooy')
+        let valuesList = this.element.querySelector('.filter-values-list');
+        valuesList.innerHTML = `
+        <div class="filter-placeholder">
+            <img src="/static/assets/placeholder.svg">
+        </div>
+        `
+    }
+
     handleSuccessfulCountsResponse(response) {
         let values = response.data.values;
         let counts = response.data.counts;
@@ -122,6 +133,13 @@ export default class filter extends Component {
         let self = this;
         let valuesList = this.element.querySelector('.filter-values-list');
         let isScrollable = this.values.length > 8;
+        console.log(this.values);
+        console.log(valuesList)
+        if ( (this.values[0].value == true) || (this.values[0]).value == false ) {
+            for (let i=0; i<this.values.length; i++) {
+                this.values[i].value = this.values[i].value === true ? 'Да' : 'Нет';
+            }
+        }
 
         valuesList.innerHTML = `${this.values.map(value => {
             return `

@@ -34,6 +34,12 @@
     }
 }
 
+.tabs-link-mini {
+    @include mq($from: desktop) {
+        padding: 10px 0px 10px 0px !important;
+    }
+}
+
 .tabs-link.active {
     color: black;
     &:after {

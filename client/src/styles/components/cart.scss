@@ -480,11 +480,15 @@
 .delivery-points-modal {
     .modal-container {
         padding: 0px;
-        margin: 20px 40px;
     }
     .modal-close {
         top: 0px;
         right: 0px;
+    }
+    @include mq($from: tablet) {
+        .modal-container {
+            margin: 20px 40px;
+        }
     }
 }
 

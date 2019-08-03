@@ -184,6 +184,9 @@ $(document).ready(function() {
         e.preventDefault();
         closeAuthModal();
     })
+    $('#auth-modal-close').click(function(e) {
+        closeAuthModal();
+    })
     $('#reset-passw').click(function(e) {
         e.preventDefault();
         openResetForm();
