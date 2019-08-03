@@ -28,6 +28,7 @@ class ProductPageFilter(django_filters.FilterSet):
     price = django_filters.NumberFilter()
     price__gte = django_filters.NumberFilter(field_name='_price', lookup_expr='gte')
     price__lte = django_filters.NumberFilter(field_name='_price', lookup_expr='lte')
+    rating_gte = django_filters.NumberFilter(field_name='rating', lookup_expr='gte')
 
     class Meta:
         model = ProductPage
@@ -223,6 +224,7 @@ class CategoryPageView(DiggPaginatorViewMixin, ListView):
         context['price__max'] = self.prices['_price__max']
         context['price__lte'] = self.prices['price__lte']
         context['price__gte'] = self.prices['price__gte']
+        context['rating_gte'] = self.request.GET.get('rating_gte', None)
         
         return context
 

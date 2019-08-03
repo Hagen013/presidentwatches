@@ -217,6 +217,15 @@
                         </div>
                     </div>
                     {% endif %}
+                    {% if rating_gte %}
+                    <div class="tag tag-price" data-param="rating_gte">
+                        Рейтинг выше 4 звёзд
+                        <div class="tag__close">
+                            <i class="icon icon_close tag__icon">
+                            </i>
+                        </div>
+                    </div>
+                    {% endif %}
                     {% for tag in tags %}
                     <div class="tag"
                         data-attribute="{{tag.attribute.key}}"

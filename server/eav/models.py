@@ -44,7 +44,7 @@ class DatatypeRestrictionsMixin(models.Model):
         if (self.id is not None) \
             and (self.__initial_datatype is not None) \
             and (self.__initial_datatype != self.datatype):
-            raise models.FieldError('Changing datatype after instance creation is disallowed')
+            raise Error('Changing datatype after instance creation is disallowed')
         super(DatatypeRestrictionsMixin, self).save(force_insert, force_update, *args, **kwargs)
         self.__initial_datatype = self.datatype
 
@@ -199,11 +199,17 @@ class EavEntityMixin(models.Model):
         abstract = True
 
     def add_value(self, value):
-        relation = self.value_relation_class(
-            entity=self,
-            value=value
-        )
-        relation.save()
+        try:
+            relation = self.value_relation_class.objects.get(
+                entity=self,
+                value=value
+            )
+        except ObjectDoesNotExist:
+            relation = self.value_relation_class(
+                entity=self,
+                value=value
+            )
+            relation.save()
         return relation
         
     def remove_value(self, value):
