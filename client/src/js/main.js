@@ -257,4 +257,60 @@ $(document).ready(function() {
     })
     // END MOBILE SORTING AND FILTERING
 
+    let MESSAGES_COUNT = 0;
+
+    function message(payload) {
+        MESSAGES_COUNT += 1;
+
+        let identifier = `message-${MESSAGES_COUNT}`;
+        let selector = `#message-${MESSAGES_COUNT}`;
+
+        $('body').append(`
+        <div class="message ${payload.type}" id="${identifier}">
+            <div class="message-title">
+            ${payload.title}
+            </div>
+            <div class="message-text">
+            ${payload.text}
+            </div>
+        </div>`);
+
+        $(selector).animate({top: '30px', opacity: 1})
+
+        setTimeout(function() {
+            $(selector).animate({top: '-100px', opacity: 0})
+        }, 3000)
+        setTimeout(function() {
+            $(selector).remove();
+        }, 4000)
+    }
+
+    function subscribe() {
+
+    }
+
+    function validateEmail(email) {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    }
+
+    $('#subscribe').click(function() {
+        let inputValue = $('#subscribe-email').val();
+
+        if (validateEmail(inputValue)) {
+            message({
+                type: 'success',
+                title: 'Спасибо!',
+                text: 'Подписка оформлена'
+            })
+        } else {
+            message({
+                type: 'fail',
+                title: 'Ошибка',
+                text: 'Введите подходящий email'
+            })
+        }
+
+    })
+
 })

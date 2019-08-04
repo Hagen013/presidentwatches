@@ -240,4 +240,5 @@ $(document).ready(function() {
     $('.product-card__show-descr').click(function() {
         transitToDescription();
     })
+
 })

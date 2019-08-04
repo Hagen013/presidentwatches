@@ -19,4 +19,4 @@ class UserTypeField(models.PositiveSmallIntegerField):
         kwargs['choices'] = UserType.choices
         kwargs['default'] = UserType.Client
         kwargs['db_index'] = True
-        super(EavDatatypeField, self).__init__(*args, **kwargs)
+        super(UserTypeField, self).__init__(*args, **kwargs)

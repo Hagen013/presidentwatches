@@ -105,3 +105,13 @@ class Action(models.Model):
     """
     class Meta:
         abstract = True
+
+
+class UserSubscribe(models.Model):
+
+    email = models.EmailField(
+        blank=True,
+    )
+
+    class Meta:
+        abstract = False

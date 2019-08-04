@@ -45,6 +45,8 @@ STATIC_FILE_PATHS=(
     "js/favoritesPage.js"
     "js/lastseenPage.js"
     "js/shopsPage.js"
+    "js/deliveryPoints.js"
+    "js/deliveryAndPayment.js"
 )
 
 # REPLACE STATIC FILES AND TEMPLATES

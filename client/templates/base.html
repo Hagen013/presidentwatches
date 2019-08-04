@@ -87,8 +87,8 @@
                             </div>
                             <div class="subsribe-controls">
                                 <div class="subscribe-box input-box">
-                                    <input class="input subscribe-input" type="email" placeholder="E-mail">
-                                    <div class="button button_big button_accent subscribe-button">
+                                    <input class="input subscribe-input" type="email" placeholder="E-mail" id="subscribe-email">
+                                    <div class="button button_big button_accent subscribe-button" id="subscribe">
                                         ПОДПИСАТЬСЯ
                                     </div>
                                 </div>
@@ -238,7 +238,7 @@
                                 {{request.user.city_name}}
                             </a>
                         </li>
-                        <li class="nav-list-item">
+                        {#<li class="nav-list-item">
                             <a href="/info/delivery-points/">
                                 <i class="icon icon_pin">
                                 </i>
@@ -246,7 +246,7 @@
                                 ТОЧКИ САМОВЫВОЗА
                                 </span>
                             </a>
-                        </li>
+                        </li>#}
                         <li class="nav-list-item">
                             <a href="/info/offline-shops/">
                                 <i class="icon icon_bag">
@@ -534,7 +534,7 @@
                             <a href="/shop/watches/japan/seiko/women/">
                                 Seiko
                             </a>
-                            <a href="/shop/watches/women/swiss/calvin-klein/">
+                            <a href="/shop/watches/swiss/calvin-klein/women/">
                                 Calvin Klein
                             </a>
                         </ul>

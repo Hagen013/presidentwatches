@@ -19,4 +19,25 @@
         </h1>
     </div>
 </div>
+
+<div class="info-page">
+    <div class="content-area content-area_block">
+        <div class="info-page-content">
+            <p>
+            Текст
+            </p>
+            <div class="info-page-map" id="map">
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock content %}
+
+{% block subscribes %}
+{% endblock subscribes %}
+
+{% block javascript %}
+    {{ super() }}
+    <script src="{{ static('js/deliveryPoints.js') }}"></script>
+{% endblock javascript %}
