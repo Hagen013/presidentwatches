@@ -1,1 +1,33 @@
 {% extends "base.html" %}
+
+
+{% block content %}
+    <div class="login-page">
+        <div class="content-area content-area_block">
+            <form class="form login-form" method="post" action="/u/login/">
+                <div class="form-title">
+                    Вход на сайт
+                </div>
+                <div class="input-box form-input-box">
+                    <input class="input input_white" type="email" placeholder="E-mail" name="email">
+                </div>
+                <div class="input-box form-input-box">
+                    <input class="input input_white" type="password" placeholder="Пароль" name="password">
+                </div>
+                <div>
+                    <div class="form-result">
+                        {{result}}
+                    </div>
+                    <input type="submit" class="button button_accent button_big auth-modal-enter" value="ВОЙТИ">
+                    {#<a class="link link_underscored login-form__reset" href="#" id="reset-passw">
+                        Напомнить пароль
+                    </a>#}
+                </div>
+                <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+            </form>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block subscribes %}
+{% endblock subscribes %}

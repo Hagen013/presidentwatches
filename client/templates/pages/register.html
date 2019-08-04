@@ -1,1 +1,55 @@
 {% extends "base.html" %}
+
+
+{% block content %}
+    <div class="register-page">
+        <div class="content-area content-area_block">
+            <form class="form register-form" method="post" action="/u/register/">
+                <div class="form-title hide-mb">
+                    Используя адрес электронной почты
+                </div>
+                <div class="form-title show-mb">
+                    Через электронную почту
+                </div>
+                <div class="field">
+                    <div class="field-title">
+                        E-mail
+                    </div>
+                    <div class="field-input-box form-input-box">
+                        <input class="input" type="email" name="email">
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="field-title">
+                        Пароль
+                    </div>
+                    <div class="field-input-box form-input-box">
+                        <input class="input" type="password" name="password">
+                    </div>
+                    <div class="field-hint">
+                        Пароль должен состоять как минимум из 6-ти знаков и содержать хотя бы одну цифру.
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="field-title">
+                        Имя
+                    </div>
+                    <div class="field-input-box form-input-box">
+                        <input class="input" name="name">
+                    </div>
+                </div>
+                <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                <div class="form-result">
+                {{result}}
+                </div>
+                <input type="submit" class="button button_big button_accent" value="ЗАРЕГЕСТРИРОВАТЬСЯ">
+                <div class="field-hint register-form__hint">
+                    Нажимая на кнопку «Зарегистрироваться» даю согласие на обработку моих персональных данных.
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block subscribes %}
+{% endblock subscribes %}

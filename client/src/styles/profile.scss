@@ -20,7 +20,7 @@ $mq-breakpoints: (
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        height: 188px;
+        height: 128px;
     }
 }
 
@@ -35,4 +35,9 @@ $mq-breakpoints: (
 
 .profile-navigation-link.active {
     color: black;
+}
+
+.profile {
+    min-height: 370px;
+    margin-bottom: 200px;
 }

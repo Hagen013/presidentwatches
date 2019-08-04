@@ -62,7 +62,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         blank=True
     )
 
-    phone_number = PhoneNumberField()
+    phone_number = PhoneNumberField(
+        blank=True
+    )
     
     is_staff = models.BooleanField(
         default=False
@@ -90,6 +92,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     EMAIL_FIELD = 'email'
     USERNAME_FIELD = 'username' 
     REQUIRED_FIELDS = ['email',]
+
 
     def save(self, *args, **kwargs):
         super(User, self).save(*args, **kwargs)

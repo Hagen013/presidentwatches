@@ -18,22 +18,6 @@
         </li>
         <li>
             <a class="profile-navigation-link"
-                @click="setActive('subscribes')"
-                :class="{ active: activeOption === 'subscribes' }"
-            >
-                Подписки
-            </a>
-        </li>
-        <li>
-            <a class="profile-navigation-link"
-                @click="setActive('promo')"
-                :class="{ active: activeOption === 'promo' }"
-            >
-                Программа лояльности
-            </a>
-        </li>
-        <li>
-            <a class="profile-navigation-link"
                 @click="logout"
             >
                 Выйти из аккаунта

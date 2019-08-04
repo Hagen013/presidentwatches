@@ -1,6 +1,5 @@
 <template>
     <div>
-        Пользовательская персональная информация
     </div>
 </template>
 
@@ -9,7 +8,19 @@ export default {
     name: "personal-info",
     data: () => ({
     }),
+    created() {
+
+    },
     methods: {
+        getUserProfile() {
+
+        },
+        handleSuccessfulGetResponse() {
+
+        },
+        hanldeFailedGetResponse() {
+            
+        }
     }
 }
 </script>
