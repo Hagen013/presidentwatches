@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  # NGINX
+  nginx:
+    image: graphmarket/nginx_pw-proxy
+    restart: unless-stopped
+    hostname: nginx
+    build:
+      context: .
+      dockerfile: ./compose/nginx-proxy/Dockerfile
+    env_file:
+      - env/nginx
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8282:8282"
