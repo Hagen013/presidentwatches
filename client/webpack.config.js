@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
+
 module.exports = (env, argv) => {
 
     const mode = argv.mode;
@@ -45,8 +46,11 @@ module.exports = (env, argv) => {
                     test: /\.js$/,
                     exclude: /node_modules/,
                     use: {
-                    loader: "babel-loader"
-                    }
+                        loader: "babel-loader",
+                        options: {
+                            plugins: ["@babel/plugin-syntax-dynamic-import"]
+                        }
+                    },
                 },
                 {
                     test: /\.vue$/,
@@ -54,9 +58,14 @@ module.exports = (env, argv) => {
                     options: {
                         loaders: {
                             scss: "vue-style-loader!css-loader!sass-loader",
+                            sass: "vue-style-loader!css-loader!sass-loader?indentedSyntax",
                             js: "babel-loader"
                         }
                     }
+                },
+                {
+                    test: /\.css$/,
+                    use: [ 'style-loader', 'css-loader' ]
                 },
             ]
         },

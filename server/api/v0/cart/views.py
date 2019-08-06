@@ -14,14 +14,6 @@ from shop.models import ProductPage
 class BaseCartAPIView(APIView):
 
     def initial(self, request, *args, **kwargs):
-        print('HEY YA')
-        print('matsoy')
-        print(request)
-        print(request.user)
-        print(request.user)
-        isnone = request.user is None
-        print(isnone)
-        print('tsoy')
         """
         Получение корзины до вызова любого обработчика
         """
@@ -39,7 +31,6 @@ class CartApiView(BaseCartAPIView):
 class CartItemsApiView(BaseCartAPIView):
 
     def post(self, request):
-        print('tsoy')
         pk = request.data['pk']
         self.cart.add_offer(pk)
         return Response(self.cart.data)

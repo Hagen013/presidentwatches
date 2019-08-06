@@ -5,7 +5,7 @@
 
 <script>
 export default {
-    name: "personal-info",
+    name: "order",
     data: () => ({
     }),
     created() {

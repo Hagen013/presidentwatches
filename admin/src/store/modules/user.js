@@ -12,7 +12,7 @@ const state = {
 
 const mutations = {
 
-  SET_ACCESS_TOKEN(staste, token) {
+  SET_ACCESS_TOKEN(state, token) {
     state.token = token;
   },
   SET_REFRESH_TOKEN(state, token) {

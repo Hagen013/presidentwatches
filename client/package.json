@@ -12,17 +12,24 @@
     "build": "webpack --mode production"
   },
   "dependencies": {
+    "css-loader": "^3.1.0",
     "inputmask": "^4.0.8",
+    "sass-loader": "^7.1.0",
     "vue": "^2.6.10",
     "vue-loader": "^15.7.0",
-    "vue-template-compiler": "^2.6.10"
+    "vue-router": "^3.0.7",
+    "vue-style-loader": "^4.1.2",
+    "vue-template-compiler": "^2.6.10",
+    "vuex": "^3.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/preset-env": "^7.4.3",
     "acorn": "^6.1.1",
     "axios": "^0.18.0",
     "babel-loader": "^8.0.5",
+    "babel-plugin-dynamic-import-webpack": "^1.1.0",
     "browser-sync": "^2.26.3",
     "debounce": "^1.2.0",
     "fontforge": "0.0.4",

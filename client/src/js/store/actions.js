@@ -3,25 +3,16 @@ import api from '@/api'
 
 export default {
     addToCart(context, payload) {
-        let url = '/api/v0/cart/items/';
         let data = JSON.stringify(payload);
-        return fetch(
-            url,
-            {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                method: 'post',
-                body: data,
-                credentials: 'same-origin'
+        api.post('/cart/items/', data).then(
+            response => {
+                context.commit('updateCart', response.data);
+                try { rrApi.addToBasket(payload.pk) } catch(e) {}
+            },
+            response => {
+
             }
         )
-        .then(res => res.json())
-        .then(res => {
-            context.commit('updateCart', res);
-            try { rrApi.addToBasket(payload.pk) } catch(e) {}
-        })
     },
     transferFavorites2Cart(context, payload) {
         api.get('/cart/fav2cart/')

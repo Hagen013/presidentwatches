@@ -35,7 +35,6 @@ $(document).ready(function() {
                     product_type: 'CUBE'
                 },
             ]
-
             let data =  {
                 'kladr': kladr,
                 'products': products

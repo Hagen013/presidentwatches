@@ -16,18 +16,27 @@ $mq-breakpoints: (
 }
 
 .profile-navigation {
-    @include mq($from: tablet) {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        height: 128px;
-    }
+
+}
+
+.profile-greeting {
+    margin-top: 10px;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #dcdcdc;
+    font-size: 14px;
 }
 
 .profile-navigation-link {
+    display: block;
     color: #7f7f7f;
     user-select: none;
     cursor: pointer;
+    font-size: 14px;
+    line-height: 18px;
+    padding: 5px 0px;
+    margin-bottom: 4px;
+
     &:hover {
         color: black;
     }
@@ -40,4 +49,161 @@ $mq-breakpoints: (
 .profile {
     min-height: 370px;
     margin-bottom: 200px;
+}
+
+.order {
+    height: 120px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: solid 1px #dcdcdc;
+    transition: .3s box-shadow;
+    max-width: 639px;
+    &:hover {
+        cursor: pointer;
+        box-shadow: 0 14px 38px 0 rgba(51, 38, 38, 0.15);
+    }
+}
+
+.order-left {
+    float: left;
+}
+
+.order-right {
+    float: right;
+    min-width: 400px;
+}
+
+.order-img-wrap {
+    height: 100px;
+    width: 90px;
+    float: left;
+    text-align: center;
+    img {
+        height: 100%;
+        width: auto;
+    }
+}
+
+.order-status {
+    font-size: 9px;
+    margin-bottom: 6px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.order-uuid {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.order-price {
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.order-date {
+    font-size: 14px;
+    color: #7f7f7f;
+}
+
+.order-success {
+    .order-status {
+        color: #3abb37;
+    }
+}
+
+.order-failure {
+    .order-status {
+        color: #fc152e;
+    }
+}
+
+.order-pending {
+    .order-status {
+        color: #f57e39;
+    }
+}
+
+.user-title {
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.44;
+}
+
+.user-content {
+    .input {
+        color: black;
+    }
+}
+
+.user-block-title {
+    margin-bottom: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 1px;
+}
+
+.user-block {
+    margin-bottom: 30px;
+}
+
+.user-content {
+    max-width: 630px;
+    .col {
+        @include mq($from: tablet) {
+            padding-right: 10px;
+        }
+    }
+    .input {
+        height: 36px;
+        font-size: 14px;
+    }
+}
+
+.user-label {
+    font-size: 12px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.17;
+    letter-spacing: normal;
+    color: #7f7f7f;
+    margin-bottom: 6px;
+}
+
+.user-sex {
+    display: inline-block;
+    height: 36px;
+    width: 110px;
+    text-align: center;
+    line-height: 36px;
+    border: solid 1px #dcdcdc;
+    border-radius: 4px;
+    margin-right: 10px;
+    user-select: none;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: .2s;
+    &:hover {
+        background: #dcdcdc;
+    }
+}
+
+.delimeter {
+    height: 1px;
+    width: 100%;
+    background: #dcdcdc;
+}
+
+.user-submit {
+    margin-top: 30px;
 }

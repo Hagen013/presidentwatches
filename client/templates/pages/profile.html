@@ -24,31 +24,7 @@
                 Личный кабинет
             </h1>
             <div id="profile">
-                <div class="greeting">
-                    Здравствуйте, <span class="bold"></span>
-                </div>
-                <div class="row">
-                    <div class="col col-3">
-                        <navigation
-                            v-on:active-option-changed="handleOptionChange"
-                        >
-                        </navigation>
-                    </div>
-                    <div class="col col9">
-                        <div class="profile-outlet">
-                            <orders v-if="activeOption === 'orders'"
-                                :user_id="{{request.user.id}}"
-                            >
-                            </orders>
-                            <personal-info v-else-if="activeOption === 'info'">
-                            </personal-info>
-                            <subscribes v-else-if="activeOption === 'subscribes'">
-                            </subscribes>
-                            <promo v-else-if="activeOption === 'promo'">
-                            </promo>
-                        </div>
-                    </div>
-                </div>
+                <app :user_id={{request.user.id}}>
             </div>
         </div>
     </div>

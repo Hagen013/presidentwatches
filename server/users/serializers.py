@@ -11,4 +11,20 @@ class UserSerializer(DynamicFieldsModelSerializer):
         model = User
         fields = (
             'username',
+            'email',
+            'first_name',
+            'last_name',
+            'patronymic',
+            'phone_number',
+            'birth_date',
+            'sex'
+        )
+
+
+class UserPrivateSerializer(DynamicFieldsModelSerializer):
+
+    class Meta:
+        model = User
+        fields = (
+
         )

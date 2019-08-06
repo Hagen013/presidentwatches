@@ -2,16 +2,16 @@
     <ul class="profile-navigation">
         <li>
             <a class="profile-navigation-link"
-                @click="setActive('orders')"
-                :class="{ active: activeOption === 'orders' }"
+                @click="route('orders')"
+                :class="{ active: currentRoute === '/orders' }"
             > 
                 Мои заказы
             </a>
         </li>
         <li>
             <a class="profile-navigation-link"
-                @click="setActive('info')"
-                :class="{ active: activeOption === 'info' }"
+                @click="route('profile')"
+                :class="{ active: currentRoute === '/profile' }"
             >
                 Мои данные
             </a>
@@ -27,15 +27,23 @@
 </template>
 
 <script>
+import router from '@/profile/router/index.js'
+
 export default {
     name: "navigation",
+    router,
     data: () => ({
         activeOption: 'orders'
     }),
+    computed: {
+        currentRoute() {
+            return this.$route.fullPath
+        }
+    },
     methods: {
-        setActive(option) {
-            this.activeOption = option;
-            this.$emit('active-option-changed', option);
+        route(arg) {
+            this.activeOption = arg;
+            router.push({path: arg});
         },
         logout() {
             window.location.href = '/u/logout/'

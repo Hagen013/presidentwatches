@@ -25,6 +25,13 @@ class UserType(DjangoChoices):
     Superviser     = ChoiceItem(7, 'Superviser')
 
 
+class UserSex(DjangoChoices):
+
+    Unknown = ChoiceItem(1, 'Неизвестно')
+    Male    = ChoiceItem(2, 'Мужчина')
+    Female  = ChoiceItem(3, 'Женщина')
+
+
 class User(AbstractBaseUser, PermissionsMixin):
 
     class Meta:
@@ -85,6 +92,11 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     last_login = models.DateTimeField(
         default=timezone.now
+    )
+
+    sex = models.PositiveIntegerField(
+        choices=UserSex.choices,
+        default=UserSex.Unknown
     )
 
     objects = UserManager()
