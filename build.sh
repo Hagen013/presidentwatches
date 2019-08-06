@@ -23,7 +23,9 @@ deactivate;
 cd ..;
 # STATIC_PRODUCTION TO NGINX STATIC
 rm -rf ./compose/nginx/static_production;
+rm -rf ./compose/nginx-proxy/static_production;
 cp -r ./client/static_production ./compose/nginx/;
+cp -r ./client/static_production ./compose/nginx-proxy/;
 # ADD HASH TO STATIC FILE NAMES IN 
 # STATIC FILES AND IN TEMPLATES
 hash_suffix="$(date | md5sum | cut -c1-7)"
