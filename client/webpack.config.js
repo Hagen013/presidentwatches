@@ -9,7 +9,7 @@ module.exports = (env, argv) => {
     let GEO_SERVICE_HOST = "";
 
     if (mode === 'production') {
-        GEO_SERVICE_HOST = "'http://5.189.227.162:8282'";
+        GEO_SERVICE_HOST = "'https://new.presidentwatches.ru:8282'";
     } else {
         GEO_SERVICE_HOST = "'http://localhost:8282'";
     }

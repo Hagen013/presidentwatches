@@ -22,7 +22,7 @@ class GeoLocationMiddleware(object):
 
         if city_code is None or city_name_lat is None:
             url = settings.GEO_LOCATION_SERVICE_URL + 'api/geo_ip/external'
-            remote_addr = request.META.get('REMOTE_ADDR')
+            remote_addr = request.META.get('X-Real-IP')
             params = {'remote_addr': remote_addr}
 
             try:

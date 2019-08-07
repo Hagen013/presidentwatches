@@ -29,7 +29,7 @@ class GeoIpAPIView(APIView):
         Предпологается что nginx передаёт в заголовке запись
         uwsgi серверу, тот в свою очередь передаёт её django
         """
-        return request.META.get('REMOTE_ADDR')
+        return request.META.get('X-Real-IP')
 
 
 class GeoIpExternalRequestAPIView(GeoIpAPIView):

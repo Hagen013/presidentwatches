@@ -25,7 +25,6 @@ cd ..;
 rm -rf ./compose/nginx/static_production;
 rm -rf ./compose/nginx-proxy/static_production;
 cp -r ./client/static_production ./compose/nginx/;
-cp -r ./client/static_production ./compose/nginx-proxy/;
 # ADD HASH TO STATIC FILE NAMES IN 
 # STATIC FILES AND IN TEMPLATES
 hash_suffix="$(date | md5sum | cut -c1-7)"
@@ -60,4 +59,6 @@ do
     echo "${file_name} hashed"
 done
 
-cd ..
+cd ../../..
+
+cp -r ./compose/nginx/static_production ./compose/nginx-proxy/;

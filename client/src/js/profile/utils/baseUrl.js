@@ -1,5 +1,5 @@
 
-let baseURL = 'http://5.189.227.162/api/v0'
+let baseURL = 'https:/presidentwatches.ru/api/v0'
 
 if (process.env.NODE_ENV === 'development') {
   baseURL = 'http://localhost:8000/api/v0'
