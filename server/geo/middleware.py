@@ -22,8 +22,20 @@ class GeoLocationMiddleware(object):
 
         if city_code is None or city_name_lat is None:
             url = settings.GEO_LOCATION_SERVICE_URL + 'api/geo_ip/external'
-            remote_addr = request.META.get('X-Real-IP')
-            params = {'remote_addr': remote_addr}
+
+            remote_addr = request.META.get('REMOTE_ADDR')
+            x_real_ip = request.META.get('X-Real-IP')
+            # http_x_real_ip = request.META.get('HTTP_X-Real-IP')
+            # http_x_real_ip_2 = request.META.get('HTTP_X_REAL_IP')
+
+            print(request.META.keys())
+            print('IP SECTION START')
+            print(remote_addr)
+            print(x_real_ip)
+            # print(http_x_real_ip)
+            # print(http_x_real_ip_2)
+            print('IP SECTION END')
+            params = {'remote_addr': x_real_ip}
 
             try:
                 data = requests.get(url, params=params).json()

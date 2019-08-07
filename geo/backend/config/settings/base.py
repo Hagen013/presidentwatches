@@ -34,7 +34,7 @@ THIRD_PARTY_APPS = [
     'rest_framework',
     'django_redis',
     'corsheaders',
-    'raven.contrib.django.raven_compat',
+    # 'raven.contrib.django.raven_compat',
 ]
 
 LOCAL_APPS = [
