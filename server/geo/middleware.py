@@ -1,9 +1,8 @@
+import codecs
 import requests
 from requests.exceptions import ConnectionError
 
 from django.conf import settings
-
-from transliterate import translit
 
 
 def invalid(s):
@@ -18,9 +17,9 @@ class GeoLocationMiddleware(object):
     def __call__(self, request):
 
         city_code = request.COOKIES.get('city_code', None)
-        city_name_lat = request.COOKIES.get('city_name', None)
+        city_name_encoded = request.COOKIES.get('city_name', None)
 
-        if city_code is None or city_name_lat is None:
+        if city_code is None or city_name_encoded is None:
             url = settings.GEO_LOCATION_SERVICE_URL + 'api/geo_ip/external'
 
             remote_addr = request.META.get('REMOTE_ADDR')
@@ -34,23 +33,23 @@ class GeoLocationMiddleware(object):
                 data = requests.get(url, params=params).json()
                 city_code = data['kladr_code']
                 city_name_ru = data['kladr_name']
-                city_name_lat = translit(city_name_ru, 'ru', reversed=True)
+                city_name_encoded = city_name_ru.encode('utf-8').hex()
                 request.set_cookie('city_code', city_code)
-                request.set_cookie('city_name', city_name_lat)
+                request.set_cookie('city_name', city_name_encoded)
             except:
                 city_code = '7700000000000'
                 city_name_ru = 'Москва'
-        elif invalid(city_name_lat):
+        elif invalid(city_name_encoded):
             url = settings.GEO_LOCATION_SERVICE_URL + 'api/geo_ip/by-code/{code}'.format(
                 code=city_code
             )
             data = requests.get(url).json()
             city_name_ru = data['kladr_name']
-            city_name_lat = translit(city_name_ru, 'ru', reversed=True)
+            city_name_encoded = city_name_ru.encode('utf-8').hex()
             request.set_cookie('city_code', city_code)
-            request.set_cookie('city_name', city_name_lat)
+            request.set_cookie('city_name', city_name_encoded)
         else:
-            city_name_ru = translit(city_name_lat, 'ru')
+            city_name_ru = codecs.decode(city_name_encoded, 'hex').decode('utf-8')
 
         request.user.city_code = city_code
         request.user.city_name = city_name_ru
@@ -60,3 +59,6 @@ class GeoLocationMiddleware(object):
         }
 
         return self.get_response(request)
+
+
+
