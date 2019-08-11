@@ -22,7 +22,9 @@ class AttributeType(DjangoChoices):
 class EavSlugField(models.SlugField):
 
     def __init__(self, *args, **kwargs):
-        kwargs['unique'] = False
+        unique = kwargs.get('unique', None)
+        if unique is None:
+            kwargs['unique'] = False
         kwargs['blank'] = True
         kwargs['max_length'] = 255
         super(EavSlugField, self).__init__(*args, **kwargs)

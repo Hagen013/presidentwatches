@@ -7,6 +7,8 @@
     cursor: pointer;
     float: left;
     margin-right: 8px;
+    display: flex;
+    justify-content: center;
     &:last-of-type {
         margin-right: 0px;
     }

@@ -244,21 +244,22 @@ class WatchesProductMixin(models.Model):
 
     def save(self):
         
-        # Скидка
-        value = self.value_class.objects.get(
-            attribute__name='Распродажа',
-            value_bool=True
-        )
-        if self.sale_percentage > 0:
-            self.add_value(value)
-        else:
-            self.remove_value(value)
-        
-        # Короткое описание
-        self.summary = self.get_short_descriptions()
+        if self.id:
+            # Скидка
+            value = self.value_class.objects.get(
+                attribute__name='Распродажа',
+                value_bool=True
+            )
+            if self.sale_percentage > 0:
+                self.add_value(value)
+            else:
+                self.remove_value(value)
+            
+            # Короткое описание
+            self.summary = self.get_short_descriptions()
 
-        # Бренд
-        # Серия
+            # Бренд
+            # Серия
 
         super(WatchesProductMixin, self).save()
 

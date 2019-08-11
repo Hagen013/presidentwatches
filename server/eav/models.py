@@ -77,7 +77,9 @@ class AbstractAttribute(DatatypeRestrictionsMixin,
     datatype = EavDatatypeField()
 
     name = NameField()
-    key = EavSlugField()
+    key = EavSlugField(
+        unique=True
+    )
 
     measure = models.CharField(
         blank=True,

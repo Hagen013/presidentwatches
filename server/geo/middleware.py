@@ -25,17 +25,10 @@ class GeoLocationMiddleware(object):
 
             remote_addr = request.META.get('REMOTE_ADDR')
             x_real_ip = request.META.get('X-Real-IP')
-            # http_x_real_ip = request.META.get('HTTP_X-Real-IP')
-            # http_x_real_ip_2 = request.META.get('HTTP_X_REAL_IP')
-
-            print(request.META.keys())
-            print('IP SECTION START')
-            print(remote_addr)
-            print(x_real_ip)
-            # print(http_x_real_ip)
-            # print(http_x_real_ip_2)
-            print('IP SECTION END')
-            params = {'remote_addr': x_real_ip}
+            if x_real_ip is not None:
+                params = {'remote_addr': x_real_ip}
+            else:
+                params = {'remote_addr': remote_addr}
 
             try:
                 data = requests.get(url, params=params).json()

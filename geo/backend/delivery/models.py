@@ -3,6 +3,8 @@ from kladr.models import Kladr
 
 from math import inf
 
+from .constants import SPECIAL_NAMES
+
 
 class DeliveryCityList(models.Model):
 
@@ -129,6 +131,13 @@ class SdekCityList(DeliveryCityList):
         """
         additional_ex_weight = max(weigh - 1, 0)
         additional_pkg_weight = max(weigh - 3, 0)
+
+        if self.full_name in SPECIAL_NAMES:
+            return {
+                'price': 300,
+                'time_min': 1,
+                'time_max': 2
+            }
 
         ex_price = (self.price_sd_ex_1kg if self.price_sd_ex_1kg is not None else inf) +\
             (self.price_sd_ex_additional_kg if self.price_sd_ex_additional_kg is not None else inf) *\

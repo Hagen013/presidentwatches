@@ -26,67 +26,69 @@
     <div class="product-page">
         <div class="product">
             <div class="product__top row">
-                <div class="product-front col col-12 t-col-6">
-                    <div class="product-front__main-img-wrap">
-                        <a class="product-front__img-link active" href="{{product.image.url}}"
-                            data-fancybox="gallery"
-                            target="_blank"
-                            id="image"
-                        >
-                            <img class="product-front__main-img" 
-                                src="{{product.image.url}}"
-                                alt="{{product.model}}"
+                <div class="product-front-wrap col col-12 t-col-6">
+                    <div class="product-front">
+                        <div class="product-front__main-img-wrap">
+                            <a class="product-front__img-link active" href="{{product.image.url}}"
+                                data-fancybox="gallery"
+                                target="_blank"
+                                id="image"
                             >
-                        </a>
-                        {% for image in images %}
-                        <a class="product-front__img-link"
-                            href="{{image.image.url}}"
-                            data-fancybox="gallery"
-                            target="_blank"
-                            id="image-{{loop.index}}"
-                        >
-                            <img class="product-front__main-img"
-                                src="{{image.thumbnail.url}}"
-                                alt="{{product.model}}-{{loop.index}}"
+                                <img class="product-front__main-img" 
+                                    src="{{product.image.url}}"
+                                    alt="{{product.model}}"
+                                >
+                            </a>
+                            {% for image in images %}
+                            <a class="product-front__img-link"
+                                href="{{image.image.url}}"
+                                data-fancybox="gallery"
+                                target="_blank"
+                                id="image-{{loop.index}}"
                             >
-                        </a>
-                        {% endfor %}
-                        <div class="product-front__badges">
-                        </div>
-                    </div>
-                    <div class="product-front__gallery gallery">
-                        {% if images|length > 0 %}
-                        <div class="fab fab-micro gallery-btn gallery-btn_prev">
-                            <i class="icon icon_chevron-up">
-                            </i>
-                        </div>
-                        {% endif %}
-                        <div class="gallery-slick-list">
-                            <div class="gallery-track row" id="gallery-track">
-                                <div class="thumb thumb_active"
-                                    data-image="{{product.image.url}}"
-                                    data-target="#image"
+                                <img class="product-front__main-img"
+                                    src="{{image.thumbnail.url}}"
+                                    alt="{{product.model}}-{{loop.index}}"
                                 >
-                                    <img class="thumb-img" src="{{product.thumbnail.url}}">
-                                </div>
-                                {% for image in images %}
-                                <div class="thumb"
-                                    data-image="{{image.image.url}}"
-                                    data-target="#image-{{loop.index}}"
-                                >
-                                    <img class="thumb-img" src="{{image.thumbnail.url}}">
-                                </div>
-                                {% endfor %}
+                            </a>
+                            {% endfor %}
+                            <div class="product-front__badges">
                             </div>
                         </div>
-                        {% if images|length > 0 %}
-                        <div class="gallery-control">
-                            <div class="fab fab-micro gallery-btn gallery-btn_next">
-                                <i class="icon icon_chevron-down">
+                        <div class="product-front__gallery gallery">
+                            {% if images|length > 0 %}
+                            <div class="fab fab-micro gallery-btn gallery-btn_prev">
+                                <i class="icon icon_chevron-up">
                                 </i>
                             </div>
+                            {% endif %}
+                            <div class="gallery-slick-list">
+                                <div class="gallery-track row" id="gallery-track">
+                                    <div class="thumb thumb_active"
+                                        data-image="{{product.image.url}}"
+                                        data-target="#image"
+                                    >
+                                        <img class="thumb-img" src="{{product.thumbnail.url}}">
+                                    </div>
+                                    {% for image in images %}
+                                    <div class="thumb"
+                                        data-image="{{image.image.url}}"
+                                        data-target="#image-{{loop.index}}"
+                                    >
+                                        <img class="thumb-img" src="{{image.thumbnail.url}}">
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% if images|length > 0 %}
+                            <div class="gallery-control">
+                                <div class="fab fab-micro gallery-btn gallery-btn_next">
+                                    <i class="icon icon_chevron-down">
+                                    </i>
+                                </div>
+                            </div>
+                            {% endif %}
                         </div>
-                        {% endif %}
                     </div>
                 </div>
                 <div class="col col-12 t-col-6">

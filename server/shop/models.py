@@ -5,9 +5,10 @@ from mptt.models import TreeForeignKey
 
 from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.postgres.fields import JSONField
 
 from core.models import AbstractOfferPage, AbstractCategoryPage
-from core.db.mixins import ImageMixin
+from core.db.mixins import ImageMixin, OrderableMixin
 from eav.models import (AbstractAttribute,
                         AbstractAttributeValue,
                         AbstractAttributeGroup,
@@ -90,6 +91,15 @@ class CategoryValueRelation(AbstractEntityValueRelation):
     )
 
 
+def default_rating():
+    return [
+        {'rating': 5, 'count': 0, 'percentage': 0},
+        {'rating': 4, 'count': 0, 'percentage': 0},
+        {'rating': 3, 'count': 0, 'percentage': 0},
+        {'rating': 2, 'count': 0, 'percentage': 0},
+        {'rating': 1, 'count': 0, 'percentage': 0},
+    ]
+
 class ProductPage(AbstractOfferPage, EavEntityMixin,
     WatchesProductMixin, YandexMarketOfferMixin, ProductRetailRocketMixin):
 
@@ -107,6 +117,10 @@ class ProductPage(AbstractOfferPage, EavEntityMixin,
         blank=True,
         related_name='product_set',
         through=ProductValueRelation
+    )
+
+    rating_overall = JSONField(
+        default=default_rating
     )
 
     def get_absolute_url(self):
@@ -150,7 +164,7 @@ class ProductPage(AbstractOfferPage, EavEntityMixin,
 
 
     def get_average_rating(self):
-        rating = self.approved_reviews.aggregate(
+        rating = self.approved_reviews.filter(rating__gt=0).aggregate(
             models.Avg('rating')
         )['rating__avg']
         if rating is not None:
@@ -176,7 +190,7 @@ class ProductPage(AbstractOfferPage, EavEntityMixin,
         return re.sub("<.*?>", "", self.description).strip()
 
 
-class ProductImage(ImageMixin):
+class ProductImage(ImageMixin, OrderableMixin):
     """
     Модель дополнительного изображения для ProductPage
     миниатюра и главное изображение для товара хранятся в таблице

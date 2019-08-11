@@ -12,6 +12,49 @@ from shop.models import ProductPage as Product
 
 
 @app.task
+def generate_warehouse_file(filepath):
+    fields = [
+        'brand',
+        'model',
+        'is_published',
+        '_price',
+        '_purchase_price',
+        'is_in_stock',
+        'is_new',
+        'is_bestseller',
+        'is_yml_offer',
+        'slug',
+        'series'
+    ]
+    qs = Product.objects.all().values(
+        *fields
+    )
+    df = pd.DataFrame(list(qs))
+    df['is_in_stock'] = df['is_in_stock'].apply(int)
+    df = df.reindex(fields, axis=1)
+    df = df.rename(columns={
+        'brand': 'Бренд',
+        'model': 'Модель',
+        'is_published': 'Опубликовано',
+        '_price': 'Цена',
+        '_purchase_price': 'Оптовая цена',
+        'is_in_stock': 'В наличии',
+        'is_new': 'Новинка',
+        'is_bestseller': 'Бестселлер',
+        'is_yml_offer': 'YML',
+        'slug': 'slug',
+        'series': 'Коллекция'
+    })
+    writer = pd.ExcelWriter(filepath)
+    df.to_excel(writer, 'Ostatki')
+    writer.save()
+
+    return {
+        'filepath': filepath
+    }
+
+
+@app.task
 def process_warehouse_file(path):
     
     df = pd.read_excel(path)

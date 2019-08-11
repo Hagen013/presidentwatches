@@ -32,6 +32,7 @@ RATING_CHOICES = (
     (3, '3'),
     (2, '2'),
     (1, '1'),
+    (0, '0')
 )
 
 MONTH_MAPPING = {
@@ -82,7 +83,7 @@ class ProductReview(TimeStampedMixin):
     )
 
     rating = models.PositiveIntegerField(
-        default=10,
+        default=0,
         choices=RATING_CHOICES
     )
 
@@ -98,6 +99,11 @@ class ProductReview(TimeStampedMixin):
 
     signature = models.CharField(
         max_length=255,
+        blank=True
+    )
+
+    email = models.CharField(
+        max_length=256,
         blank=True
     )
 

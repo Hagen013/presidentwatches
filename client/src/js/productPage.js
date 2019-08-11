@@ -3,21 +3,55 @@ import locationStore from '@/store/location/index.js'
 import favoritesStore from '@/store/favorites/index.js'
 import geoApi from '@/api/geo'
 import { priceFilter, timeFilter } from '@/utils/filters.js'
+import toggleSidebar from '@/utils/toggleSidebar.js'
 
 import FastBuy from '@/components/FastBuy.js';
 
 $(document).ready(function() {
 
-    $("[data-fancybox]").fancybox({
-        thumbs : {
-            autoStart   : true,
-            hideOnClose : false,
-            transitionEffect: "slide",
-        },
-    });
+    if (window.innerWidth < 968) {
+        $("[data-fancybox]").fancybox({
+
+        });
+    } else {
+        $("[data-fancybox]").fancybox({
+            thumbs : {
+                autoStart   : true,
+                hideOnClose : false,
+                transitionEffect: "slide",
+            },
+        });
+    }
+
+    let thumbnails = $('.product-front__img-link');
+    for (let i=0; i<thumbnails.length; i++) {
+        if (thumbnails[i].href.indexOf('youTube') !== -1) {
+            let href = thumbnails[i].href;
+            let slug = /youTube-thumb-(.*?)-/.exec(href)[1];
+            thumbnails[i].href = `href="https://www.youtube.com/watch?v=${slug}`
+            $(thumbnails[i]).html(`
+            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/${slug}" 
+                frameborder="0" allow="accelerometer;
+                encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+            </iframe>
+            `)
+        }
+    }
 
     $('#add-to-cart').click(function() {
         store.dispatch('addToCart', PRODUCT);
+        $('#add-to-cart').replaceWith(`
+        <a class="button button_big button_accent product-main__button float-left"
+            href="/cart/"
+        >
+            ОФОРМИТЬ ЗАКАЗ
+        </a>
+        `)
+        console.log(window.innerWidth);
+        if (window.innerWidth < 1500) {
+            console.log("TSOY")
+            toggleSidebar('#cart');
+        }
     })
 
     locationStore.events.subscribe('stateChange', () => changeLocation());

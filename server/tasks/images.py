@@ -68,6 +68,15 @@ class FileDownloader():
     
     def save_file(self, response, url):
         path = self.media_path + url
+        dirname = '/'.join(path.split('/')[:-1])
+        if not os.path.exists(dirname):
+            new_path = ''
+            slugs = dirname.split('/')
+            for slug in slugs:
+                new_path = new_path + '/' + slug
+                if not os.path.exists(new_path):
+                    os.mkdir(new_path)
+
         with open(path, 'wb') as fp:
             for chunk in response.iter_content(1024):
                 fp.write(chunk)
@@ -104,7 +113,7 @@ class FileDownloader():
 
 
 def main():
-    filename = 'data/pw_pages_181204.json'
+    filename = 'data/pw_pages_190803.json'
     downloader = FileDownloader(
         filename=filename,
         target=SRC_URL,

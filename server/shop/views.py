@@ -21,6 +21,7 @@ from reviews.models import ReviewStatus
 
 from .models import CategoryPage, ProductPage
 from .models import Attribute, AttributeValue
+from .models import CategoryNodeOutdatedUrl as OutdatedUrl
 
 
 class ProductPageFilter(django_filters.FilterSet):
@@ -33,7 +34,7 @@ class ProductPageFilter(django_filters.FilterSet):
 
     class Meta:
         model = ProductPage
-        exclude = ['image', 'thumbnail', 'manual', 'certificate', 'summary']
+        exclude = ['image', 'thumbnail', 'manual', 'certificate', 'summary', 'rating_overall']
 
 
 class CategoryPageView(DiggPaginatorViewMixin, ListView):
@@ -67,10 +68,17 @@ class CategoryPageView(DiggPaginatorViewMixin, ListView):
             querydict.pop('page')
             return custom_redirect(
                 'shop:category',
-                url,
-                querydict
+                slug,
+                **querydict
             )
         self.category = self.get_category(slug=slug)
+
+        if self.category.slug != slug:
+            return custom_redirect(
+                'shop:category',
+                self.category.slug,
+                **request.GET.dict()
+            )
 
         self.added_values = []
 
@@ -92,7 +100,12 @@ class CategoryPageView(DiggPaginatorViewMixin, ListView):
                 slug=slug
             )
         except ObjectDoesNotExist:
-            raise Http404
+            try:
+                return OutdatedUrl.objects.get(
+                    slug=slug
+                ).node
+            except ObjectDoesNotExist:
+                raise Http404
 
     def get_exact_category(self, request, *args, **kwargs):
         added_values = set()
@@ -286,10 +299,11 @@ class ProductPageView(TemplateView):
 
         context['reviews'] = reviews
         context['reviews_count'] = count
-        context['rating_overall'] = self.instance.get_rating_overall(count)
+        context['rating_overall'] = self.instance.rating_overall
         context['delivery_data'] = self.get_delivery_data()
+        print(context['delivery_data'])
         context['videos'] = self.instance.videos.all()
 
-        context['images'] = self.instance.images.all()
+        context['images'] = self.instance.images.all().order_by('order')
 
         return context

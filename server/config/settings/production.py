@@ -38,6 +38,7 @@ MEDIA_ROOT = "/var/president_media/presidentwatches-original/"
 MEDIA_URL = '/media/'
 STATIC_ROOT = str(ROOT_DIR.path('client/static_production'))
 ADMIN_UPLOADS = MEDIA_ROOT + 'admin/uploads/'
+ADMIN_DONWLOADS = MEDIA_ROOT + 'admin/downloads/'
 # MEDIA FILES CONFIGURATION END
 # ------------------------------------------------------------------------------
 

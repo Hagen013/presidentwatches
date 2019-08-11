@@ -2,12 +2,9 @@
 
 }
 
-.product-front__main-img-wrap {
-    position: relative;
+.product-front-wrap {
+    position: relative !important;
     height: 300px;
-    width: 100%;
-    text-align: center;
-    overflow: hidden;
     @include mq($from: tablet) {
         height: 276px;
     }
@@ -16,6 +13,34 @@
     }
     @include mq($from: wide) {
         height: 540px;
+    }
+}
+
+.product-front__main-img-wrap {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 300px;
+    width: 100%;
+    text-align: center;
+    overflow: hidden;
+    @include mq($from: tablet) {
+        height: 276px;
+        left: 59px;
+        padding: 10px 0px;
+        padding-right: 59px;
+    }
+    @include mq($from: desktop) {
+        height: 360px;
+        left: 66px;
+        padding: 0px;
+        padding-right: 66px;
+    }
+    @include mq($from: wide) {
+        height: 540px;
+        left: 70px;
+        padding: 0px;
+        padding-right: 70px;
     }
 }
 
@@ -41,14 +66,13 @@
     will-change: opacity;
     overflow: hidden;
     @include mq($from: tablet) {
-        padding: 10px 0px;
-        margin-left: 59px;
+        padding-right: 59px;
     }
     @include mq($from: desktop) {
-        margin-left: 66px;
+        padding-right: 66px;
     }
     @include mq($from: wide) {
-        margin-left: 70px;
+        padding-right: 70px;
     }
 }
 
@@ -74,8 +98,10 @@
 .product-front {
     position: relative;
     padding: 10px;
+    height: 100%;
     border-top: 1px solid $grey;
     border-bottom: 1px solid $grey;
+    overflow: hidden;
     @include mq($from: tablet) {
         border: none;
         padding-left: 0px;
