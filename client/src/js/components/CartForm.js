@@ -480,6 +480,7 @@ export default class CartForm {
             'kladr': kladr,
             'products': this.products
         }
+
         geoApi.post('/api/delivery/meny_products/', data).then(
             response => {
                 self.handleSuccessfulGeoResponse(response);

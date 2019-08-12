@@ -27,6 +27,7 @@ export default class filter extends Component {
         this.key = this.element.getAttribute('data-key');
         this.$element = $(this.element);
         this.initialized = false;
+        this.toggled  = false;
 
         if (store.state.facetes.active[this.key] !== undefined) {
             let count = this.$element.find('.round-count');
@@ -56,7 +57,9 @@ export default class filter extends Component {
     getCounts() {
         let self = this;
         let params = {key: this.key};
-        this.showPlaceholder();
+        if (!this.toggled) {
+            this.showPlaceholder();
+        }
         for (let key in store.state.facetes.active) {
             params[key] = store.state.facetes.active[key].join(',')
         }
@@ -99,7 +102,6 @@ export default class filter extends Component {
     }
 
     showPlaceholder() {
-        console.log('hooy')
         let valuesList = this.element.querySelector('.filter-values-list');
         valuesList.innerHTML = `
         <div class="filter-placeholder">
@@ -125,7 +127,9 @@ export default class filter extends Component {
         this.values = values.sort( (a, b) => {
             return b.count - a.count
         })
-        this.render();
+        if (!this.toggled) {
+            this.render();
+        }
     }
 
     render() {
@@ -133,8 +137,6 @@ export default class filter extends Component {
         let self = this;
         let valuesList = this.element.querySelector('.filter-values-list');
         let isScrollable = this.values.length > 8;
-        console.log(this.values);
-        console.log(valuesList)
         if ( (this.values[0].value == true) || (this.values[0]).value == false ) {
             for (let i=0; i<this.values.length; i++) {
                 this.values[i].value = this.values[i].value === true ? 'Да' : 'Нет';
@@ -171,9 +173,9 @@ export default class filter extends Component {
             self.selectionFunction(button);
         })
         // Если необходим scroll
-        if (isScrollable) {
+        if ( (!this.toggled) && (isScrollable) ) {
             this.element.querySelector('.input filter-input')
-            new SimpleBar(valuesList, { autoHide: false });
+            let simpa = new SimpleBar(valuesList, { autoHide: false });
             this.$element.find('.filter-input-box').removeClass('hidden');
             $('.filter-input').keyup(function() {
                 let search = this.value.toLowerCase();
@@ -189,5 +191,6 @@ export default class filter extends Component {
                 }
             })
         }
+        this.toggled = true;
     }
 };

@@ -129,6 +129,14 @@ class ProductPage(AbstractOfferPage, EavEntityMixin,
         )
 
     @property
+    def full_name(self):
+        return "{vendor} {series} {model}".format(
+            vendor=self.brand,
+            series=self.series,
+            model=self.model
+        )
+
+    @property
     def approved_reviews(self):
         return self.reviews.filter(status=2)
 

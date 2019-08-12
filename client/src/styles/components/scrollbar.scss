@@ -113,8 +113,9 @@
 .simplebar-scrollbar {
     position: absolute;
     right: 2px;
-    width: 3px;
+    width: 5px;
     min-height: 10px;
+    cursor: pointer;
 }
 
 .simplebar-scrollbar:before {

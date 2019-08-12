@@ -31,14 +31,17 @@ class GeoLocationMiddleware(object):
 
             try:
                 data = requests.get(url, params=params).json()
-                city_code = data['kladr_code']
-                city_name_ru = data['kladr_name']
+                city_code = data['city_code']
+                city_name_ru = data['city_name']
                 city_name_encoded = city_name_ru.encode('utf-8').hex()
                 request.set_cookie('city_code', city_code)
                 request.set_cookie('city_name', city_name_encoded)
             except:
                 city_code = '7700000000000'
                 city_name_ru = 'Москва'
+                city_name_encoded = city_name_ru.encode('utf-8').hex()
+                request.set_cookie('city_code', city_code)
+                request.set_cookie('city_name', city_name_encoded)
         elif invalid(city_name_encoded):
             url = settings.GEO_LOCATION_SERVICE_URL + 'api/geo_ip/by-code/{code}'.format(
                 code=city_code

@@ -2,6 +2,8 @@ from django.urls import path, include
 from django.views.generic import TemplateView
 from django.conf import settings
 
+from .sitemap import urlpatterns as sitemaps
+
 
 urlpatterns = [
     path('', include('shop.urls', namespace='shop')),
@@ -9,8 +11,10 @@ urlpatterns = [
     path('cart/', include('cart.urls', namespace='cart')),
     path('search/', include('search.urls', namespace='search')),
     path('info/', include('info.urls', namespace='info')),
-    path('u/', include('users.urls', namespace='useres')),
+    path('u/', include('users.urls', namespace='users')),
 ]
+
+urlpatterns += sitemaps
 
 if settings.DEBUG:
     import debug_toolbar

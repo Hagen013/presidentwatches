@@ -1,9 +1,10 @@
 .gallery {
-    position: relative;
+    position: absolute;
     height: 56px;
     width: 100%;
     padding: 10px 32px;
     z-index: 200;
+    bottom: 0px;
     @include mq($from: tablet) {
         position: absolute;
         top: 0px;

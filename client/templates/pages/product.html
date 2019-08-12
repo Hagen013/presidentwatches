@@ -737,4 +737,47 @@
     </script>
     <script src="{{ static('js/jquery.fancybox.min.js') }}"></script>
     <script src="{{ static('js/productPage.js') }}"></script>
+    <script type="application/ld+json">
+        {
+          "@context": "http://schema.org/",
+          "@type": "Product",
+          "name": "{{product.full_name}}",
+          "image": "https://new.presidentwatches.ru{{product.image.url}}",
+          "description": "{{product.html_free_description}}",
+          {% if product.brand|length > 0 %}
+          "brand": "{{product.brand}}",
+          {% endif %}
+          "offers": {
+            "@type": "Offer",
+            "priceCurrency": "RUB",
+            "price": "{{product.price}}",
+            "itemCondition": "http://schema.org/NewCondition",
+            {% if product.is_in_stock %}
+            "availability": "http://schema.org/InStock",
+            {% else %}
+            "availability": "http://schema.org/OutOfStock",
+            {% endif %}
+            "url": "https://new.presidentwatches.ru/watches/{{product.slug}}/"
+          }
+        }
+    </script>
+    <script type="application/ld+json">
+        {
+            "@context": "http://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {% for link in category.truncated_breadcrumbs  %}
+                    {
+                        "@type": "ListItem",
+                        "position": {{ loop.index }},
+                        "item": {
+                            "@id": "{{ url('shop:category', args=[link['slug']]) }}",
+                            "name": "{{ link['name'] }}",
+                            "url": "{{ url('shop:category', args=[link['slug']]) }}"
+                        }
+                    }{% if not loop.last %},{% endif %}
+                {% endfor %}
+            ]
+        }
+    </script>
 {% endblock javascript %}

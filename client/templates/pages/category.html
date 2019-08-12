@@ -146,29 +146,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="filter"
-                    data-id="{{filters[0].id}}"
-                    data-key={{filters[0].key}}
-                >
-                    <div class="filter-heading">
-                        <span class="filter-title">
-                        {{filters[0].name}}
-                        <span class="button_count round-count"></span>
-                        </span>
-                        <i class="icon icon_chevron-down">
-                        </i>
-                    </div>
-                    <div class="filter-panel">
-                        <div class="filter-input-box hidden">
-                            <input class="input filter-input">
-                            <i class="icon icon_search filter-search-icon"></i>
-                        </div>
-                        <ul class="filter-values-list">
-                        </ul>
-                    </div>
-                </div>
 
-                {% for item in filters[1:] %}
+                {% for item in filters %}
                 <div class="filter"
                     data-id="{{item.id}}"
                     data-key="{{item.key}}"
@@ -475,4 +454,23 @@
     </script>
     <script src="{{ static('js/jquery-ui.min.js') }}"></script>
     <script src="{{ static('js/catalogPage.js') }}"></script>
+    <script type="application/ld+json">
+        {
+            "@context": "http://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {% for link in category.truncated_breadcrumbs  %}
+                    {
+                        "@type": "ListItem",
+                        "position": {{ loop.index }},
+                        "item": {
+                            "@id": "{{ url('shop:category', args=[link['slug']]) }}",
+                            "name": "{{ link['name'] }}",
+                            "url": "{{ url('shop:category', args=[link['slug']]) }}"
+                        }
+                    }{% if not loop.last %},{% endif %}
+                {% endfor %}
+            ]
+        }
+        </script>
 {% endblock javascript %}

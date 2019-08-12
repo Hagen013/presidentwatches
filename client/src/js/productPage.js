@@ -47,9 +47,7 @@ $(document).ready(function() {
             ОФОРМИТЬ ЗАКАЗ
         </a>
         `)
-        console.log(window.innerWidth);
-        if (window.innerWidth < 1500) {
-            console.log("TSOY")
+        if ( (window.innerWidth < 1500) && (window.innerWidth > 768) ) {
             toggleSidebar('#cart');
         }
     })

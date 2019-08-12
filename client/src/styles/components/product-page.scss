@@ -65,7 +65,9 @@
     opacity: 0;
     will-change: opacity;
     overflow: hidden;
+    padding: 10px 0px 56px 0px;
     @include mq($from: tablet) {
+        padding: 0px;
         padding-right: 59px;
     }
     @include mq($from: desktop) {
