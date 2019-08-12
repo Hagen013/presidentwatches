@@ -111,3 +111,15 @@ class DownloadFileApiView(APIView):
                     return response
             else:
                 return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+class UserChangeEmailApiView(APIView):
+
+    def post(self, request, *args, **kwargs):
+        return Response({})
+
+
+class UserChangePhoneApiView(APIView):
+
+    def post(self, request, *args, **kwargs):
+        return Response({})

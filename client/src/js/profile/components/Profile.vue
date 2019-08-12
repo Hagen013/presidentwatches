@@ -53,7 +53,10 @@
                             Телефон
                         </div>
                         <div class="user-input-box input-box">
-                            <input class="input">
+                            <input class="input"
+                                v-model="phone_number"
+                                v-mask="{mask: '+7 (999) 999-9999', showMaskOnHover: false}"
+                            >
                         </div>
                     </div>
                 </div>
@@ -83,11 +86,8 @@
 </template>
 
 <script>
-// import store from '@/profile/store/index.js'
-
 export default {
     name: "personal-info",
-    // /store,
     data: () => ({
     }),
     created() {
@@ -131,6 +131,7 @@ export default {
                 return this.$store.state.user.first_name
             },  
             set(value) {
+                value = value.replace(/\(|\)|\-|\_/g, '').replace(/\s/g, '');
                 this.$store.commit('set_phone_number', value)
             }
         },
@@ -147,7 +148,7 @@ export default {
         submit() {
             this.$store.dispatch('updateProfile')
         }
-    }
+    },
 }
 </script>
 

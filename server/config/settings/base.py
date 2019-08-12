@@ -349,3 +349,11 @@ CELERY_ENABLE_UTC = True
 CELERY_TIMEZONE = 'Europe/Moscow'
 # ------------------------------------------------------------------------------
 # CELERY SETTINGS END
+
+
+# SMS MESSAGES START
+# ------------------------------------------------------------------------------
+SMS_URL = env("DJANGO_SMS_URL")
+SMS_SECRET_KEY = env("DJANGO_SMS_SECRET_KEY")
+# ------------------------------------------------------------------------------
+# SMS MESSAGES END

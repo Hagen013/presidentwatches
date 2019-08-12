@@ -10,7 +10,7 @@ class UserSerializer(DynamicFieldsModelSerializer):
     class Meta:
         model = User
         fields = (
-            'username',
+            'id',
             'email',
             'first_name',
             'last_name',
@@ -19,6 +19,13 @@ class UserSerializer(DynamicFieldsModelSerializer):
             'birth_date',
             'sex'
         )
+        read_only_fields = (
+            'id',
+            'email',
+            'phone'
+        )
+
+
 
 
 class UserPrivateSerializer(DynamicFieldsModelSerializer):

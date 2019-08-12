@@ -9,11 +9,6 @@ $mq-breakpoints: (
 );
 
 
-.greeting {
-    margin: 10px 0px 30px 0px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #dcdcdc;
-}
 
 .profile-navigation {
 
@@ -21,14 +16,16 @@ $mq-breakpoints: (
 
 .profile-greeting {
     margin-top: 10px;
-    margin-bottom: 30px;
     padding-bottom: 20px;
-    border-bottom: 1px solid #dcdcdc;
     font-size: 14px;
+    @include mq($from: tablet) {
+        margin-bottom: 30px;
+        border-bottom: 1px solid #dcdcdc;
+    }
 }
 
 .profile-navigation-link {
-    display: block;
+    display: none;
     color: #7f7f7f;
     user-select: none;
     cursor: pointer;
@@ -36,9 +33,11 @@ $mq-breakpoints: (
     line-height: 18px;
     padding: 5px 0px;
     margin-bottom: 4px;
-
     &:hover {
         color: black;
+    }
+    @include mq($from: tablet) {
+        display: block;
     }
 }
 
@@ -49,9 +48,14 @@ $mq-breakpoints: (
 .profile {
     min-height: 370px;
     margin-bottom: 200px;
+    font-size: 14px;
+    .profile-title {
+        
+    }
 }
 
 .order {
+    position: relative;
     height: 120px;
     padding: 10px;
     margin-bottom: 10px;
@@ -70,8 +74,16 @@ $mq-breakpoints: (
 }
 
 .order-right {
-    float: right;
-    min-width: 400px;
+    position: absolute;
+    top: 10px;
+    right: 0px;
+    overflow: hidden;
+    width: 100px;
+    @include mq($from: tablet) {
+        width: 400px;
+    }
+    // float: right;
+    // min-width: 400px;
 }
 
 .order-img-wrap {
@@ -206,4 +218,52 @@ $mq-breakpoints: (
 
 .user-submit {
     margin-top: 30px;
+}
+
+
+// Mobile navigation
+.navigation-mobile-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 40px;
+    font-size: 14px;
+    border-top: 1px solid #dcdcdc;
+}
+
+.navigation-mobile {
+    display: block;
+    @include mq($from: tablet) {
+        display: none;
+    }
+}
+
+.navigation-block {
+    @include mq($from: mobile, $until: tablet) {
+        padding-right: 0px;
+    }
+}
+
+.navigaton-desktop {
+    display: none;
+    @include mq($from: tablet) {
+        display: block;
+    }
+}
+
+.navigation-backspace {
+    font-size: 18px;
+    line-height: 18px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px 0px;
+    .icon {
+        display: inline-block;
+        font-size: 16px;
+        margin-right: 10px;
+    }
+}
+
+.navigation-mobile-list {
+    border-bottom: 1px solid #dcdcdc;
 }

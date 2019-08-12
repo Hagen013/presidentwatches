@@ -45,15 +45,15 @@ const user = {
   },
   actions: {
     updateProfile({ commit, state, dispatch, }, payload) {
-      api.put(`/users/${state.id}/`).then(
+      api.put(`/users/${state.id}/`, state).then(
         response => {
           commit('SET_USER', response.data)
         },
-        resonse => {
+        response => {
 
         }
       )
-    }
+    },
   }
 }
 

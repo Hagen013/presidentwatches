@@ -3,19 +3,16 @@ import VueRouter from 'vue-router'
 
 const routes = [
     {
-        path: '/',
-        redirect: '/orders'
-    },
-    {
         path: '/orders',
         name: 'Orders',
         component: () => import('@/profile/components/Orders.vue'),
-        meta: { title: 'Заказы', }
+        meta: { title: 'Мои заказы', }
     },
     {
         path: '/profile',
         name: 'Profile',
-        component: () => import('@/profile/components/Profile.vue')
+        component: () => import('@/profile/components/Profile.vue'),
+        meta: { title: 'Мои данные', }
     }
 ]
 

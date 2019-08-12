@@ -38,6 +38,7 @@ cd ./compose/nginx/static_production
 STATIC_FILE_PATHS=(
     "css/styles.css"
     "css/profile.css"
+    "css/error.css"
     "js/common.js"
     "js/main.js"
     "js/productPage.js"

@@ -7,28 +7,15 @@
 
 {% block content %}
 <div class="profile">
-    <div class="title-area">
-        <div class="content-area content-area_block">
-            <div class="breadcrumbs">
-                <a class="breadcrumbs__item breadcrumbs_first" href="/">
-                Главная
-                </a>
-                <span class="breadcrumbs__delimeter">
-                /
-                </span>
-                <a class="breadcrumbs__item breadcrumbs_last">
-                Личный кабинет
-                </a>
-            </div>
-            <h1 class="title">
-                Личный кабинет
-            </h1>
-            <div id="profile">
-                <app :user_id={{request.user.id}}>
-            </div>
+
+    <div class="content-area content-area_block">
+        <div id="profile">
+            <app :user_id={{request.user.id}}>
         </div>
     </div>
+
 </div>
+
 {% endblock content %}
 
 {% block subscribes %}

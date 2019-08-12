@@ -149,3 +149,7 @@ class LogoutView(TemplateView):
     def get(self, request, *args, **kwargs):
         logout(request)
         return redirect("/")
+
+
+class UserEmailVerificationView(TemplateView):
+    pass

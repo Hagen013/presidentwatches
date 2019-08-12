@@ -19,7 +19,6 @@ class UserOrdersListApiView(APIView):
     serializer_class = OrderSerializer
 
     def get(self, request, user_pk):
-        print(request.user)
         qs = self.model_class.objects.filter(user__pk=user_pk)
         serializer = OrderSerializer(qs, many=True)
         return Response(serializer.data)
@@ -55,14 +54,13 @@ class UserProfileApiView(APIView):
 
     def put(self, request, user_pk):
 
-        serializer = self.serializer_class(data=request.data)
+        serializer = self.serializer_class(data=request.data, instance=request.user)
         if serializer.is_valid():
             serializer.save()
             return Response(
                 serializer.data,
                 status=status.HTTP_200_OK
             )
-        print(serializer.errors)
         
         return Response(
             serializer.errors,
