@@ -594,6 +594,9 @@
         bottom: 8px;
         border: none;
     }
+    @include mq($from: wide) {
+        bottom: 20px;
+    }
 }
 
 .index-w-11 {
