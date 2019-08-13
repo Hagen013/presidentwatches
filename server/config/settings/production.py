@@ -65,9 +65,11 @@ DEFAULT_KLADR_CODE = '7700000000000'
 
 # SENTRY START
 # ------------------------------------------------------------------------------
-# sentry_sdk.init(
-#     dsn="https://0eaf056b3f6b4f758cd68cc7de62e40e@sentry.io/1438577",
-#     integrations=[DjangoIntegration()]
-# )
-# SENTRY END
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
+sentry_sdk.init(
+    dsn="https://7b8a8da341734e08a5a80110a048ad6b@sentry.io/1529685",
+    integrations=[DjangoIntegration()]
+)
 # ------------------------------------------------------------------------------
