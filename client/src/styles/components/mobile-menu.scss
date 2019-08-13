@@ -143,6 +143,11 @@
     &:first-of-type {
         border-left: none;
     }
+    a {
+        display: block;
+        height: 100%;
+        width: 100%;
+    }
 }
 
 .mobile-menu-overlay {

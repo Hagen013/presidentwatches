@@ -329,6 +329,7 @@ BROKER_CONNECTION_TIMEOUT = 10
 CELERY_RESULT_BACKEND = 'redis://%s:%d/%d' % (REDIS_HOST, REDIS_PORT, REDIS_DB)
 CELERY_IMPORTS = (
     'tasks.warehouse',
+    'tasks.elastic'
 )
 CELERY_QUEUES = (
     Queue('default', Exchange('default'), routing_key='default'),

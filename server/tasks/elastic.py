@@ -66,7 +66,7 @@ def setup_settings():
     requests.put(category_mapping_url, json=CATEGORY_MAPPING)
     requests.put(mapping_url)
 
-
+@app.task
 def rewrite_products():
     for instance in ProductPage.objects.all():
         try:
@@ -75,7 +75,7 @@ def rewrite_products():
         except:
             pass
 
-    
+@app.task
 def rewrite_categories():
     for instance in CategoryPage.objects.all():
         try:
