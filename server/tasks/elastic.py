@@ -196,7 +196,7 @@ def sync_elasticsearch():
         pass
 
     else:
-        products_count = CubesProductCard.objects.all().count()
+        products_count = ProductPage.objects.all().count()
         if doc_count == products_count:
             counts_matches = True
         else:
