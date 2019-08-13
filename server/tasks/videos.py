@@ -52,15 +52,21 @@ def parse_videos():
                     if videos is not None:
                         for video in videos:
                             video_slug = video.attrs['src'].split('?')[0].split('/')[-1]
-                            video = Video(
-                                product=instance,
-                                slug=video_slug
-                            )
                             try:
-                                video.full_clean()
-                                video.save()
-                            except:
-                                pass
+                                video = Video.objects.get(
+                                    product=instance,
+                                    slug=video_slug
+                                )
+                            except ObjectDoesNotExist:
+                                video = Video(
+                                    product=instance,
+                                    slug=video_slug
+                                )
+                                try:
+                                    video.full_clean()
+                                    video.save()
+                                except:
+                                    pass
                     
                 except ObjectDoesNotExist:
                     pass

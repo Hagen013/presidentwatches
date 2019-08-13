@@ -176,13 +176,25 @@
                                     Информация о доставке
                                 </div>
                                 <div class="product-main__info-block-text delivery-product" id="delivery-product">
+                                    {% if delivery_data['curier'] is not none %}
                                     <p class="delivery-curier">
                                         {{price_filter(delivery_data['curier']['price'])|safe}}
                                         в г. {{request.user.city_name}} курьером, {{time_filter(delivery_data['curier']['time_min'], delivery_data['curier']['time_max'])}}
                                     </p>
+                                    {% else %}
+                                    <p class="delivery-curier">
+                                        Доставка курьеров в г. {{request.user.city_name}} невозможна
+                                    </p>
+                                    {% endif %}
+                                    {% if delivery_data['delivery_point'] is not none %}
                                     <p class="delivery-points">
                                         Пункты выдачи — от <span class="price">{{delivery_data['delivery_point']['price']}}</span>, {{time_filter(delivery_data['delivery_point']['time_min'], delivery_data['delivery_point']['time_max'])}}
                                     </p>
+                                    {% else %}
+                                    <p class="delivery-points">
+                                        Нет пунктов выдачи в г. {{request.user.city_name}}
+                                    </p>
+                                    {% endif %}
                                     <p class="delivery-rupost">
                                         Почтой России — <span class="price">{{delivery_data['postal_service']['price']}}</span>, от 5 до 7 дней
                                     </p>
@@ -379,13 +391,25 @@
                                 </div>
                                 <div>
                                     <div class="product-main__info-block-text delivery-product">
+                                    {% if delivery_data['curier'] is not none %}
                                         <p class="delivery-curier">
                                             {{price_filter(delivery_data['curier']['price'])|safe}}
                                             в г. {{request.user.city_name}} курьером, {{time_filter(delivery_data['curier']['time_min'], delivery_data['curier']['time_max'])}}
                                         </p>
+                                        {% else %}
+                                        <p class="delivery-curier">
+                                            Доставка курьеров в г. {{request.user.city_name}} невозможна
+                                        </p>
+                                        {% endif %}
+                                        {% if delivery_data['delivery_point'] is not none %}
                                         <p class="delivery-points">
                                             Пункты выдачи — от <span class="price">{{delivery_data['delivery_point']['price']}}</span>, {{time_filter(delivery_data['delivery_point']['time_min'], delivery_data['delivery_point']['time_max'])}}
                                         </p>
+                                        {% else %}
+                                        <p class="delivery-points">
+                                            Нет пунктов выдачи в г. {{request.user.city_name}}
+                                        </p>
+                                        {% endif %}
                                         <p class="delivery-rupost">
                                             Почтой России — <span class="price">{{delivery_data['postal_service']['price']}}</span>, от 5 до 7 дней
                                         </p>
@@ -586,13 +610,25 @@
                                         </div>
                                         <div>
                                             <div class="product-main__info-block-text delivery-product">
+                                                {% if delivery_data['curier'] is not none %}
                                                 <p class="delivery-curier">
                                                     {{price_filter(delivery_data['curier']['price'])|safe}}
                                                     в г. {{request.user.city_name}} курьером, {{time_filter(delivery_data['curier']['time_min'], delivery_data['curier']['time_max'])}}
                                                 </p>
+                                                {% else %}
+                                                <p class="delivery-curier">
+                                                    Доставка курьеров в г. {{request.user.city_name}} невозможна
+                                                </p>
+                                                {% endif %}
+                                                {% if delivery_data['delivery_point'] is not none %}
                                                 <p class="delivery-points">
                                                     Пункты выдачи — от <span class="price">{{delivery_data['delivery_point']['price']}}</span>, {{time_filter(delivery_data['delivery_point']['time_min'], delivery_data['delivery_point']['time_max'])}}
                                                 </p>
+                                                {% else %}
+                                                <p class="delivery-points">
+                                                    Нет пунктов выдачи в г. {{request.user.city_name}}
+                                                </p>
+                                                {% endif %}
                                                 <p class="delivery-rupost">
                                                     Почтой России — <span class="price">{{delivery_data['postal_service']['price']}}</span>, от 5 до 7 дней
                                                 </p>

@@ -6,7 +6,8 @@ from rest_framework.views import APIView
 
 from cart.models import Order
 from cart.serializers import OrderSerializer
-from users.serializers import UserSerializer
+from users.serializers import UserSerializer, UserSubscribeSerializer
+from users.models import UserSubscribe
 
 from django.contrib.auth import get_user_model
 
@@ -62,6 +63,25 @@ class UserProfileApiView(APIView):
                 status=status.HTTP_200_OK
             )
         
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+
+class SubsribesListView(APIView):
+
+    model = UserSubscribe
+    serializer_class = UserSubscribeSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                serializer.data,
+                status=status.HTTP_200_OK
+            )
         return Response(
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST

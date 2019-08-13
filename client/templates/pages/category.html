@@ -147,6 +147,7 @@
                     </div>
                 </div>
 
+                {% strip %}
                 {% for item in filters %}
                 <div class="filter"
                     data-id="{{item.id}}"
@@ -170,6 +171,7 @@
                     </div>
                 </div>
                 {% endfor %}
+                {% endstrip %}
             </div>
             <div class="catalog__right col col-12 d-col-9 w-col-10">
                 <div class="catalog__tags tags row">
@@ -230,6 +232,7 @@
                     {% endfor %}
                 </div>
                 <div class="catalog__gallery row">
+                    {% strip %}
                     {% for product in products %}
                         <div class="product-card">
                             <a href="/watches/{{ product.slug }}/">
@@ -302,6 +305,7 @@
                             </div>
                         </div>
                     {% endfor %}
+                    {% endstrip %}
                 </div>
 
                 {% if is_paginated %}

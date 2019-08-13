@@ -1,0 +1,11 @@
+User-agent: *
+
+Disallow: /api
+Disallow: /cart/
+Disallow: /search/
+Disallow: /*?sort_by=*
+Disallow: /*?price__gte=*
+Disallow: /*?price__lte=*
+Disallow: /u
+
+Sitemap: https://new.presidentwatches.ru/sitemap.xml

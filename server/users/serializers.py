@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 
 from core.serializers import DynamicFieldsModelSerializer
+from .models import UserSubscribe
 
 User = get_user_model()
 
@@ -34,4 +35,13 @@ class UserPrivateSerializer(DynamicFieldsModelSerializer):
         model = User
         fields = (
 
+        )
+
+
+class UserSubscribeSerializer(DynamicFieldsModelSerializer):
+
+    class Meta:
+        model = UserSubscribe
+        fields = (
+            'email',
         )

@@ -1,5 +1,6 @@
 import SimpleBar from 'simplebar';
 
+import api from '@/api/index.js'
 import SidebarCart from '@/components/sidebarCart'
 import SidebarLastSeen from '@/components/sidebarLastSeen'
 import SidebarFavorites from '@/components/sidebarFavorites'
@@ -298,11 +299,23 @@ $(document).ready(function() {
         let inputValue = $('#subscribe-email').val();
 
         if (validateEmail(inputValue)) {
-            message({
-                type: 'success',
-                title: 'Спасибо!',
-                text: 'Подписка оформлена'
-            })
+            api.post('users/subscribes/', {email: inputValue}).then(
+                response => {
+                    message({
+                        type: 'success',
+                        title: 'Спасибо!',
+                        text: 'Подписка оформлена'
+                    })
+                    (window["rrApiOnReady"] = window["rrApiOnReady"] || []).push(function() { rrApi.setEmail(emailValue);});
+                },
+                response => {
+                    message({
+                        type: 'fail',
+                        title: 'Ошибка',
+                        text: 'Введите подходящий email'
+                    })
+                }
+            )
         } else {
             message({
                 type: 'fail',

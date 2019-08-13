@@ -52,7 +52,14 @@ class GeoLocationMiddleware(object):
             request.set_cookie('city_code', city_code)
             request.set_cookie('city_name', city_name_encoded)
         else:
-            city_name_ru = codecs.decode(city_name_encoded, 'hex').decode('utf-8')
+            try:
+                city_name_ru = codecs.decode(city_name_encoded, 'hex').decode('utf-8')
+            except:
+                city_code = '7700000000000'
+                city_name_ru = 'Москва'
+                city_name_encoded = city_name_ru.encode('utf-8').hex()
+                request.set_cookie('city_code', city_code)
+                request.set_cookie('city_name', city_name_encoded)
 
         request.user.city_code = city_code
         request.user.city_name = city_name_ru

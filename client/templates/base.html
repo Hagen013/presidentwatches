@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+    {% strip %}
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>    
@@ -27,6 +28,31 @@
         {% endblock css %}
 
         {% block script_head %}
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-145616056-1"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-145616056-1');
+        </script>
+
+        <!-- Yandex.Metrika counter -->
+        <script type="text/javascript" >
+        (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+        (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+        ym(54890515, "init", {
+                clickmap:true,
+                trackLinks:true,
+                accurateTrackBounce:true,
+                webvisor:true
+        });
+        </script>
+        <noscript><div><img src="https://mc.yandex.ru/watch/54890515" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+        <!-- /Yandex.Metrika counter -->
+
         <script type="text/javascript">
         if (!!window.performance && window.performance.navigation.type == 2)
         {
@@ -53,6 +79,7 @@
         <script src="{{ static('js/jquery-3.3.1.min.js') }}"></script>
         {% endblock script_head %}
     </head>
+    {% endstrip %}
 
     <body class="page">
         <div class="page__content">
@@ -142,7 +169,7 @@
 
         {% include 'blocks/sidebar.html' %}
 
-
+        
         {% block modals %}
         <div class="page-overlay" id="page-overlay">
         </div>
@@ -565,19 +592,19 @@
                                 ПО ЦЕНЕ
                             </li>
                             <a href="/shop/watches/women/?price__lte=5000">
-                                до <span class="price">5000</span>
+                                <span class="price">до 5000</span>
                             </a>
                             <a href="/shop/watches/women/?price__gte=5000&price__lte=10000">
-                                от <span class="price">5000</span> до <span class="price">10 000</span>
+                                <span class="price">от 5000</span><span class="price"> до 10 000</span>
                             </a>
                             <a href="/shop/watches/women/?price__gte=10000&price__lte=30000">
-                                от <span class="price">10 000</span> до <span class="price">30 000</span>
+                                <span class="price">от 10 000</span><span class="price"> до 30 000</span>
                             </a>
                             <a href="/shop/watches/women/?price__gte=30000&price__lte=60000">
-                                от <span class="price">30 000</span> до <span class="price">60 000</span>
+                                <span class="price">от 30 000</span><span class="price"> до 60 000</span>
                             </a>
                             <a href="/shop/watches/women/?price__gte=60000">
-                                Дороже <span class="price">60 000</span>
+                                <span class="price">Дороже 60 000</span>
                             </a>
                             <a href="/shop/watches/women/sale/">
                                 Со скидкой
@@ -741,6 +768,7 @@
             </div>
         </div>
 
+        {% strip %}
         <div class="search-modal modal" id="search-modal">
             <form class="search-modal-form" action="/search">
                 <div class="search-modal-container input-box" id="mobile-input-box">
@@ -906,11 +934,18 @@
             <div class="modal-placeholder">
             </div>
         </div>
+        {% endstrip %}
         {% endblock modals %}
 
         {% block javascript %}
         <script src="{{ static('js/common.js') }}"></script>
         <script src="{{ static('js/main.js') }}"></script>
         {% endblock javascript %}
+        <!-- BEGIN JIVOSITE CODE {literal} -->
+        <script type='text/javascript'>
+            (function(){ var widget_id = 'RwFEyl3eUV';
+            var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = '//code.jivosite.com/script/widget/'+widget_id; var ss = document.getElementsByTagName('script')[0]; ss.parentNode.insertBefore(s, ss);})();
+        </script>
+        <!-- {/literal} END JIVOSITE CODE -->
     </body>
 </html>

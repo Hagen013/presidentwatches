@@ -210,6 +210,11 @@ $mq-breakpoints: (
     }
 }
 
+.user-sex.active {
+    background: #dcdcdc;
+    cursor: default;
+}
+
 .delimeter {
     height: 1px;
     width: 100%;
@@ -267,3 +272,4 @@ $mq-breakpoints: (
 .navigation-mobile-list {
     border-bottom: 1px solid #dcdcdc;
 }
+

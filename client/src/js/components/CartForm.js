@@ -543,6 +543,7 @@ export default class CartForm {
         let emailValue = $('#cart-email').val();
         if (validateEmail(emailValue)) {
             this.orderData.customer.email = emailValue;
+            (window["rrApiOnReady"] = window["rrApiOnReady"] || []).push(function() { rrApi.setEmail(emailValue);});
             this.removeEmailError();
         } else {
             this.highlightEmailError();

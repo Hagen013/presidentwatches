@@ -45,7 +45,7 @@
                             Email
                         </div>
                         <div class="user-input-box input-box">
-                            <input class="input" v-model="email" type="email">
+                            <input class="input" v-model="email" type="email" disabled>
                         </div>
                     </div>
                     <div class="col col-12 t-col-4">
@@ -54,6 +54,7 @@
                         </div>
                         <div class="user-input-box input-box">
                             <input class="input"
+                                :disabled="true"
                                 v-model="phone_number"
                                 v-mask="{mask: '+7 (999) 999-9999', showMaskOnHover: false}"
                             >
@@ -66,10 +67,16 @@
                     ПОЛ
                 </div>
                 <div class="row">
-                    <div class="user-sex">
+                    <div class="user-sex"
+                        :class="{active : sex === 2}"
+                        @click="sex=2"
+                    >
                         МУЖЧИНА
                     </div>
-                    <div class="user-sex">
+                    <div class="user-sex"
+                        :class="{active : sex === 3}"
+                        @click="sex=3"
+                    >
                         ЖЕНЩИНА
                     </div>
                 </div>
