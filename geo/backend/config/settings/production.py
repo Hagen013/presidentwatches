@@ -30,9 +30,6 @@ DATABASES = {
 MEDIA_ROOT = "/var/graph_market/"
 MEDIA_URL = '/media/'
 
-ADMIN_UPLOADS = MEDIA_ROOT + 'admin/uploads/'
-ADMIN_DOWNLOADS = MEDIA_ROOT + 'admin/downloads/'
-
 LOGS_DIR = MEDIA_ROOT + 'logs/'
 SEARCH_LOGS_DIR = LOGS_DIR + 'search/'
 
