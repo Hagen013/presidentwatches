@@ -419,6 +419,9 @@ export default {
             }
             else if (deliveryType === 'rupost') {
                 return "почта"
+            }
+            else if (deliveryType === 'pickup') {
+                return 'самовывоз'
             } else {
                 return "не выбрано"
             }
