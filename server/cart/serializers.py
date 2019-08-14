@@ -11,6 +11,7 @@ class OrderCreateSerializer():
     
     def __init__(self, data, request, cart=None):
         
+        print(data)
         self._user = self.get_user(request)
         if cart is None:
             self._cart = self.get_cart(request)
@@ -36,6 +37,7 @@ class OrderCreateSerializer():
             cpa=self._cpa,
             store=self._store,
             source=self._source,
+            client_notes=self._client_notes
         )
         self._instance.uuid = Order._generate_uuid()
 
@@ -98,7 +100,7 @@ class OrderCreateSerializer():
     def save(self):
         self._cart.clear()
         self._instance.save()
-        sms_notify.delay(self._instance.public_id)
+        #sms_notify.delay(self._instance.public_id)
         return self._instance
 
 
