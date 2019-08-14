@@ -1,6 +1,6 @@
 import uuid
 import datetime
-from random import randint
+from random import randint, choice
 
 from jsonschema import validate as jsonschema_validate
 from jsonschema.exceptions import ValidationError as JsonSchemaValidationError
@@ -24,6 +24,12 @@ def _empty_customer():
         "email": "",
         "phone": "",
         "address": ""
+    }
+
+def _empty_sale():
+    return {
+        'promocode': '',
+        'amount': 0
     }
 
 
@@ -132,7 +138,7 @@ class Order(TimeStampedMixin):
 
     sale = JSONField(
         blank=True,
-        default=dict
+        default=_empty_sale
     )
 
     CART_JSONSCHEMA = {
@@ -320,6 +326,19 @@ class Order(TimeStampedMixin):
         }
     }
 
+    SALE_JSONSCHEMA = {
+        "type": "object",
+        "properties": {
+            "promocode": {
+                "type": "string"
+            },
+            "amount": {
+                "type": "integer",
+                "minimum": 0
+            }
+        }
+    }
+
     STATE_ORDERING = {
         '1': 0, # новый
         '2': 1, # недозвон
@@ -376,23 +395,7 @@ class Order(TimeStampedMixin):
 
     @classmethod
     def _generate_public_id(cls):
-        date = datetime.datetime.now()
-        number = str(randint(1000, 9999))
-        year = str(date.year)[2:]
-        month = str(date.month)
-        day = str(date.day)
-        if len(day) == 1:
-            day = "0" + day
-        if len(month) == 1:
-            month = "0" + month
-        code = "{0}{1}{2}{3}{4}".format(
-            year,
-            number[:2],
-            month,
-            day,
-            number[2:]
-        )
-        return int(code)
+        return randint(10000000, 99999999)
 
     @classmethod
     def _generate_uuid(cls):
@@ -414,6 +417,7 @@ class Order(TimeStampedMixin):
             jsonschema_validate(self.customer, self.CUSTOMER_JSONSCHEMA)
             jsonschema_validate(self.delivery, self.DELIVERY_JSONSCHEMA)
             jsonschema_validate(self.payment, self.PAYMENT_JSONSCHEMA)
+            jsonschema_validate(self.sale, self.SALE_JSONSCHEMA)
 
         except JsonSchemaValidationError as e:
             raise ValidationError(message=e.message)

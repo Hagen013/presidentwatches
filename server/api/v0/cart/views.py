@@ -122,9 +122,6 @@ class FastBuyApiView(BaseCartAPIView):
 
 
         instance = serializer.save()
-        public_id = Order._generate_public_id()
-        instance.public_id = public_id
-        instance.uuid = Order._generate_uuid()
 
         data = {
             'cart': instance.cart,

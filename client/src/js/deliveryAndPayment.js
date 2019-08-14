@@ -123,7 +123,7 @@ $(document).ready(function() {
                             balloonContentBody:
                             `
                             <span class="bold">Адрес:</span>${point.address}<br/>
-                            <span class="bold">Срок поставки:</span>${timeFilter([point.time_min, point.time_max])}<br/>
+                            <span class="bold">Срок поставки:</span>${timeFilter(point.time_min, point.time_max)}<br/>
                             <span class="bold">Стоимость:</span>${priceFilter(point.price)}<br/><br/>
                             `,
                             balloonContentFooter: `
@@ -162,7 +162,7 @@ $(document).ready(function() {
                             balloonContentBody:
                             `
                             <span class="bold">Адрес:</span>${point.address}<br/>
-                            <span class="bold">Срок поставки:</span>${timeFilter([point.time_min, point.time_max])}<br/>
+                            <span class="bold">Срок поставки:</span>${timeFilter(point.time_min, point.time_max)}<br/>
                             <span class="bold">Стоимость:</span>${priceFilter(point.price)}<br/><br/>
                             `,
                             balloonContentFooter: `

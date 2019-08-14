@@ -5,9 +5,7 @@ from django.template.loader import render_to_string
 from django.utils.timezone import now, pytz
 from django.conf import settings
 
-# from celery.signals import beat_init
-# from celery.schedules import crontab
-# from config.celery import app
+from config.celery import app
 
 from shop.models import Attribute
 from shop.models import CategoryPage as Node
@@ -42,7 +40,7 @@ def sorting_function(node):
         order = 0
     return (node._depth, order)
 
-
+@app.task
 def generate_yml_file():
 
     attr_names = ['Тип часов', 'Цвет']

@@ -116,6 +116,7 @@
                             <div class="field-value-box">
                                 <el-input type="textarea"
                                     :rows="3"
+                                    v-model="instance.client_notes"
                                 >
                                 </el-input>
                             </div>
@@ -288,47 +289,87 @@
                     <div class="delimeter">
                     </div>
                     <div class="order-location">
-                        <div class="field">
-                            <div class="field-label">
-                                Регион
-                            </div>
-                            <div class="field-value-box">
-                                <el-autocomplete
-                                    placeholder="Выбрать"
-                                >
-                                </el-autocomplete>
-                            </div>
-                        </div>
+                        <el-row :gutter="10">
+                            <el-col :span="12">
+                                <div class="field">
+                                    <div class="field-label">
+                                        Регион
+                                    </div>
+                                    <div class="field-value-box">
+                                        <el-input
+                                            placeholder="Выбрать"
+                                            v-model="instance.location.city.name"
+                                        >
+                                        </el-input>
+                                    </div>
+                                </div>
+                            </el-col>
+                            <el-col :span="12">
+                                <div class="field">
+                                    <div class="field-value-box">
+                                        <el-input
+                                            placeholder="Адрес"
+                                            v-model="instance.customer.address"
+                                        >
+                                        </el-input>
+                                    </div>
+                                </div>
+                            </el-col>
+                        </el-row>
                     </div>
                     <div class="delimeter">
                     </div>
                     <div class="order-delivery">
-                        <div class="field">
-                            <div class="field-label">
-                                Доставка:
-                            </div>
-                            <div class="field-value-box">
-                                <el-select
-                                    v-model="instance.delivery.type"
-                                >
-                                    <el-option v-for="service in deliveryServices"
-                                        :key="service.value"
-                                        :value="service.value"
-                                        :label="service.name"
-                                    >
-                                    </el-option>
-                                </el-select>
-                            </div>
-                        </div>
+                        <el-row :gutter="10">
+                            <el-col :span="12">
+                                <div class="field field_full">
+                                    <div class="field-label">
+                                        Доставка:
+                                    </div>
+                                    <div class="field-value-box">
+                                        <el-select
+                                            v-model="instance.delivery.type"
+                                        >
+                                            <el-option v-for="service in deliveryServices"
+                                                :key="service.value"
+                                                :value="service.value"
+                                                :label="service.name"
+                                            >
+                                            </el-option>
+                                        </el-select>
+                                    </div>
+                                </div>
+                            </el-col>
+                            <el-col :span="12">
+                                <div class="field field_full" v-if="instance.delivery.type=='pvz'">
+                                    <div class="field-label">
+                                        Сервис:
+                                    </div>
+                                    <div class="field-value-box">
+                                        <el-select
+                                            v-model="instance.delivery.pvz_service"
+                                        >
+                                            <el-option v-for="service in pvzServices"
+                                                :key="service.value"
+                                                :value="service.value"
+                                                :label="service.name"
+                                            >
+                                            </el-option>
+                                        </el-select>
+                                    </div>
+                                </div>
+                            </el-col>
+                        </el-row>
                         <div class="field">
                             <div class="field-label">
                                 Пункт:
                             </div>
                             <div class="field-value-box">
-                                <el-autocomplete
+                                <el-input
                                     placeholder="---"
+                                    v-model="instance.delivery.pvz_code"
                                 >
-                                </el-autocomplete>
+                                </el-input>
                             </div>
                         </div>
                         <div class="field">
@@ -475,6 +516,11 @@ export default {
             {name: 'Курьером', value: 'curier'},
             {name: 'Пункт самовывоза', value: 'pvz'},
             {name: 'Почтой России', value: 'rupost'}
+        ],
+        pvzServices: [
+            {name: 'СДЭК', value: 'sdek'},
+            {name: 'PickPoint', value: 'pickpoint'},
+            {name: 'Не выбрано', value: ''}
         ],
         paymentOptions: [
             {name: 'Не выбрано', value: 'not_selected'},
@@ -740,5 +786,11 @@ export default {
     }
     .product-autocomplete {
         width: 100%;
+    }
+    .field_full {
+        width: 100%;
+        .el-select {
+            width: 100%;
+        }
     }
 </style>

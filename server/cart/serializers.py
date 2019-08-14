@@ -1,7 +1,10 @@
 from .cart import Cart
 
+from django.core.exceptions import ObjectDoesNotExist
+
 from core.serializers import DynamicFieldsModelSerializer
 from cart.models import Order
+from tasks.sms_notifications import sms_notify
 
 
 class OrderCreateSerializer():
@@ -34,8 +37,14 @@ class OrderCreateSerializer():
             store=self._store,
             source=self._source,
         )
-        self._instance.public_id = Order._generate_public_id()
         self._instance.uuid = Order._generate_uuid()
+
+        for i in range(100):
+            self._instance.public_id = Order._generate_public_id()
+            try:
+                Order.objects.get(public_id=self._instance.public_id)
+            except ObjectDoesNotExist:
+                break
     
     def get_cart(self, request):
         return Cart(request)
@@ -72,6 +81,9 @@ class OrderCreateSerializer():
 
     def get_source(self, data):
         return data.get('source')
+
+    def get_sale(self, data):
+        return None
     
     def validate(self):
         import pickle
@@ -86,6 +98,7 @@ class OrderCreateSerializer():
     def save(self):
         self._cart.clear()
         self._instance.save()
+        sms_notify.delay(self._instance.public_id)
         return self._instance
 
 

@@ -190,8 +190,16 @@
     width: 100%;
     @include mq($from: tablet) {
         width: 214px;
-        padding: 0px 20px;
+        padding: 0px 16px;
+        font-size: 14px;
         letter-spacing: 1px;
+        overflow: hidden;
+    }
+    @include mq($from: desktop) {
+        width: auto;
+    }
+    @include mq($from: wide) {
+        width: 215px;
     }
 }
 
@@ -199,6 +207,7 @@
     display: none;
     margin-left: 10px;
     @include mq($from: desktop) {
+        min-width: auto !important;
         display: inline-block;
         padding: 0px 20px;
         letter-spacing: 1px;

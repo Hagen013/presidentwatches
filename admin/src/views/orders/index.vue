@@ -124,7 +124,7 @@
                             <div>{{order.delivery.price|priceFilter}} ₽</div>
                             <div>{{order.delivery.type|deliveryFilter}}</div>
                             <div v-if="order.delivery.type=='pvz'">
-                                {{order.delivery.pvz_service|serviceFilter}}
+                                {{order.delivery.pvz_service|serviceFilter}} {{order.delivery.pvz_code|serviceCodeFilter}}
                             </div>
                         </div>
                     </td>
@@ -231,6 +231,7 @@ export default {
     data: () => ({
         apiUrl: '/orders/',
         items: [],
+        originalItems: [],
         pageSize: 100,
         offset: 0,
         limit: 100,
@@ -249,10 +250,17 @@ export default {
             'phone': '',
             'name': '',
             'email': ''
-        }
+        },
+        refreshTimer: null,
+        refreshing: false,
+        searchLock: false
     }),
     created() {
         this.initialize();
+    },
+    mounted() {
+        this.refreshTimer = setInterval(this.refresh, 10000);
+        Notification.requestPermission();
     },
     computed: {
         currentCount() {
@@ -294,6 +302,7 @@ export default {
         },
         handleSuccessfulGetListResponse(response) {
             this.items = response.data['results'];
+            this.originalsItems = this.items.slice();
             this.totalCount = response.data['count'];
             this.responseReceived = true;
         },
@@ -319,6 +328,54 @@ export default {
         },
         calculateClass(state) {
             return STYLES_MAPPING[state]
+        },
+        refresh() {
+            if (!this.searchLock) {
+                this.refreshOrders();
+            }
+        },
+        refreshOrders() {
+            request.get(this.apiUrl, {params: this.queryParams}).then(
+                response => {
+                    this.handleSuccessfulRefreshResponse(response);
+                },
+                response => {
+                    this.handleFailedGetListResponse(response);
+                }
+            )
+        },
+        handleSuccessfulRefreshResponse(response) {
+            this.items = response.data.results;
+            this.totalCount = response.data.count;
+            let hasChanged = false;
+
+            if (this.originalsItems.length === 0) {
+                this.originalsItems = this.items.slice();
+            } else {
+                let oldIds = this.originalsItems.map(function(order) {
+                    return order.id
+                })    
+                for (let i=0; i<this.items.length; i++) {
+                    if (oldIds.indexOf(this.items[i].id) === -1) {
+                        this.notify(this.items[i]);
+                        hasChanged = true;
+                    }
+                }
+                if (hasChanged === true) {
+                    this.originalsItems = this.items.slice();
+                }
+            }
+
+        },
+        notify(order) {
+            console.log('notification')
+            console.log(order);
+            if (Notification.permission === 'granted') {
+                let options = {
+                    body: order.cart.total_price + ' рублей'
+                }
+                let notification = new Notification('Новый заказ', options);
+            }
         },
         triggerSearch: debounce(function () {
             this.getList();
@@ -376,10 +433,15 @@ export default {
         serviceFilter(service) {
             if (service === 'sdek') {
                 return 'СДЭК'
-            } else if (service == 'PickPoint') {
+            } else if (service == 'pickpoint') {
                 return 'PickPoint'
             } else {
                 return 'не указано'
+            }
+        },
+        serviceCodeFilter(code) {
+            if ( (code !== null) && (code !== undefined) ) {
+                return code
             }
         },
         priceFilter(num) {
