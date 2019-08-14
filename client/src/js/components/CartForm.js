@@ -308,6 +308,7 @@ export default class CartForm {
         this.orderData.delivery.pvz_address = null;
         this.orderData.delivery.type = 'curier';
         this.orderData.delivery.price = this.deliveryData.curier.price;
+        this.orderData.client_notes = $('#client-notes').val();
 
         $('#delivery-price-sum').text(
             this.deliveryData.curier.price
@@ -326,8 +327,8 @@ export default class CartForm {
                 <div class="field-title">
                     Пожелания
                 </div>
-                <div class="field-input-box" id="client-notes">
-                    <input class="input">
+                <div class="field-input-box">
+                    <input class="input" value="${this.orderData.client_notes}" id="client-notes">
                 </div>
             </div>
             `
@@ -342,6 +343,8 @@ export default class CartForm {
         this.orderData.delivery.pvz_address = null;
         this.orderData.delivery.type = 'pickup';
         this.orderData.delivery.price = 0;
+        this.orderData.client_notes = $('#client-notes').val()
+        console.log(this.orderData.client_notes);
 
         $('#delivery-price-sum').text(
             0
@@ -362,8 +365,8 @@ export default class CartForm {
                 <div class="field-title">
                     Пожелания
                 </div>
-                <div class="field-input-box" id="client-notes">
-                    <input class="input">
+                <div class="field-input-box">
+                    <input class="input" value="${this.orderData.client_notes}" id="client-notes">
                 </div>
             </div>
             `
@@ -378,6 +381,7 @@ export default class CartForm {
         this.orderData.delivery.pvz_address = null;
         this.orderData.delivery.type = 'rupost';
         this.orderData.delivery.price = this.deliveryData.postal_service.price;
+        this.orderData.client_notes = $('#client-notes').val()
 
         $('#delivery-price-sum').text(
             this.deliveryData.postal_service.price
@@ -396,8 +400,8 @@ export default class CartForm {
                 <div class="field-title">
                     Пожелания
                 </div>
-                <div class="field-input-box" id="client-notes">
-                    <input class="input">
+                <div class="field-input-box">
+                    <input class="input" value="${this.orderData.client_notes}" id="client-notes">
                 </div>
             </div>
             `
@@ -414,6 +418,7 @@ export default class CartForm {
         this.orderData.delivery.pvz_service = '';
         this.orderData.delivery.pvz_address = '';
         this.orderData.delivery.type = 'pvz';
+        this.orderData.client_notes = $('#client-notes').val()
 
         self.showLoader();
         $.getScript('https://api-maps.yandex.ru/2.1/?lang=ru-RU', function() {
@@ -446,8 +451,8 @@ export default class CartForm {
                 <div class="field-title">
                     Пожелания
                 </div>
-                <div class="field-input-box" id="client-notes">
-                    <input class="input">
+                <div class="field-input-box">
+                    <input class="input" value="${this.orderData.client_notes}" id="client-notes">
                 </div>
             </div>
             `
@@ -860,8 +865,8 @@ export default class CartForm {
                     <div class="field-title">
                         Пожелания
                     </div>
-                    <div class="field-input-box" id="client-notes">
-                        <input class="input">
+                    <div class="field-input-box">
+                        <input class="input" id="client-notes">
                     </div>
                 </div>
             </div>

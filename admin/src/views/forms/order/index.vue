@@ -515,6 +515,7 @@ export default {
             {name: 'Не выбрано', value: 'not_selected'},
             {name: 'Курьером', value: 'curier'},
             {name: 'Пункт самовывоза', value: 'pvz'},
+            {name: 'Самовывоз', value: 'pickup'},
             {name: 'Почтой России', value: 'rupost'}
         ],
         pvzServices: [
