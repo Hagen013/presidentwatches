@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 
+{% block css %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ static('css/promo.css') }}" />
+{% endblock css %}
+
 {% block content %}
 <div class="title-area">
     <div class="content-area content-area_block">
@@ -14,9 +19,139 @@
             Акции
             </a>
         </div>
-        <h1 class="title">
-        Акции
+        <h1 class="title promo-title">
+        Промокоды ПрезидентВотчес
         </h1>
     </div>
 </div>
+
+<div class="content-area content-area_block">
+
+    <div class="promo">
+
+        <div class="promo-gallery">
+            <div class="row">
+                <div class="col col-12 t-col-4">
+                    <a class="promo-card" href="/shop/watches/japan/citizen/">
+                        <div class="promo-card-content">
+                            <div class="promo-card-title">
+                            CITIZENPW
+                            </div>
+                            <div class="promo-card-badge">
+                            СКИДКА 28% НА ВСЕ МОДЕЛИ
+                            </div>
+                        </div>
+                        <div class="promo-card-image promo-card-image-1"
+                            data-large="{{ static('img/promocodes/CITIZENPW.jpg') }}"
+                        >
+                        </div>
+                        <div class="card-fade card-fade-1">
+                        </div>
+                    </a>
+                </div>
+                <div class="col col-12 t-col-4">
+                    <a class="promo-card" href="/shop/watches/russian/spetsnaz/">
+                        <div class="promo-card-content">
+                            <div class="promo-card-title">
+                            SPECNAZPW
+                            </div>
+                            <div class="promo-card-badge">
+                            СКИДКА 20% НА ВСЕ МОДЕЛИ
+                            </div>
+                        </div>
+                        <div class="promo-card-image promo-card-image-2"
+                            data-large="{{ static('img/promocodes/SPETSNAZ.jpg') }}"
+                        >
+                        </div>
+                        <div class="card-fade card-fade-2">
+                        </div>
+                    </a>
+                </div>
+                <div class="col col-12 t-col-4">
+                    <a class="promo-card" href="/shop/watches/japan/seiko/">
+                        <div class="promo-card-content">
+                            <div class="promo-card-title">
+                            SEIKOPW
+                            </div>
+                            <div class="promo-card-badge">
+                            СКИДКА 20% НА ВСЕ МОДЕЛИ
+                            </div>
+                        </div>
+                        <div class="promo-card-image promo-card-image-3"
+                            data-large="{{ static('img/promocodes/SEIKOPW.png') }}"
+                        >
+                        </div>
+                        <div class="card-fade card-fade-3">
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-12 t-col-4">
+                    <a class="promo-card" href="/shop/watches/other/romanson/">
+                        <div class="promo-card-content">
+                            <div class="promo-card-title">
+                            ROMANSPW
+                            </div>
+                            <div class="promo-card-badge">
+                            СКИДКА 15% НА ВСЕ МОДЕЛИ
+                            </div>
+                        </div>
+                        <div class="promo-card-image promo-card-image-4"
+                            data-large="{{ static('img/promocodes/ROMANPW.jpg') }}"
+                        >
+                        </div>
+                        <div class="card-fade card-fade-4">
+                        </div>
+                    </a>
+                </div>
+                <div class="col col-12 t-col-4">
+                    <a class="promo-card" href="/shop/watches/russian/shturmanskie/">
+                        <div class="promo-card-content">
+                            <div class="promo-card-title">
+                            STURMPW
+                            </div>
+                            <div class="promo-card-badge">
+                            СКИДКА 10% НА ВСЕ МОДЕЛИ
+                            </div>
+                        </div>
+                        <div class="promo-card-image promo-card-image-5"
+                            data-large="{{ static('img/promocodes/STURMPW.jpg') }}"
+                        >
+                        </div>
+                        <div class="card-fade card-fade-3">
+                        </div>
+                    </a>
+                </div>
+                <div class="col col-12 t-col-4">
+                    <a class="promo-card" href="/shop/watches/russian/slava/">
+                        <div class="promo-card-content">
+                            <div class="promo-card-title">
+                            SLAVAPW
+                            </div>
+                            <div class="promo-card-badge">
+                            СКИДКА 20% НА ВСЕ МОДЕЛИ
+                            </div>
+                        </div>
+                        <div class="promo-card-image promo-card-image-6"
+                            data-large="{{ static('img/promocodes/SLAVAPW.jpg') }}"
+                        >
+                        </div>
+                        <div class="card-fade card-fade-1">
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+</div>
 {% endblock content %}
+
+
+{% block javascript %}
+{{ super() }}
+<script src="{{ static('js/promo.js') }}"></script>
+{% endblock javascript %}
+

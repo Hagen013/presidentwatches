@@ -79,7 +79,7 @@
                                             </div>
                                         </div>
                                         <div class="card-mini__price text_right">
-                                            <span class="price">{{item['total_price']}}</span>
+                                            <span class="price">{{item['base_price']}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -108,22 +108,24 @@
                     </div>
                     <div class="sidebar-pane-footer">
                         <div class="sidebar-cart-summary">
-                            <div class="sidebar-old-price">
+                            <div class="sidebar-old-price {% if cart.has_promocode %}active{% endif %}" id="sidebar-old-price">
+                                <span class="price price_old">{{cart.data['total_price']+cart.data['total_sale']}}</span>
                             </div>
                             <div class="sidebar-overall bold">
                                 <div class="sidebar__overall-left">
                                     Итого
                                 </div>
                                 <div class="sidebar__overall-right">
-                                    <span class="price" id='sidebar-total-price'>
-                                        {{cart.data['total_price']}}
-                                    </span>
+                                    <span class="price" id='sidebar-total-price'>{{cart.data['total_price']}}</span>
                                 </div>
                             </div>
                             <div class="sidebar-submit-area">
                                 <div class="sidebar-promo">
                                     <input class="input"
                                         placeholder="Промокод"
+                                        id="sidebar-promocode"
+                                        value="{{cart.data['promocode']}}"
+                                        autocomplete="off"
                                     >
                                 </div>
                                 <a class="button button_accent button_dense sidebar-submit"

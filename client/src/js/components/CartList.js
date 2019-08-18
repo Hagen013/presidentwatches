@@ -18,7 +18,6 @@ export default class sidebarCart extends Component {
     }
 
     _bindMethods() {
-        console.log('binding methods');
         let self = this;
 
         this.$element.find('.cart-item__delete').click(function(e) {
@@ -32,7 +31,6 @@ export default class sidebarCart extends Component {
         this.$element.find('.quantity_increment').click(function(e) {
             self.incrementItem(this);
         })
-
     }
 
     removeItem(target) {
@@ -139,8 +137,11 @@ export default class sidebarCart extends Component {
                             </div>
                             <div class="cart-item__subtotal-price bold">
                                 <span class="price">
-                                    ${item['total_price']}
+                                    ${item['base_price']}
                                 </span>
+                            </div>
+                            <div class="cart-item-sale">
+                            Скидка <span class="price">${item['sale']}</span>
                             </div>
                         </div>
                     </div>
@@ -159,12 +160,25 @@ export default class sidebarCart extends Component {
         // Добавление промежуточных итогов по количеству товаров
         for (let i=0; i<items.length; i++) {
             let item = items[i];
+            let selector = `#cart-item-${item['pk']}`;
+            let $element = $(selector);
             if (item['quantity'] > 1) {
-                let selector = `#cart-item-${item['pk']}`;
                 let html = `${item['quantity']} шт. × <span class="price price_9">${item['price']}</span>`;
-                let element = $(selector);
-                $(selector).find('.cart-item__subtotal-quantity').html(html);
+                $element.find('.cart-item__subtotal-quantity').html(html);
             }
+            if (item['sale'] > 0) {
+                $element.find('.cart-item-sale').addClass('active');
+            }
+        }
+
+        // Общая скидка
+        let totalSale = store.state.cart.data['total_sale'];
+        let $totalSaleElement = $('.cart-total-sale');
+        if (totalSale > 0) {
+            $totalSaleElement.find('.price').text(totalSale);
+            $totalSaleElement.addClass('active');
+        } else {
+            $totalSaleElement.removeClass('active');
         }
     
     }

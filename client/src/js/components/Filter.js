@@ -1,4 +1,4 @@
-import store from '@/store/index.js'
+import store from '@/store/facetes/index.js'
 import api from '@/api/index.js'
 
 import Component from '@/lib/component.js'

@@ -234,7 +234,7 @@
 }
 
 .cart-total {
-    display: flex;
+    display: block;
     height: 36px;
     align-items: center;
     text-align: right;
@@ -403,12 +403,14 @@
 .cart-item__subtotal-quantity {
     display: none;
     margin-right: 10px;
+    font-size: 14px;
     @include mq($from: tablet) {
         display: inline-block;
     }
 }
 
 .cart-item__subtotal {
+    position: relative;
     float: right;
 }
 
@@ -507,4 +509,47 @@
     @include mq($from: tablet) {
         font-size: 48px;
     }
+}
+
+.cart-item-sale {
+    display: none;
+    position: absolute;
+    width: 100px;
+    bottom: -18px;
+    text-align: right;
+    right: 0px;
+    font-size: 12px;
+    color: $red;
+    font-weight: normal;
+    opacity: 0;
+    will-change: opacity;
+    transition: .3s;
+    .price {
+        &:after {
+            font-size: 10px;
+        }
+    }
+    @include mq($from: tablet) {
+        display: block;
+    }
+}
+
+.cart-total-sale {
+    margin-top: 10px;
+    color: $red;
+    opacity: 0;
+    will-change: opacity;
+    transition: .3s;
+}
+
+.cart-item-sale.active {
+    opacity: 1;
+}
+
+.cart-total-sale.active {
+    opacity: 1;
+}
+
+#cart-promocode {
+    text-transform: uppercase;
 }

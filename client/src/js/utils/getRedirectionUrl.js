@@ -1,4 +1,4 @@
-import store from '@/store/index.js'
+import store from '@/store/facetes/index.js'
 
 import removeQueryParameter from './removeQueryParameter.js'
 import updateQueryString from './updateQueryString.js'

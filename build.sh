@@ -39,6 +39,7 @@ STATIC_FILE_PATHS=(
     "css/styles.css"
     "css/profile.css"
     "css/error.css"
+    "css/promo.css"
     "js/common.js"
     "js/main.js"
     "js/productPage.js"
@@ -49,6 +50,7 @@ STATIC_FILE_PATHS=(
     "js/shopsPage.js"
     "js/deliveryPoints.js"
     "js/deliveryAndPayment.js"
+    "js/promo.js"
 )
 
 # REPLACE STATIC FILES AND TEMPLATES

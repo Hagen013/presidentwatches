@@ -66,6 +66,16 @@ gulp.task('error', function() {
 	.pipe(gulp.dest(paths.css));
 });
 
+gulp.task('promo', function() {
+	gulp.src(paths.sass + '/promo.scss')
+	.pipe(sourcemaps.init())
+	.pipe(bulkSass())
+	.pipe(sass().on('error', onError))
+	.pipe(autoprefixer({browsers: ['last 2 version']}))
+	.pipe(sourcemaps.write())
+	.pipe(gulp.dest(paths.css));
+});
+
 
 // run django for browsersync
 gulp.task('runserver', function() {
@@ -88,6 +98,7 @@ gulp.task('watchTask', function() {
 	gulp.watch(paths.sass + '/**/*.scss', ['styles', reload]);
 	gulp.watch(paths.sass + '/**/*.scss', ['profile', reload]);
 	gulp.watch(paths.sass + '/**/*.scss', ['error', reload]);
+	gulp.watch(paths.sass + '/**/*.scss', ['promo', reload]);
 	gulp.watch(paths.sass + '/**/**/*.scss', ['styles', reload]);
 	gulp.watch([paths.templates + '/*.html',
 				paths.templates + '/**/*.html',
@@ -95,7 +106,7 @@ gulp.task('watchTask', function() {
 });
 
 // default
-gulp.task('default', ['styles', 'profile', 'error', 'watchTask', 'browserSyncTask']);
+gulp.task('default', ['styles', 'profile', 'error', 'promo', 'watchTask', 'browserSyncTask']);
 
 
 // ==	2. TASKS production	====================================================

@@ -3,6 +3,10 @@ from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
+from rest_framework import permissions
+from rest_framework.pagination import LimitOffsetPagination
+
+from api.views import ListViewMixin
 
 from cart.models import Order
 from cart.serializers import OrderSerializer
@@ -12,6 +16,17 @@ from users.models import UserSubscribe
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
+
+
+class UsersListApiView(APIView, ListViewMixin):
+
+    model             = User
+    serializer_class  = UserSerializer
+    permissions_class = permissions.IsAdminUser
+    pagination_class  = LimitOffsetPagination
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
 
 
 class UserOrdersListApiView(APIView):

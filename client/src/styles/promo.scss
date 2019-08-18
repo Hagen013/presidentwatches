@@ -1,0 +1,176 @@
+@import '../../node_modules/sass-mq/mq';
+
+$mq-breakpoints: (
+    mobile:  320px,
+    tablet: 768px,
+    desktop: 1032px,
+    wide: 1500px,
+    maximum: 1730px
+);
+
+$accent: #f6de32;
+$light-grey: #ededed;
+$dark-grey: #7f7f7f;
+$grey: #dcdcdc;
+$red: #f82c4b;
+$orange: #f57e39;
+$black: #000000;
+$white: #ffffff;
+$red-2: #fc152e;
+$blue: #4c4dc1;
+
+.promo-gallery {
+    margin: 0 auto;
+    max-width: 320px;
+    @include mq($from: tablet) {
+        max-width: 1200px;
+    }
+}
+
+.promo-card {
+    display: flex;
+    position: relative;
+    align-items: center;
+    padding: 10px;
+    width: 100%;
+    height: 320px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+    transition: .3s;
+    cursor: pointer;
+    @include mq($from: desktop) {
+        height: 420px;
+        padding: 20px;
+    }
+    &:hover {
+        box-shadow: 0 4px 16px 0 rgba(0,0,0,.4);
+    }
+}
+
+.card-fade {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    opacity: 0.7;
+    z-index: 4;
+}
+
+.card-fade-1 {
+    background-image: linear-gradient(to top, rgb(208, 80, 80) 0%, rgb(208, 80, 80) 50%, rgba(208, 80, 80, 0.7) 70%, rgba(208, 80, 80, 0.5) 100%);
+}
+
+.card-fade-2 {
+    background-image:linear-gradient(
+        to top,
+        rgba(72,69,42,1) 0%,
+        rgba(72,69,42,1) 50%,
+        rgba(72,69,42,0.7) 70%,
+        rgba(72,69,42,0.5) 100%
+    );
+}
+
+.card-fade-3 {
+    background-image:linear-gradient(
+        to top,
+        rgba(184,216,232,1) 0%,
+        rgba(184,216,232,1) 50%,
+        rgba(184,216,232,0.7) 70%,
+        rgba(184,216,232,0.5) 100%
+    );
+}
+
+.card-fade-4 {
+    opacity: 0.5;
+    background-image:linear-gradient(
+        to top,
+        rgba(255,191,0,1) 0%,
+        rgba(255,191,0,1) 50%,
+        rgba(255,191,0,0.7) 70%,
+        rgba(255,191,0,0.5) 100%
+    );
+}
+
+.promo-card-image {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+    transition: .3s;
+    filter: blur(14px);
+}
+
+.promo-card-image.active {
+    filter: none;
+}
+
+.promo-card-image-1 {
+    background-image: url('../img/promocodes/CITIZENPW_small.jpg');
+}
+
+.promo-card-image-2 {
+    background-image: url('../img/promocodes/SPETSNAZ_small.jpg');
+}
+
+.promo-card-image-3 {
+    background-image: url('../img/promocodes/SEIKOPW_small.png');
+}
+
+.promo-card-image-4 {
+    background-image: url('../img/promocodes/ROMANPW_small.jpg');
+}
+
+.promo-card-image-5 {
+    background-image: url('../img/promocodes/STURMPW_small.jpg');
+}
+
+.promo-card-image-6 {
+    background-image: url('../img/promocodes/SLAVAPW_small.jpg');
+}
+
+.promo-card-content {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    z-index: 10;
+}
+
+.promo-card-title {
+    padding: 10px;
+    font-size: 42px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-align: center;
+    width: 100%;
+    background: white;
+    @include mq($from: tablet, $until: desktop) {
+        font-size: 28px;
+    }
+}
+
+.promo-card-badge {
+    padding: 10px 10px;
+    width: 100%;
+    background: $red;
+    color: $white;
+    text-align: center;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.promo-title {
+    font-size: 32px;
+    text-align: center;
+    margin-bottom: 20px;
+}

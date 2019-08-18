@@ -472,47 +472,14 @@ export default {
     .orders-filters {
         margin-bottom: 30px;
     }
-    .table-head {
-        height: 56px;
-        padding: 14px 0px;
-        text-align: left;
-    }
-    .table-label {
-        height: 28px;
-        padding-right: 32px;
-        padding-left: 24px;
-        display: inline-block;
-        position: relative;
-        line-height: 28px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
     .table-row {
-        transition: .3s cubic-bezier(.4,0,.2,1);
-        transition-property: background-color,font-weight;
-        will-change: background-color,font-weight;
+        height: 48px;
+        transition-duration: .2s;
+        transition-property: background-color;
         cursor: pointer;
         &:hover {
-            background-color: rgba(0,0,0,.08);
+            background-color: rgba(0,0,0,.08) !important;
         }
-    }
-    .table-cell {
-        height: 48px;
-        position: relative;
-        transition: .3s cubic-bezier(.4,0,.2,1);
-        font-size: 13px;
-        line-height: 18px;
-        border-top-color: rgba(0,0,0,.12);
-        border-top: 1px solid rgba(0,0,0,.12);
-    }
-    .table-container {
-        padding: 6px 32px 6px 24px;
-    }
-    .table-container--date {
-        max-width: 150px;
-        padding: 6px 32px 6px 24px;
-        line-height: 1.6;
     }
     .table-row--success-1 {
         .table-cell--colored {

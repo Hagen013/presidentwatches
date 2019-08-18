@@ -62,10 +62,14 @@
                                         {% endif %}
                                         <div class="cart-item__subtotal-price bold">
                                             <span class="price">
-                                                {{ item['total_price'] }}
+                                                {{ item['base_price'] }}
                                             </span>
                                         </div>
+                                        <div class="cart-item-sale {% if item['sale'] > 0 %}active{% endif %}">
+                                        Скидка <span class="price">{{item['sale']}}</span>
+                                        </div>
                                     </div>
+
                                 </div>
                                 <div class="cart-item__favorite">
                                     <i class="icon icon_favorite"></i>
@@ -82,21 +86,23 @@
                         <div class="cart-promo">
                             <div class="input-box input-box_combined cart-promo__input-box">
                                 <input class="input"
+                                    id="cart-promocode"
                                     placeholder="Промокод"
+                                    value="{{cart.data['promocode']}}"
                                 >
-                                <input type="submit"
-                                    class="button button_ghost"
-                                    value="Применить"
-                                >
+                                <div class="button button_ghost" id="cart-promocode-submit">
+                                ПРИМЕНИТЬ
+                                </div>
                             </div>
                         </div>
                         <div class="cart-total">
                             <div class="cart-total__overall">
                                 <span class="cart-count">{{ cart.data['total_quantity'] }}</span> 
-                                товара на сумму: 
-                                <span class="price">
-                                {{ cart.data['total_price'] }}
-                                </span>
+                                товар(а) на сумму: 
+                                <span class="price">{{ cart.data['total_price'] }}</span>
+                            </div>
+                            <div class="cart-total-sale {% if cart.data['total_sale'] > 0 %}active{% endif %}">
+                                С учётом общей скидки <span class="price">{{cart.data['total_sale']}}</span>
                             </div>
                         </div>
                     </div>

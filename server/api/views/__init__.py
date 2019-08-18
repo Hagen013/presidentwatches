@@ -1,1 +1,1 @@
-from .viewsets import ModelViewSet
+from .viewsets import ModelViewSet, ListViewMixin

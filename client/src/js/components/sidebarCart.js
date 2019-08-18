@@ -2,6 +2,9 @@ import Component from '@/lib/component.js';
 import store from '@/store/index.js';
 import favoritesStore from '@/store/favorites'
 import toggleSidebarTab from '@/utils/toggleSidebarTab'
+import api from '@/api/index'
+import message from '@/lib/message'
+import { debounce } from 'debounce'
 
 export default class sidebarCart extends Component {
 
@@ -13,7 +16,37 @@ export default class sidebarCart extends Component {
     }
 
     initialize() {
+
         this.$element = $(this.element);
+        this.applyPromocode = debounce(function(value) {
+            value = value.toUpperCase();
+            if (value.length === 0) {
+                $('#sidebar-old-price').removeClass('active');
+            }
+            api.get('/cart/promocode/', {params: {name: value}}).then(
+                response => {
+                    store.commit('updateCart', response.data)
+                    api.get('/promocodes/search/', {params: {name: value}}).then(
+                        res => {
+                            $('#sidebar-old-price').addClass('active');
+                            $('#sidebar-old-price').find('.price').text(store.state.cart.data.total_sale+store.state.cart.data.total_price)
+                            message({
+                                type: 'success',
+                                title: 'Промокод применен',
+                                text: res.data.description + `<p class="bold message-sale">Ваша скидка: <span class="price">${store.state.cart.data.total_sale}</span><p>`,
+                                link: '<a class="message-btn message-btn-1" href="/info/promo/">ВСЕ ПРОМОКОДЫ</a>'
+                            })
+                        },
+                        res => {
+
+                        }
+                    )
+                },
+                response => {
+                    console.log(response);
+                }
+            )
+        }, 500)
         this.bindMethods();
     }
 
@@ -67,6 +100,10 @@ export default class sidebarCart extends Component {
         $('#sidebar-cart-clear').click(function(e) {
             self.clearCart();
         })
+
+        $('#sidebar-promocode').on('input', function(e){
+            self.applyPromocode(this.value);
+        })
     }
 
     render() {
@@ -75,7 +112,13 @@ export default class sidebarCart extends Component {
         for (let key in store.state.cart.data.items) {
             items.push(store.state.cart.data.items[key]);
         }
-
+        items = items.sort(function(a,b) {
+            let date1 = a.added_at;
+            let date2 = b.added_at;
+            if (date1 > date2) return 1;
+            if (date1 < date2) return -1;
+            return 0;
+        })
         self.element.innerHTML = `
         ${items.map(item => {
             return `
@@ -110,7 +153,7 @@ export default class sidebarCart extends Component {
                             </div>
                         </div>
                         <div class="card-mini__price text_right">
-                            <span class="price">${item['total_price']}</span>
+                            <span class="price">${item['base_price']}</span>
                         </div>
                     </div>
                 </div>

@@ -8,10 +8,7 @@ from rest_framework import status
 from rest_framework.pagination import LimitOffsetPagination
 
 
-class ModelViewSet(viewsets.ViewSet):
-    """
-    Custom default model ViewSet class
-    """
+class ListViewMixin():
 
     model = None
     serializer_class = None
@@ -21,12 +18,6 @@ class ModelViewSet(viewsets.ViewSet):
     ordering_fields = ()
 
     filter_backends = api_settings.DEFAULT_FILTER_BACKENDS
-
-    def get_instance(self, pk):
-        try:
-            return self.model.objects.get(pk=pk)
-        except ObjectDoesNotExist:
-            raise Http404
 
     def get_queryset(self):
         return self.model.objects.all()
@@ -50,6 +41,18 @@ class ModelViewSet(viewsets.ViewSet):
         serializer = self.serializer_class(qs, many=True)
         response = self.get_paginated_response(serializer.data)
         return response
+
+
+class ModelViewSet(ListViewMixin, viewsets.ViewSet):
+    """
+    Custom default model ViewSet class
+    """
+    def get_instance(self, pk):
+        try:
+            return self.model.objects.get(pk=pk)
+        except ObjectDoesNotExist:
+            raise Http404
+
 
     def create(self, request):
         serializer = self.serializer_class(

@@ -1,4 +1,4 @@
-import store from '@/store/index.js'
+import store from '@/store/facetes/index.js'
 import state from '@/state/index.js'
 import api from '@/api/index.js'
 import { SortingController } from './controllers/sortingController.js'

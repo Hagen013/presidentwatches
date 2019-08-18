@@ -5,7 +5,7 @@ from rest_framework import status
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 
 from cart.cart import Cart
-from cart.models import Order
+from cart.models import Order, Promocode
 from cart.serializers import OrderCreateSerializer
 from favorites.controller import FavoritesController
 from shop.models import ProductPage
@@ -19,6 +19,38 @@ class BaseCartAPIView(APIView):
         """
         super(BaseCartAPIView, self).initial(request, *args, **kwargs)
         self.cart = Cart(request)
+
+
+class ApplyPromocodeAPIView(BaseCartAPIView):
+
+    """
+    Возвращает корзину и с примененным промокодом
+    """
+
+    model = Promocode
+
+    def get(self, request, *args, **kwargs):
+        name = request.GET.get('name', '')
+        if len(name) == 0:
+            self.cart.reset_promocode()
+            return Response(
+                self.cart.data,
+                status=status.HTTP_200_OK
+            )
+        else:
+            try:
+                instance = self.model.objects.get(
+                    name=name
+                )
+            except ObjectDoesNotExist:
+                return Response(
+                    status=status.HTTP_404_NOT_FOUND
+                )
+            self.cart.apply_promocode(instance)
+            return Response(
+                self.cart.data,
+                status=status.HTTP_200_OK
+            )
 
 
 class CartApiView(BaseCartAPIView):
@@ -146,6 +178,7 @@ class CreateOrderAPIView(BaseCartAPIView):
         try:
             serializer.validate()
         except ValidationError as e:
+            print(e.messages)
             return Response(
                 status=status.HTTP_400_BAD_REQUEST,
                 data=e.messages

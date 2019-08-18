@@ -13,5 +13,6 @@ urlpatterns = [
     path('auth/', include('api.v0.auth.urls', namespace='auth')),
     path('jwt/', include('api.v0.jwt.urls', namespace='jwt')),
     path('tasks/', include('api.v0.tasks.urls', namespace='tasks')),
-    path('users/', include('api.v0.users.urls', namespace='users'))
+    path('users/', include('api.v0.users.urls', namespace='users')),
+    path('promocodes/', include('api.v0.promocodes.urls', namespace='promocodes'))
 ]

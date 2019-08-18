@@ -132,13 +132,9 @@
                                         Скидка:
                                     </div>
                                     <div class="field-value-box">
-                                        <el-input-number
-                                            v-model="instance.sale.amount"
-                                            :min="0"
-                                            size="medium"
-                                            controls-position="right"
-                                        >
-                                        </el-input-number>
+                                        <div class="total-price">
+                                            {{saleAmount}} ₽
+                                        </div>
                                     </div>
                                 </div>
                             </el-col>
@@ -164,6 +160,7 @@
                                             :min="0"
                                             size="medium"
                                             controls-position="right"
+                                            @change="calculatePrices"
                                         >
                                         </el-input-number>
                                     </div>
@@ -182,12 +179,8 @@
                                     <div class="field-label">
                                         К оплате
                                     </div>
-                                    <div class="field-value-box">
-                                        <el-input
-                                            v-model="totalPrice"
-                                            :disabled="true"
-                                        >
-                                        </el-input>
+                                    <div class="total-price">
+                                        {{totalPrice}} ₽
                                     </div>
                                 </div>
                             </el-col>
@@ -200,73 +193,88 @@
                             <li class="cart-item" v-for="(item, key) of instance.cart.items"
                                 :key="item.pk"
                             >
-                                <div class="cart-item-img-wrap">
-                                    <img :src="item.image">
+                                <div class="cart-item-left">
+                                    <div class="cart-item-img-wrap">
+                                        <img :src="item.image">
+                                    </div>
                                 </div>
+                                <div class="cart-item-right">
+                                    <div class="cart-item-topbar">
+                                        <a  class="cart-item-link" :href="item.url" target="_blank">
+                                            {{item.brand}} {{item.model}} {{item.series}}
+                                        </a>
+                                    </div>
+                                    <div class="cart-item-content">
 
-                                <div class="cart-item-name">
-                                    <a class="cart-item-link"
-                                        :href="item.url"
-                                        target="_blank"
-                                    >
-                                        <div class="cart-item-vendor">
-                                            {{item.brand}}
+                                        <div class="field field-nonmargin">
+                                            <div class="field-label">
+                                                Цена за 1 шт.
+                                            </div>
+                                            <div class="field-value-box">
+                                                <el-input-number
+                                                    v-model="item.price"
+                                                    :min="0"
+                                                    size="small"
+                                                    controls-position="right"
+                                                    @change="calculatePrices"
+                                                >
+                                                </el-input-number>
+                                            </div>
                                         </div>
-                                        <div class="cart-item-model">
-                                            {{item.model}}
+
+                                        <div class="field field-nonmargin">
+                                            <div class="field-label">
+                                                Кол-во
+                                            </div>
+                                            <div class="field-value-box">
+                                                <el-input-number
+                                                    v-model="item.quantity"
+                                                    :min="0"
+                                                    size="small"
+                                                    controls-position="right"
+                                                    @change="calculatePrices"
+                                                >
+                                                </el-input-number>
+                                            </div>
                                         </div>
-                                        <div class="cart-item-series">
-                                            {{item.series}}
+
+
+                                        <div class="field field-nonmargin">
+                                            <div class="field-label">
+                                                Скидка
+                                            </div>
+                                            <div class="field-value-box">
+                                                <el-input-number
+                                                    v-model="item.sale"
+                                                    :min="0"
+                                                    size="small"
+                                                    controls-position="right"
+                                                    @change="calculatePrices"
+                                                >
+                                                </el-input-number>
+                                            </div>
                                         </div>
-                                    </a>
 
-                                </div>
+                                        <div class="field field-nonmargin">
+                                            <div class="field-label">
+                                                Итого:
+                                            </div>
+                                            <div class="field-value-box">
+                                                <div class="total-price">
+                                                {{item.total_price}} ₽
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                <div class="cart-item-calculate">
-                                    <div class="cart-item-price">
-                                        <el-input-number
-                                            v-model="item.price"
-                                            controls-position="right"
-                                            size="small"
-                                            :min=0
-                                            @change="calculatePrices"
-                                        >
-                                        </el-input-number>
+                                        <div class="field field-nonmargin">
+                                            <el-button type="danger"
+                                                @click="triggerDelete(item)"
+                                            >
+                                                Удалить
+                                            </el-button>
+                                        </div>
+
                                     </div>
-
-                                    <div class="cart-item-multi">
-                                        <el-icon class="el-icon-close">
-                                        </el-icon>
-                                    </div>
-
-                                    <div class="cart-item-quantity">
-                                        <el-input-number
-                                            v-model="item.quantity"
-                                            controls-position="right"
-                                            size="small"
-                                            :min="1"
-                                            @change="calculatePrices"
-                                        >
-                                        </el-input-number>
-                                    </div>
-
-                                    <div class="cart-item-equal">
-                                        =
-                                    </div>
-
-                                    <div class="cart-item-total">
-                                        {{item.total_price}} ₽
-                                    </div>
-
-                                    <el-button 
-                                        class="btn-delete"
-                                        type="danger"
-                                        icon="el-icon-delete" 
-                                        circle
-                                        @click="triggerDelete(item)"
-                                    >
-                                    </el-button>
-                            
                                 </div>
 
                             </li>
@@ -542,18 +550,22 @@ export default {
             return true
         },
         itemsPrice() {
-            return this.instance.cart.total_price
+            return this.instance.cart.total_price;
         },
         deliveryPrice() {
             return this.instance.delivery['price']
         },
         saleAmount() {
-            return this.instance.sale.amount
+            return this.instance.cart.total_sale
         },
-        totalPrice() {
-            let total = this.itemsPrice + this.deliveryPrice - this.saleAmount
-            total = total > 0 ? total : 0
-            return total
+        totalPrice: {
+            get() {
+                return this.instance.total_price;
+            },
+            set(value) {
+                value = parseInt(value);
+                this.instance.total_price = value;
+            }
         }
     },
     created() {
@@ -565,15 +577,23 @@ export default {
             this.$router.push({path: path});
         },
         calculatePrices() {
-            let total_price = 0;
+            let totalPrice = 0;
+            let totalSale = 0;
+
             for (let key in this.instance.cart.items) {
                 let item = this.instance.cart.items[key];
                 let quantity = item['quantity'];
                 let price = item['price'];
-                item['total_price'] = price * quantity;
-                total_price += item['total_price'];
+                let sale = item['sale']
+                item['total_price'] = (price * quantity) - sale
+
+                totalSale += sale;
+                totalPrice += item['total_price'];
             }
-            this.$set(this.instance.cart, 'total_price', total_price)
+            this.$set(this.instance.cart, 'total_price', totalPrice)
+            this.$set(this.instance.cart, 'total_sale', totalSale)
+
+            this.instance.total_price = totalPrice + this.instance.delivery['price'];
 
         },
         postInitialize() {
@@ -741,49 +761,9 @@ export default {
     }
     .cart-item {
         position: relative;
-        height: 122px;
         padding: 10px;
         display: flex;
         list-style: none;
-    }
-    .btn-delete {
-        // position: absolute;
-        // bottom: 10px;
-        // right: 20px;
-    }
-    .cart-item-name {
-        display: flex;
-        align-items: center;
-        width: 200px;
-        overflow: hidden;
-        padding: 0px 10px;
-    }
-    .cart-item-img-wrap {
-        height: 102px;
-        width: 102px;
-        text-align: center;
-        img {
-            height: 100%;
-            width: auto;
-        }
-    }
-    .cart-item-link {
-        display: block;
-        height: 54px;
-        margin-bottom: 8px;
-        text-decoration: underline;
-        color: #4c4dc1;
-    }
-    .cart-item-price {
-
-    }
-    .cart-item-calculate {
-        display: flex;
-        height: 100%;
-        padding: 0px 20px 0px 0px;
-        flex-grow: 1;
-        align-items: center;
-        justify-content: space-between;
     }
     .product-autocomplete {
         width: 100%;
@@ -792,6 +772,61 @@ export default {
         width: 100%;
         .el-select {
             width: 100%;
+        }
+    }
+
+
+
+
+
+
+
+
+
+    .total-price {
+        font-size: 24px;
+    }
+
+
+    .cart-item-left {
+        height: 100%;
+        max-width: 100px;
+    }
+    .cart-item-right {
+        position: relative;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+    }
+    .cart-item-img-wrap {
+        height: 100px;
+        width: 100px;
+        text-align: center;
+        img {
+            height: 100%;
+            width: auto;
+        }
+    }
+    .cart-item-link {
+        display: block; 
+        padding: 5px;
+        text-decoration: underline;
+        color: #4c4dc1;
+    }
+    .cart-item-content {
+        width: 100%;
+        max-height: 100px;
+        margin-top: 10px;
+        padding: 5px;
+        border-top: 1px solid #dcdcdc;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        .field {
+            width: 240px;
+            margin: 0px;
         }
     }
 </style>

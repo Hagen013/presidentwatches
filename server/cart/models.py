@@ -9,10 +9,15 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.contrib.postgres.fields import JSONField
+from django.utils import timezone
 
 from djchoices import DjangoChoices, ChoiceItem
 
 from core.db.mixins import TimeStampedMixin
+from core.db.fields import PositiveSmallIntegerRangeField
+
+from shop.models import Attribute
+from shop.models import AttributeValue as Value
 
 
 User = get_user_model()
@@ -141,10 +146,15 @@ class Order(TimeStampedMixin):
         default=_empty_sale
     )
 
+    total_price = models.PositiveIntegerField(
+        default=0
+    )
+
     CART_JSONSCHEMA = {
         "type": "object",
         "properties": {
             "total_price": {"type": "integer", "minimum": 0},
+            "total_sale": {"type": "integer", "minimum": 0},
             "items": {
                 "type": "object",
                 "patternProperties": {
@@ -156,12 +166,15 @@ class Order(TimeStampedMixin):
                             "price": {"type": "integer", "minimum": 0},
                             "quantity": {"type": "integer", "minimum": 0},
                             "total_price": {"type": "integer", "minimum": 0},
+                            "base_price": {"type": "integer", "minimum": 0},
                             "image": {"type": "string"},
                             "added_at": {"type": "string", "format": "date-time"},
                             "brand": {"type": "string"},
                             "series": {"type": "string"},
                             "slug": {"type": "string"},
-                            "url": {"type": "string"}
+                            "url": {"type": "string"},
+                            "sale": {"type": "integer"},
+                            "is_sale": {"type": "boolean"}
                         },
                         "required": ["model", "price", "quantity", "total_price", "image", "slug"],
                         "additionalProperties": False,
@@ -428,3 +441,175 @@ class Order(TimeStampedMixin):
         super(Order, self).save(*args, **kwargs)
 
 
+class User2PromocodeRelation(models.Model):
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
+
+    promocode = models.ForeignKey(
+        'Promocode',
+        on_delete=models.CASCADE,
+    )
+
+class PromocodeType(DjangoChoices):
+
+    BrandsPromo  = ChoiceItem(1, 'По брендам')
+    SeriesPromo  = ChoiceItem(2, 'По коллекциям')
+    PrivatePromo = ChoiceItem(3, 'Приватный')
+    Custom       = ChoiceItem(4, 'Вручную')
+
+
+class Promocode(TimeStampedMixin):
+
+    MAX_SALE_AMOUNT = 90
+
+    class Meta:
+        abstract = False
+
+    name = models.CharField(
+        max_length=64,
+        unique=True,
+        db_index=True
+    )
+
+    description = models.CharField(
+        max_length=512,
+        blank=True
+    )
+
+    datatype = models.PositiveSmallIntegerField(
+        choices=PromocodeType.choices,
+        default=PromocodeType.BrandsPromo
+    )
+
+    start_date = models.DateTimeField(
+        default=timezone.now,
+        blank=True,
+        null=True
+    )
+
+    expiration_date = models.DateTimeField(
+        blank=True,
+        null=True
+    )
+
+    is_permament = models.BooleanField(
+        default=False
+    )
+
+    brands = JSONField(
+        default=list
+    )
+
+    series = JSONField(
+        default=list
+    )
+
+    users = models.ManyToManyField(
+        User,
+        blank=True,
+        related_name='promocodes',
+        through=User2PromocodeRelation
+    )
+
+    has_limited_use = models.BooleanField(
+        default=False
+    )
+
+    limit = models.PositiveSmallIntegerField(
+        default=1
+    )
+
+    sale_amount = PositiveSmallIntegerRangeField(
+        default=0,
+        min_value=0,
+        max_value=100
+    )
+
+    def clean(self, *args, **kwargs):
+        
+        # Проверка
+
+        # Проверка дат начала и старта:
+        if not self.is_permament:
+            if self.start_date >= self.expiration_date:
+                raise ValidationError('Время старта действия промокода позже времени окончания')
+
+        # Проверка брендов
+        if self.datatype == PromocodeType.BrandsPromo:
+
+            if len(self.brands) == 0:
+                raise ValidationError('Промокоды по бренду должны содержать как минимум 1 бренд')
+
+            qs = Value.objects.filter(attribute__name='Бренд').values('value_enum')
+            possible_brands = {v['value_enum'] for v in qs}
+            difference = set(self.brands).difference(possible_brands)
+            if len(difference) > 0:
+                raise ValidationError('Поле брендов содержит значения, отсутствующие в базе данных')
+        
+
+        # Или коллекций
+        elif self.datatype == PromocodeType.SeriesPromo:
+            if len(self.series) == 0:
+                raise ValidationError('Промокоды по коллекции должны содержать как минимум 1 коллекцию')
+
+            qs = Value.objects.filter(attribute__name='Коллекция').values('value_enum')
+            possible_series = {v['value_enum'] for v in qs}
+            difference = set(self.series).difference(possible_series)
+            if len(difference) > 0:
+                raise ValidationError('Поле коллекций содержит значения, отсутствующие в базе данных')
+
+        # Или пользователей
+        elif self.datatype == PromocodeType.PrivatePromo:
+            pass
+
+        # Или всего на свете
+        else:
+            pass
+
+        super(Promocode, self).clean(*args, **kwargs)
+
+    def apply(self, data, user):
+        # Функция преобразования данных корзины
+        # в соответствии с условиями промокода
+
+        brands = set(self.brands)
+        items = data['items'].copy()
+        data['total_sale'] = 0
+        data['promocode'] = self.name
+
+        total_overall = 0
+        total_sale = 0
+
+        for key in list(items.keys()):
+            item = items[key]
+
+            if item['is_sale'] == False:
+
+                if item['brand'] in brands:
+                    
+                    total_price = item['price'] * item['quantity']
+                    sale = int(self.sale_amount*total_price/100)
+                    total_sale += sale
+
+                    item['total_price'] = total_price - sale
+                    item['sale'] = sale
+                    total_overall += item['total_price']
+                    
+                else:
+                    
+                    total_price = item['price'] * item['quantity']
+                    item['total_price'] = total_price
+                    item['sale'] = 0
+                    total_overall += total_price
+
+        data['items'] = items
+        data['total_price'] = total_overall
+        data['total_sale'] = total_sale
+        data['sale_amount'] = self.sale_amount
+
+        return data
+
+        

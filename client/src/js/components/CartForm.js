@@ -6,6 +6,7 @@ import store from '@/store/'
 import locationStore from '@/store/location/index'
 import api from '@/api'
 import geoApi from '@/api/geo'
+import message from '@/lib/message'
 import { priceFilter, timeFilter } from '@/utils/filters'
 
 
@@ -109,12 +110,42 @@ export default class CartForm {
 
         pickupModal.find('.modal-placeholder').click(function() {
             self.hideModal();
-        })
+        });
 
         pickupModal.find('.modal-close').click(function() {
             self.hideModal();
-        })
+        });
 
+        $('#cart-promocode-submit').click(function() {
+            let value = $('#cart-promocode').val().toUpperCase();
+            api.get(`/cart/promocode/`, {params: {name: value}}).then(
+                response => {
+                    store.commit('updateCart', response.data)
+                    api.get('/promocodes/search/', {params: {name: value}}).then(
+                        res => {
+                            $('#sidebar-old-price').addClass('active');
+                            message({
+                                type: 'success',
+                                title: 'Промокод применен',
+                                text: res.data.description + `<p class="bold message-sale">Ваша скидка: <span class="price">${store.state.cart.data.total_sale}</span><p>`,
+                                link: '<a class="message-btn message-btn-1" href="/info/promo/">ВСЕ ПРОМОКОДЫ</a>'
+                            })
+                        },
+                        res => {
+
+                        }
+                    )
+                },
+                response => {
+                    message({
+                        'type': 'error',
+                        'title': 'Промокод не найден',
+                        'text': '',
+                        'link': '<a class="message-btn message-btn-1" href="/info/promo/">ВСЕ ПРОМОКОДЫ</a>'
+                    })
+                }
+            )
+        })
     }
 
     _bindDeliveryOptionsChange() {

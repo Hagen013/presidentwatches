@@ -1,10 +1,12 @@
-from .cart import Cart
-
 from django.core.exceptions import ObjectDoesNotExist
+from django.conf import settings
+
+from rest_framework import serializers
 
 from core.serializers import DynamicFieldsModelSerializer
-from cart.models import Order
+from cart.models import Order, Promocode
 from tasks.sms_notifications import sms_notify
+from .cart import Cart
 
 
 class OrderCreateSerializer():
@@ -23,6 +25,8 @@ class OrderCreateSerializer():
         self._payment = self.get_payment_data(data)
         self._cpa = self.get_cpa_data(data)
         self._store = self.get_store_data()
+        self._sale = self.get_sale()
+        self._total_price = self.get_total_price()
         
         self._client_notes = self.get_client_notes(data)
         self._source = self.get_source(data)
@@ -37,7 +41,9 @@ class OrderCreateSerializer():
             cpa=self._cpa,
             store=self._store,
             source=self._source,
-            client_notes=self._client_notes
+            client_notes=self._client_notes,
+            sale=self._sale,
+            total_price=self._total_price
         )
         self._instance.uuid = Order._generate_uuid()
 
@@ -84,13 +90,18 @@ class OrderCreateSerializer():
     def get_source(self, data):
         return data.get('source')
 
-    def get_sale(self, data):
-        return None
+    def get_sale(self):
+        promocode = self._cart.data.get('promocode')
+        sale = self._cart.data.get('total_sale')
+        return {
+            'promocode': promocode,
+            'amount': sale
+        }
+
+    def get_total_price(self):
+        return self._cart.data['total_price'] + self._delivery['price']
     
     def validate(self):
-        import pickle
-        with open('order.pickle', 'wb') as fp:
-            pickle.dump(self, fp)
         self._instance.full_clean()
     
     @property
@@ -100,7 +111,8 @@ class OrderCreateSerializer():
     def save(self):
         self._cart.clear()
         self._instance.save()
-        #sms_notify.delay(self._instance.public_id)
+        if not settings.DEBUG:
+            sms_notify.delay(self._instance.public_id)
         return self._instance
 
 
@@ -123,6 +135,7 @@ class OrderSerializer(DynamicFieldsModelSerializer):
             'created_at',
             'modified_at',
             'client_notes',
+            'total_price',
             'sale'
         )
         read_only_fields = (
@@ -156,6 +169,7 @@ class OrderPrivateSerializer(DynamicFieldsModelSerializer):
             'client_notes',
             'manager_notes',
             'store',
+            'total_price',
             'sale',
             'cpa'
         )
@@ -163,4 +177,14 @@ class OrderPrivateSerializer(DynamicFieldsModelSerializer):
             'id',
             'user',
             'public_id'
+        )
+
+
+class PromocodeSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Promocode
+        fields = (
+            'name',
+            'description',
         )

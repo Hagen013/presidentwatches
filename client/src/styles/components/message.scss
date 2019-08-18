@@ -1,0 +1,89 @@
+.message {
+    position: fixed;
+    font-size: 15px;
+    width: 260px;
+    top: -100px;
+    left:0;
+    right:0;
+    margin-left:auto;
+    margin-right:auto;
+    padding: 10px;
+    color: $white;
+    background: rgba(0,0,0,.85);
+    z-index: 500000;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+    opacity: 0;
+    will-change: opacity;
+
+    @include mq($from: tablet) {
+        width: 400px;
+    }
+}
+
+.message-title {
+    font-weight: 600;
+    padding: 10px;
+    font-size: 18px;
+}
+
+.message.success {
+    // .message-text {
+    //     color: green;
+    // }
+}
+
+.message-text {
+    padding: 10px;
+    // color: $dark-grey;
+}
+
+.message-buttons {
+    margin-top: 10px;
+    height: 40px;
+    width: 100%;
+}
+
+.message-btn {
+    position: absolute;
+    height: 40px;
+    line-height: 40px;
+    width: 130px;
+    font-weight: 600;
+    background: $accent;
+    color: $black;
+    text-align: center;
+    text-decoration: none;
+    font-size: 12px;
+    transition: .2s;
+    cursor: pointer;
+    user-select: none;
+    @include mq($from: tablet) {
+        font-size: 14px;
+        width: 200px;
+    }
+}
+
+.message-btn-1 {
+    left: 0px;
+    bottom: -1px;
+    background: $grey;
+    border-radius: 0px 0px 0px 8px;
+    &:hover {
+        background: darken($grey, 10);
+    }
+}
+
+.message-btn-2 {
+    right: 0px;
+    bottom: -1px;
+    border-radius: 0px 0px 8px 0px;
+    &:hover {
+        background: darken($accent, 10);
+    }
+}
+
+.message-sale {
+    font-size: 16px;
+    margin-top: 10px;
+}
