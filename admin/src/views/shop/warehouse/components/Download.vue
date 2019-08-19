@@ -73,6 +73,7 @@ export default {
             this.taskInProgress = true;
             this.uuid = response.data.uuid
             this.filename = response.data.filename;
+            console.log(this.filename);
         },
         handleFailedSubmitResponse(response) {
             this.taskInProgress = false;
@@ -91,7 +92,7 @@ export default {
             )
         },
         getResults() {
-            document.location.assign(`${baseUrl}/tasks/warehouse/results/?filename=ostatki-2019-08-08%2018:13:51.xlsx`)
+            document.location.assign(`${baseUrl}/tasks/warehouse/results/?filename=${this.filename}`)
         },
         handleSuccessfulGetResultsResponse(response) {
             if (response.data.is_ready) {

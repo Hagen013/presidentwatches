@@ -20,6 +20,8 @@ from tasks.warehouse import (
 
 class StatusReportMixin():
 
+    permissions_class = permissions.IsAdminUser
+
     def get(self, request, *args, **kwargs):
         uuid = request.GET.get('uuid')
         task = AsyncResult(uuid, app=app)
@@ -67,14 +69,15 @@ class Task2DonwloadFileApiView(APIView, StatusReportMixin):
     о начале формирования по POST-запросу,
     отдает отчет о состоянии task'a по GET
     """
+    permissions_class = permissions.IsAdminUser
+
+    def get_filename(self):
+        raise NotImplementedError('Method must be implemented by a subclass')
 
     def post(self, request, *args, **kwargs):
         fs = FileSystemStorage
-        time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         fs = FileSystemStorage()
-        filename = 'ostatki-{time}.xlsx'.format(
-            time=time
-        )
+        filename = self.get_filename()
         filepath = settings.ADMIN_DOWNLOADS + filename
         result = self.task.delay(filepath)
         data = {
@@ -87,11 +90,19 @@ class Task2DonwloadFileApiView(APIView, StatusReportMixin):
 class UploadWarehouseApiView(UploadFile2TaskApiView):
 
     task = process_warehouse_file
+    permissions_class = permissions.IsAdminUser
 
 
 class DonwloadWarehouseApiView(Task2DonwloadFileApiView):
 
     task = generate_warehouse_file
+
+    def get_filename(self):
+        time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        filename = 'ostatki-{time}.xlsx'.format(
+            time=time
+        )
+        return filename
 
 
 class DownloadFileApiView(APIView):
