@@ -124,7 +124,7 @@ class ProductPage(AbstractOfferPage, EavEntityMixin,
     )
 
     def get_absolute_url(self):
-        return '/watches/{slug}'.format(
+        return '/watches/{slug}/'.format(
             slug=self.slug
         )
 

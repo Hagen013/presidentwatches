@@ -331,7 +331,8 @@ CELERY_IMPORTS = (
     'tasks.warehouse',
     'tasks.elastic',
     'tasks.sms_notifications',
-    'tasks.retail_rocket'
+    'tasks.retail_rocket',
+    'tasks.yml'
 )
 CELERY_QUEUES = (
     Queue('default', Exchange('default'), routing_key='default'),
