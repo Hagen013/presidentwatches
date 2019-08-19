@@ -202,17 +202,26 @@
     @include mq($from: tablet) {
         width: 200px !important;
     }
+    @include mq($from: wide) {
+        width: 32% !important;
+    }
 }
 
 .cart-recipient__phone {
     @include mq($from: tablet) {
         width: 160px !important;
     }
+    @include mq($from: wide) {
+        width: 32% !important;
+    }
 }
 
 .cart-recipient__name {
     @include mq($from: tablet) {
         width: 280px !important;
+    }
+    @include mq($from: wide) {
+        width: 32% !important;
     }
 }
 
