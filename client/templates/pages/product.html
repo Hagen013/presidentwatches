@@ -16,7 +16,7 @@
 
 {% block content %}
     <div class="content-area content-area_block">
-        <div class="title-area">
+        <div class="title-area title-area-product">
             {% with view='shop:category', breadcrumbs=category.truncated_breadcrumbs[:4] %}
                 {% include 'blocks/breadcrumbs.html' %}
             {% endwith %}
@@ -29,6 +29,13 @@
                 <div class="product-front-wrap col col-12 t-col-6">
                     <div class="product-front">
                         <div class="product-front__main-img-wrap">
+                            <div class="product-front-badges">
+                            {% if product.is_sale %}
+                                <div class="product-badge product-badge-sale">
+                                -{{product.sale_percentage}}%
+                                </div>
+                            {% endif %}
+                            </div>
                             <a class="product-front__img-link active" href="{{product.image.url}}"
                                 data-fancybox="gallery"
                                 target="_blank"
@@ -105,7 +112,7 @@
                                     {{product.price}}
                                 </div>
                                 {% if product.is_sale %}
-                                <div class="old-price product-main__old-price">
+                                <div class="price_old price product-main__old-price">
                                     {{product.old_price}}
                                 </div>
                                 {% endif %}

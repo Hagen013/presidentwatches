@@ -16,6 +16,57 @@
     }
 }
 
+.product-front-badges {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 1000;
+    @include mq($from: tablet) {
+        top: 0px;
+        left: 0px;
+    }
+}
+
+.product-badge {
+    display: inline-block;
+    margin-right: 10px;
+    text-align: center;
+    height: 26px;
+    line-height: 26px;
+    padding: 0px 10px;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    @include mq($from: tablet) {
+        padding: 0px 20px;
+        font-size: 18px;
+        line-height: 36px;
+        height: 36px;
+    }
+}
+
+.product-badge-sale {
+    background: $red;
+}
+
+.product-main__old-price {
+    float: left;
+    font-size: 18px;
+    margin-left: 10px;
+    color: $dark-grey;
+    @include mq($from: tablet) {
+        margin-top: 3px;
+        font-size: 24px;
+    }
+}
+
+.title-area-product {
+    display: none;
+    @include mq($from: tablet) {
+        display: block;
+    }
+}
+
 .product-front__main-img-wrap {
     position: absolute;
     top: 0px;

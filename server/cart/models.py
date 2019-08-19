@@ -586,24 +586,22 @@ class Promocode(TimeStampedMixin):
         for key in list(items.keys()):
             item = items[key]
 
-            if item['is_sale'] == False:
+            if item['is_sale'] == False and item['brand'] in brands:
+                    
+                total_price = item['price'] * item['quantity']
+                sale = int(self.sale_amount*total_price/100)
+                total_sale += sale
 
-                if item['brand'] in brands:
+                item['total_price'] = total_price - sale
+                item['sale'] = sale
+                total_overall += item['total_price']
                     
-                    total_price = item['price'] * item['quantity']
-                    sale = int(self.sale_amount*total_price/100)
-                    total_sale += sale
-
-                    item['total_price'] = total_price - sale
-                    item['sale'] = sale
-                    total_overall += item['total_price']
+            else:
                     
-                else:
-                    
-                    total_price = item['price'] * item['quantity']
-                    item['total_price'] = total_price
-                    item['sale'] = 0
-                    total_overall += total_price
+                total_price = item['price'] * item['quantity']
+                item['total_price'] = total_price
+                item['sale'] = 0
+                total_overall += total_price
 
         data['items'] = items
         data['total_price'] = total_overall
