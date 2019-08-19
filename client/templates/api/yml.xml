@@ -10,17 +10,15 @@
     </currencies>
     
     <categories>
-      {% for c in categories %}
-        {% if loop.index == 1 %}
-        <category id="{{c.id}}" 
-        >Головоломки
+      {% for node in categories %}
+        {% if node._depth == 0 %}
+        <category id="{{node.id}}" 
+        >{{node.name}}
         </category>
         {% else %}
-        <category id="{{c.id}}" 
-                {% if c.parent %}
-                  parentId="{{c.parent.id}}"
-                {% endif %}
-        >{{c.title}}
+        <category id="{{node.id}}" 
+          parentId="{{node.parent.id}}"
+        >{{node.name}}
         </category>
         {% endif %}
       {% endfor %}
@@ -52,7 +50,7 @@
             
             {% for key, values_list in p.attributes.items() %}
                 {% for value in values_list %}
-                <param name="{{key}}">{{value.name}}</param>
+                <param name="{{key}}">{{value.value}}</param>
                 {% endfor %}
             {% endfor %}
 
