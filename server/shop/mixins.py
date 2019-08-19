@@ -187,6 +187,24 @@ class WatchesProductMixin(models.Model):
 
         return groups
 
+    @property
+    def brand_value(self):
+        try:
+            return self.attribute_values.get(
+                attribute__name='Бренд'
+            )
+        except ObjectDoesNotExist:
+            return None
+
+    @property
+    def series_value(self):
+        try:
+            return self.attribute_values.get(
+                attribute__name='Коллекция'
+            )
+        except ObjectDoesNotExist:
+            return None
+
     def get_short_descriptions(self):
         attributes = self.attributes
         descriptions = []
@@ -241,20 +259,21 @@ class WatchesProductMixin(models.Model):
             
         return descriptions
 
+    
+    def caclculate_sale_percentage(self):
+        if self._price < self.old_price:
+            if self.old_price == 0:
+                self.sale_percentage = 0
+            else:
+                self.sale_percentage = round(((self.old_price-self.price)/self.old_price) * 100)
+        else:
+            self.sale_percentage = 0
+
 
     def save(self):
         
         if self.id:
-            # Скидка
-            value = self.value_class.objects.get(
-                attribute__name='Распродажа',
-                value_bool=True
-            )
-            if self.sale_percentage > 0:
-                self.add_value(value)
-            else:
-                self.remove_value(value)
-            
+
             # Короткое описание
             self.summary = self.get_short_descriptions()
 

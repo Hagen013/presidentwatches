@@ -139,13 +139,6 @@ class Offer(DescriptionMixin, DimensionsMixin, ImageMixin):
         return self.old_price - self.price
 
     def save(self, *args, **kwargs):
-        if self._price < self.old_price:
-            if self.old_price == 0:
-                self.sale_percentage = 0
-            else:
-                self.sale_percentage = round(((self.old_price-self.price)/self.old_price) * 100)
-        else:
-            self.sale_percentage = 0
         super(Offer, self).save(*args, **kwargs)
 
 

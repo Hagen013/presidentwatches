@@ -84,7 +84,6 @@ $blue: #4c4dc1;
 }
 
 .card-fade-4 {
-    opacity: 0.5;
     background-image:linear-gradient(
         to top,
         rgba(255,191,0,1) 0%,
@@ -133,19 +132,6 @@ $blue: #4c4dc1;
     background-image: url('../img/promocodes/SLAVAPW_small.jpg');
 }
 
-.promo-card-content {
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    top: 0px;
-    left: 0px;
-    height: 100%;
-    width: 100%;
-    z-index: 10;
-}
-
 .promo-card-title {
     padding: 10px;
     font-size: 42px;
@@ -178,4 +164,35 @@ $blue: #4c4dc1;
 .promo-caption {
     display: block;
     text-align: center;
+}
+
+.blackout-filter {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    background: #000000;
+    opacity: 0.1;
+    z-index: 8;
+}
+
+.promo-card-content {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    z-index: 10;
+}
+
+
+.promo-card-text {
+    padding: 10px 20px;
+    font-size: 18px;
+    color: $white;
 }

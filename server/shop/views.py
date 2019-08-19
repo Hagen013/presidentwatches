@@ -15,6 +15,7 @@ from django.http import Http404
 
 from core.viewmixins import DiggPaginatorViewMixin
 from core.utils import custom_redirect
+from cart.models import Promocode
 
 from cart.last_seen import LastSeenController
 from reviews.models import ReviewStatus
@@ -287,6 +288,27 @@ class ProductPageView(TemplateView):
             delivery_data = {}
         return delivery_data
 
+    def fetch_promocode(self):
+        qs = Promocode.objects.filter(brands__contains=self.instance.brand).order_by('sale_amount')
+        if len(qs) > 0:
+            return qs[0]
+        else:
+            return None
+
+    def get_sale_notes(self):
+        if self.instance.is_sale:
+            return ''
+        else:
+            promocode = self.fetch_promocode()
+            if promocode is not None:
+                return 'Акция! Скидка {amount}% на эту модель {brand} по промокоду {promocode}'.format(
+                    amount=promocode.sale_amount,
+                    brand=self.instance.brand,
+                    promocode=promocode.name
+                )
+            else:
+                return ''
+
     def get_context_data(self, *args, **kwargs):
         context = super(ProductPageView, self).get_context_data(**kwargs)
 
@@ -297,11 +319,13 @@ class ProductPageView(TemplateView):
         reviews = self.instance.reviews.filter(status=ReviewStatus.Approved)
         count = reviews.count()
 
+        # Promocode stuff
+        context['sale_notes'] = self.get_sale_notes()
+        
         context['reviews'] = reviews
         context['reviews_count'] = count
         context['rating_overall'] = self.instance.rating_overall
         context['delivery_data'] = self.get_delivery_data()
-        print(context['delivery_data'])
         context['videos'] = self.instance.videos.all()
 
         context['images'] = self.instance.images.all().order_by('order')

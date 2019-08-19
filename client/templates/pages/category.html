@@ -239,7 +239,7 @@
                                 <div class="product-card__img-wrap">
                                     <img class="product-card__img" src="{{ product.thumbnail.url }}">
                                     <div class="product-card__ribbons row">
-                                        {% if product.sale_percentage > 0 %}
+                                        {% if product.is_sale %}
                                             <div class="ribbon product-card__sale-percentage">
                                             - {{product.sale_percentage}} %
                                             </div>

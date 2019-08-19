@@ -174,6 +174,16 @@
                                 </div>
                             {% endif %}
                             </div>
+                            {% if sale_notes|length > 0 %}
+                            <div class="product-main__info-block">
+                                <div class="bold product-main__info-block-title">
+                                    Скидка
+                                </div>
+                                <div class="product-sale-notes">
+                                {{sale_notes}}
+                                </div>
+                            </div>
+                            {% endif %}
                             <div class="product-main__info-block show-wide">
                                 <div class="bold product-main__info-block-title">
                                     Информация о доставке

@@ -77,7 +77,7 @@ class NodeManager(TreeManager):
                                 .filter(is_published=True)
                                 .filter(attribute_values__in=product_instance
                                         .attribute_values
-                                        .all())
+                                        .filter(attribute__name__in=['Бренд', 'Страна', 'Тип часов', 'Коллекция']))
                                 .annotate(len_av=models.Count("id",
                                                               distinct=False)
                                           )
