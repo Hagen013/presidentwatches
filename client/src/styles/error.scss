@@ -86,7 +86,7 @@ $mq-breakpoints: (
 .error-404-btn-1 {
     width: 100%;
     margin-bottom: 10px;
-    min-width: auto !important;
+
     @include mq($from: desktop) {
         width: auto;
         margin-right: 10px;
@@ -201,7 +201,7 @@ $mq-breakpoints: (
     max-width: 400px;
     @include mq($from: desktop) {
         max-width: 100%;
-        width: 512px;
+        width: 612px;
     }
 }
 
@@ -229,7 +229,11 @@ $mq-breakpoints: (
 .error-buttons {
     margin-bottom: 30px;
     @include mq($from: desktop) {
+        flex-direction: row;
         display: flex;
+        .error-404-btn-1 {
+            display: inline-block;
+        }
     }
 }
 
