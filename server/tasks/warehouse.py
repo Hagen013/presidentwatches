@@ -35,6 +35,11 @@ def generate_warehouse_file(filepath):
     )
     df = pd.DataFrame(list(qs))
     df['is_in_stock'] = df['is_in_stock'].apply(int)
+    df['is_sale'] = df['is_sale'].apply(int)
+    df['is_new'] = df['is_new'].apply(int)
+    df['is_bestseller'] = df['is_bestseller'].apply(int)
+    df['is_yml_offer'] = df['is_yml_offer'].apply(int)
+    df['is_published'] = df['is_published'].apply(int)
     df = df.reindex(fields, axis=1)
     df = df.rename(columns={
         'brand': 'Бренд',
