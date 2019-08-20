@@ -116,7 +116,7 @@ export default {
             NProgress.start()
             this.showProgress = true;
 
-            api.post(this.apiUploadUrl, formData).then(
+            api.post('/tasks/uploads/warehouse/', formData).then(
                 response => {
                     this.handleSuccessfulResponse(response);
                 },
@@ -134,7 +134,7 @@ export default {
         },
         getUploadStatus() {
             if (this.progress < 90) {
-                this.progress += 10
+                this.progress += 1
             }
             api.get(this.apiUploadUrl, {params: {uuid: this.uuid}}).then(
                 response => {
