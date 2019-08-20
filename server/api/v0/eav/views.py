@@ -23,6 +23,7 @@ class AttributeViewSet(ModelViewSet):
     )
 
     filter_fields = (
+        'is_filter',
     )
     search_fields = (
     )

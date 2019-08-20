@@ -172,7 +172,7 @@ class AttributeSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'datatype',
-            'slug',
+            'key',
             'description',
             'is_filter',
             'strict_options',
