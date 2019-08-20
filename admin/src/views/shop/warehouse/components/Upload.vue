@@ -136,10 +136,9 @@ export default {
             if (this.progress < 90) {
                 this.progress += 1
             }
-            api.get(this.apiUploadUrl, {params: {uuid: this.uuid}}).then(
+            api.get('/tasks/uploads/warehouse/', {params: {uuid: this.uuid}}).then(
                 response => {
                     if (response.data.is_ready) {
-                        console.log(response)
                         this.taskInProgress = false;
                         this.results = response.data.results.results;
                         this.notFound = response.data.results.not_found;
