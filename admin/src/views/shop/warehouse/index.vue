@@ -5,9 +5,13 @@
                 <download>
                 </download>
             </el-tab-pane>
-            <el-tab-pane label="Загрузка" name="upload">
+            <el-tab-pane label="Загрузка (старая)" name="upload">
                 <upload>
                 </upload>
+            </el-tab-pane>
+            <el-tab-pane label="Загрузка (новая)" name="upload-new">
+                <upload-new>
+                </upload-new>
             </el-tab-pane>
         </el-tabs>
     </div>
@@ -19,6 +23,7 @@ import api from '@/utils/request'
 import NProgress from 'nprogress'
 
 import Upload from './components/Upload.vue'
+import Upload2 from './components/Upload2.vue'
 import Download from './components/Download.vue'
 
 export default {
@@ -28,7 +33,8 @@ export default {
     }),
     components: {
         'upload': Upload,
-        'download': Download
+        'download': Download,
+        'upload-new': Upload2
     },
     computed: {
     },

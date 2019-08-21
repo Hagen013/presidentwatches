@@ -14,7 +14,8 @@ from celery.result import AsyncResult
 from config.celery import app
 from tasks.warehouse import (
     process_warehouse_file,
-    generate_warehouse_file
+    generate_warehouse_file,
+    process_warehouse_file_2
 )
 
 
@@ -89,6 +90,12 @@ class Task2DonwloadFileApiView(APIView, StatusReportMixin):
 class UploadWarehouseApiView(UploadFile2TaskApiView):
 
     task = process_warehouse_file
+    permissions_class = permissions.IsAdminUser
+
+
+class UploadWarehouseApiView2(UploadFile2TaskApiView):
+
+    task = process_warehouse_file_2
     permissions_class = permissions.IsAdminUser
 
 
