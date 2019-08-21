@@ -7,7 +7,7 @@ import baseURL from '@/utils/baseUrl'
 
 const service = axios.create({
   baseURL: baseURL,
-  timeout: 5000,
+  timeout: 50000,
   headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json',

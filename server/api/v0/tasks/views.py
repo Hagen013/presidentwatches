@@ -75,7 +75,6 @@ class Task2DonwloadFileApiView(APIView, StatusReportMixin):
         raise NotImplementedError('Method must be implemented by a subclass')
 
     def post(self, request, *args, **kwargs):
-        fs = FileSystemStorage
         fs = FileSystemStorage()
         filename = self.get_filename()
         filepath = settings.ADMIN_DOWNLOADS + filename
