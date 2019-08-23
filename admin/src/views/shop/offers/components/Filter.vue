@@ -1,15 +1,19 @@
 <template>
     <div class="filter"
-        @click.self="toggleDropdown"
+        
     >
-        {{attribute.name}}
-        <div class="filter-badge" v-if="hasActiveValues">
-            {{activeValuesCount}}
+        <div class="filter-body"
+            @click="toggleDropdown"
+        >
+            {{attribute.name}}
+            <i class="filter-icon el-icon-arrow-down">
+            </i>
+            <div class="filter-badge" v-if="hasActiveValues">
+                {{activeValuesCount}}
+            </div>
         </div>
-        <i class="filter-icon el-icon-arrow-down">
-        </i>
         <div class="filter-dropdown" v-if="showDropdown"
-            v-on-click-outside="hideDropdown"
+            v-on-click-outside="hideAndCheck"
         >
             <div class="filter-loader" v-if="!responseReceived">
                 <i class="el-icon-loading"></i>
@@ -19,7 +23,9 @@
                     <li class="value" v-for="value in sortedValues"
                         :key="value.id"
                     >
-                        <el-checkbox v-model="value.active">
+                        <el-checkbox v-model="value.active"
+                            :disabled="value.disabled"
+                        >
                             {{value.value}}
                             <div class="value-count">
                                 {{value.doc_count}}
@@ -30,10 +36,14 @@
                 </ul>
 
                 <div class="filter-buttons">
-                    <div class="filter-button filter-button-1">
+                    <div class="filter-button filter-button-1"
+                        @click="clearFiltering"
+                    >
                         СБРОСИТЬ
                     </div>
-                    <div class="filter-button filter-button-2">
+                    <div class="filter-button filter-button-2"
+                        @click="hideAndCheck"
+                    >
                         ПРИМЕНИТЬ
                     </div>
                 </div>
@@ -52,32 +62,33 @@ export default {
     data: () => ({
         showDropdown: false,
         responseReceived: false,
-        values: []
+        values: [],
+        params: {}
     }),
     props: [
-        'attribute'
+        'attribute',
+        'facetes'
     ],
+    created() {
+        this.params = {key: this.attribute.key}
+    },
     computed: {
-        params() {
-            return {
-                key: this.attribute.key
-            }
-        },
         sortedValues() {
             return this.values.sort((a,b) => {
                 return b.doc_count - a.doc_count
             })
         },
-        activeValuesCount() {
+        activeValues() {
             return this.sortedValues.filter((value) => {
                 return value.active
-            }).length
+            })
+        },
+        activeValuesCount() {
+            return this.activeValues.length
         },
         hasActiveValues() {
             return this.activeValuesCount > 0
         }
-    },
-    created() {
     },
     methods: {
         toggleDropdown() {
@@ -91,7 +102,16 @@ export default {
             this.showDropdown = false;
         },
         getValuesList() {
-            request.get('/search/facetes/', {params: this.params}).then(
+            let params = {key: this.attribute.key};
+            let facetes = JSON.parse(JSON.stringify(this.facetes));
+            if (facetes[this.attribute.key] !== undefined) {
+                delete facetes[this.attribute.key];
+            }
+            for (let key in facetes) {
+                let values = facetes[key].join(',');
+                params[key] = values;
+            }
+            request.get('/search/facetes/', {params: params}).then(
                 response => {
                     this.handleSuccessfulGetResponse(response);
                 },
@@ -102,31 +122,63 @@ export default {
         },
         handleSuccessfulGetResponse(response) {
             let counts = response.data.counts;
-            let values = response.data.values;
             let countsMap = {};
-
             counts.forEach((count) => {
                 countsMap[count.key] = count.doc_count;
             })
 
-            values.forEach((value) => {
-                let count = countsMap[value.id];
-                if (count === undefined) {
-                    count = 0;
-                }
-                value.doc_count = count;
-                value.active = false;
-            })
-            
-            this.values = values;
-            console.log(this.values)
+            if (this.values.length === 0) {
+                let values = response.data.values;
+
+                values.forEach((value) => {
+                    let count = countsMap[value.id];
+                    if (count === undefined) {
+                        count = 0;
+                        value.disabled = true;
+                    }
+                    value.doc_count = count;
+                    if (count > 0) {
+                        value.disabled = false;
+                    } else {
+                        value.disabled = true;
+                    }
+                })
+                this.values = values;
+            } else {
+                this.values.forEach((value) => {
+                    let count = countsMap[value.id];
+                    if (count === undefined) {
+                        count = 0;
+                        value.disabled = true;
+                    }
+                    value.doc_count = count;
+                    if (count > 0) {
+                        value.disabled = false;
+                    } else {
+                        value.disabled = true;
+                    }
+                })
+            }
             this.responseReceived = true;
         },
         handleFailedGetResponse(response) {
-            console.log(response);
+        },
+        clearFiltering() {
+            this.values.forEach((value) => {
+                value.active = false;
+            })
+            this.$emit('clear', this.attribute.key);
+            this.showDropdown = false;
         },
         triggerFiltering() {
-
+            let values = this.activeValues.map((value) => {
+                return value.id
+            })
+            this.$emit('filter', {key: this.attribute.key, values: values});
+        },
+        hideAndCheck() {
+            this.triggerFiltering();
+            this.showDropdown = false;
         }
     },
     filters: {
@@ -148,19 +200,22 @@ export default {
         height: 36px;
         margin-bottom: 10px;
         line-height: 36px;
-        padding: 0px 10px;
         transition: .3s;
         margin-left: -1px;
         border: 1px solid rgba(0,0,0,.12);
-        &:hover {
-            background: rgba(0,0,0,.12);
-        }
         &:first-of-type {
             border-radius: 4px 0px 0px 4px;
         }
     }
+    .filter-body {
+        padding: 0px 10px;
+        transition: .3s;
+        &:hover {
+            background: rgba(0,0,0,.12);
+        }
+    }
     .filter-dropdown {
-        top: 36px;
+        top: 35px;
         left: 0px;
         width: 300px;
         padding: 10px 0px;

@@ -47,7 +47,10 @@
         <div class="filters">
             <attribute-filter v-for="attribute in filterAttributes"
                 :key="attribute.id"
-                :attribute=attribute
+                :attribute="attribute"
+                :facetes="facetes"
+                v-on:filter="addActiveFacetes"
+                v-on:clear="clearActiveFacete"
             >
             </attribute-filter>
         </div>
@@ -173,14 +176,18 @@ export default {
         },
         filterAttributes: [],
         ordering: "id",
+        activeFacetes: {
+
+        }
     }),
     computed: {
         queryParams() {
-            return {
+            let params = {
                 offset: this.offset,
                 limit: this.limit,
                 ordering: this.ordering
             }
+            return params
         },
         currentCount() {
             return (this.offset + this.limit)
@@ -190,6 +197,14 @@ export default {
         },
         hasNextPage() {
             return this.currentCount < this.totalCount;
+        },
+        facetes: {
+            get() {
+                return this.activeFacetes
+            },
+            set(value) {
+                this.activeFacetes = value;
+            } 
         }
     },
     created() {
@@ -202,7 +217,15 @@ export default {
         },
         getList() {
             this.loading = true;
-            request.get(this.apiUrl, {params: this.queryParams}).then(
+            let params = this.queryParams;
+            for (let key in this.activeFacetes) {
+                let values = this.activeFacetes[key];
+                if (values.length > 0) {
+                    values = values.join(',')
+                    params[key] = values;
+                }
+            }
+            request.get(this.apiUrl, {params: params}).then(
                 response => {
                     this.handleSuccessfulGetListResponse(response);
                 },
@@ -235,6 +258,26 @@ export default {
         nextPage() {
             this.offset += this.pageSize;
         },
+        addActiveFacetes(payload) {
+            console.log(payload);
+            let key = payload.key;
+            let values = payload.values;
+            if (values.length > 0) {
+                this.$set(this.activeFacetes, key, values);
+            } else {
+                this.$set(this.activeFacetes, key, []);
+            }
+            this.getList();
+        },
+        removeActiveFacetes(payload) {
+
+        },
+        clearActiveFacete(payload) {
+            this.offset = 0;
+            this.limit = this.pageSize;
+            this.$set(this.activeFacetes, payload, []);
+            this.getList();
+        }
     },
     filters: {
     },

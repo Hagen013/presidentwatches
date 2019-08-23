@@ -10,8 +10,38 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from api.views import ModelViewSet
 from shop.models import ProductPage
+from shop.models import Attribute
 from shop.serializers import ProductPageSerializer, AttributeValueSerializer
 from shop.models import AttributeValue as Value
+
+
+class ProductPageEAVFilterBackend():
+
+    def __init__(self):
+        self.filters = self.get_filters()
+        self.filters_keys = [f.key for f in self.filters]
+
+    def get_filters(self):
+        return Attribute.objects.filter(is_filter=True)
+
+    def filter_queryset(self, request, qs, view):
+        for key, values in request.GET.items():
+            if key in self.filters_keys:
+                values = [v for v in values.split(',')]
+                unfilled = False
+                values = set(values)
+                if 'none' in values:
+                    unfilled = True
+                    values.remove('none')
+                if len(values) == 0 and unfilled:
+                    qs = qs.exclude(attribute_values__in=Attribute.objects.get(key=key).values)
+                elif not unfilled:
+                    qs = qs.filter(attribute_values__in=values)
+                else:
+                    qs = qs.filter(attribute_values__in=values).union(
+                        qs.exclude(attribute_values__in=Attribute.objects.get(key=key).values)
+                    )
+        return qs
 
 
 class ProductPageViewSet(ModelViewSet):
@@ -24,7 +54,8 @@ class ProductPageViewSet(ModelViewSet):
     filter_backends = (
         DjangoFilterBackend,
         filters.SearchFilter,
-        filters.OrderingFilter
+        filters.OrderingFilter,
+        ProductPageEAVFilterBackend
     )
 
     filter_fields = (
