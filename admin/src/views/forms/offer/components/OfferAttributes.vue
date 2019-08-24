@@ -5,6 +5,7 @@
         <div v-if="dataProcessed">
 
             <div class="group" v-for="group in eavGroups" :key="group.id">
+                {{hasChanged}}
                 <div class="group-title">
                     {{group.name}}
                 </div>
@@ -49,12 +50,29 @@
                             >
                                 <el-option
                                     v-for="item in attribute.value_set"
-                                    :key="item.id"
-                                    :label="item.value"
-                                    :value="item.id"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value"
                                 >
                                 </el-option>
                             </el-select>
+                            <el-input-number
+                                v-else-if="attribute.datatype==3"
+                                v-model="attribute.active_values"
+                                controls-position="right"
+                            >
+                            </el-input-number>
+                            <el-input-number
+                                v-else-if="attribute.datatype==2"
+                                v-model="attribute.active_values"
+                                controls-position="right"
+                            >
+                            </el-input-number>
+                            <el-input placeholder="Не указано" 
+                                v-if="attribute.datatype==1"
+                                v-model="attribute.active_values"
+                            >
+                            </el-input>
                         </div>
                     </div>
                 </div>
@@ -93,7 +111,8 @@ export default {
             'СССР': true,
             'Армейские': true,
             "Gold'n'Black": true
-        }
+        },
+        hasChanged: false
     }),
     props: [
         'instance',
@@ -215,24 +234,73 @@ export default {
             this.eavGroups.forEach((group) => {
                 group.attribute_set.forEach((attribute) => {
                     attribute.value_set = attributesMap[attribute.id];
-                    // attribute.active_values = this.eavValues.filter((value) => {
-                    //     return value.attribute === attribute.id;
-                    // })
+                    let activeValues =  this.eavValues.filter((value) => {
+                        return value.attribute === attribute.id;
+                    })
+                    if (attribute.datatype === 6) {
+                        activeValues = activeValues.map((value) => {
+                            return value.id
+                        })
+                        this.$set(attribute, 'active_values', activeValues);
+                    } else if (attribute.datatype === 5) {
+                        activeValues = activeValues.map((value) => {
+                            return value.id
+                        })
+                        if (activeValues.length > 0) {
+                            this.$set(attribute, 'active_values', activeValues[0]);
+                        } else {
+    
+                        }
+                    } else if (attribute.datatype === 4) {
+                        let valueset = [
+                            {label: 'Да', value: true},
+                            {label: 'Нет', value: false},
+                            {label: 'Не указано', value: null}
+                        ];
+                        this.$set(attribute, 'value_set', valueset);
+
+                        if (activeValues.length > 0) {
+                            this.$set(attribute, 'active_values', activeValues[0].value);
+                        } else {
+                            this.$set(attribute, 'active_values', null);
+                        }
+                    } else if ( (attribute.datatype === 3) || (attribute.datatype === 2) ) {
+                        activeValues = activeValues.map((value) => {
+                            return value.value
+                        })
+                        if (activeValues.length > 0) {
+                            this.$set(attribute, 'disabled', false);
+                            this.$set(attribute, 'active_values', activeValues[0]);
+                        } else {
+                            this.$set(attribute, 'disabled', true);
+                            this.$set(attribute, 'active_values', null);
+                        }
+                    } else if (attribute.datatype === 1) {
+                        if (activeValues.length > 0) {
+                            this.$set(attribute, 'active_values', activeValues[0].value);
+                        }
+                    }
+                    this.eavGroupsProxy = JSON.parse(JSON.stringify(this.eavGroups));
                 })
             })
 
-            // for (let i=0; i<this.eavGroups.length; i++) {
-            //     for (let y=0; y<this.eavGroups[i].attribute_set.length; y++) {
-            //         this.eavGroups[i].attribute_set[y].active_values = [];
-            //     }
-            // }
-
-
             this.dataProcessed = true
         },
-        tsoy() {
-            console.log('hoy')
-        }
+        checkStatus() {
+            this.hasChanged = !equal(this.eavGroups, this.eavGroupsProxy);
+            for (let i=0; i<this.eavGroups.length; i++) {
+                for (let y=0; y<this.eavGroups[i].attribute_set.length; y++) {
+                    let attribute = this.eavGroups[i].attribute_set[y];
+                    let attributeProxy = this.eavGroupsProxy[i].attribute_set[y];
+                    if (!equal(attribute, attributeProxy)) {
+                        console.log(attribute);
+                        console.log(attributeProxy);
+                        console.log('')
+                    }
+                }
+            }
+            //this.$emit('change', this.hasChanged);
+        },
     },
     watch: {
         activeTab() {
@@ -245,20 +313,13 @@ export default {
                 this.processData();
             }
         },
-        dataProcessed() {
-            let self = this;
-            setTimeout(function() {
-                self.eavGroups.forEach((group) => {
-                    group.attribute_set.forEach((attribute) => {
-                        let activeValues = self.eavValues.filter((value) => {
-                            return value.attribute === attribute.id;
-                        })
-                        activeValues.forEach((value) => {
-                            attribute.active_values.push(value.id)
-                        })
-                    })
-                })
-            }, 0)
+        eavGroups: {
+            handler() {
+                if (this.dataProcessed) {
+                    this.checkStatus();
+                }
+            },
+            deep: true
         }
     },
     filters: {
