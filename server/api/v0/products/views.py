@@ -60,10 +60,11 @@ class ProductPageViewSet(ModelViewSet):
 
     filter_fields = (
         'is_published',
-        'is_in_stock'
+        'is_in_stock',
+        'is_in_store'
     )
     search_fields = (
-        'name',
+        'model',
     )
     ordering_fields = (
         'id',

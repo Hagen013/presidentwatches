@@ -1,66 +1,63 @@
 <template>
     <div class="tab-content offer-attributes"
-        v-loading="!dataIsReady"
+        v-loading="!dataProcessed"
     >
-        <div class="offer-attributes__attribute-wrap"
-            v-for="attribute in attributes"
-            :key="attribute.id"
-        >
-            <div class="offer-attributes__content"
-                v-if="attributesInitialized"
-            >
-                <multi-choice
-                    v-if="attribute.datatype===6"
-                    :attribute="attribute"
-                    :options="attribute.value_set"
-                    :active_options="attribute.activeOptions"
-                    v-on:add-option="addActiveOption"
-                    v-on:remove-option="removeActiveOption"
-                >
-                </multi-choice>
-                <choice
-                    v-else-if="attribute.datatype===5"
-                    :attribute="attribute"
-                    :options="attribute.value_set"
-                    :active_options="attribute.activeOptions"
-                    @change="handleChoiceChange"
-                >
-                </choice>
-                <text-field
-                    v-else-if="attribute.datatype===1"
-                    :attribute="attribute"
-                    :options="attribute.value_set"
-                    :active_options="attribute.activeOptions"
-                    @change="handleValueChange"
-                >
-                </text-field>
-                <integer-field
-                    v-else-if="attribute.datatype===2"
-                    :attribute="attribute"
-                    :options="attribute.value_set"
-                    :active_options="attribute.activeOptions"
-                    v-on:clear="clearAttributeActiveValues"
-                    @change="handleValueChange"
-                >
-                </integer-field>
-                <float-field
-                    v-else-if="attribute.datatype===3"
-                    :attribute="attribute"
-                    :options="attribute.value_set"
-                    :active_options="attribute.activeOptions"
-                    v-on:clear="clearAttributeActiveValues"
-                    @change="handleValueChange"
-                >
-                </float-field>
-                <bool-field
-                    v-else-if="attribute.datatype===4"
-                    :attribute="attribute"
-                    :options="attribute.value_set"
-                    :active_options="attribute.activeOptions"
-                    v-on:clear="clearAttributeActiveValues"
-                    @change="handleValueChange"
-                >
-                </bool-field>
+        <div v-if="dataProcessed">
+
+            <div class="group" v-for="group in eavGroups" :key="group.id">
+                <div class="group-title">
+                    {{group.name}}
+                </div>
+                <div class="group-attributes">
+                    <div class="attribute" v-for="attribute in group.attribute_set" :key="attribute.id">
+                        <div class="attribute-name">
+                            {{attribute.name}}
+                        </div>
+                        <div class="attribute-field">
+                            <el-select
+                                v-if="attribute.datatype==6"
+                                v-model="attribute.active_values"
+                                multiple
+                                filterable
+                                placeholder="Выбрать"
+                            >
+                                <el-option
+                                    v-for="item in attribute.value_set"
+                                    :key="item.id"
+                                    :label="item.value"
+                                    :value="item.id"
+                                >
+                                </el-option>
+                            </el-select>
+                            <el-select v-else-if="attribute.datatype==5"
+                                v-model="attribute.active_values"
+                                filterable
+                                placeholder="Выбрать"
+                            >
+                                <el-option
+                                    v-for="item in attribute.value_set"
+                                    :key="item.id"
+                                    :label="item.value"
+                                    :value="item.id"
+                                >
+                                </el-option>
+                            </el-select>
+                            <el-select v-else-if="attribute.datatype==4"
+                                v-model="attribute.active_values"
+                                filterable
+                                placeholder="Выбрать"
+                            >
+                                <el-option
+                                    v-for="item in attribute.value_set"
+                                    :key="item.id"
+                                    :label="item.value"
+                                    :value="item.id"
+                                >
+                                </el-option>
+                            </el-select>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -69,40 +66,34 @@
 <script>
 const equal = require('fast-deep-equal');
 
-import {Vue} from '@/vue.js'
 import request from '@/utils/request'
-
-import TextField from '@/components/AttributeFields/Text'
-import IntegerField from '@/components/AttributeFields/Integer'
-import FloatField from '@/components/AttributeFields/Float'
-import BoolField from '@/components/AttributeFields/Bool'
-import ChoiceAttributeField from '@/components/ChoiceAttributeField'
-import MultiChoiceAttributeField from '@/components/MultiChoiceAttributeField'
 
 
 export default {
     name: 'OfferAttributes',
-    components: {
-        'multi-choice': MultiChoiceAttributeField,
-        'choice': ChoiceAttributeField,
-        'text-field': TextField,
-        'integer-field': IntegerField,
-        'float-field': FloatField,
-        'bool-field': BoolField
-    },
     data: () => ({
-        groups: [],
-        attributes: [],
-        values: [],
-        proxyAttributes: [],
-        eavAttributesResponseReceived: false,
+        //
         eavGroupsResponseReceived: false,
-        eavInstanceResponseReceived: false,
-        requestError: false,
-        groupsApiUrl: '/eav/groups/',
-        attributesApiUrl: '/eav/attributes/',
-        hasChanged: false,
-        attributesInitialized: false
+        eavGroups: [],
+        //
+        eavAttributesResponseReceived: false,
+        eavAttributes: [],
+        //
+        eavValuesResponseReceived: false,
+        eavValues: [],
+        //
+        dataProcessed: false,
+        notEditable: {
+            'Хит продаж': true,
+            'Серия': true,
+            'Распродажа': true,
+            'Новинка': true,
+            'Бренд': true,
+            'Коллекция': true,
+            'СССР': true,
+            'Армейские': true,
+            "Gold'n'Black": true
+        }
     }),
     props: [
         'instance',
@@ -111,57 +102,36 @@ export default {
     computed: {
         dataIsReady() {
             return (
-                this.eavAttributesResponseReceived === true &&
                 this.eavGroupsResponseReceived === true &&
-                this.eavInstanceResponseReceived === true
+                this.eavAttributesResponseReceived === true &&
+                this.eavValuesResponseReceived === true
             )
         },
         instanceValuesApiUrl() {
             return `/products/${this.instance['id']}/values/`
-        },
-        sortedAttributes() {
-            let attributes = this.attributes.sort(function(a, b) {
-                return a.order - b.order
-            })
-            return attributes
         }
     },
     created() {
-        if (this.activeTab === 'attributes') {
+        if (this.activeTab == 'attributes') {
             this.initialize();
         }
     },
     methods: {
         initialize() {
+            this.syncData();
+        },
+        syncData() {
+            this.eavGroupsResponseReceived = false;
+            this.eavAttributesResponseReceived = false;
+            this.eavValuesResponseReceived = false;
+            this.dataProcessed = false;
             this.getGroups();
             this.getAttributes();
             this.getInstanceValues();
         },
-        saveChanges() {
-            let params = {'bulk': true};
-            let values = this.attributes.map(function(attribute) {
-                return attribute.activeOptions
-            });
-            values = [].concat.apply([], values);
-            this.eavInstanceResponseReceived = false;
-            request.post(this.instanceValuesApiUrl, values, {params: params}).then(
-                response => {
-                    this.handleSuccessfulUpdateResponse(response);
-                },
-                response => {
-                    this.handleFailedUpdateResponse(response);
-                }
-            )
-        },
-        rollbackChanges() {
-            console.log('triggered');
-            console.log(this.attributes);
-            console.l
-            this.attributes = JSON.parse(JSON.stringify(this.proxyAttributes));
-            this.checkStatus();
-        },
+        //------------------ГРУППЫ--------------------//
         getGroups() {
-            request.get(this.groupsApiUrl).then(
+            request.get('/eav/groups/').then(
                 response => {
                     this.handleSuccessfulGetGroupsResponse(response);
                 },
@@ -170,16 +140,38 @@ export default {
                 }
             )
         },
+        handleSuccessfulGetGroupsResponse(response) {
+            this.eavGroups = response.data.results.sort((a,b) => {
+                return a.order - b.order
+            });
+            this.eavGroupsResponseReceived = true;
+        },
+        handleFailedGetGroupsResponse(response) {
+            this.eavGroupsResponseReceived = true;
+        },
+        //------------------ГРУППЫ КОНЕЦ----------------//
+
+        //------------------АТТРИБУТЫ--------------------//
         getAttributes() {
-            request.get(this.attributesApiUrl).then(
+            request.get('/eav/attributes/').then(
                 response => {
                     this.handleSuccessfulGetAttributesResponse(response);
                 },
                 response => {
-                    this.handleSuccessfulGetAttributesResponse(response);
+                    this.handleFailedGetAttributesResponse(response);
                 }
             )
         },
+        handleSuccessfulGetAttributesResponse(response) {
+            this.eavAttributes = response.data.results;
+            this.eavAttributesResponseReceived = true;
+        },
+        handleFailedGetAttributesResponse(response) {
+            this.eavAttributesResponseReceived = true;
+        },
+        //------------------АТТРИБУТЫ КОНЕЦ----------------//
+
+        //------------------VALUES--------------------//
         getInstanceValues() {
             request.get(this.instanceValuesApiUrl).then(
                 response => {
@@ -190,118 +182,88 @@ export default {
                 }
             )
         },
-        handleSuccessfulGetGroupsResponse(response) {
-            this.groups = response.data['results'];
-            this.eavGroupsResponseReceived = true;
-        },
-        handleFailedGetGroupsResponse(response) {
-            this.eavGroupsResponseReceived = true;
-            this.requestError = true;
-        },
-        handleSuccessfulGetAttributesResponse(response) {
-            this.attributes = response.data['results'];
-            this.eavAttributesResponseReceived = true;
-        },
-        handleFailedGetAttributesResponse(response) {
-            this.eavAttributesResponseReceived = true;
-            this.requestError = true;
-        },
         handleSuccessfulGetValuesResponse(response) {
-            this.values = response.data['results'];
-            this.eavInstanceResponseReceived = true;
+            this.eavValues = response.data.results;
+            this.eavValuesResponseReceived = true;
         },
         handleFailedGetValuesResponse(response) {
-            this.eavInstanceResponseReceived = true;
-            this.requestError = true;
+            this.eavValuesResponseReceived = true;
         },
-        handleSuccessfulUpdateResponse(response) {
-            this.values = response.data['results'];
-            this.eavInstanceResponseReceived = true;
-        },
-        handleFailedUpdateResponse(response) {
-            this.eavInstanceResponseReceived = true;
-            this.requestError = true;
-        },
-        processAttributes() {
-            let attributes = this.attributes;
-            for (let i=0; i<this.attributes.length; i++) {
-                this.attributes[i].activeOptions = this.values.filter(function(value) {
-                    return value.attribute === attributes[i].id
+        //------------------VALUES КОНЕЦ----------------//
+
+        // ОБРАБОТКА
+        processData() {
+            let attributesMap = {};
+
+            for (let i=0; i<this.eavAttributes.length; i++) {
+                attributesMap[this.eavAttributes[i].id] = this.eavAttributes[i].value_set;
+            }
+
+            let nonGroupAttributes = this.eavAttributes.filter((attribute) => {
+                return ( (attribute.group === null) && (this.notEditable[attribute.name] === undefined));
+            })
+
+            this.eavGroups.push({
+                name: 'Прочие атрибуты',
+                attribute_set: nonGroupAttributes
+            })
+
+            this.eavValues.forEach((value) => {
+                value.label = value.value;
+            })
+
+            this.eavGroups.forEach((group) => {
+                group.attribute_set.forEach((attribute) => {
+                    attribute.value_set = attributesMap[attribute.id];
+                    // attribute.active_values = this.eavValues.filter((value) => {
+                    //     return value.attribute === attribute.id;
+                    // })
                 })
-            }
-            this.proxyAttributes = JSON.parse(JSON.stringify(this.attributes));
-            this.attributesInitialized = true;
+            })
+
+            // for (let i=0; i<this.eavGroups.length; i++) {
+            //     for (let y=0; y<this.eavGroups[i].attribute_set.length; y++) {
+            //         this.eavGroups[i].attribute_set[y].active_values = [];
+            //     }
+            // }
+
+
+            this.dataProcessed = true
         },
-        getAttributeByOption(option) {
-            let attribute = null;
-            let index = null;
-            for (let i=0; i<this.attributes.length; i++) {
-                if (this.attributes[i].id === option.attribute) {
-                    attribute = JSON.parse(JSON.stringify(this.attributes[i]));
-                    index = i;
-                    break
-                }
-            }
-            return {attribute: attribute, index: index}
-        },
-        addActiveOption(option) {
-            let {attribute, index} = this.getAttributeByOption(option);
-            attribute.activeOptions.push(option);
-            this.$set(this.attributes, index, attribute);
-        },
-        removeActiveOption(option) {
-            let {attribute, index} = this.getAttributeByOption(option);
-            for (let i=0; i<attribute.activeOptions.length; i++) {
-                let iterationOption = attribute.activeOptions[i];
-                if (iterationOption.id === option.id) {
-                    attribute.activeOptions.splice(i, 1);
-                    this.$set(this.attributes, index, attribute)
-                    break
-                }
-            }
-        },
-        handleChoiceChange(option) {
-            let {attribute, index} = this.getAttributeByOption(option);
-            attribute.activeOptions = [option,];
-            this.$set(this.attributes, index, attribute);
-        },
-        handleValueChange(option) {
-            let {attribute, index} = this.getAttributeByOption(option);
-            attribute.activeOptions = [option,];
-            this.$set(this.attributes, index, attribute);
-        },
-        clearAttributeActiveValues(attribute) {
-            for (let i=0; i<this.attributes.length; i++) {
-                if (attribute.id === this.attributes[i].id) {
-                    let instance = JSON.parse(JSON.stringify(this.attributes[i]));
-                    instance.activeOptions = [];
-                    this.$set(this.attributes, i, instance);
-                }
-            }
-        },
-        checkStatus() {
-            this.hasChanged = !equal(this.attributes, this.proxyAttributes);
-            this.$emit('change', this.hasChanged);
-        },
+        tsoy() {
+            console.log('hoy')
+        }
     },
     watch: {
         activeTab() {
-            if (this.activeTab === 'attributes') {
-                if (!this.dataIsReady) {
-                    this.initialize();
-                }
+            if (this.activeTab == 'attributes') {
+                this.initialize();
             }
         },
         dataIsReady() {
             if (this.dataIsReady) {
-                this.processAttributes();
+                this.processData();
             }
         },
-        attributes: {
-            handler() {
-                this.checkStatus();
-            },
-            deep: true
+        dataProcessed() {
+            let self = this;
+            setTimeout(function() {
+                self.eavGroups.forEach((group) => {
+                    group.attribute_set.forEach((attribute) => {
+                        let activeValues = self.eavValues.filter((value) => {
+                            return value.attribute === attribute.id;
+                        })
+                        activeValues.forEach((value) => {
+                            attribute.active_values.push(value.id)
+                        })
+                    })
+                })
+            }, 0)
+        }
+    },
+    filters: {
+        length(values) {
+            return values.length
         }
     }
 }
@@ -309,24 +271,27 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
     .offer-attributes {
-        padding-bottom: 100px;
+        padding-top: 20px;
     }
-    .tab-content  {
-        padding-top: 32px;
+    .group {
+        margin-bottom: 30px;
     }
-    .attribute-field {
-        margin-bottom: 24px;
+    .group-title {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 20px;
     }
-    .attribute-field__title {
-        margin-bottom: 8px;
+    .attribute {
+        display: inline-block;
+        padding: 10px;
     }
-    .attribute-field__input-box {
-        margin-bottom: 8px;
+    .group-attributes {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
     }
-    .el-tag {
-        margin-right: 8px;
-    }
-    .el-select {
-        width: 320px;
+    .attribute-name {
+        font-size: 14px;
+        margin-bottom: 5px;
     }
 </style>

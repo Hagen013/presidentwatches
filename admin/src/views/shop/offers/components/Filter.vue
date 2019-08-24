@@ -14,12 +14,25 @@
         </div>
         <div class="filter-dropdown" v-if="showDropdown"
             v-on-click-outside="hideAndCheck"
+            :style="{ left: dropdownOffset + 'px' }"
         >
             <div class="filter-loader" v-if="!responseReceived">
                 <i class="el-icon-loading"></i>
             </div>
             <div class="filter-content" v-else>
-                <ul class="values-list">
+                <div class="filter-input-box"
+                    v-if="showSearch"
+                >
+                    <el-input
+                        v-model="query"
+                        suffix-icon="el-icon-search"
+                        placeholder="Поиск"
+                    >
+                    </el-input>
+                </div>
+                <ul class="values-list"
+                    :class="{ extended : showSearch }"
+                >
                     <li class="value" v-for="value in sortedValues"
                         :key="value.id"
                     >
@@ -55,6 +68,7 @@
 
 <script>
 import request from '@/utils/request'
+import fuzzy from 'fuzzysearch'
 
 
 export default {
@@ -63,7 +77,8 @@ export default {
         showDropdown: false,
         responseReceived: false,
         values: [],
-        params: {}
+        params: {},
+        query: "",
     }),
     props: [
         'attribute',
@@ -73,8 +88,13 @@ export default {
         this.params = {key: this.attribute.key}
     },
     computed: {
+        filteredValues() {
+            return this.values.filter((value) => {
+                return fuzzy(this.query.toLowerCase(), value.value.toLowerCase())
+            })
+        },
         sortedValues() {
-            return this.values.sort((a,b) => {
+            return this.filteredValues.sort((a,b) => {
                 return b.doc_count - a.doc_count
             })
         },
@@ -88,6 +108,23 @@ export default {
         },
         hasActiveValues() {
             return this.activeValuesCount > 0
+        },
+        showSearch() {
+            return this.values.length > 11;
+        },
+        dropdownOffset() {
+            let el = this.$el;
+            let parent = el.parentNode;
+            let offsetLeft = el.offsetLeft;
+            let windowWidth = window.innerWidth;
+            let dropdownWidth = 330;
+
+
+            if (windowWidth - (offsetLeft + dropdownWidth) < dropdownWidth) {
+                return (dropdownWidth - (windowWidth - (offsetLeft + dropdownWidth)) ) * -1
+            }
+
+            return 0
         }
     },
     methods: {
@@ -103,13 +140,22 @@ export default {
         },
         getValuesList() {
             let params = {key: this.attribute.key};
-            let facetes = JSON.parse(JSON.stringify(this.facetes));
+            let facetes =  JSON.parse(JSON.stringify(this.facetes));
+
             if (facetes[this.attribute.key] !== undefined) {
                 delete facetes[this.attribute.key];
             }
             for (let key in facetes) {
-                let values = facetes[key].join(',');
-                params[key] = values;
+                if ( (facetes[key] !== undefined) && (facetes[key].length > 0) ) {
+                    let values = facetes[key];
+                    values = values.filter((value) => {
+                        return value !== 'none'
+                    })
+                    if (values.length > 0) {
+                        values = values.join(',');
+                        params[key] = values;
+                    }
+                }
             }
             request.get('/search/facetes/', {params: params}).then(
                 response => {
@@ -123,42 +169,36 @@ export default {
         handleSuccessfulGetResponse(response) {
             let counts = response.data.counts;
             let countsMap = {};
+            let values = null;
             counts.forEach((count) => {
                 countsMap[count.key] = count.doc_count;
             })
 
             if (this.values.length === 0) {
-                let values = response.data.values;
-
-                values.forEach((value) => {
-                    let count = countsMap[value.id];
-                    if (count === undefined) {
-                        count = 0;
-                        value.disabled = true;
-                    }
-                    value.doc_count = count;
-                    if (count > 0) {
-                        value.disabled = false;
-                    } else {
-                        value.disabled = true;
-                    }
-                })
-                this.values = values;
+                values = response.data.values;
+                if (this.attribute.name !== 'Бренд') {
+                    values.unshift({
+                        value: 'Не указано',
+                        disabled: false,
+                        active: false,
+                        id: 'none'
+                    })
+                }
             } else {
-                this.values.forEach((value) => {
-                    let count = countsMap[value.id];
-                    if (count === undefined) {
-                        count = 0;
-                        value.disabled = true;
-                    }
-                    value.doc_count = count;
-                    if (count > 0) {
-                        value.disabled = false;
-                    } else {
-                        value.disabled = true;
-                    }
-                })
+                values = this.values;
             }
+            values.forEach((value) => {
+                let count = countsMap[value.id];
+                if ( (count === undefined) && (value.value !== 'Не указано') ) {
+                    count = 0;
+                    value.doc_count = 0;
+                    value.disabled = true;
+                } else {
+                    value.doc_count = count;
+                    value.disabled = false;
+                }
+            })
+            this.values = values;
             this.responseReceived = true;
         },
         handleFailedGetResponse(response) {
@@ -217,7 +257,7 @@ export default {
     .filter-dropdown {
         top: 35px;
         left: 0px;
-        width: 300px;
+        width: 330px;
         padding: 10px 0px;
         max-height: 500px;
         background: white;
@@ -246,6 +286,9 @@ export default {
         margin: 0px;
         max-height: 444px;
         padding-bottom: 50px;
+    }
+
+    .values-list.extended {
         overflow-y: scroll;
     }
 
@@ -315,5 +358,9 @@ export default {
         text-align: center;
         line-height: 20px;
         z-index: 10;
+    }
+    .filter-input-box {
+        padding: 0px 10px;
+        margin-bottom: 5px;
     }
 </style>

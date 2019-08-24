@@ -4,6 +4,11 @@
         v-loading="loading"
     >
         <div class="offer__controls">
+            <el-button icon="el-icon-back"
+                @click="back"
+            >
+                Назад
+            </el-button>
             <el-button type="primary" icon="el-icon-check"
                 :disabled="!hasChangedOverall"
                 :plain="!hasChangedOverall"
@@ -26,6 +31,9 @@
                 Удалить
             </el-button>
         </div>
+        <h1 class="title">
+            {{instance.brand}} {{instance.series}} {{instance.model}}
+        </h1>
         <el-tabs v-model="activeTabName">
             <el-tab-pane label="Основное" name="main">
                 <offer-main
@@ -62,6 +70,14 @@
                 >
                 </offer-attributes>
             </el-tab-pane>
+            <el-tab-pane label="Комментарии" name="comments">
+                <offer-comments
+                    :instance="instance"
+                    :activeTab="activeTabName"
+                    ref="attributes"
+                >
+                </offer-comments>
+            </el-tab-pane>
         </el-tabs>
         <el-dialog
             title="Подтверждение действия"
@@ -94,6 +110,7 @@ import offerSeo from './components/OfferSeo'
 import offerVideos from './components/OfferVideos'
 import offerDescription from './components/OfferDescription'
 import offerAttributes from './components/OfferAttributes'
+import offerComments from './components/OfferComments'
 
 
 export default {
@@ -105,7 +122,8 @@ export default {
         'offer-seo': offerSeo,
         'offer-videos': offerVideos,
         'offer-description': offerDescription,
-        'offer-attributes': offerAttributes
+        'offer-attributes': offerAttributes,
+        'offer-comments': offerComments
     },
     data: () => ({
         listApiUrl: '/products/',
@@ -139,6 +157,9 @@ export default {
             if (this.attributesHasChanged) {
                 this.$refs.attributes.rollbackChanges();
             }
+        },
+        back() {
+            this.$router.go(-1)
         }
     }
 }
@@ -146,6 +167,6 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
     .offer__controls {
-        padding-bottom: 32px;
+        padding-bottom: 16px;
     }
 </style>

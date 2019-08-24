@@ -26,6 +26,7 @@ class AttributeViewSet(ModelViewSet):
         'is_filter',
     )
     search_fields = (
+        'name',
     )
     ordering_fields = (
         'id',

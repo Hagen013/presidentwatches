@@ -44,16 +44,69 @@
             </div>
         </div>
 
+        <el-row class="search-inputs"
+            :gutter="20"
+        >
+            <el-col
+                :span="8"
+            >
+                <el-input
+                    placeholder="Поиск по модели"
+                    prefix-icon="el-icon-search"
+                    v-model="modelSearchProxy"
+                >
+                </el-input>
+            </el-col>
+            <el-col :span="16">
+                <div class="select-box">
+                    <div class="select-box-label">
+                        Наличие:
+                    </div>
+                    <div class="select-box-value">
+                        <el-select
+                            v-model="booleanFilters.is_in_stock"
+                        >
+                            <el-option v-for="option in availabilityOptions"
+                                :key="option.label"
+                                :label="option.label"
+                                :value="option.value"
+                            >
+                            </el-option>
+                        </el-select>
+                    </div>
+                </div>
+                <div class="select-box">
+                    <div class="select-box-label">
+                        Есть на Тульской:
+                    </div>
+                    <div class="select-box-value">
+                        <el-select
+                            v-model="booleanFilters.is_in_store"
+                        >
+                            <el-option v-for="option in availabilityOptions"
+                                :key="option.label"
+                                :label="option.label"
+                                :value="option.value"
+                            >
+                            </el-option>
+                        </el-select>
+                    </div>
+                </div>
+            </el-col>
+        </el-row>
+
+
         <div class="filters">
             <attribute-filter v-for="attribute in filterAttributes"
                 :key="attribute.id"
                 :attribute="attribute"
                 :facetes="facetes"
-                v-on:filter="addActiveFacetes"
+                v-on:filter="setActiveFacetes"
                 v-on:clear="clearActiveFacete"
             >
             </attribute-filter>
         </div>
+
 
         <table class="table">
 
@@ -89,14 +142,14 @@
                     </div>
                 </th>
 
-                <th class="table-head">
-                    <div class="table-label">
+                <th class="table-head text-left">
+                    <div class="table-label text-left">
                     Теги
                     </div>
                 </th>
 
-                <th class="table-head">
-                    <div class="table-label">
+                <th class="table-head text-left">
+                    <div class="table-label text-left">
                     В наличии
                     </div>
                 </th>
@@ -105,6 +158,7 @@
 
             <tr class="table-row" v-for="item in items"
                 :key="item.id"
+                @click="select(item.id)"
             >
                 <td class="table-cell">
                     <div class="table-container">
@@ -120,7 +174,7 @@
                     </div>
                 </td>
 
-                <td class="table-cell">
+                <td class="table-cell text-left">
                     <div class="table-container">
                         {{item.brand}}
                     </div>
@@ -141,6 +195,22 @@
                     </div>
                 </td>
 
+                <td class="table-cell">
+                    <div>
+                    </div>
+                </td>
+
+                <td class="table-cell">
+                    <div>
+                        <div>
+                            Онлайн: <span class="availability" :class="{ green : item.is_in_stock }">{{item.is_in_stock|boolean}}</span>
+                        </div>
+                        <div>
+                            Оффлайн: <span class="availability" :class="{ green : item.is_in_store }">{{item.is_in_store|boolean}}</span>
+                        </div>
+                    </div>
+                </td>
+
             </tr>
 
         </table>
@@ -150,7 +220,7 @@
 <script>
 import request from '@/utils/request'
 import AttributeFilter from './components/Filter'
-
+import debounce from 'debounce'
 
 export default {
     name: 'Offers',
@@ -172,12 +242,21 @@ export default {
             {label: '200', value: 200}
         ],
         filters: {
-
         },
         filterAttributes: [],
         ordering: "id",
-        activeFacetes: {
-
+        facetes: {
+        },
+        modelSearch: "",
+        modelSearchProxy: "",
+        availabilityOptions: [
+            {label: '---', value: ''},
+            {label: 'Да', value: 'true'},
+            {label: 'Нет', value: 'false'}
+        ],
+        booleanFilters: {
+            is_in_store: '',
+            is_in_stock: ''
         }
     }),
     computed: {
@@ -186,6 +265,20 @@ export default {
                 offset: this.offset,
                 limit: this.limit,
                 ordering: this.ordering
+            }
+            for (let key in this.facetes) {
+                if ( (this.facetes[key] !== undefined) && (this.facetes[key].length > 0) ) {
+                    params[key] = this.facetes[key].join(',');
+                }
+            }
+            if (this.modelSearch.length > 0) {
+                params['search'] = this.modelSearch;
+            }
+            if (this.booleanFilters.is_in_store !== '') {
+                params['is_in_store'] = this.booleanFilters.is_in_store;
+            }
+            if (this.booleanFilters.is_in_stock !== '') {
+                params['is_in_stock'] = this.booleanFilters.is_in_stock;
             }
             return params
         },
@@ -198,17 +291,10 @@ export default {
         hasNextPage() {
             return this.currentCount < this.totalCount;
         },
-        facetes: {
-            get() {
-                return this.activeFacetes
-            },
-            set(value) {
-                this.activeFacetes = value;
-            } 
-        }
     },
     created() {
         this.initialize();
+        let self = this;
     },
     methods: {
         initialize() {
@@ -218,13 +304,6 @@ export default {
         getList() {
             this.loading = true;
             let params = this.queryParams;
-            for (let key in this.activeFacetes) {
-                let values = this.activeFacetes[key];
-                if (values.length > 0) {
-                    values = values.join(',')
-                    params[key] = values;
-                }
-            }
             request.get(this.apiUrl, {params: params}).then(
                 response => {
                     this.handleSuccessfulGetListResponse(response);
@@ -258,28 +337,28 @@ export default {
         nextPage() {
             this.offset += this.pageSize;
         },
-        addActiveFacetes(payload) {
-            console.log(payload);
+        setActiveFacetes(payload) {
             let key = payload.key;
             let values = payload.values;
-            if (values.length > 0) {
-                this.$set(this.activeFacetes, key, values);
-            } else {
-                this.$set(this.activeFacetes, key, []);
-            }
-            this.getList();
-        },
-        removeActiveFacetes(payload) {
-
-        },
-        clearActiveFacete(payload) {
+            this.$set(this.facetes, key, values);
             this.offset = 0;
-            this.limit = this.pageSize;
-            this.$set(this.activeFacetes, payload, []);
-            this.getList();
+        },
+        clearActiveFacete(key) {
+            this.$set(this.facetes, key, []);
+            this.offset = 0;
+        },
+        select(pk) {
+            this.$router.push({path: `/shop/offers/${pk}/`})
         }
     },
     filters: {
+        boolean(value) {
+            if (value) {
+                return 'да'
+            } else {
+                return 'нет'
+            }
+        }
     },
     watch: {
         queryParams: {
@@ -291,6 +370,11 @@ export default {
         pageSize() {
             this.offset = 0;
             this.limit = this.pageSize;
+        },
+        modelSearchProxy: {
+            handler: debounce(function(value) {
+                this.modelSearch = this.modelSearchProxy;
+            }, 500)
         }
     }
 }
@@ -335,6 +419,49 @@ export default {
 
     .filters {
         margin: 10px 0px;
+    }
+
+    .search-inputs {
+        margin-top: 10px;
+    }
+
+    .table__link {
+        padding: 20px 0px;
+        color: blue;
+    }
+
+    .availability {
+        color: red;
+    }
+
+    .availability.green {
+        color:  #67C23A;
+    }
+    
+    .table-label {
+        padding: 0px;
+    }
+
+    .text-left {
+        text-align: left !important;
+    }
+
+    .table-container {
+        padding: 5px 0px;
+    }
+
+    .select-box {
+        display: inline-block;
+        margin-right: 20px;
+    }
+
+    .select-box-label {
+        display: inline-block;
+        margin-right: 10px;
+    }
+
+    .select-box-value {
+        display: inline-block;
     }
 
 </style>
