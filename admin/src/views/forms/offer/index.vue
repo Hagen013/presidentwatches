@@ -43,6 +43,10 @@
             </el-tab-pane>
             <el-tab-pane label="Изображения" name="images">
                 <offer-images
+                    :instance="instance"
+                    :activeTab="activeTabName"
+                    @change="handleImagesChange"
+                    ref="images"
                 >
                 </offer-images>
             </el-tab-pane>
@@ -74,7 +78,7 @@
                 <offer-comments
                     :instance="instance"
                     :activeTab="activeTabName"
-                    ref="attributes"
+                    ref="comments"
                 >
                 </offer-comments>
             </el-tab-pane>
@@ -128,19 +132,24 @@ export default {
     data: () => ({
         listApiUrl: '/products/',
         activeTabName: 'main',
-        attributesHasChanged: false
+        attributesHasChanged: false,
+        imagesHasChanged: false
     }),
     computed: {
         hasChangedOverall() {
             return (
                 this.hasChanged ||
-                this.attributesHasChanged
+                this.attributesHasChanged ||
+                this.imagesHasChanged
             )
         }
     },
     methods: {
         handleAttributesChange(state) {
             this.attributesHasChanged = state;
+        },
+        handleImagesChange(state) {
+            this.imagesHasChanged = state;
         },
         saveChangesOverall() {
             if (this.hasChanged) {
@@ -149,6 +158,9 @@ export default {
             if (this.attributesHasChanged) {
                 this.$refs.attributes.saveChanges();
             }
+            if (this.imagesHasChanged) {
+                this.$refs.images.saveChanges();
+            }
         },
         rollbackChangesOverall() {
             if (this.hasChanged) {
@@ -156,6 +168,9 @@ export default {
             }
             if (this.attributesHasChanged) {
                 this.$refs.attributes.rollbackChanges();
+            }
+            if (this.imagesHasChanged) {
+                this.$refs.images.rollbackChanges();
             }
         },
         back() {

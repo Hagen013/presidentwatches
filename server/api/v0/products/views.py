@@ -1,18 +1,33 @@
+import os
+from collections import defaultdict
+
+from rest_framework.views import APIView
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework import filters
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework import permissions
+from rest_framework.parsers import MultiPartParser, FileUploadParser, FormParser 
 from django_filters.rest_framework import DjangoFilterBackend
 
 from django.http import Http404
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import transaction
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
+from django.core.files.base import ContentFile
 
 from api.views import ModelViewSet
-from shop.models import ProductPage
+from shop.serializers import (ProductPageSerializer,
+                              AttributeValueSerializer,
+                              ProductImageSerializer)
+
 from shop.models import Attribute
-from shop.serializers import ProductPageSerializer, AttributeValueSerializer
+from shop.models import ProductImage
 from shop.models import AttributeValue as Value
+from shop.models import ProductPage as Product
+from shop.models import ProductValueRelation as Relation
 
 
 class ProductPageEAVFilterBackend():
@@ -46,10 +61,12 @@ class ProductPageEAVFilterBackend():
 
 class ProductPageViewSet(ModelViewSet):
 
-    model = ProductPage
-    queryset = ProductPage.objects.all()
+    model = Product
+    queryset = Product.objects.all()
     serializer_class = ProductPageSerializer
     pagination_class = LimitOffsetPagination
+    permissions_class = permissions.IsAdminUser
+
 
     filter_backends = (
         DjangoFilterBackend,
@@ -78,10 +95,11 @@ class ProductPageViewSet(ModelViewSet):
 
 class ProductValuesViewSet(viewsets.ViewSet):
 
-    parent_model = ProductPage
+    parent_model = Product
     model = Value
     serializer_class = AttributeValueSerializer
     pagination_class = LimitOffsetPagination
+    permissions_class = permissions.IsAdminUser
 
     filter_backends = (
         DjangoFilterBackend,
@@ -125,32 +143,101 @@ class ProductValuesViewSet(viewsets.ViewSet):
         return response
 
     def create(self, request, product_pk):
-        data = request.data
+        data = request.data['attributes']
 
-        queryparams = request.query_params
-        bulk_mode = queryparams.get('bulk', False)
-        if bulk_mode:
-            serializer = self.serializer_class(data=data, many=True)
-            if serializer.is_valid():
-                instance = self.get_instance(product_pk)
+        values_to_add = []
+        values_to_remove = []
 
-                instance.update_values_from_list(data)
-                output = self.serializer_class(
-                    instance.attribute_values.all(),
-                    many=True
-                )
-                return Response(
-                    {'results': output.data},
-                    status=status.HTTP_200_OK
+        received_attributes_ids = {attr['id'] for attr in data}
+
+        attrs_to_remove = set()
+
+        ids_to_add = set()
+        ids_to_remove = set()
+
+        instance = self.get_instance(product_pk)
+        
+        stored = instance.attribute_values.filter(attribute__id__in=received_attributes_ids)
+        stored_map = defaultdict(set)
+        for value in stored:
+            stored_map[value.attribute.id].add(value.id)
+            
+        for attr in data:
+            if attr['datatype'] == 6:
+                value_set = set(attr['values'])
+                to_add = value_set.difference(stored_map[attr['id']])
+                to_remove = stored_map[attr['id']].difference(value_set)
+                ids_to_add.update(to_add)
+                ids_to_remove.update(to_remove)
+            elif attr['datatype'] == 5:
+                if attr['values'] not in stored_map[attr['id']]:
+                    ids_to_add.add(attr['values'])
+                    stored_value = list(stored_map[attr['id']])[0]
+                    ids_to_remove.add(stored_value)
+            elif attr['datatype'] == 4:
+                value = attr['values']
+                if value is not None:
+                    attrs_to_remove.add(attr['id'])
+                    attribute = Attribute.objects.get(id=attr['id'])
+                    values_to_add.append(
+                        Value.objects.get_or_create(
+                            attribute=attribute,
+                            value=attr['values']
+                        )
+                    )
+                else:
+                    attrs_to_remove.add(attr['id'])
+            elif attr['datatype'] == 3 or attr['datatype'] == 2:
+                attrs_to_remove.add(attr['id'])
+                attribute = Attribute.objects.get(id=attr['id'])
+                values_to_add.append(
+                    Value.objects.get_or_create(
+                        attribute=attribute,
+                        value=attr['values']
+                    )
                 )
             else:
-                return Response(
-                    serializer.errors,
-                    status=HTTP_400_BAD_REQUEST
-                )
-        else:
-            pass
-        return Response({})
+                value = attr['values']
+                if len(value) == 0:
+                    attrs_to_remove.add(attr['id'])
+                else:
+                    attrs_to_remove.add(attr['id'])
+                    attribute = Attribute.objects.get(id=attr['id'])
+                    values_to_add.append(
+                        Value.objects.get_or_create(
+                            attribute=attribute,
+                            value=attr['values']
+                        )
+                    )
+
+        with transaction.atomic():
+            relations_to_delete = Relation.objects.filter(
+                value_id__in=ids_to_remove,
+                entity=instance
+            ).union(Relation.objects.filter(
+                value__attribute__id__in=attrs_to_remove,
+                entity=instance
+            ))
+
+            for relation in relations_to_delete:
+                relation.delete()
+            
+            qs_to_add = Value.objects.filter(
+                id__in=ids_to_add
+            )
+            for value in qs_to_add:
+                Relation(
+                    value=value,
+                    entity=instance
+                ).save()
+                
+            for value in values_to_add:
+                Relation(
+                    value=value,
+                    entity=instance
+                ).save()
+
+        return Response(status=status.HTTP_200_OK)
 
     def retrieve(self, product_pk, pk):
         return Response({})
@@ -159,4 +246,87 @@ class ProductValuesViewSet(viewsets.ViewSet):
         return Response({})
 
     def delete(self, product_pk, pk):
+        return Response({})
+
+
+class ProductImagesAPIView(APIView):
+
+    model            = ProductImage
+    serializer_class = ProductImageSerializer
+    permissions_class = permissions.IsAdminUser
+
+    def get_instance(self, pk):
+        try:
+            return self.product_model.objects.get(
+                pk=pk
+            )
+        except ObjectDoesNotExist:
+            raise Http404
+
+    def get(self, request, product_pk):
+        images = self.model.objects.filter(
+            product=product_pk
+        )
+        serializer = self.serializer_class(images, many=True)
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK
+        )
+
+    def post(self, request, product_pk):
+        return Response({})
+
+
+class ProductImageUploadView(APIView):
+
+    model = Product
+    permissions_class = permissions.IsAdminUser
+    parser_classes = (MultiPartParser, FileUploadParser, FormParser)
+
+    def get_instance(self, pk):
+        try:
+            return self.model.objects.get(
+                pk=pk
+            )
+        except ObjectDoesNotExist:
+            raise Http404
+
+
+    def put(self, request, pk):
+        instance = self.get_instance(pk)
+        imageFile = request.FILES.get('image', None)
+        if imageFile is not None:
+            fs = FileSystemStorage()
+            filepath = '{MEDIA_ROOT}images/{model}/{name}'.format(
+                MEDIA_ROOT=settings.MEDIA_ROOT,
+                model=instance.model,
+                name=imageFile.name
+            )
+            filename = fs.save(filepath, imageFile).replace(settings.MEDIA_ROOT, '')
+            instance.image = filename
+            instance.save()
+            instance.image.close()
+            instance.thumbnail.close()
+        return Response({})
+
+
+class ProductImagesUploadView(APIView):
+
+    model = Product
+    permissions_class = permissions.IsAdminUser
+    parser_classes = (MultiPartParser, FileUploadParser, FormParser)
+
+    def get_instance(self, pk):
+        try:
+            return self.model.objects.get(
+                pk=pk
+            )
+        except ObjectDoesNotExist:
+            raise Http404
+
+    def post(self, request, pk):
+        print('HOT')
+        print(request.FILES)
+        for imageFile in request.FILES.keys():
+            print(imageFile)
         return Response({})

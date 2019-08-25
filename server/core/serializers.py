@@ -16,7 +16,7 @@ class DynamicFieldsModelSerializer(serializers.ModelSerializer):
 
         if fields is not None:
             # Drop any fields that are not specified in the `fields` argument.
-            allowed = set(fields)
+            disallowed = set(fields)
             existing = set(self.fields)
-            for field_name in existing - allowed:
+            for field_name in existing - disallowed:
                 self.fields.pop(field_name)

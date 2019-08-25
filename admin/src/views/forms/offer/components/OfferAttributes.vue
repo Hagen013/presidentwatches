@@ -5,7 +5,6 @@
         <div v-if="dataProcessed">
 
             <div class="group" v-for="group in eavGroups" :key="group.id">
-                {{hasChanged}}
                 <div class="group-title">
                     {{group.name}}
                 </div>
@@ -56,18 +55,39 @@
                                 >
                                 </el-option>
                             </el-select>
-                            <el-input-number
-                                v-else-if="attribute.datatype==3"
-                                v-model="attribute.active_values"
-                                controls-position="right"
-                            >
-                            </el-input-number>
-                            <el-input-number
-                                v-else-if="attribute.datatype==2"
-                                v-model="attribute.active_values"
-                                controls-position="right"
-                            >
-                            </el-input-number>
+                            <div v-else-if="attribute.datatype==3">
+                                <div class="switcher">
+                                    <el-switch
+                                        v-model="attribute.disabled"
+                                        active-text="Не указывать"
+                                        @change="handleNumericSwitch(attribute)"
+                                    >
+                                    </el-switch>
+                                </div>
+                                <el-input-number
+                                    v-if="!attribute.disabled"
+                                    v-model="attribute.active_values"
+                                    controls-position="right"
+                                >
+                                </el-input-number>
+                            </div>
+                            <div v-else-if="attribute.datatype==2">
+                                <div class="switcher">
+                                    <el-switch
+                                        v-model="attribute.disabled"
+                                        active-text="Не указывать"
+                                        @change="handleNumericSwitch(attribute)"
+                                    >
+                                    </el-switch>
+                                </div>
+                                <el-input-number
+                                    v-if="!attribute.disabled"
+                                    v-model="attribute.active_values"
+                                    controls-position="right"
+                                    @change="handleIntegerChange(attribute)"
+                                >
+                                </el-input-number>
+                            </div>
                             <el-input placeholder="Не указано" 
                                 v-if="attribute.datatype==1"
                                 v-model="attribute.active_values"
@@ -112,7 +132,8 @@ export default {
             'Армейские': true,
             "Gold'n'Black": true
         },
-        hasChanged: false
+        hasChanged: false,
+        pending: false
     }),
     props: [
         'instance',
@@ -140,6 +161,8 @@ export default {
             this.syncData();
         },
         syncData() {
+            this.hasChanged = false;
+            this.$emit('change', this.hasChanged);
             this.eavGroupsResponseReceived = false;
             this.eavAttributesResponseReceived = false;
             this.eavValuesResponseReceived = false;
@@ -278,6 +301,8 @@ export default {
                     } else if (attribute.datatype === 1) {
                         if (activeValues.length > 0) {
                             this.$set(attribute, 'active_values', activeValues[0].value);
+                        } else {
+                            this.$set(attribute, 'active_values', "");
                         }
                     }
                     this.eavGroupsProxy = JSON.parse(JSON.stringify(this.eavGroups));
@@ -288,19 +313,58 @@ export default {
         },
         checkStatus() {
             this.hasChanged = !equal(this.eavGroups, this.eavGroupsProxy);
+            this.$emit('change', this.hasChanged);
+        },
+        handleNumericSwitch(attribute) {
+            if (attribute.disabled) {
+                attribute.active_values = null;
+            } else {
+                attribute.active_values = 0;
+            }
+        },
+        handleIntegerChange(attribute) {
+            attribute.active_values = parseInt(attribute.active_values)
+        },
+        saveChanges() {
+            let attributes = [];
             for (let i=0; i<this.eavGroups.length; i++) {
                 for (let y=0; y<this.eavGroups[i].attribute_set.length; y++) {
                     let attribute = this.eavGroups[i].attribute_set[y];
                     let attributeProxy = this.eavGroupsProxy[i].attribute_set[y];
                     if (!equal(attribute, attributeProxy)) {
-                        console.log(attribute);
-                        console.log(attributeProxy);
-                        console.log('')
+                        attributes.push({
+                            id: attribute.id,
+                            datatype: attribute.datatype,
+                            values: attribute.active_values
+                        })
                     }
                 }
             }
-            //this.$emit('change', this.hasChanged);
+            let data = {bulk: true, attributes: attributes};
+            request.post(`/products/${this.instance.id}/values/`, data).then(
+                response => {
+                    this.handleSuccessfulSaveResponse(response);
+                },
+                response => {
+                    this.handleFailedSaveResponse(response);
+                }
+            )
         },
+        rollbackChanges() {
+            this.dataProcessed = false;
+            this.syncData();
+        },
+        handleSuccessfulSaveResponse(response) {
+            this.dataProcessed = false;
+            this.syncData();
+            this.$notify({
+                title: 'Сообщение',
+                message: 'Атрибуты обновлены'
+            });
+        },
+        handleFailedSaveResponse(response) {
+
+        }
     },
     watch: {
         activeTab() {
@@ -354,5 +418,8 @@ export default {
     .attribute-name {
         font-size: 14px;
         margin-bottom: 5px;
+    }
+    .switcher {
+        margin-bottom: 10px;
     }
 </style>

@@ -9,14 +9,15 @@ from eav.fields import AttributeType
 from .models import (ProductPage,
                      Attribute,
                      AttributeValue,
-                     AttributeGroup)
+                     AttributeGroup,
+                     ProductImage)
 
 
 class ProductPageSerializer(DynamicFieldsModelSerializer):
 
     slug = serializers.CharField(validators=[slug_validator,])
-    image = serializers.ImageField(use_url=True)
-    thumbnail = serializers.ImageField(use_url=True)
+    image = serializers.ImageField(use_url=True, read_only=True)
+    thumbnail = serializers.ImageField(use_url=True, read_only=True)
 
     class Meta:
         model = ProductPage
@@ -54,6 +55,11 @@ class ProductPageSerializer(DynamicFieldsModelSerializer):
 
         read_only_fields = (
             'id',
+            'image',
+            'thumbnail',
+            'model',
+            'slug',
+            'absolute_url'
         )
 
 
@@ -266,7 +272,17 @@ class AttributeGroupSerializer(serializers.ModelSerializer):
         )
 
 
-class ImageSerializer(serializers.ModelSerializer):
-    """
-    """
-    pass
+class ProductImageSerializer(serializers.ModelSerializer):
+
+    image = serializers.ImageField(use_url=True)
+    thumbnail = serializers.ImageField(use_url=True)
+
+    class Meta:
+        model = ProductImage
+        fields = (
+            'id',
+            'product',
+            'image',
+            'thumbnail',
+            'order',
+        )
