@@ -41,7 +41,7 @@ export default class FastBuy {
                 }
                 let url = `/cart/fast-buy/${PRODUCT.pk}/`;
 
-                let admitadCookie = getCookie('tagtag_aid');
+                let admitadCookie = Cookies.get('tagtag_aid');
                 if ( admitadCookie !== undefined ) {
                     data['cpa'] = {'networks': ['admitad']};
                 }
