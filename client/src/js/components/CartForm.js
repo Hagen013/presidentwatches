@@ -635,6 +635,11 @@ export default class CartForm {
     processOrder() {
         let self = this;
 
+        let admitadCookie = Cookies.get('tagtag_aid');
+        if ( admitadCookie !== undefined ) {
+            this.orderData['cpa'] = {'networks': ['admitad']};
+        }
+
         api.post('/cart/create-order/', this.orderData).then(
             response => {
                 self.handleSuccessfulResponse(response);

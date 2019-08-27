@@ -96,16 +96,17 @@
     background-size: cover;
     background-position: left center;
     background-repeat: no-repeat;
-    background-image: url('../img/banners/main.jpg');
+    background-image: url('../img/banners/main_3.jpg');
     text-decoration: none;
     .button {
         margin-top: 8%;
         margin-left: 8%;
         min-width: auto !important;
-        background: white;
-        &:hover {
-            background: black;
-        }
+    }
+    .caption {
+        color: white;
+        font-size: 28px;
+        letter-spacing: 1px;
     }
     @include mq($from: mobile-big) {
         height: 240px;
@@ -115,8 +116,8 @@
         .button {
             margin: 0px;
             position: absolute;
-            top: 68.8%;
-            left: 60px;
+            top: 40.0%;
+            left: 18%;
         }
     }
     @include mq($from: desktop) {
@@ -124,8 +125,8 @@
         width: 63%;
         float: left;
         .button {
-            top: 67.8%;
-            left: 50px;
+            top: 40.0%;
+            left: 18%;
         }
     }
     @include mq($from: wide) {

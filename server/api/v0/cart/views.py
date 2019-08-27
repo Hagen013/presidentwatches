@@ -141,7 +141,12 @@ class FastBuyApiView(BaseCartAPIView):
             'client_notes': '',
             'source': 3
         }
+        
+        cpa = request.data.get('cpa', None)
 
+        if cpa is not None:
+            data = cpa
+        
         serializer = OrderCreateSerializer(data, request, cart=cart)
 
         try:
@@ -178,7 +183,6 @@ class CreateOrderAPIView(BaseCartAPIView):
         try:
             serializer.validate()
         except ValidationError as e:
-            print(e.messages)
             return Response(
                 status=status.HTTP_400_BAD_REQUEST,
                 data=e.messages

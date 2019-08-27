@@ -27,7 +27,8 @@ module.exports = (env, argv) => {
             shopsPage: './shopsPage.js',
             deliveryPoints: './deliveryPoints.js',
             deliveryAndPayment: './deliveryAndPayment.js',
-            promo: './promo.js'
+            promo: './promo.js',
+            aftercheckPage: './aftercheckPage.js'
         },
         output: {
             path: path.resolve(__dirname, './dist/js'),

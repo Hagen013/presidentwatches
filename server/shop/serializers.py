@@ -3,6 +3,9 @@ from collections import OrderedDict
 from rest_framework import serializers
 from rest_framework.relations import PKOnlyObject
 
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
+
 from core.serializers import DynamicFieldsModelSerializer
 from core.db.validators import slug_validator
 from eav.fields import AttributeType
@@ -286,3 +289,24 @@ class ProductImageSerializer(serializers.ModelSerializer):
             'thumbnail',
             'order',
         )
+
+
+class ProductImageFileSerializer():
+
+    def __init__(self, product, image_file, storage, count):
+        filepath = '{MEDIA_ROOT}images/{dirname}/{name}'.format(
+            MEDIA_ROOT=settings.MEDIA_ROOT,
+            dirname=product.model,
+            name=image_file.name
+        )
+        filename = storage.save(filepath, image_file)
+        self._instance = ProductImage(
+            product=product,
+            image=filename.replace(settings.MEDIA_ROOT, ''),
+            order=count+1
+        )
+    
+    def save(self):
+        self._instance.save()
+        self._instance.image.close()
+        self._instance.thumbnail.close()

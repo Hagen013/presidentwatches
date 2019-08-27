@@ -56,3 +56,25 @@
         </div>
     </div>
 {% endblock content %}
+
+{% block javascript %}
+    {{ super() }}
+    <script type="text/javascript">
+    var PUBLIC_ID = {{order.public_id}};
+    var PRODUCTS = [
+        {% for item in order.rr_items %}
+        {
+            Product: {
+                productID: "{{item['id']}}",
+                category: '1',
+                price: {{item['price']}},
+                priceCurrency: 'RUB',
+            },
+            orderQuantity: {{item['qnt']}},
+            additionalType: 'sale'
+        },
+        {% endfor %}
+    ]
+    </script>
+    <script src="{{ static('js/aftercheckPage.js') }}"></script>
+{% endblock javascript %}

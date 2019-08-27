@@ -30,29 +30,46 @@ class FacetesApiView(APIView):
 
     def get(self, request):
         slug = request.GET.get("key")
+        is_in_stock = request.GET.get('is_in_stock', None)
 
         values = AttributeValue.objects.filter(attribute__key=slug)
         serializer = AttributeValuePublicSerializer(values, many=True)
 
 
         fields = set(request.GET.keys()).difference({'key', slug})
-        body = {
-            "size": 0,
-            "query": {
-                "bool": {
-                    "must": [
-                        {
-                            "term": {"is_in_stock": "true"}
-                        }
-                    ]
-                }
-            },
-            "aggs": {
-                "facet": {
-                    "terms": {"field": slug, "size": 200000}
+        if is_in_stock is None:
+            body = {
+                "size": 0,
+                "query": {
+                    "bool": {
+                        "must": [
+                            {
+                                "term": {"is_in_stock": "true"}
+                            }
+                        ]
+                    }
+                },
+                "aggs": {
+                    "facet": {
+                        "terms": {"field": slug, "size": 200000}
+                    }
                 }
             }
-        }
+        else:
+            body = {
+                "size": 0,
+                "query": {
+                    "bool": {
+                        "must": [
+                        ]
+                    }
+                },
+                "aggs": {
+                    "facet": {
+                        "terms": {"field": slug, "size": 200000}
+                    }
+                }
+            }
 
         for field in fields:
             values = request.GET.get(field).split(',')

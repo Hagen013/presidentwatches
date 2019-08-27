@@ -42,6 +42,7 @@ STATIC_FILE_PATHS=(
     "css/promo.css"
     "js/common.js"
     "js/main.js"
+    "js/aftercheckPage.js"
     "js/productPage.js"
     "js/catalogPage.js"
     "js/cartPage.js"

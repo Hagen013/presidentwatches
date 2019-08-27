@@ -621,6 +621,7 @@ export default {
             )
         },
         handleProductSelect(item) {
+            let now = Date.now();
             this.queryLine = '';
             api.get(`/products/${item._source.id}/`).then(
                 response => {
@@ -631,12 +632,17 @@ export default {
                             image: product.image,
                             model: product.model,
                             pk: product.id,
+                            base_price: product._price,
                             price: product._price,
                             quantity: 1,
                             series: product.series,
                             slug: product.slug,
                             total_price: product._price,
-                            url: product.url
+                            added_at: now,
+                            url: product.url,
+                            is_sale: false,
+                            sale: 0
+
                         }
                         this.$set(this.instance.cart.items, product.id, item);
                         this.calculatePrices();

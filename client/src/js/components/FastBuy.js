@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie'
+
 import Inputmask from 'inputmask';
 import api from '@/api'
 
@@ -38,6 +40,12 @@ export default class FastBuy {
                     'phone': value
                 }
                 let url = `/cart/fast-buy/${PRODUCT.pk}/`;
+
+                let admitadCookie = getCookie('tagtag_aid');
+                if ( admitadCookie !== undefined ) {
+                    data['cpa'] = {'networks': ['admitad']};
+                }
+
                 api.post(url, data).then(
                     response => {
 
@@ -64,6 +72,39 @@ export default class FastBuy {
                             } catch(e) {} 
                         })
                         // RetailRocket end
+
+
+                        // Admitad
+                        let admitadCookie = Cookies.get('tagtag_aid');
+                        
+                        if (admitadCookie !== undefined) {
+                            ADMITAD = window.ADMITAD || {};
+                            ADMITAD.Invoice = ADMITAD.Invoice || {};
+                            ADMITAD.Invoice.broker = "adm";     // параметр дедупликации (по умолчанию для admitad)
+                            ADMITAD.Invoice.category = "1";
+                            ADMITAD.Invoice.referencesOrder = ADMITAD.Invoice.referencesOrder || [];
+                    
+                            let admitadItems = [];
+                            for (let key in data) {
+                                let item = data[key];
+                                admitadItems.push({
+                                    Product: {
+                                        productID: String(item.pk),
+                                        category: '1',
+                                        price: item.price,
+                                        priceCurrency: 'RUB'
+                                    },
+                                    orderQuantity: item.quantity,
+                                    additionalType: 'sale'
+                                })
+                            }
+                            ADMITAD.Invoice.referencesOrder.push({
+                                orderNumber: transactionId,
+                                orderedItem: admitadItems
+                            });
+                            ADMITAD.Tracking.processPositions();
+                        }
+                        // Admitad End
 
 
                         $('.fast-buy-main').html(

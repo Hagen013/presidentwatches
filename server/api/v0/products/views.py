@@ -16,12 +16,12 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
-from django.core.files.base import ContentFile
 
 from api.views import ModelViewSet
 from shop.serializers import (ProductPageSerializer,
                               AttributeValueSerializer,
-                              ProductImageSerializer)
+                              ProductImageSerializer,
+                              ProductImageFileSerializer)
 
 from shop.models import Attribute
 from shop.models import ProductImage
@@ -273,7 +273,28 @@ class ProductImagesAPIView(APIView):
             status=status.HTTP_200_OK
         )
 
-    def post(self, request, product_pk):
+    def put(self, request, product_pk):
+        stored_images = self.model.objects.filter(
+            product=product_pk
+        )
+        
+        received_images = request.data
+        received_images_mapping = {}
+        for image in received_images:
+            received_images_mapping[image['id']] = {
+                'order': image['order']
+            }
+
+        with transaction.atomic():
+            for image in stored_images:
+                received = received_images_mapping.get(image.id, None)
+                if received is None:
+                    image.delete()
+                else:
+                    if image.order != received['order']:
+                        image.order = received['order']
+                        image.save()
+        
         return Response({})
 
 
@@ -315,6 +336,7 @@ class ProductImagesUploadView(APIView):
     model = Product
     permissions_class = permissions.IsAdminUser
     parser_classes = (MultiPartParser, FileUploadParser, FormParser)
+    serializer_class = ProductImageFileSerializer
 
     def get_instance(self, pk):
         try:
@@ -325,8 +347,17 @@ class ProductImagesUploadView(APIView):
             raise Http404
 
     def post(self, request, pk):
-        print('HOT')
-        print(request.FILES)
-        for imageFile in request.FILES.keys():
-            print(imageFile)
-        return Response({})
+        instance = self.get_instance(pk)
+        count = instance.images.count()
+        files = request.FILES.keys()
+        fs = FileSystemStorage()
+        for key in files:
+            count += 1
+            image_file = request.FILES[key]
+            serializer = self.serializer_class(instance, image_file, fs, count)
+            serializer.save()
+        data = ProductImageSerializer(instance.images.all(), many=True).data
+        return Response(
+            data,
+            status=status.HTTP_200_OK
+        )

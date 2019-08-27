@@ -123,11 +123,9 @@ export default {
         dataProcessed: false,
         notEditable: {
             'Хит продаж': true,
-            'Серия': true,
             'Распродажа': true,
             'Новинка': true,
             'Бренд': true,
-            'Коллекция': true,
             'СССР': true,
             'Армейские': true,
             "Gold'n'Black": true

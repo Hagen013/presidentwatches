@@ -214,8 +214,7 @@ def process_warehouse_file(path):
                                 value=series
                             )
                             instance.add_value(new_value)
-                        elif instance.series_value.value != series:
-                            instance.remove_value(instance.series_value) 
+                        elif instance.series != series:
                             new_value = Value.objects.get_or_create(
                                 attribute=series_attr,
                                 value=series

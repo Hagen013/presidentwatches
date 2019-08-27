@@ -332,7 +332,8 @@ CELERY_IMPORTS = (
     'tasks.elastic',
     'tasks.sms_notifications',
     'tasks.retail_rocket',
-    'tasks.yml'
+    'tasks.yml',
+    'tasks.store'
 )
 CELERY_QUEUES = (
     Queue('default', Exchange('default'), routing_key='default'),
@@ -361,3 +362,13 @@ SMS_URL = env("DJANGO_SMS_URL")
 SMS_SECRET_KEY = env("DJANGO_SMS_SECRET_KEY")
 # ------------------------------------------------------------------------------
 # SMS MESSAGES END
+
+
+# STORE START
+# ------------------------------------------------------------------------------
+STORE_LOGIN = env("DJANGO_STORE_LOGIN")
+STORE_PASSWORD = env("DJANGO_STORE_PASSWORD")
+STORE_ID = env("DJANGO_STORE_ID")
+STORE_API_URL = env("DJANGO_STORE_URL")
+# ------------------------------------------------------------------------------
+# STORE END

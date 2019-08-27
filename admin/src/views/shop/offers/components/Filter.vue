@@ -139,7 +139,7 @@ export default {
             this.showDropdown = false;
         },
         getValuesList() {
-            let params = {key: this.attribute.key};
+            let params = {key: this.attribute.key, is_in_stock: false};
             let facetes =  JSON.parse(JSON.stringify(this.facetes));
 
             if (facetes[this.attribute.key] !== undefined) {

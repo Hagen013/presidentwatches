@@ -14,7 +14,7 @@ YML_FILEPATH = settings.YML_PATH + "yml.xml"
 
 @app.task
 def generate_yml_file():
-    products = Product.objects.filter(is_in_stock=True)
+    products = Product.objects.filter(is_in_stock=True, is_yml_offer=True)
     categories = Node.objects.all()
     date = now().astimezone(pytz.timezone(settings.TIME_ZONE)).strftime('%Y-%m-%d %H:%M')
 

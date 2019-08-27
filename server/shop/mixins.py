@@ -290,13 +290,13 @@ class WatchesProductMixin(models.Model):
                 )
                 self.add_value(new_brand)
 
-            # if self.series != series:
-            #     self.remove_value(series)
-            #     new_series = self.value_class.objects.get(
-            #         attribute__name='Коллекция',
-            #         value_enum=self.series
-            #     )
-            #     self.add_value(new_series)
+            if self.series:
+                # self.remove_value(series)
+                new_series = self.value_class.objects.get(
+                    attribute__name='Коллекция',
+                    value_enum=self.series
+                )
+                self.add_value(new_series)
 
         super(WatchesProductMixin, self).save()
 

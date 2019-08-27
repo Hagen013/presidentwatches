@@ -64,7 +64,9 @@
                     Дополнительные
                 </h2>
                 <div class="images-gallery">
-                    <draggable v-model="images">
+                    <draggable v-model="images"
+                        @change="reorderImages"
+                    >
                         <transition-group type="transition" :name="!drag ? 'flip-list' : null">
                         <div class="image" v-for="image in images"
                             :key="image.id"
@@ -114,7 +116,6 @@ export default {
         mainImageFile: null,
         images: [],
         imagesProxy: [],
-        loading: true,
         drag: false,
         hasChanged: false,
         mainImageUploadUrl: '',
@@ -123,7 +124,11 @@ export default {
         ///
         dialogImageUrl: '',
         dialogVisible: false,
-        disabled: false
+        disabled: false,
+        ///
+        mainImageResponseReceived: true,
+        imagesResponseReceived: false,
+        imagesUploadResponseReceived: false
     }),
     components: {
         'draggable': draggable
@@ -133,6 +138,13 @@ export default {
         'activeTab'
     ],
     computed: {
+        loading() {
+            return !(
+                (this.mainImageResponseReceived) &&
+                (this.imagesResponseReceived) &&
+                (this.imagesUploadResponseReceived)
+            )
+        }
     },
     created() {
         if (this.activeTab === 'images') {
@@ -144,6 +156,8 @@ export default {
             if (this.mainImage == '') {
                 this.mainImage = this.instance.image;
                 this.mainImageProxy = this.mainImage;
+                this.mainImageResponseReceived = true;
+                this.imagesUploadResponseReceived = true;
                 this.uploadFilesProxy = this.uploadFiles.splice();
             }
             this.syncData();
@@ -164,7 +178,7 @@ export default {
         handleSuccessfulGetResponse(response) {
             this.images = response.data;
             this.imagesProxy = JSON.parse(JSON.stringify(this.images));
-            this.loading = false;
+            this.imagesResponseReceived = true;
         },
         handleFailedGetResponse(response) {
 
@@ -176,6 +190,7 @@ export default {
                 ) {
                 this.hasChanged = true;
                 this.$emit('change', this.hasChanged);
+                console.log('hoy')
             }
         },
         handleMainImageFile(file, fileList) {
@@ -210,7 +225,6 @@ export default {
             this.checkStatus();
         },
         saveChanges() {
-            this.loading = true;
             if (this.mainImage != this.mainImageProxy) {
                 this.updateMainImage();
             }
@@ -225,9 +239,18 @@ export default {
             let formData = new FormData();
             let options =   {headers: {'Content-Type': 'multipart/form-data'}};
             formData.append('image', this.mainImageFile.raw);
+
+            this.mainImageResponseReceived = false;
             request.put(`/products/${this.instance.id}/image/`, formData, options).then(
                 response => {
-
+                    this.$notify({
+                        title: 'Успешно',
+                        message: 'Изображение обновлено',
+                        type: 'success'
+                    });
+                    this.mainImageResponseReceived = true;
+                    this.mainImageProxy = this.mainImage.splice();
+                    this.checkStatus();
                 },
                 response => {
 
@@ -235,9 +258,17 @@ export default {
             )
         },
         updateImages() {
-            request.post(`/products/${this.instance.id}/images/`, this.images).then(
+            this.imagesResponseReceived = false;
+            request.put(`/products/${this.instance.id}/images/`, this.images).then(
                 response => {
-
+                    this.$notify({
+                        title: 'Успешно',
+                        message: 'Изображения изменены',
+                        type: 'success'
+                    });
+                    this.imagesProxy = JSON.parse(JSON.stringify(this.images));
+                    this.imagesResponseReceived = true;
+                    this.checkStatus();
                 },
                 response => {
 
@@ -250,17 +281,33 @@ export default {
             for (let i=0; i<this.uploadFiles.length; i++) {
                 formData.append(`file[${i}]`, this.uploadFiles[i].raw);
             }
+
+            this.imagesUploadResponseReceived = false;
             request.post(`/products/${this.instance.id}/images/upload/`, formData, options).then(
                 response => {
-
+                    this.$notify({
+                        title: 'Успешно',
+                        message: 'Изображения добавлены',
+                        type: 'success'
+                    });
+                    this.uploadFilesProxy = JSON.parse(JSON.stringify(this.uploadFiles));
+                    this.imagesUploadResponseReceived = true;
+                    this.syncData();
                 },
                 response => {
 
                 }
             )
         },
+        reorderImages() {
+            for (let i=0; i<this.images.length; i++) {
+                this.images[i].order = i
+            }
+        },
         rollbackChanges() {
-
+            this.syncData();
+            this.hasChanged = false;
+            this.$emit('change', this.hasChanged);
         }
     },
     watch: {
