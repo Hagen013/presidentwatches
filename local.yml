@@ -1,0 +1,113 @@
+version: "3"
+
+services:
+  # NGINX
+  nginx:
+    image: graphmarket/nginx_pw-local
+    restart: unless-stopped
+    hostname: nginx
+    build:
+      context: .
+      dockerfile: ./compose/nginx-local/Dockerfile
+    env_file:
+      - env/nginx
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8282:8282"
+    volumes:
+      - /1TB/presidentwatches-original:/media
+    links:
+      - "web:web"
+    depends_on:
+      - web
+
+  web:
+    image: graphmarket/server_pw
+    restart: unless-stopped
+    hostname: web
+    build:
+      context: .
+      dockerfile: ./compose/server/Dockerfile
+    env_file:
+      - env/web
+    volumes:
+      - /1TB/presidentwatches-original:/media
+      - /var/graph_market:/var/graph_market
+    links:
+      - geo:geo
+      - postgres_web:postgres
+    depends_on:
+      - postgres_web
+      - geo
+      - celery_pw
+      
+  celery_pw:
+    image: graphmarket/celery_pw
+    restart: unless-stopped
+    env_file:
+      - env/web
+    links:
+      - geo:geo
+      - postgres_web:postgres
+    volumes:
+      - /var/president_media:/var/president_media
+    depends_on:
+      - postgres_web
+
+  elasticsearch:
+    image: graphmarket/elasticsearch-pw
+    restart: unless-stopped
+    hostname: elasticsearch
+    volumes:
+      - /var/graph_market:/var/graph_market
+      - /var/graph_market/elastic-snapshots:/var/graph_market/elastic-snapshots
+
+  # GEO Service
+  geo:
+    image: graphmarket/geo_pw:latest
+    restart: unless-stopped
+    hostname: geo
+    build:
+      context: .
+      dockerfile: ./compose/geo/Dockerfile
+    env_file:
+      - env/geo
+    links:
+      - rabbit
+      - redis
+    depends_on:
+      - rabbit
+      - redis
+
+  # RABBITMQ
+  rabbit:
+    image: rabbitmq:3.6.11-management
+    restart: unless-stopped
+    hostname: rabbit
+    volumes:
+      - /var/lib/rabbitmq/mnesia:/var/lib/rabbitmq/mnesia
+    env_file:
+      - env/rabbit
+
+  # Redis
+  redis:
+    image: redis:latest
+    restart: unless-stopped
+    hostname: redis
+
+  postgres_web:
+    image: postgres:latest
+    restart: unless-stopped
+    volumes:
+      - /var/president_db/data:/var/president_db/data
+    env_file:
+      - env/postgres_web
+
+  postgres_geo:
+    image: postgres:latest
+    restart: unless-stopped
+    volumes:
+      - /var/postgresql_geo/data:/var/postgresql_geo/data
+    env_file:
+      - env/postgres_geo
