@@ -8,7 +8,7 @@ from celery.signals import beat_init
 from celery.schedules import crontab
 from config.celery import app
 
-from shop.models import Product
+from shop.models import ProductPage as Product
 
 
 API_URL = settings.STORE_API_URL
