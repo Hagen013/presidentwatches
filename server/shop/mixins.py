@@ -282,13 +282,14 @@ class WatchesProductMixin(models.Model):
             brand = self.brand_value
             #series = self.series_value
 
-            if self.brand != brand.value:
-                self.remove_value(brand)
-                new_brand = self.value_class.objects.get(
-                    attribute__name='Бренд',
-                    value_enum=self.brand
-                )
-                self.add_value(new_brand)
+            if brand is not None:
+                if self.brand != brand.value:
+                    self.remove_value(brand)
+                    new_brand = self.value_class.objects.get(
+                        attribute__name='Бренд',
+                        value_enum=self.brand
+                    )
+                    self.add_value(new_brand)
 
             if self.series:
                 # self.remove_value(series)
