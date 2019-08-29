@@ -190,9 +190,11 @@ class WatchesProductMixin(models.Model):
     @property
     def brand_value(self):
         try:
-            return self.attribute_values.get(
+            return self.attribute_values.filter(
                 attribute__name='Бренд'
-            )
+            )[0]
+        except IndexError:
+            return None
         except ObjectDoesNotExist:
             return None
 
@@ -292,12 +294,15 @@ class WatchesProductMixin(models.Model):
                     self.add_value(new_brand)
 
             if self.series:
-                # self.remove_value(series)
-                new_series = self.value_class.objects.get(
-                    attribute__name='Коллекция',
-                    value_enum=self.series
-                )
-                self.add_value(new_series)
+                try:
+                    attribute = self.attribute_class.objects.get(name='Коллекция')
+                    new_series = self.value_class.objects.get_or_create(
+                        attribute=attribute,
+                        value_enum=self.series
+                    )
+                    self.add_value(new_series)
+                except:
+                    pass
 
         super(WatchesProductMixin, self).save()
 
