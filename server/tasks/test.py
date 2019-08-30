@@ -7,7 +7,7 @@ ERRORS_FILE = 'ERRORS.txt'
 
 def test_pages():
     # for node in Node.objects.all():
-    #     url = 'https://new.presidentwatches.ru/shop/watches/{slug}'.format(
+    #     url = 'https://presidentwatches.ru/shop/watches/{slug}'.format(
     #         slug=node.slug
     #     )
     #     response = requests.get(url)
@@ -38,7 +38,7 @@ def test_pages():
     #                 fp.write(msg)
 
     for instance in Product.objects.all():
-        url = 'https://new.presidentwatches.ru/watches/{slug}/'.format(
+        url = 'https://presidentwatches.ru/watches/{slug}/'.format(
             slug=instance.slug
         )
         response = requests.get(url)

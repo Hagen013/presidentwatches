@@ -791,7 +791,7 @@
           "@context": "http://schema.org/",
           "@type": "Product",
           "name": "{{product.full_name}}",
-          "image": "https://new.presidentwatches.ru{{product.image.url}}",
+          "image": "https://presidentwatches.ru{{product.image.url}}",
           "description": "{{product.html_free_description}}",
           {% if product.brand|length > 0 %}
           "brand": "{{product.brand}}",
@@ -806,7 +806,7 @@
             {% else %}
             "availability": "http://schema.org/OutOfStock",
             {% endif %}
-            "url": "https://new.presidentwatches.ru/watches/{{product.slug}}/"
+            "url": "https://presidentwatches.ru/watches/{{product.slug}}/"
           }
         }
     </script>
