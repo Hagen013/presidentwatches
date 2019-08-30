@@ -236,6 +236,6 @@ def write_search_record(query, view):
         fp.write(line)
 
 
-@beat_init.connect
-def configure_elasticsearch(**kwargs):
-    sync_elasticsearch.delay()
+# @beat_init.connect
+# def configure_elasticsearch(**kwargs):
+#     sync_elasticsearch.delay()

@@ -23,7 +23,7 @@ def generate_yml_file():
         'categories': categories,
         'products': products,
         'get_product_category': lambda product: Node.public.get_by_product(product),
-        'base_url': 'https://new.presidentwatches.ru'
+        'base_url': 'https://presidentwatches.ru'
     }
 
     xml_raw = render_to_string(

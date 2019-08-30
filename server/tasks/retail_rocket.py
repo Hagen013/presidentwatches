@@ -89,7 +89,7 @@ def generate_yml_file():
     date = now().astimezone(pytz.timezone(settings.TIME_ZONE)).strftime('%Y-%m-%d %H:%M')
 
     context = {
-        'base_url': 'https://new.presidentwatches.ru', 
+        'base_url': 'https://presidentwatches.ru', 
         'date': date,
         'categories': nodes,
         'qs': qs,

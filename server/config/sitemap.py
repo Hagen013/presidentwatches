@@ -33,7 +33,7 @@ def sitemap_index(request, sitemaps,
           sitemap_url_name='django.contrib.sitemaps.views.sitemap'):
 
     req_protocol = 'https'
-    req_site = 'new.presidentwatches.ru'
+    req_site = 'presidentwatches.ru'
 
     sites = []  # all sections' sitemap URLs
     for section, site in sitemaps.items():
@@ -109,7 +109,7 @@ class DefaultSitemap(Sitemap):
         if protocol is None:
             protocol = 'https'
 
-        domain = 'new.presidentwatches.ru'
+        domain = 'presidentwatches.ru'
 
         if getattr(self, 'i18n', False):
             urls = []
