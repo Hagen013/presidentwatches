@@ -4,6 +4,16 @@ import store from '@/store/location/index'
 import geoApi from '@/api/geo'
 
 
+const PHONE_MAP = {
+    'Краснодар': {'number': '+79612033485', 'public': '+7 961 203 34 85'},
+    'Москва': {'number': '+74951332056', 'public': '+7 495 133 20 56'},
+    'Екатеринбург': {'number': '+73433180428', 'public': '+7 343 318 04 28'},
+    'Новосибирск': {'number': '+73832804229', 'public': '+7 383 280 42 29'},
+    'Санкт-Петербург': {'number': '+78122004986', 'public': '+7 812 200 49 86'},
+    'Нижний Новгород': {'number': '+78312119716', 'public': '+7 831 211 97 16'},
+}
+
+
 export default class LocationSearch {
    
     constructor() {
@@ -70,7 +80,6 @@ export default class LocationSearch {
         this.$modal.css('display', 'flex');
     }
 
-
     hideModal() {
         if (this.$modal === undefined) {
             this.$modal = $('#location-modal');
@@ -84,6 +93,14 @@ export default class LocationSearch {
         store.commit('setLocation', payload)
         this.hideModal();
         $('.city-name').text(payload.name);
+        let cityPhone = PHONE_MAP[payload.name];
+        if (cityPhone === undefined) {
+            cityPhone = {'number': '+74951332056', 'public': '+7 495 133 20 56'};
+        }
+        let cityName = cityPhone['public'];
+        let cityNumber = cityPhone['number'];
+        $('.city-phone').text(cityName);
+        $('.city-phone-link').attr('href', `tel:${cityNumber}`);
     }
     
     renderCityList() {

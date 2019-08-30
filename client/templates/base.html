@@ -302,7 +302,16 @@
                                 <i class="icon icon_phone">
                                 </i>
                                 <span>
-                                8 800 200-7456
+                                8 800 200 74 56
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-list-item">
+                            <a class="city-phone-link" href="tel:{{city_phone(request.user.city_name)['number']}}">
+                                <i class="icon icon_phone">
+                                </i>
+                                <span class="city-phone">
+                                {{city_phone(request.user.city_name)['public']}}
                                 </span>
                             </a>
                         </li>

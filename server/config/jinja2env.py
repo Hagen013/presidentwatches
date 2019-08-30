@@ -167,6 +167,20 @@ def time_filter(time_min, time_max):
         return ''
 
 
+PHONE_MAP = {
+    'Краснодар': {'number': '+79612033485', 'public': '+7 961 203 34 85'},
+    'Москва': {'number': '+74951332056', 'public': '+7 495 133 20 56'},
+    'Екатеринбург': {'number': '+73433180428', 'public': '+7 343 318 04 28'},
+    'Новосибирск': {'number': '+73832804229', 'public': '+7 383 280 42 29'},
+    'Санкт-Петербург': {'number': '+78122004986', 'public': '+7 812 200 49 86'},
+    'Нижний Новгород': {'number': '+78312119716', 'public': '+7 831 211 97 16'},
+}
+
+
+def city_phone(city_name):
+    return PHONE_MAP.get(city_name, {'number': '+74951332056', 'public': '+7 495 133 20 56'})
+
+
 def environment(**options):
     options['extensions'] = ['config.jinja2htmlcompress.SelectiveHTMLCompress']
     env = Environment(**options)
@@ -184,6 +198,7 @@ def environment(**options):
         'normalize_noun_masculine': normalize_noun_masculine,
         'normalize_noun_feminine': normalize_noun_feminine,
         'price_filter': price_filter,
-        'time_filter': time_filter
+        'time_filter': time_filter,
+        'city_phone': city_phone
     })
     return env

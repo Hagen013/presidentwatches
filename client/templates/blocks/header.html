@@ -56,7 +56,16 @@
                         <i class="icon icon_phone tab-link__icon">
                         </i>
                         <div class="tab-link__caption">
-                            8 800 200-7456
+                            8 800 200 74 56
+                        </div>
+                    </a>
+                    <a class="header__top-link tab-link city-phone-link"
+                        href="tel:{{city_phone(request.user.city_name)['number']}}"
+                    >
+                        <i class="icon icon_phone tab-link__icon">
+                        </i>
+                        <div class="tab-link__caption city-phone">
+                            {{city_phone(request.user.city_name)['public']}}
                         </div>
                     </a>
                 </div>
