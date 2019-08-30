@@ -125,9 +125,7 @@ class CategoryPageView(DiggPaginatorViewMixin, ListView):
             removed_values.update(values)
 
         category_values = {x['id'] for x in self.category.attribute_values.all().values('id')}
-        print('SEARCH VALUES')
         self.search_values = category_values.difference(removed_values).union(added_values)
-        print(self.search_values)
         exact_nodes = self.model.objects.get_exact_node(tuple(self.search_values))
 
         try:
