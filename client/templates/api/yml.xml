@@ -41,6 +41,7 @@
             {% endif %}
             {% endfor %}
             <delivery>true</delivery>
+            <name>{{p.name}}</name>
             <vendor>{{p.brand}}</vendor>
             <model>{{p.model}}</model>
             {% if p.description %}

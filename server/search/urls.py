@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import SearchResultsView
+from .views import SearchResultsView, CustomSearchView
 
 
 app_name = 'search'
