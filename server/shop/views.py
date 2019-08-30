@@ -118,10 +118,10 @@ class CategoryPageView(DiggPaginatorViewMixin, ListView):
         removed_fields = list(filter(lambda x: x[1:] in self.attrs_set, self.queryparams))
 
         for field in fields:
-            values = {int(x) for x in self.queryparams.pop(field).split(',')}
+            values = {int(x) for x in self.queryparams.pop(field).split(',') if x.isdigit()}
             added_values.update(values)
         for field in removed_fields:
-            values = {int(x) for x in self.queryparams.pop(field).split(',')}
+            values = {int(x) for x in self.queryparams.pop(field).split(',') if x.isdigit()}
             removed_values.update(values)
 
         category_values = {x['id'] for x in self.category.attribute_values.all().values('id')}
