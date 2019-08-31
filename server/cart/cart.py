@@ -95,7 +95,10 @@ class Cart():
         self.save()
 
     def delete_offer(self, offer_identifier):
-        del self.data['items'][offer_identifier]
+        try:
+            del self.data['items'][offer_identifier]
+        except KeyError:
+            pass
         self.save()
 
     def update_quantity(self, offer_identifier, quantity):

@@ -28,7 +28,7 @@
         {% endblock css %}
 
         {% block script_head %}
-        <!-- Global site tag (gtag.js) - Google Analytics -->
+        {% block script_head %}
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-44297004-1"></script>
         <script>
@@ -37,13 +37,6 @@
         gtag('js', new Date());
         gtag('config', 'UA-44297004-1');
         </script>
-
-        <!-- Yandex.Metrika counter -->
-        <!-- Yandex.Metrika informer -->
-        <a href="https://metrika.yandex.ru/stat/?id=14657887&amp;from=informer"
-        target="_blank" rel="nofollow"><img src="https://informer.yandex.ru/informer/14657887/3_1_FFFFFFFF_EFEFEFFF_0_pageviews"
-        style="width:88px; height:31px; border:0;" alt="Яндекс.Метрика" title="Яндекс.Метрика: данные за сегодня (просмотры, визиты и уникальные посетители)" class="ym-advanced-informer" data-cid="14657887" data-lang="ru" /></a>
-        <!-- /Yandex.Metrika informer -->
 
         <!-- Yandex.Metrika counter -->
         <script type="text/javascript" >
@@ -59,7 +52,6 @@
         });
         </script>
         <noscript><div><img src="https://mc.yandex.ru/watch/14657887" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-        <!-- /Yandex.Metrika counter -->
         <!-- /Yandex.Metrika counter -->
 
         <!-- Admitad -->
@@ -92,7 +84,6 @@
             }(document));
         </script>
         <!-- /RetailRocket -->
-
         <script src="{{ static('js/jquery-3.3.1.min.js') }}"></script>
         {% endblock script_head %}
     </head>

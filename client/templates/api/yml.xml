@@ -10,17 +10,13 @@
     </currencies>
     
     <categories>
-      {% for node in categories %}
-        {% if node._depth == 0 %}
-        <category id="{{node.id}}" 
-        >{{node.name}}
-        </category>
-        {% else %}
-        <category id="{{node.id}}" 
-          parentId="{{node.parent.id}}"
-        >{{node.name}}
-        </category>
-        {% endif %}
+      <category id="1">
+        Каталог наручных часов
+      </category>
+      {% for node in nodes %}
+      <category id="{{node.id}}" parentId="1">
+        {{node.value}}
+      </category>
       {% endfor %}
     </categories>
 
@@ -31,7 +27,7 @@
             <url>{{base_url}}{{p.absolute_url}}</url>
             <price>{{p.price}}</price>
             <currencyId>RUR</currencyId>
-            <categoryId>{{ get_product_category(p).id }}</categoryId>
+            <categoryId>{{ get_yml_node(p)['id'] }}</categoryId>
             {% if p.has_image %}
             <picture>{{base_url}}{{p.image.url}}</picture>
             {% endif %}
