@@ -333,8 +333,11 @@
 .video {
     height: 240px;
     width: 100%;
-    @include mq($from: wide) {
+    @include mq($from: desktop) {
         height: 359px;
+    }
+    @include mq($from: wide) {
+        height: 400px;
     }
 }
 
