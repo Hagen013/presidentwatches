@@ -322,6 +322,7 @@ export default class CartForm {
         this.orderData.delivery.pvz_address = payload.address;
         this.orderData.delivery.type = 'pvz';
         this.orderData.delivery.price = payload.price;
+        this.deliveryData.delivery_point.price = payload.price;
 
         $('#delivery-price-sum').text(
             payload.price
@@ -330,6 +331,7 @@ export default class CartForm {
         $('#delivery-point-address').text(
             address
         )
+        this.recalculate();
     }
 
     setDeliveryTypeCurier() {
@@ -375,7 +377,6 @@ export default class CartForm {
         this.orderData.delivery.type = 'pickup';
         this.orderData.delivery.price = 0;
         this.orderData.client_notes = $('#client-notes').val()
-        console.log(this.orderData.client_notes);
 
         $('#delivery-price-sum').text(
             0
@@ -492,6 +493,7 @@ export default class CartForm {
         $('#delivery-point-address').click(function(){
             self.showModal();
         })
+        this.recalculate()
     }
 
     getDeliveryData() {
@@ -662,7 +664,22 @@ export default class CartForm {
 
     recalculate() {
         let total = 0;
-        let deliveryPrice = parseInt($('#delivery-price-sum').text());
+
+        let map = {
+            'pvz': 'delivery_point',
+            'curier': 'curier',
+            'rupost': 'postal_service'
+        }
+        
+        let deliveryType = this.orderData.delivery.type;
+        let deliveryPrice = 0;
+
+        if ( (deliveryType !== 'not_selected') && (deliveryType !== 'pickup') ) {
+            deliveryType = map[deliveryType];
+            deliveryPrice = this.deliveryData[deliveryType]['price'];
+        }
+        $('#delivery-price-sum').text(deliveryPrice);
+
         let productsPrice = 0;
 
         if (store.state.cart.data !== undefined) {
@@ -679,12 +696,13 @@ export default class CartForm {
     }
 
     changeLocation() {
-        this.cityName = locationStore.state.location.city_name
+        this.cityName = locationStore.state.location.city_name;
         $('#cart-city').text(this.cityName);
         this.locationLoading = true;
         this.showLoader();
         this.getDeliveryData();
         this.coordinatesOutdated = true;
+        this.recalculate()
     }
 
     getCoordinates() {
@@ -764,6 +782,7 @@ export default class CartForm {
 
             // Проверка на доступность курьерской службы
             if (this.deliveryData['curier'] !== null) {
+                this.orderData.delivery.type = 'curier';
                 curierIsAvailable = true;
                 deliveryOptionsTemplate += `
                 <li class="radio-group-container">
@@ -846,6 +865,7 @@ export default class CartForm {
             }
 
             if (!curierIsAvailable) {
+                this.orderData.delivery.type = 'rupost';
                 deliveryOptionsTemplate += `
                 <li class="radio-group-container">
                     <input type="radio"
@@ -912,6 +932,7 @@ export default class CartForm {
         deliveryOptions.html(deliveryOptionsTemplate);
 
         this._bindDeliveryOptionsChange()
+        this.recalculate();
     }
 
 }

@@ -43,7 +43,7 @@
             {% if p.description %}
             <description>{{p.html_free_description}}</description>
             {% endif %}
-            <manufacturer_warranty>true</manufacturer_warranty>
+            <sales_notes>Доставка по России без предоплаты.</sales_notes>
             
             {% for key, values_list in p.attributes.items() %}
                 {% for value in values_list %}
