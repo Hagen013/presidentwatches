@@ -172,8 +172,9 @@ class ProductValuesViewSet(viewsets.ViewSet):
             elif attr['datatype'] == 5:
                 if attr['values'] not in stored_map[attr['id']]:
                     ids_to_add.add(attr['values'])
-                    stored_value = list(stored_map[attr['id']])[0]
-                    ids_to_remove.add(stored_value)
+                    stored_value = list(stored_map[attr['id']])
+                    if len(stored_value) > 0:
+                        ids_to_remove.add(stored_value[0])
             elif attr['datatype'] == 4:
                 value = attr['values']
                 if value is not None:
