@@ -10,14 +10,15 @@
     </currencies>
     
     <categories>
-      <category id="1">
-        Каталог наручных часов
-      </category>
-      {% for node in nodes %}
-      <category id="{{node.id}}" parentId="1">
-        {{node.value}}
-      </category>
-      {% endfor %}
+        <category id="1" 
+        >Каталог наручных часов
+        </category>
+        {% for node in nodes %}
+        <category id="{{node.id}}" 
+          parentId="1"
+        >{{node.value}}
+        </category>
+        {% endfor %}
     </categories>
 
     <offers>
@@ -37,9 +38,9 @@
             {% endif %}
             {% endfor %}
             <delivery>true</delivery>
-            <name>{{p.name}}</name>
             <vendor>{{p.brand}}</vendor>
             <model>{{p.model}}</model>
+            <name>{{p.name}}</name>
             {% if p.description %}
             <description>{{p.html_free_description}}</description>
             {% endif %}
