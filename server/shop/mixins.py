@@ -3,7 +3,7 @@ from collections import OrderedDict
 from imagekit.models import ImageSpecField, ProcessedImageField
 from imagekit.processors import ResizeToFit
 
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.contrib.postgres.fields import JSONField
 
 from operator import itemgetter
@@ -62,6 +62,13 @@ MATERIAL_MAP = {
     'Титан': 'Титановый корпус',
     'Керамика': 'Керамический корпус',
     'Пластик': 'Пластиковый корпус'
+}
+
+YML_NAME_MAP = {
+    'Мужские': 'Мужские наручные часы',
+    'Женские': 'Женские наручные часы',
+    'Детские': 'Детские наручные часы',
+    'Секундомер': 'Секундомер'
 }
 
 
@@ -146,6 +153,20 @@ class WatchesProductMixin(models.Model):
             self.series,
             self.model
         )
+
+    @property
+    def yml_name(self):
+        base = self.name
+        try:
+            v = self.attribute_values.get(attribute__name='Тип часов')
+            prefix = YML_NAME_MAP.get(v.value, 'Наручные часы')
+        except (ObjectDoesNotExist, MultipleObjectsReturned):
+            prefix = 'Наручные часы'
+        return "{prefix} {base}".format(
+            prefix=prefix,
+            base=base
+        )
+        
 
     @property
     def grouped_attributes(self):

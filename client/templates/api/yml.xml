@@ -29,7 +29,7 @@
         {% for node in nodes %}
         <category id="{{node.id}}" 
           parentId="10005"
-        >{{node.value}}
+        >Наручные часы {{node.value}}
         </category>
         {% endfor %}
     </categories>
@@ -53,7 +53,7 @@
             <delivery>true</delivery>
             <vendor>{{p.brand}}</vendor>
             <model>{{p.model}}</model>
-            <name>{{p.name}}</name>
+            <name>{{p.yml_name}}</name>
             {% if p.description %}
             <description>{{p.html_free_description}}</description>
             {% endif %}

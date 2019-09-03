@@ -38,7 +38,7 @@ def get_yml_node(instance):
             'name': brand.value
         }
     return {
-        'id': 1,
+        'id': 10005,
         'name': 'Каталог наручных часов'
     }
 

@@ -51,7 +51,7 @@ window.onload = function() {
             "shipping": 0,
             "items": G_ITEMS
         });
-    }, 20)
+    }, 100)
     //
 
 }
