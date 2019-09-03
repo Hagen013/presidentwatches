@@ -398,10 +398,20 @@ class Order(TimeStampedMixin):
 
         for key in self.cart['items']:
             item = self.cart['items'][key]
+
+            name = "{brand} {series} {model}".format(
+                brand=item['brand'],
+                series=item['series'],
+                model=item['model']
+            )
+
             items.append({
                 "id": item['pk'],
                 "qnt": item['quantity'],
-                "price": item['price']
+                "price": item['price'],
+                "brand": item['brand'],
+                "model": item['model'],
+                "name": name
             })
 
         return items

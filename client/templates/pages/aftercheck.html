@@ -75,7 +75,21 @@
         },
         {% endfor %}
     ];
-    var TOTAL = {{order.total_price}}
+    var G_ITEMS = [
+        {% for item in order.rr_items %}
+        {
+            "id": "{{item['id']}}",
+            "name": "{{item['name']}}",
+            "list_name": "Order List",
+            "brand": "{{item['brand']}}",
+            "category": "{{item['brand']}}",
+            "list_position": {{loop.index}},
+            "quantity": {{item['qnt']}},
+            "price": "{{item['price']}}",
+        },
+        {% endfor %}
+    ];
+    var TOTAL = {{order.total_price}};
     </script>
     <script src="{{ static('js/aftercheckPage.js') }}"></script>
 {% endblock javascript %}

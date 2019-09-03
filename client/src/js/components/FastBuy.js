@@ -108,17 +108,6 @@ export default class FastBuy {
                         }
                         // Admitad End
 
-                        let params = {
-                            order_id: transactionId,
-                            order_price: totalPrice,
-                            currency: "RUR",
-                            exchange_rate: 1,
-                            goods:[]
-                        }
-
-                        yaCounter14657887.reachGoal('orderConfirmed', params);
-
-
                         $('.fast-buy-main').html(
                             `
                             <div class="fast-buy-placeholder">
@@ -133,6 +122,49 @@ export default class FastBuy {
                         );
                         $('#fast-buy-submit').css('display', 'none');
                         $('.fast-buy-close-btn').css('display', 'inline-block');
+
+                        let params = {
+                            order_id: transactionId,
+                            order_price: totalPrice,
+                            currency: "RUR",
+                            exchange_rate: 1,
+                            goods:[]
+                        }
+                        for (let key in data) {
+                            let item = data[key];
+                            params.goods.push({
+                                name: `${item['brand']} ${item['series']} ${item['model']}`,
+                                price: item['price'],
+                                quantity: item['quantity']
+                            })
+                        }
+                        yaCounter14657887.reachGoal('orderConfirmed', params);
+
+                        let gtagItems = [];
+                        let count = 1;
+                        for (let key in data) {
+                            let item = data[key];
+                            gtagItems.push({
+                                'id': item.pk,
+                                'name': `${item.brand} ${item.series} ${item.model}`,
+                                'list_name': 'Fast Buy',
+                                'brand': item.brand,
+                                'category': item.brand,
+                                'list_position': count,
+                                'quantity': item.quantity,
+                                'price': item.price,
+                            })
+                        }
+                        gtag('event', 'purchase', {
+                            "transaction_id": transactionId,
+                            "affiliation": "Presidentwatches.ru",
+                            "value": totalPrice,
+                            "currency": "RUR",
+                            "tax": 0,
+                            "shipping": 0,
+                            "items": gtagItems
+                        });
+
                     },
                     response => {
     
