@@ -17,6 +17,10 @@ YML_FILEPATH = settings.YML_PATH + 'yml_buffer.xml'
 YML_FILEPATH_ORIGIN = settings.YML_PATH + 'yml.xml'
 
 
+def touch(path):
+    with open(path, 'a'):
+        os.utime(path, None)
+
 def get_yml_node(instance):
     try:
         brand = instance.attribute_values.get(attribute__name='Бренд')
@@ -41,6 +45,7 @@ def get_yml_node(instance):
 
 @app.task
 def generate_yml_file(delay=60):
+    touch(YML_FILEPATH)
     products = Product.objects.filter(is_in_stock=True, is_yml_offer=True)
     brands = Value.objects.filter(attribute__name='Бренд')
     date = now().astimezone(pytz.timezone(settings.TIME_ZONE)).strftime('%Y-%m-%d %H:%M')

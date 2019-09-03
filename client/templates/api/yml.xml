@@ -1,3 +1,4 @@
+{% strip %}
 <?xml version="1.0" encoding="utf-8"?>
 <yml_catalog date="{{date}}">
   <shop>
@@ -25,7 +26,6 @@
         <category id="10005" parentId="10004" 
         >Наручные часы
         </category>
-
         {% for node in nodes %}
         <category id="{{node.id}}" 
           parentId="10005"
@@ -70,3 +70,4 @@
     </offers>
   </shop>
 </yml_catalog>
+{% endstrip %}
