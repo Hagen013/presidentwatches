@@ -36,6 +36,7 @@
 
     <offers>
       {% for p in products %}
+        {if p.has_image}
         <offer id="{{p.id}}" available="{{p.is_in_stock|lower}}">
 
             <url>{{base_url}}{{p.absolute_url}}</url>
@@ -66,6 +67,7 @@
             {% endfor %}
 
         </offer>
+        {% endif %}
       {% endfor %}
     </offers>
   </shop>
