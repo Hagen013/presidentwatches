@@ -49,6 +49,11 @@ def generate_yml_file(delay=60):
     products = Product.objects.filter(is_in_stock=True, is_yml_offer=True)
     brands = Value.objects.filter(attribute__name='Бренд')
     date = now().astimezone(pytz.timezone(settings.TIME_ZONE)).strftime('%Y-%m-%d %H:%M')
+    filtered = []
+    for product in products:
+        if product.has_image:
+            filtered.append(product)
+    products = filtered
 
     context = {
         'date': date,
