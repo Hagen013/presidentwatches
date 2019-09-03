@@ -1,3 +1,6 @@
+import os
+import time
+
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils.timezone import now, pytz
@@ -10,7 +13,8 @@ from config.celery import app
 from shop.models import ProductPage as Product
 from shop.models import AttributeValue as Value
 
-YML_FILEPATH = settings.YML_PATH + 'yml.xml'
+YML_FILEPATH = settings.YML_PATH + 'yml_buffer.xml'
+YML_FILEPATH_ORIGIN = settings.YML_PATH + 'yml.xml'
 
 
 def get_yml_node(instance):
@@ -36,7 +40,7 @@ def get_yml_node(instance):
 
 
 @app.task
-def generate_yml_file():
+def generate_yml_file(delay=60):
     products = Product.objects.filter(is_in_stock=True, is_yml_offer=True)
     brands = Value.objects.filter(attribute__name='Бренд')
     date = now().astimezone(pytz.timezone(settings.TIME_ZONE)).strftime('%Y-%m-%d %H:%M')
@@ -56,6 +60,10 @@ def generate_yml_file():
 
     with open(YML_FILEPATH, "w") as fp:
         fp.write(xml_raw)
+
+    time.sleep(delay)
+    os.rename(YML_FILEPATH, YML_FILEPATH_ORIGIN)
+
 
 
 app.add_periodic_task(

@@ -10,12 +10,25 @@
     </currencies>
     
     <categories>
-        <category id="1" 
-        >Каталог наручных часов
+        <category id="10001" 
+        >Все товары
         </category>
+        <category id="10002" parentId="10001" 
+        >Одежда, обувь и аксессуары
+        </category>
+        <category id="10003" parentId="10002" 
+        >Аксессуары и украшения
+        </category>
+        <category id="10004" parentId="10003" 
+        >Часы и аксессуары
+        </category>
+        <category id="10005" parentId="10004" 
+        >Наручные часы
+        </category>
+
         {% for node in nodes %}
         <category id="{{node.id}}" 
-          parentId="1"
+          parentId="10005"
         >{{node.value}}
         </category>
         {% endfor %}
