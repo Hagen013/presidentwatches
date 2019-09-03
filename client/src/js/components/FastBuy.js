@@ -51,7 +51,9 @@ export default class FastBuy {
 
                         // RetailRocket
                         let transactionId = response.data.public_id;
-                        let data = response.data.cart.items
+                        let data = response.data.cart.items;
+                        let totalPrice = response.data.cart.total_price;
+
                         let items = [];
                         for (let key in data) {
                             let item = data[key];
@@ -78,7 +80,7 @@ export default class FastBuy {
                         let admitadCookie = Cookies.get('tagtag_aid');
                         
                         if (admitadCookie !== undefined) {
-                            ADMITAD = window.ADMITAD || {};
+                            let ADMITAD = window.ADMITAD || {};
                             ADMITAD.Invoice = ADMITAD.Invoice || {};
                             ADMITAD.Invoice.broker = "adm";     // параметр дедупликации (по умолчанию для admitad)
                             ADMITAD.Invoice.category = "1";
@@ -105,6 +107,16 @@ export default class FastBuy {
                             ADMITAD.Tracking.processPositions();
                         }
                         // Admitad End
+
+                        let params = {
+                            order_id: transactionId,
+                            order_price: totalPrice,
+                            currency: "RUR",
+                            exchange_rate: 1,
+                            goods:[]
+                        }
+
+                        yaCounter14657887.reachGoal('orderConfirmed', params);
 
 
                         $('.fast-buy-main').html(

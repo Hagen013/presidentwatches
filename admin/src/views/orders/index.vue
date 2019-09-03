@@ -82,6 +82,9 @@
                             {{order.public_id}}
                             </div>
                         </div>
+                        <div class="admitad-badge" v-if="hasAdmitad(order)">
+                            admitad
+                        </div>
                     </td>
 
                     <td class="table-cell">
@@ -377,6 +380,15 @@ export default {
                 let notification = new Notification('Новый заказ', options);
             }
         },
+        hasAdmitad(order) {
+            let networks = order.cpa.networks;
+            if (networks !== undefined) {
+                if (networks[0] === 'admitad') {
+                    return true
+                }
+            }
+            return false
+        },
         triggerSearch: debounce(function () {
             this.getList();
         }, 500)
@@ -528,5 +540,14 @@ export default {
         font-size: 15px;
         font-weight: 600;
         letter-spacing: 1px;
+    }
+    .admitad-badge {
+        display: inline;
+        padding: 2px 4px;
+        color: white;
+        background: #6b31bd;
+        border-radius: 4px;
+        margin-left: 4px;
+        font-size: 10px;
     }
 </style>

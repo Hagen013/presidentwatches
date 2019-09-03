@@ -74,7 +74,8 @@
             additionalType: 'sale'
         },
         {% endfor %}
-    ]
+    ];
+    var TOTAL = {{order.total_price}}
     </script>
     <script src="{{ static('js/aftercheckPage.js') }}"></script>
 {% endblock javascript %}

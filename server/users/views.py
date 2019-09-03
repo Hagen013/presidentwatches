@@ -44,13 +44,6 @@ class RegisterView(TemplateView):
         password = request.POST.get('password')
         name = request.POST.get('name', '')
 
-        print(email)
-        print(password)
-        print(name)
-
-        print('tsoy')
-        print('hoy')
-
         try:
             validate_password(password)
         except ValidationError:
@@ -82,10 +75,8 @@ class RegisterView(TemplateView):
                 login(request, user, backend='django.contrib.auth.backends.ModelBackend')
                 self.result = 'Вы успешно зарегестрировались'
                 return redirect('/')
-                print('Вы успешно зарегестрировались')
             else:
                 self.result = 'Пользователь с таким email уже существует'
-                print('Пользователь с таким email уже существует')
         else:
             print('Данные указаны неверно')
             self.result = 'Данные указаны неверно'
@@ -103,6 +94,7 @@ class LoginView(TemplateView):
     template_name = 'pages/login.html'
 
     def get(self, request, *args, **kwargs):
+        self.result = None
         is_authenticated = request.user.is_authenticated
         if is_authenticated:
             return redirect('/')
@@ -118,12 +110,9 @@ class LoginView(TemplateView):
         email = request.POST.get('email')
         password = request.POST.get('password')
         last_user = User.objects.last()
-        print(last_user.check_password(password))
 
         user = authenticate(request, username=email, password=password)
 
-        print(email)
-        print(password)
 
         if user:
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')

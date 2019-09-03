@@ -145,7 +145,7 @@ class FastBuyApiView(BaseCartAPIView):
         cpa = request.data.get('cpa', None)
 
         if cpa is not None:
-            data = cpa
+            data['cpa'] = cpa
         
         serializer = OrderCreateSerializer(data, request, cart=cart)
 
