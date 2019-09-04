@@ -41,6 +41,8 @@ window.onload = function() {
         yaCounter14657887.reachGoal('orderConfirmed', params);
         //
     
+        console.log(G_ITEMS);
+        console.log(TOTAL);
         // Отправка данных в аналитику
         gtag('event', 'purchase', {
             "transaction_id": PUBLIC_ID,
