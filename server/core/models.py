@@ -146,6 +146,21 @@ class AbstractOfferPage(WebPage, Offer, Searchable):
 
     upload_image_to = 'images/'
 
+    def get_meta_title(self):
+        if len(self._meta_title) > 0:
+            return self._meta_title
+        return 'Часы {name} купить. Официальная гарантия. Отзывы покупателей.'.format(
+            name=self.name
+        )
+
+    def get_meta_description(self):
+        if len(self._meta_description) > 0:
+            return self._meta_description
+        return 'Часы {name} купить. Цена: {price} руб. Официальная гарантия. Отзывы покупателей.'.format(
+            name=self.name,
+            price=self._price
+        )
+
     class Meta:
         abstract = True
 
@@ -309,3 +324,13 @@ class AbstractCategoryPage(Node, WebPage, Searchable):
         except IndexError:
             image = self.product_class.objects.first().image.url
         return image
+
+    def get_meta_title(self):
+        if len(self._meta_title) > 0:
+            return self._meta_title
+        return 'Каталог часов. Оригинальные часы. Широкий выбор наручных часов'
+
+    def get_meta_description(self):
+        if len(self._meta_description) > 0:
+            return self._meta_description
+        return 'Широкий выбор оригинальных наручных часов на ПрезидентВотчес.Ру Полистайте каталог часов на нашем сайте, сделайте ваш выбор, купите часы до доступной цене. Интернет магазин ПрезидентВотчес.Ру +7 495 133 20 56'

@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 
+{% block meta %}
+<title>{{product.meta_title}}</title>
+<meta name="description" content="{{product.meta_description}}"/>
+{% endblock meta %}
+
 {% block css %}
     {{ super() }}
     <link rel="stylesheet" href="{{ static('css/jquery.fancybox.min.css') }}" />
@@ -109,7 +114,7 @@
                             </div>
                             <div class="product-main__price-area row">
                                 <div class="price product-main__price">
-                                    {{product.price}}
+                                    {{format_price(product.price)}}
                                 </div>
                                 {% if product.is_sale %}
                                 <div class="price_old price product-main__old-price">

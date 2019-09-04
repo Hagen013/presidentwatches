@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 
+{% block meta %}
+<title>{{category.meta_title}}</title>
+<meta name="description" content="{{category.meta_description}}"/>
+{% endblock meta %}
+
 {% block css %}
     {{ super() }}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" type="text/css" media="all"/>
