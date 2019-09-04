@@ -6,6 +6,6 @@ from .views import SearchResultsView, CustomSearchView
 app_name = 'search'
 
 urlpatterns = [
-    path('', SearchResultsView.as_view(), name='results'),
+    path('', CustomSearchView.as_view(), name='results'),
 ]
 
