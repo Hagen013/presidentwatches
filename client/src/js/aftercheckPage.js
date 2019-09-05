@@ -40,18 +40,20 @@ window.onload = function() {
     
         yaCounter14657887.reachGoal('orderConfirmed', params);
         //
-    
-        console.log(G_ITEMS);
-        console.log(TOTAL);
+
+        console.log(dataLayer);
         // Отправка данных в аналитику
-        gtag('event', 'purchase', {
-            "transaction_id": PUBLIC_ID,
-            "affiliation": "Presidentwatches.ru",
-            "value": TOTAL,
-            "currency": "RUR",
-            "tax": 0,
-            "shipping": 0,
-            "items": G_ITEMS
+        dataLayer.push({
+            "event": "orderConfirmed",
+            "ecommerce": {
+                "currencyCode": "RUB",
+                "purchase": {
+                    "actionField": {
+                        "id": PUBLIC_ID
+                    },
+                    "products": G_ITEMS
+                }
+            }
         });
     }, 100)
     //

@@ -155,16 +155,18 @@ export default class FastBuy {
                                 'price': item.price,
                             })
                         }
-                        gtag('event', 'purchase', {
-                            "transaction_id": transactionId,
-                            "affiliation": "Presidentwatches.ru",
-                            "value": totalPrice,
-                            "currency": "RUR",
-                            "tax": 0,
-                            "shipping": 0,
-                            "items": gtagItems
+                        dataLayer.push({
+                            "event": "orderConfirmed",
+                            "ecommerce": {
+                                "currencyCode": "RUB",
+                                "purchase": {
+                                    "actionField": {
+                                        "id": transactionId
+                                    },
+                                    "products": gtagItems
+                                }
+                            }
                         });
-
                     },
                     response => {
     

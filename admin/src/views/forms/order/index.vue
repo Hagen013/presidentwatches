@@ -203,6 +203,7 @@
                                         <a  class="cart-item-link" :href="item.url" target="_blank">
                                             {{item.brand}} {{item.model}} {{item.series}}
                                         </a>
+                                        <div class="tsoy">{{item.brand}} {{item.model}} {{item.series}}</div>
                                     </div>
                                     <div class="cart-item-content">
 
@@ -834,5 +835,10 @@ export default {
             width: 240px;
             margin: 0px;
         }
+    }
+    .tsoy {
+        margin-top: 4px;
+        padding-left: 6px;
+        font-size: 13x;
     }
 </style>
