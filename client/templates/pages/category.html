@@ -3,6 +3,13 @@
 {% block meta %}
 <title>{{category.meta_title}}</title>
 <meta name="description" content="{{category.meta_description}}"/>
+<link rel="canonical" href="{{ category.absolute_url }}">
+{% if is_paginated and page_obj.has_next() %}
+<link rel="next" href="{{ category.absolute_url }}?page={{page_obj.next_page_number()}}">
+{% endif %}
+{% if is_paginated and page_obj.has_previous() %}
+<link rel="prev" href="{{ category.absolute_url }}?page={{page_obj.previous_page_number()}}">
+{% endif %}
 {% endblock meta %}
 
 {% block css %}
