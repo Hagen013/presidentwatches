@@ -12,7 +12,7 @@
                 {% endfor %}]
             });
             } catch(e) {} 
-        })
+        });
         {% if order.rr_email_available %}
         (window["rrApiOnReady"] = window["rrApiOnReady"] || []).push(function() { rrApi.setEmail("{{order.customer['email']}}");});
         {% endif %}

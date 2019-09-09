@@ -25,7 +25,7 @@ window.onload = function() {
         let params = {
             order_id: PUBLIC_ID,
             order_price: TOTAL,
-            currency: "RUR",
+            currency: "RUB",
             exchange_rate: 1,
             goods:[]
         }
