@@ -4,7 +4,7 @@
 {% block content %}
     <div class="register-page">
         <div class="content-area content-area_block">
-            <form class="form register-form" method="post" action="/u/register/">
+            <form class="form register-form register-form" method="post" action="/u/register/">
                 <div class="form-title hide-mb">
                     Используя адрес электронной почты
                 </div>
@@ -16,7 +16,7 @@
                         E-mail
                     </div>
                     <div class="field-input-box form-input-box">
-                        <input class="input" type="email" name="email">
+                        <input class="input input-email" type="email" name="email">
                     </div>
                 </div>
                 <div class="field">
@@ -42,7 +42,9 @@
                 <div class="form-result">
                 {{result}}
                 </div>
-                <input type="submit" class="button button_big button_accent" value="ЗАРЕГЕСТРИРОВАТЬСЯ">
+                <div class="button button_big button_accent register-submit">
+                    ЗАРЕГЕСТРИРОВАТЬСЯ
+                </div>
                 <div class="field-hint register-form__hint">
                     Нажимая на кнопку «Зарегистрироваться» даю согласие на обработку моих персональных данных.
                 </div>

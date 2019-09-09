@@ -12,6 +12,7 @@ import message from '@/lib/message'
 
 import STATE from '@/state/index.js';
 import toggleSidebarTab from '@/utils/toggleSidebarTab'
+import validateEmail from '@/utils/validateEmail'
 
 
 $(document).ready(function() {
@@ -297,6 +298,18 @@ $(document).ready(function() {
             })
         }
 
+    })
+
+    $('.register-submit').click(function() {
+        let form = $(this).parents('.form');
+        let email = $(form).find('.input-email')[0].value;
+        if (validateEmail(email)) {
+            let rrApiBox = (window["rrApiOnReady"] = window["rrApiOnReady"] || []);
+            rrApiBox.push(function() { rrApi.setEmail(email);})
+        }
+        setTimeout(function(){
+            $(form).submit()
+        }, 100)
     })
 
 })

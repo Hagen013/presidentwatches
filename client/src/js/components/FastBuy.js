@@ -154,6 +154,7 @@ export default class FastBuy {
                                 'quantity': item.quantity,
                                 'price': item.price,
                             })
+                            count = count + 1;
                         }
                         dataLayer.push({
                             "event": "orderConfirmed",

@@ -891,7 +891,7 @@
                                         E-mail
                                     </div>
                                     <div class="field-input-box form-input-box">
-                                        <input class="input" type="email" name="email">
+                                        <input class="input input-email" type="email" name="email">
                                     </div>
                                 </div>
                                 <div class="field">
@@ -914,7 +914,9 @@
                                     </div>
                                 </div>
                                 <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-                                <input type="submit" class="button button_big button_accent" value="ЗАРЕГЕСТРИРОВАТЬСЯ">
+                                <div class="button button_big button_accent register-submit">
+                                    ЗАРЕГЕСТРИРОВАТЬСЯ
+                                </div>
                                 <div class="field-hint register-form__hint">
                                     Нажимая на кнопку «Зарегистрироваться» даю согласие на обработку моих персональных данных.
                                 </div>
