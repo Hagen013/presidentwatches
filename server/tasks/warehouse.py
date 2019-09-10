@@ -534,6 +534,11 @@ def create_product_list_from_file(filepath):
                 )
                 errors.append(msg)
 
+    value_new = Value.objects.get(
+        attribute__name='Новинка',
+        value_bool=True
+    )
+
     with transaction.atomic():
 
         for index, row in df.iterrows():
@@ -576,6 +581,8 @@ def create_product_list_from_file(filepath):
                         series_name=series
                     )
                     errors.append(msg)
+
+            instance.add_value(value_new)
 
 
     return {
