@@ -5,7 +5,8 @@ const state = {
   pageSize: null,
   facetes: null,
   modelSearch: null,
-  booleanFilters: null
+  booleanFilters: null,
+  total_count: null
 }
 
 const mutations = {
@@ -16,6 +17,7 @@ const mutations = {
     state.facetes = payload.facetes;
     state.modelSearch = payload.modelSearch;
     state.booleanFilters = payload.booleanFilters;
+    state.total_count = payload.total_count;
     state.initialized = true;
   }
 }

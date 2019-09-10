@@ -357,6 +357,7 @@ export default {
                 this.facetes = data.facetes;
                 this.modelSearch = data.modelSearch;
                 this.booleanFilters = data.booleanFilters;
+                this.totalCount = data.total_count;
                 this.initialized = true;
             }
             this.getList();
@@ -415,7 +416,8 @@ export default {
                 pageSize: this.pageSize,
                 facetes: this.facetes,
                 modelSearch: this.modelSearch,
-                booleanFilters: this.booleanFilters
+                booleanFilters: this.booleanFilters,
+                total_count: this.totalCount
             });
             this.$router.push({path: `/shop/offers/${pk}/`})
         }
