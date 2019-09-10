@@ -13,6 +13,10 @@
                 <upload-new>
                 </upload-new>
             </el-tab-pane>
+            <el-tab-pane label="+ Новые товары" name="create-list">
+                <create-list>
+                </create-list>
+            </el-tab-pane>
         </el-tabs>
     </div>
 </template>
@@ -25,6 +29,7 @@ import NProgress from 'nprogress'
 import Upload from './components/Upload.vue'
 import Upload2 from './components/Upload2.vue'
 import Download from './components/Download.vue'
+import CreateList from './components/CreateList.vue'
 
 export default {
     name: 'Warehouse',
@@ -34,7 +39,8 @@ export default {
     components: {
         'upload': Upload,
         'download': Download,
-        'upload-new': Upload2
+        'upload-new': Upload2,
+        'create-list': CreateList
     },
     computed: {
     },
