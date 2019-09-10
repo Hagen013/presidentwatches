@@ -3,9 +3,12 @@ import os
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 from django.db import transaction
+from django.utils.text import slugify
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 
 import pandas as pd
 import numpy as np
+from transliterate import translit
 
 from config.celery import app
 from shop.models import ProductPage as Product
@@ -475,4 +478,109 @@ def process_warehouse_file_2(path):
             {'label': 'Добавлено скидок:', 'quantity': report['sales_changed2true']},
             {'label': 'Убрано скидок:', 'quantity': report['sales_changed2false']},
         ]
+    }
+
+
+@app.task
+def create_product_list_from_file(filepath):
+
+    df = pd.read_excel(filepath)
+    
+    count = 0
+    errors = []
+
+    with transaction.atomic():
+        
+        for index, row in df.iterrows():
+
+            brand = row['Бренд']
+            model = row['Модель']
+            is_published = bool(row['Опубликовано'])
+            price = int(row['Цена'])
+            purhcase_price = int(row['Оптовая цена'])
+            old_price = int(row['Цена до скидки'])
+            is_sale = bool(row['Распродажа'])
+            is_new = bool(row['Новинка'])
+            is_bestseller = bool('Бестселлер')
+            series = row['Коллекция']
+
+            slug_body = '{brand}-{model}'.format(
+                brand=brand,
+                model=model,
+            )
+            slug = slugify(translit(slug_body, 'ru', reversed=True))
+
+            instance = Product(
+                _price=price,
+                brand=brand,
+                series=series,
+                old_price=old_price,
+                is_sale=is_sale,
+                is_new=is_new,
+                is_bestseller=is_bestseller,
+                _purchase_price=purhcase_price,
+                is_published=is_published,
+                model=model,
+                slug=slug,
+            )
+            
+            try:
+                instance.full_clean()
+                instance.save()
+                count += 1
+            except Exception as e:
+                msg = 'Ошибка для товарной позиции. Модель: {model}'.format(
+                    model=model,
+                )
+                errors.append(msg)
+
+    with transaction.atomic():
+
+        for index, row in df.iterrows():
+
+            model = row['Модель']
+            
+            try:
+                instance = Product.objects.get(
+                    model=model
+                )
+            except ObjectDoesNotExist:
+                instance = None
+
+            if instance is not None:
+
+                brand = instance.brand
+                series = instance.series
+
+            try:
+                brand_value = Value.objects.get(
+                    attribute__name='Бренд',
+                    value_enum=brand
+                )
+                instance.add_value(brand_value)
+            except ObjectDoesNotExist:
+                msg = 'Бренд: {brand_name} не существует'.format(
+                    brand_name=brand
+                )
+                errors.append(msg)
+
+            if str(series) != 'nan':
+                try:
+                    series_value = Value.objects.get(
+                        attribute__name='Коллекция',
+                        value_enum=series
+                    )
+                    instance.add_value(series_value)
+                except ObjectDoesNotExist:
+                    msg = 'Коллекция: {series_name} не существует'.format(
+                        series_name=series
+                    )
+                    errors.append(msg)
+
+
+    return {
+        'results': {
+            'count': count,
+            'errors': errors
+        }
     }

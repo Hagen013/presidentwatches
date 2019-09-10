@@ -6,7 +6,8 @@ from .views import (
     DownloadFileApiView,
     UserChangeEmailApiView,
     UserChangePhoneApiView,
-    UploadWarehouseApiView2
+    UploadWarehouseApiView2,
+    CreateListFromFileApiView
 )
 
 
@@ -18,6 +19,7 @@ urlpatterns = [
     path('uploads/warehouse2/', UploadWarehouseApiView2.as_view()),
     path('warehouse/generate/', DonwloadWarehouseApiView.as_view()),
     path('warehouse/results/', DownloadFileApiView.as_view()),
+    path('warehouse/create-list/', CreateListFromFileApiView.as_view()),
     # RPC TASKS
     path('users/change/email/', UserChangeEmailApiView.as_view()),
     path('users/change/phone/', UserChangePhoneApiView.as_view())

@@ -15,7 +15,8 @@ from config.celery import app
 from tasks.warehouse import (
     process_warehouse_file,
     generate_warehouse_file,
-    process_warehouse_file_2
+    process_warehouse_file_2,
+    create_product_list_from_file,
 )
 
 
@@ -96,6 +97,12 @@ class UploadWarehouseApiView(UploadFile2TaskApiView):
 class UploadWarehouseApiView2(UploadFile2TaskApiView):
 
     task = process_warehouse_file_2
+    permissions_class = permissions.IsAdminUser
+
+
+class CreateListFromFileApiView(UploadFile2TaskApiView):
+
+    task = create_product_list_from_file
     permissions_class = permissions.IsAdminUser
 
 
