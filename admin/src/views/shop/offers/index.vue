@@ -95,6 +95,44 @@
             </el-col>
         </el-row>
 
+        <el-row>
+            <div class="select-box">
+                <div class="select-box-label">
+                    Новинка:
+                </div>
+                <div class="select-box-value">
+                    <el-select
+                        v-model="booleanFilters.is_new"
+                    >
+                        <el-option v-for="option in availabilityOptions"
+                            :key="option.label"
+                            :label="option.label"
+                            :value="option.value"
+                        >
+                        </el-option>
+                    </el-select>
+                </div>
+            </div>
+            <div class="select-box">
+                <div class="select-box-label">
+                    Фото:
+                </div>
+                <div class="select-box-value">
+                    <el-select
+                        v-model="booleanFilters.has_image"
+                    >
+                        <el-option v-for="option in imagesOptions"
+                            :key="option.label"
+                            :label="option.label"
+                            :value="option.value"
+                        >
+                        </el-option>
+                    </el-select>
+                </div>
+            </div>
+        </el-row>
+
+
 
         <div class="filters">
             <attribute-filter v-for="attribute in filterAttributes"
@@ -254,9 +292,16 @@ export default {
             {label: 'Да', value: 'true'},
             {label: 'Нет', value: 'false'}
         ],
+        imagesOptions: [
+            {label: '---', value: ''},
+            {label: 'Есть', value: 'true'},
+            {label: 'Без', value: 'false'}
+        ],
         booleanFilters: {
             is_in_store: '',
-            is_in_stock: ''
+            is_in_stock: '',
+            is_new: '',
+            has_image: '',
         }
     }),
     computed: {
@@ -280,6 +325,12 @@ export default {
             if (this.booleanFilters.is_in_stock !== '') {
                 params['is_in_stock'] = this.booleanFilters.is_in_stock;
             }
+            if (this.booleanFilters.is_new !== '') {
+                params['is_new'] = this.booleanFilters.is_new;
+            }
+            if (this.booleanFilters.has_image !== '') {
+                params['has_image'] = this.booleanFilters.has_image;
+            }
             return params
         },
         currentCount() {
@@ -298,6 +349,16 @@ export default {
     },
     methods: {
         initialize() {
+            if (this.$store.state.productFilters.initialized) {
+                let data = this.$store.state.productFilters;
+                this.offset = data.offset;
+                this.limit = data.limit;
+                this.pageSize = data.pageSize;
+                this.facetes = data.facetes;
+                this.modelSearch = data.modelSearch;
+                this.booleanFilters = data.booleanFilters;
+                this.initialized = true;
+            }
             this.getList();
             this.getFilters();
         },
@@ -348,6 +409,14 @@ export default {
             this.offset = 0;
         },
         select(pk) {
+            this.$store.commit('productFilters/set', {
+                offset: this.offset,
+                limit: this.limit,
+                pageSize: this.pageSize,
+                facetes: this.facetes,
+                modelSearch: this.modelSearch,
+                booleanFilters: this.booleanFilters
+            });
             this.$router.push({path: `/shop/offers/${pk}/`})
         }
     },
@@ -423,6 +492,7 @@ export default {
 
     .search-inputs {
         margin-top: 10px;
+        margin-bottom: 10px;
     }
 
     .table__link {

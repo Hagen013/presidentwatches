@@ -59,6 +59,19 @@ class ProductPageEAVFilterBackend():
         return qs
 
 
+class ProductPageImagesFilterBackennd():
+
+    def filter_queryset(self, request, qs, view):
+        has_image = request.GET.get('has_image', None)
+        if has_image is None:
+            return qs
+        else:
+            if has_image == 'true':
+                return qs.exclude(image='images/no_photo.png')
+            else:
+                return qs.filter(image='images/no_photo.png')
+
+
 class ProductPageViewSet(ModelViewSet):
 
     model = Product
@@ -72,13 +85,15 @@ class ProductPageViewSet(ModelViewSet):
         DjangoFilterBackend,
         filters.SearchFilter,
         filters.OrderingFilter,
-        ProductPageEAVFilterBackend
+        ProductPageEAVFilterBackend,
+        ProductPageImagesFilterBackennd
     )
 
     filter_fields = (
         'is_published',
         'is_in_stock',
-        'is_in_store'
+        'is_in_store',
+        'is_new',
     )
     search_fields = (
         'model',

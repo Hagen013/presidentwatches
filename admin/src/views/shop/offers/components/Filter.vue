@@ -104,7 +104,16 @@ export default {
             })
         },
         activeValuesCount() {
-            return this.activeValues.length
+            if (!this.responseReceived) {
+                let facetes = this.facetes[this.attribute.key];
+                if (facetes === undefined) {
+                    return 0
+                } else {
+                    return facetes.length
+                }
+            } else {
+                return this.activeValues.length
+            }
         },
         hasActiveValues() {
             return this.activeValuesCount > 0
@@ -198,6 +207,13 @@ export default {
                     value.disabled = false;
                 }
             })
+            if (this.facetes[this.attribute.key] !== undefined) {
+                values.forEach((value) => {
+                    if (this.facetes[this.attribute.key].indexOf(value.id) !== -1) {
+                        value.active = true;
+                    }
+                })
+            }
             this.values = values;
             this.responseReceived = true;
         },
