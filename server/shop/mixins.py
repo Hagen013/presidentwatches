@@ -166,6 +166,28 @@ class WatchesProductMixin(models.Model):
             prefix=prefix,
             base=base
         )
+
+    @property
+    def yml_images(self):
+        yml_images = []
+        images = list(self.images.all())
+
+        if len(images) > 3:
+            image = images.pop(0)
+            yml_images.append(image.image.url)
+            for image in images:
+                yml_images.append(
+                    image.image.url
+                )
+            yml_images.append(self.image.url)
+        else:
+            if self.has_image:
+                yml_images.append(self.image.url)
+            for image in images:
+                yml_images.append(
+                    image.image.url
+                )
+        return yml_images
         
 
     @property

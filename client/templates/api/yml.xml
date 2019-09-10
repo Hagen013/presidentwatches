@@ -41,13 +41,8 @@
             <price>{{p.price}}</price>
             <currencyId>RUR</currencyId>
             <categoryId>{{ get_yml_node(p)['id'] }}</categoryId>
-            {% if p.has_image %}
-            <picture>{{base_url}}{{p.image.url}}</picture>
-            {% endif %}
-            {% for photo in p.images.all()[:9] %}
-            {% if photo.has_image %}
-            <picture>{{base_url}}{{photo.image.url}}</picture>
-            {% endif %}
+            {% for image in p.yml_images %}
+            <picture>{{base_url}}{{image}}</picture>
             {% endfor %}
             <delivery>true</delivery>
             <vendor>{{p.brand}}</vendor>
