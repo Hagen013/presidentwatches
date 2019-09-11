@@ -31,7 +31,7 @@ urlpatterns = [
     path('nemeckie-chasy', RedirectView.as_view(url='/shop/watches/german/', permanent=False)),
     path('amerikanskie-chasy', RedirectView.as_view(url='/shop/watches/american/', permanent=False)),
     path('dizajnerskie-chasy', RedirectView.as_view(url='/shop/watches/fashion/', permanent=False)),
-    path('404', TemplateView.as_view(template_name='404.html')),
+    path('404', TemplateView.as_view(template_name='404.html'))
 ]
 
 urlpatterns += sitemaps
