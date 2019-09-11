@@ -1,23 +1,5 @@
 {% extends "base.html" %}
 
-{% block script_head %}
-    {{ super() }}
-        <script type="text/javascript">
-        (window["rrApiOnReady"] = window["rrApiOnReady"] || []).push(function() {
-            try { 
-            rrApi.order({
-                transaction: "{{order.public_id}}",
-                items: [
-                {% for item in order.rr_items %}    { id: {{item['id'] }}, qnt: {{item['qnt']}}, price: {{item['price']}} }{% if not loop.last %},{% endif %}
-                {% endfor %}]
-            });
-            } catch(e) {} 
-        });
-        {% if order.rr_email_available %}
-        (window["rrApiOnReady"] = window["rrApiOnReady"] || []).push(function() { rrApi.setEmail("{{order.customer['email']}}");});
-        {% endif %}
-        </script>
-{% endblock script_head %}
 
 {% block content %}
     <div class="aftercheck">
@@ -90,6 +72,11 @@
         {% endfor %}
     ];
     var TOTAL = {{order.total_price}};
+    {% if order.rr_email_available %}
+    var CUSTOMER_EMAIL = "{{order.customer['email']}}";
+    {% else %}
+    var CUSTOMER_EMAIL = null;
+    {% endif %}
     </script>
     <script src="{{ static('js/aftercheckPage.js') }}"></script>
 {% endblock javascript %}

@@ -41,8 +41,6 @@ window.onload = function() {
         yaCounter14657887.reachGoal('orderConfirmed', params);
         //
 
-        console.log(dataLayer);
-        // Отправка данных в аналитику
         dataLayer.push({
             "event": "orderConfirmed",
             "ecommerce": {
@@ -55,6 +53,29 @@ window.onload = function() {
                 }
             }
         });
+
+        let rrItems = [];
+        for (let i=0; i<G_ITEMS.length; i++) {
+            rrItems.push({
+                id: G_ITEMS[i].id,
+                qnt: G_ITEMS[i].quantity,
+                price: G_ITEMS[i].price
+            })
+        }
+
+        (window["rrApiOnReady"] = window["rrApiOnReady"] || []).push(function() {
+            try { 
+            rrApi.order({
+                transaction: String(PUBLIC_ID),
+                items: rrItems
+            });
+            } catch(e) {} 
+        });
+
+        if (CUSTOMER_EMAIL !== null) {
+            (window["rrApiOnReady"] = window["rrApiOnReady"] || []).push(function() { rrApi.setEmail(CUSTOMER_EMAIL);});
+        }
+    
     }, 100)
     //
 

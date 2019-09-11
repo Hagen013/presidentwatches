@@ -7,5 +7,6 @@ Disallow: /*?sort_by=*
 Disallow: /*?price__gte=*
 Disallow: /*?price__lte=*
 Disallow: /u
+Disallow: /admin
 
-Sitemap: https://new.presidentwatches.ru/sitemap.xml
+Sitemap: https://presidentwatches.ru/sitemap.xml
