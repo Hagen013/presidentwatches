@@ -68,6 +68,7 @@ LOCAL_APPS = [
     'reviews',
     'geo',
     'info',
+    'payments',
     'api'
 ]
 
@@ -366,9 +367,16 @@ SMS_SECRET_KEY = env("DJANGO_SMS_SECRET_KEY")
 
 # STORE START
 # ------------------------------------------------------------------------------
-STORE_LOGIN = env("DJANGO_STORE_LOGIN")
-STORE_PASSWORD = env("DJANGO_STORE_PASSWORD")
-STORE_ID = env("DJANGO_STORE_ID")
-STORE_API_URL = env("DJANGO_STORE_URL")
+STORE_LOGIN = env('DJANGO_STORE_LOGIN')
+STORE_PASSWORD = env('DJANGO_STORE_PASSWORD')
+STORE_ID = env('DJANGO_STORE_ID')
+STORE_API_URL = env('DJANGO_STORE_URL')
 # ------------------------------------------------------------------------------
 # STORE END
+
+
+# YANDEX KASSA START
+YANDEX_KASSA_API = env('YANDEX_KASSA_API')
+YANDEX_KASSA_SHOP_ID = env('YANDEX_KASSA_SHOP_ID')
+YANDEX_KASSA_SECRET = env('YANDEX_KASSA_SECRET')
+# YANDEX KASSA END
