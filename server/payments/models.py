@@ -1,120 +1,148 @@
-# import uuid
+import uuid
 
-# from django.db import models
-# from django.conf import settings
-# from django.contrib.auth import get_user_model
-# from django.contrib.postgres.fields import JSONField
+from django.db import models
+from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.contrib.postgres.fields import JSONField
 
-# from djchoices import DjangoChoices, ChoiceItem
-# from yandex_checkout.client import ApiClient
-# from yandex_checkout.domain.request.payment_request import PaymentRequest
+from djchoices import DjangoChoices, ChoiceItem
+from yandex_checkout.domain.common.http_verb import HttpVerb
+from yandex_checkout import Configuration
+from yandex_checkout.client import ApiClient
+from yandex_checkout.domain.request.payment_request import PaymentRequest
 
-# from cart.models import Order
+from cart.models import Order
 
-# User = get_user_model()
+User = get_user_model()
 
-# API_URL = settings.YANDEX_KASSA_API
-# SHOP_ID = settings.YANDEX_KASSA_SHOP_ID
-# SECRET  = settings.YANDEX_KASSA_SECRET
+API_URL = settings.YANDEX_KASSA_API
+SHOP_ID = settings.YANDEX_KASSA_SHOP_ID
+SECRET  = settings.YANDEX_KASSA_SECRET
 
-
-# class PaymentStatuses(DjangoChoices):
-
-#     Pending = ChoiceItem('pending', 'В обработке')
-#     Success = ChoiceItem('success', 'Успешно')
-#     Failed  = ChoiceItem('failed', 'Ошибка')
+Configuration.account_id = SHOP_ID
+Configuration.secret_key = SECRET
 
 
-# class Payment(models.Model):
+class PaymentStatuses(DjangoChoices):
 
-#     class Meta:
-#         abstract=True
+    Pending = ChoiceItem('pending', 'В обработке')
+    Success = ChoiceItem('success', 'Успешно')
+    Failed  = ChoiceItem('failed', 'Ошибка')
 
-#     base_path = '/payments'
 
-#     user = models.ForeignKey(
-#         User,
-#         blank=True,
-#         null=True,
-#         on_delete=models.SET_NULL,
-#         related_name='payments'
-#     )
+class Payment(models.Model):
 
-#     order = models.ForeignKey(
-#         Order,
-#         blank=True,
-#         null=True,
-#         on_delete=models.CASCADE
-#     )
+    class Meta:
+        abstract=False
+        ordering = ['created_at',]
 
-#     y_id = models.CharField(
-#         max_length=64
-#     )
+    base_path = '/payments'
 
-#     status = models.CharField(
-#         choices=PaymentStatuses.choices,
-#         default=PaymentStatuses.Pending,
-#         max_length=32
-#     )
+    user = models.ForeignKey(
+        User,
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name='payments'
+    )
 
-#     paid = models.BooleanField(
-#         default=False
-#     )
+    order = models.ForeignKey(
+        Order,
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+        related_name='payments'
+    )
 
-#     amount = models.FloatField(
-#         default=0
-#     )
+    y_id = models.CharField(
+        max_length=64
+    )
 
-#     amount_paid = models.FloatField(
-#         default=0
-#     )
+    uuid = models.CharField(
+        max_length=64
+    )
 
-#     confirmation_url = models.CharField(
-#         max_length=256,
-#     )
+    status = models.CharField(
+        choices=PaymentStatuses.choices,
+        default=PaymentStatuses.Pending,
+        max_length=32
+    )
 
-#     created_at = models.DateTimeField(
-#         auto_now_add=True
-#     )
+    paid = models.BooleanField(
+        default=False
+    )
 
-#     description = models.CharField(
-#         max_length=256,
-#     )
+    amount = models.FloatField(
+        default=0
+    )
 
-#     metadata = JSONField(
-#         default=dict
-#     )
+    amount_paid = models.FloatField(
+        default=0
+    )
 
-#     refundable = models.CharField(
-#         default=True
-#     )
+    confirmation_url = models.CharField(
+        max_length=256,
+    )
 
-#     def __init__(self):
-#         self.client = ApiClient()
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
 
-#     @classmethod
-#     def create(cls, params, idempotency_key=None):
-#         instance = cls()
-#         path = cls.base_path
+    description = models.CharField(
+        max_length=256,
+    )
 
-#         if not idempotency_key:
-#             idempotency_key = uuid.uuid4()
+    metadata = JSONField(
+        default=dict,
+        blank=True
+    )
 
-#         headers = {
-#             'Idempotence-Key': str(idempotency_key)
-#         }
+    refundable = models.BooleanField(
+        default=True
+    )
 
-#         if isinstance(params, dict):
-#             params_object = PaymentRequest(params)
-#         elif isinstance(params, PaymentRequest):
-#             params_object = params
-#         else:
-#             raise TypeError('Invalid params value type')
+    def __init__(self, *args, **kwargs):
+        self.client = ApiClient()
+        super(Payment, self).__init__(*args, **kwargs)
 
-#         response = instance.client.request(HttpVerb.POST, path, None, headers, params_object)
+    @classmethod
+    def create(cls, params, idempotency_key=None, user=None, order=None):
         
-#         instance.y_id = response['id']
-#         instance.status = response['status']
-#         instance.paid = response['paid']
-#         instance.amount_paid = response['amount']['value']
-#         confirmation_url = response['confirmation_url']
+        instance = cls()
+        path = cls.base_path
+
+        if not idempotency_key:
+            idempotency_key = uuid.uuid4()
+
+        instance.uuid = idempotency_key
+
+        headers = {
+            'Idempotence-Key': str(idempotency_key)
+        }
+
+        if isinstance(params, dict):
+            params_object = PaymentRequest(params)
+        elif isinstance(params, PaymentRequest):
+            params_object = params
+        else:
+            raise TypeError('Invalid params value type')
+
+        response = instance.client.request(HttpVerb.POST, path, None, headers, params_object)
+        
+        instance.y_id = response['id']
+        instance.status = response['status']
+        instance.paid = response['paid']
+        instance.amount_paid = response['amount']['value']
+        instance.confirmation_url = response['confirmation']['confirmation_url']
+        instance.created_at = response['created_at']
+        instance.description = response['description']
+        instance.metadata = response['metadata']
+        instance.refundable = response['refundable']
+
+        instance.user = user
+        instance.order = order
+
+        instance.full_clean()
+        instance.save()
+
+        return instance
