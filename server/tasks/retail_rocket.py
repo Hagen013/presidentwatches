@@ -5,6 +5,8 @@ from django.template.loader import render_to_string
 from django.utils.timezone import now, pytz
 from django.conf import settings
 
+from celery.signals import beat_init
+from celery.schedules import crontab
 from config.celery import app
 
 from shop.models import Attribute
@@ -104,3 +106,24 @@ def generate_yml_file():
 
     with open(FILEPATH, "w") as fp:
         fp.write(xml_raw)
+
+
+@app.task
+def update_images():
+    for instance in Product.objects.all():
+        
+        try:
+            image = instance.image.url
+            thumb = instance.thumbnail.url
+        except OSError:
+            instance.image = instance.image.field.default
+            instance.save()
+            instance.image.close()
+            instance.thumbnail.close()
+
+
+app.add_periodic_task(
+    crontab(minute="01", hour='05'),
+    generate_yml_file.s(),
+    name='generate_yml_file',
+)

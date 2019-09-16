@@ -21,38 +21,65 @@ window.onload = function() {
             ADMITAD.Tracking.processPositions();
         }
     
-        // Отправка данных в Яндекс.Метрика
-        let params = {
-            order_id: PUBLIC_ID,
-            order_price: TOTAL,
-            currency: "RUB",
-            exchange_rate: 1,
-            goods:[]
-        }
-    
-        for (let i=0; i<G_ITEMS.length; i++) {
-            params.goods.push({
-                name: G_ITEMS[i]['name'],
-                price: G_ITEMS[i]['price'],
-                quantity: G_ITEMS[i]['quantity']
-            })
-        }
-    
-        yaCounter14657887.reachGoal('orderConfirmed', params);
-        //
+        let fireAnalytics = true;
+        let clientTransactions = Cookies.get('transactions');
+        let transactionId = String(PUBLIC_ID);
 
-        dataLayer.push({
-            "event": "orderConfirmed",
-            "ecommerce": {
-                "currencyCode": "RUB",
-                "purchase": {
-                    "actionField": {
-                        "id": PUBLIC_ID
-                    },
-                    "products": G_ITEMS
+
+        try {
+            if (clientTransactions === undefined) {
+                clientTransactions = [transactionId];
+                clientTransactions = clientTransactions.join(';')
+                Cookies.set('transactions', clientTransactions);
+            } else {
+                clientTransactions = clientTransactions.split(';');
+                if (clientTransactions.indexOf(transactionId) === -1) {
+                    clientTransactions.push(transactionId);
+                    clientTransactions = clientTransactions.join(';');
+                    Cookies.set('transactions', clientTransactions);
+                } else {
+                    fireAnalytics = false;
                 }
             }
-        });
+        } catch {
+
+        }
+
+        if (fireAnalytics) {
+            // Отправка данных в Яндекс.Метрика
+            let params = {
+                order_id: PUBLIC_ID,
+                order_price: TOTAL,
+                currency: "RUB",
+                exchange_rate: 1,
+                goods:[]
+            }
+        
+            for (let i=0; i<G_ITEMS.length; i++) {
+                params.goods.push({
+                    name: G_ITEMS[i]['name'],
+                    price: G_ITEMS[i]['price'],
+                    quantity: G_ITEMS[i]['quantity']
+                })
+            }
+        
+            yaCounter14657887.reachGoal('orderConfirmed', params);
+            //
+
+            dataLayer.push({
+                "event": "orderConfirmed",
+                "ecommerce": {
+                    "currencyCode": "RUB",
+                    "purchase": {
+                        "actionField": {
+                            "id": PUBLIC_ID
+                        },
+                        "products": G_ITEMS
+                    }
+                }
+            });
+        }
+
 
         let rrItems = [];
         for (let i=0; i<G_ITEMS.length; i++) {
