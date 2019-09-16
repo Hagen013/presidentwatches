@@ -81,7 +81,7 @@
         <script src="https://www.artfut.com/static/tagtag.min.js?campaign_code=247d57cfd5" async onerror='var self = this;window.ADMITAD=window.ADMITAD||{},ADMITAD.Helpers=ADMITAD.Helpers||{},ADMITAD.Helpers.generateDomains=function(){for(var e=new Date,n=Math.floor(new Date(2020,e.getMonth(),e.getDate()).setUTCHours(0,0,0,0)/1e3),t=parseInt(1e12*(Math.sin(n)+1)).toString(30),i=["de"],o=[],a=0;a<i.length;++a)o.push({domain:t+"."+i[a],name:t});return o},ADMITAD.Helpers.findTodaysDomain=function(e){function n(){var o=new XMLHttpRequest,a=i[t].domain,D="https://"+a+"/";o.open("HEAD",D,!0),o.onload=function(){setTimeout(e,0,i[t])},o.onerror=function(){++t<i.length?setTimeout(n,0):setTimeout(e,0,void 0)},o.send()}var t=0,i=ADMITAD.Helpers.generateDomains();n()},window.ADMITAD=window.ADMITAD||{},ADMITAD.Helpers.findTodaysDomain(function(e){if(window.ADMITAD.dynamic=e,window.ADMITAD.dynamic){var n=function(){return function(){return self.src?self:""}}(),t=n(),i=(/campaign_code=([^&]+)/.exec(t.src)||[])[1]||"";t.parentNode.removeChild(t);var o=document.getElementsByTagName("head")[0],a=document.createElement("script");a.src="https://www."+window.ADMITAD.dynamic.domain+"/static/"+window.ADMITAD.dynamic.name.slice(1)+window.ADMITAD.dynamic.name.slice(0,1)+".min.js?campaign_code="+i,o.appendChild(a)}});'></script>
         <!-- End Admitad -->
         <!-- RetailRocket -->
-        {#<script type="text/javascript">
+        <script type="text/javascript">
         if (!!window.performance && window.performance.navigation.type == 2)
         {
             window.location.reload();
@@ -103,7 +103,7 @@
                 apiJs.src = "//cdn.retailrocket.ru/content/javascript/tracking.js";
                 ref.parentNode.insertBefore(apiJs, ref);
             }(document));
-        </script>#}
+        </script>
         <!-- /RetailRocket -->
         <script src="{{ static('js/jquery-3.3.1.min.js') }}"></script>
         {% endblock script_head %}
