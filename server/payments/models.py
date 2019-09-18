@@ -88,6 +88,11 @@ class Payment(models.Model):
         auto_now_add=True
     )
 
+    resolved_at = models.DateTimeField(
+        blank=True,
+        null=True
+    )
+
     description = models.CharField(
         max_length=256,
     )
@@ -132,7 +137,7 @@ class Payment(models.Model):
         instance.y_id = response['id']
         instance.status = response['status']
         instance.paid = response['paid']
-        instance.amount_paid = response['amount']['value']
+        instance.amount = response['amount']['value']
         instance.confirmation_url = response['confirmation']['confirmation_url']
         instance.created_at = response['created_at']
         instance.description = response['description']

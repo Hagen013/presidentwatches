@@ -23,6 +23,7 @@ class PaymentSeializer(serializers.ModelSerializer):
             'amount_paid',
             'confirmation_url',
             'created_at',
+            'resolved_at',
             'description',
             'metadata',
             'refundable'

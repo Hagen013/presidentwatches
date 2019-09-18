@@ -83,60 +83,68 @@
                     </div>
                     <div class="delimeter">
                     </div>
-                    <div class="order-sale">
-                        <el-row :gutter="10">
-                            <el-col :span="12">
-                                <div class="field">
-                                    <div class="field-label">
-                                        Промокод:
-                                    </div>
-                                    <div class="field-value">
-                                        <el-input
-                                            size="small"
-                                            v-model="instance.sale.promocode"
-                                            placeholder="Поиск"
-                                        >
-                                        </el-input>
+                    <div class="order-final-info">
+                        <div class="order-delivery-price">
+                            <div class="field-big">
+                                <div class="field-label">
+                                    Товары:
+                                </div>
+                                <div class="field-value">
+                                    <div class="price">
+                                        {{instance.cart.total_price}} ₽
                                     </div>
                                 </div>
-                            </el-col>
-                            <el-col :span="12">
-                                <div class="field field-sale">
-                                    <div class="field-label">
-                                        Скидка:
-                                    </div>
-                                    <div class="field-value">
-                                        <span class="total-price">
-                                            - {{saleAmount}} ₽
-                                        </span>
-                                    </div>
+                            </div>
+                        </div>
+                        <div class="order-delivery-price">
+                            <div class="field-big">
+                                <div class="field-label">
+                                    Доставка:
                                 </div>
-                            </el-col>
-                        </el-row>
-                    </div>
-                    <div class="order-delivery-price">
-                        <div class="field">
-                            <div class="field-label">
-                                Стоимость доставки:
-                            </div>
-                            <div class="field-value">
-                                <el-input-number
-                                    v-model="instance.delivery.price"
-                                    :min="0"
-                                    size="medium"
-                                    controls-position="right"
-                                    @change="calculatePrices"
-                                >
-                                </el-input-number>
+                                <div class="field-value">
+                                    <el-input-number
+                                        v-model="instance.delivery.price"
+                                        :min="0"
+                                        size="medium"
+                                        @change="calculatePrices"
+                                    >
+                                    </el-input-number>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="order-total">
-                        <div class="total-label">
-                            К оплате:
+                        <div class="order-promocode">
+                            <div class="field-big">
+                                <div class="field-label">
+                                    Промокод:
+                                </div>
+                                <div class="field-value">
+                                    <el-input
+                                        v-model="instance.sale.promocode"
+                                        placeholder="Выбрать"
+                                    >
+                                    </el-input>
+                                </div>
+                            </div>
                         </div>
-                        <div class="total-value">
-                            {{instance.total_price}} ₽
+                        <div class="order-sale">
+                            <div class="field-big">
+                                <div class="field-label">
+                                    Скидка:
+                                </div>
+                                <div class="field-value">
+                                    - {{saleAmount}} ₽
+                                </div>
+                            </div>
+                        </div>
+                        <div class="order-total">
+                            <div class="field-big">
+                                <div class="field-label">
+                                    К оплате:
+                                </div>
+                                <div class="field-value">
+                                    {{totalPrice}} ₽
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </el-col>
@@ -270,7 +278,9 @@
                                 <div class="field">
                                     <div class="field-value">
                                         <el-input
+                                            type="textarea"
                                             placeholder="Адрес"
+                                            :rows="2"
                                             v-model="instance.customer.address"
                                         >
                                         </el-input>
@@ -299,18 +309,27 @@
                                 </el-select>
                             </div>
                         </div>
-                        <div class="field">
-                            <div class="field-label">
-                                Пункт:
-                            </div>
-                            <div class="field-value">
-                                <el-input
-                                    placeholder="---"
-                                    v-model="instance.delivery.pvz_code"
-                                >
-                                </el-input>
-                            </div>
-                        </div>
+                        <el-row :gutter="10">
+                            <el-col :span="12">
+                                <div class="field">
+                                    <div class="field-label">
+                                        Пункт:
+                                    </div>
+                                    <div class="field-value">
+                                        <el-input
+                                            placeholder="---"
+                                            v-model="instance.delivery.pvz_code"
+                                        >
+                                        </el-input>
+                                    </div>
+                                </div>
+                            </el-col>
+                            <el-col :span="12">
+                                <el-button type="primary">
+                                    Выбрать на карте
+                                </el-button>
+                            </el-col>
+                        </el-row>
                         <div class="field">
                             <div class="field-label">
                                 Дата отправки:
@@ -328,6 +347,17 @@
                                 <el-button type="primary">
                                     Завтра
                                 </el-button>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="field-label">
+                                № отправления:
+                            </div>
+                            <div class="field-value">
+                                <el-input
+                                    class="field-value-c-2"
+                                >
+                                </el-input>
                             </div>
                         </div>
                     </div>
@@ -349,6 +379,18 @@
                                     >
                                     </el-option>
                                 </el-select>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="field-label">
+                                Оплачено:
+                            </div>
+                            <div class="field-value">
+                                <el-input-number
+                                    controls-position="right"
+                                    size="small"
+                                >
+                                </el-input-number>
                             </div>
                         </div>
                     </div>
@@ -401,6 +443,7 @@ export default {
             {name: 'Картой при получении', value: 'card_offline'},
             {name: 'Картой онлайн', value: 'card_online'}
         ],
+        queryLine: ""
     }),
     props: [
         'instance_proxy'
@@ -409,6 +452,15 @@ export default {
         saleAmount() {
             return this.instance.cart.total_sale
         },
+        totalPrice: {
+            get() {
+                return this.instance.total_price;
+            },
+            set(value) {
+                value = parseInt(value);
+                this.instance.total_price = value;
+            }
+        }
     },
     created() {
         this.initialize();
@@ -423,10 +475,82 @@ export default {
         },
         checkChanges() {
             this.hasChanged = !equal(this.instance, this.instance_proxy);
+            this.$emit('change', this.hasChanged);
         },
         calculatePrices() {
+            let totalPrice = 0;
+            let totalSale = 0;
 
-        }
+            for (let key in this.instance.cart.items) {
+                let item = this.instance.cart.items[key];
+                let quantity = item['quantity'];
+                let price = item['price'];
+                let sale = item['sale']
+                item['total_price'] = (price * quantity) - sale
+
+                totalSale += sale;
+                totalPrice += item['total_price'];
+            }
+            this.$set(this.instance.cart, 'total_price', totalPrice)
+            this.$set(this.instance.cart, 'total_sale', totalSale)
+
+            this.instance.total_price = totalPrice + this.instance.delivery['price'];
+
+        },
+        querySearch(query, cb) {
+            let lines = [{name: ''}];
+            api.get('/search/', {params: {line: query}}).then(
+                response => {
+                    lines = response.data;
+                    lines.forEach(function(item) {
+                        item.name = item._source.name
+                    })
+                    cb(lines)
+                },
+                response => {
+
+                }
+            )
+        },
+        handleProductSelect(item) {
+            let now = Date.now();
+            this.queryLine = '';
+            api.get(`/products/${item._source.id}/`).then(
+                response => {
+                    let product = response.data;
+                    if (this.instance.cart.items[product.id] == undefined) {
+                        let item = {
+                            brand: product.brand,
+                            image: product.image,
+                            model: product.model,
+                            pk: product.id,
+                            base_price: product._price,
+                            price: product._price,
+                            quantity: 1,
+                            series: product.series,
+                            slug: product.slug,
+                            total_price: product._price,
+                            added_at: now,
+                            url: product.url,
+                            is_sale: false,
+                            sale: 0
+
+                        }
+                        this.$set(this.instance.cart.items, product.id, item);
+                        this.calculatePrices();
+                    } else {
+                        this.$notify({
+                            title: 'Ошибка',
+                            message: 'Данный товар уже есть в составе заказа',
+                            type: 'error'
+                        });
+                    }
+                },
+                response => {
+
+                }
+            )
+        },
     },
     watch: {
         instance_proxy: {
@@ -446,6 +570,9 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
+    .order-wrap {
+        margin-bottom: 200px;
+    }
     .field {
         display: flex;
         align-items: center;
@@ -475,7 +602,7 @@ export default {
     }
     .order-total {
         display: flex;
-        justify-content: flex-end;
+        justify-content: flex-start;
         margin-top: 20px;
         font-size: 28px;
     }
@@ -499,6 +626,7 @@ export default {
         padding: 20px;
         box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
         border: 1px solid #EBEEF5;
+        margin-bottom: 10px;
     }
 
     .cart-item-img-wrap {
@@ -583,5 +711,35 @@ export default {
     }
     .order-c-1 {
         margin-left: 10px;
+    }
+
+    .order-delivery-price {
+        display: flex;
+        align-items: center;
+    }
+    .field-big {
+        width: 100%;
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        line-height: 1.4;
+        .field-label {
+            font-size: 16px;
+            text-align: left;
+            color: rgba(0,0,0,.85);
+        }
+        margin-bottom: 10px;
+        .field-value {
+            font-size: 20px;
+            text-align: right;
+        }
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(0,0,0,.1);
+    }
+    .order-final-info {
+        padding-right: 50px;
+    }
+    .field-value-c-2 {
+        width: 300px;
     }
 </style>

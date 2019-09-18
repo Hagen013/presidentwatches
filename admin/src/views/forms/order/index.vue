@@ -35,6 +35,8 @@
                     <order-main
                         :instance_proxy="instance"
                         :is_ready="isReady"
+                        @change="handleMainChange"
+                        ref="main"
                     >
                     </order-main>
                 </div>
@@ -54,11 +56,14 @@
                 </order-user>
             </el-tab-pane>
             <el-tab-pane label="Оплата" name="payments">
-                <order-payments
-                    :instance="instance"
-                    :is_ready="isReady"
-                >
-                </order-payments>
+                <div v-if="isReady">
+                    <order-payments
+                        :instance="instance"
+                        :is_ready="isReady"
+                        :activeTabName="activeTabName"
+                    >
+                    </order-payments>
+                </div>
             </el-tab-pane>
         </el-tabs>
     </div>
@@ -127,7 +132,10 @@ export default {
             )
         },
         updateInstance() {
-
+            this.$refs.main.saveChanges();
+        },
+        handleMainChange(payload) {
+            this.hasChanged = payload;
         }
     }
 }

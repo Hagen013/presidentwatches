@@ -6,6 +6,9 @@
                 <a class="navigation-mobile-link" @click="route('orders')">
                     Мои заказы <i class="icon icon_chevron-right"></i>
                 </a>
+                <a class="navigation-mobile-link" @click="route('payments')">
+                    Мои платежи <i class="icon icon_chevron-right"></i>
+                </a>
                 <a class="navigation-mobile-link" @click="route('profile')">
                     Мои данные <i class="icon icon_chevron-right"></i>
                 </a>
@@ -26,6 +29,14 @@
                         :class="{ active: currentRoute === '/orders' }"
                     > 
                         Мои заказы
+                    </a>
+                </li>
+                <li>
+                    <a class="profile-navigation-link"
+                        @click="route('payments')"
+                        :class="{ active: currentRoute === '/payments' }"
+                    >
+                        Мои платежи
                     </a>
                 </li>
                 <li>

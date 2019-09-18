@@ -273,3 +273,52 @@ $mq-breakpoints: (
     border-bottom: 1px solid #dcdcdc;
 }
 
+.payments-list {
+    max-width: 600px;
+}
+
+.payment {
+    padding: 20px;
+    border: 1px solid #EBEEF5;
+    font-size: 14px;
+    border-radius: 4px;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+    margin-bottom: 20px;
+}
+
+.payment-heading {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.payment-footer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.payment-status {
+    letter-spacing: 1px;
+    text-transform: lowercase;
+}
+
+.payment-body {
+    padding: 30px 0px;
+}
+
+.payment-status.pending {
+    color: #f57e39;
+}
+.payment-status.success {
+    color: #3abb37;
+}
+.payment-status.fail {
+    color: #fc152e;
+}
+
+.payment-price {
+    font-size: 24px;
+    font-weight: 600;
+}

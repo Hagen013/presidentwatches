@@ -13,7 +13,13 @@ const routes = [
         name: 'Profile',
         component: () => import('@/profile/components/Profile.vue'),
         meta: { title: 'Мои данные', }
-    }
+    },
+    {
+        path: '/payments',
+        name: 'Payments',
+        component: () => import('@/profile/components/Payments.vue'),
+        meta: { title: 'Мои платежи' }
+    },
 ]
 
 const router = new VueRouter({

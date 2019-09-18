@@ -80,9 +80,9 @@
         created() {
             store.commit('SET_USER_ID', this.user_id);
             this.getUser();
-            if (window.innerWidth >= 768) {
-                this.$router.push({path: '/orders'})
-            }
+            // if (window.innerWidth >= 768) {
+            //     this.$router.push({path: '/orders'})
+            // }
         },
         methods: {
             route(arg) {
