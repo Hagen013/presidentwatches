@@ -91,7 +91,7 @@
                                 </div>
                                 <div class="field-value">
                                     <div class="price">
-                                        {{instance.cart.total_price}} ₽
+                                        {{instance.cart.total_price+saleAmount}} ₽
                                     </div>
                                 </div>
                             </div>
@@ -177,7 +177,9 @@
                                                 </a>
                                             </p>
                                             <p class="cart-item-del">
-                                                <el-button size="mini" type="danger">
+                                                <el-button size="mini" type="danger"
+                                                    @click="triggerDelete(item)"
+                                                >
                                                     Удалить
                                                 </el-button>
                                             </p>
@@ -551,6 +553,23 @@ export default {
                 }
             )
         },
+        triggerDelete(item) {
+            this.$confirm(`Удалить ${item.model}?`, 'Подвтерждение', {
+                confirmButtonText: 'Да',
+                cancelButtonText: 'Отмена',
+                type: 'warning'
+            }).then(() => {
+                this.deleteFromCart(item);
+            }).catch(() => {
+
+            })
+        },
+        deleteFromCart(item) {
+            let identifier = String(item.pk);
+            this.$delete(this.instance.cart.items, identifier);
+            this.$forceUpdate();
+            this.calculatePrices();
+        }
     },
     watch: {
         instance_proxy: {

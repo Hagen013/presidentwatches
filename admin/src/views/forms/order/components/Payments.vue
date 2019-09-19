@@ -126,6 +126,9 @@ export default {
     methods: {
         initialize() {
             this.loading = true;
+            if (this.instance.customer.email.length > 0) {
+                this.email = this.instance.customer.email;
+            }
             this.getPaymentsList();
         },
         getPaymentsList() {
@@ -173,7 +176,9 @@ export default {
             this.loading = true;
             api.post(`/payments/create/`, payload).then(
                 response => {
-                    let payment = response.data;
+                    let payment = response.data.payment;
+                    let user = response.data.user;
+
                     payment.activities = [];
                     payment.activities.push({
                         content: 'Создан',
@@ -181,10 +186,20 @@ export default {
                         color: '#E4E7ED'
                     })
                     this.payments.push(payment);
+
+                    if (this.instance.user === null) {
+                        this.updateUser(user);
+                    }
+
                     this.loading = false;
+                    this.$notify({
+                        title: `Платеж № ${payment.id}`,
+                        message: `успено отправлен на указанный адрес`,
+                        type: 'success'
+                    });
                 },
                 response => {
-
+                    this.loading = false;
                 }
             )
         },
@@ -194,7 +209,9 @@ export default {
                 ${date.getFullYear()}-${date.getMonth()}-${date.getDate()}  ${date.getHours()}:${date.getMinutes()}
             `
         },
-
+        updateUser(user) {
+            this.$emit('update-user', user);
+        }
     },
     watch: {
         activeTabName() {

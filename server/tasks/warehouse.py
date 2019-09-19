@@ -19,6 +19,7 @@ from shop.models import Attribute
 @app.task
 def generate_warehouse_file(filepath):
     fields = [
+        'id',
         'brand',
         'model',
         'is_published',
@@ -45,6 +46,7 @@ def generate_warehouse_file(filepath):
     df['is_published'] = df['is_published'].apply(int)
     df = df.reindex(fields, axis=1)
     df = df.rename(columns={
+        'id': 'id',
         'brand': 'Бренд',
         'model': 'Модель',
         'is_published': 'Опубликовано',

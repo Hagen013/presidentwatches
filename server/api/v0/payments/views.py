@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -5,10 +7,13 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import permissions
+from rest_framework.parsers import JSONParser
 
 from cart.models import Order
 from payments.models import Payment
 from payments.serializers import PaymentSeializer, CreatePaymentSerializer
+from tasks.payments import notify, notify_new_user
+from .permissions import IsAdminOrOwner
 
 
 User = get_user_model()
@@ -17,7 +22,7 @@ User = get_user_model()
 class PaymentsListAPIView(APIView):
 
     serializer_class = PaymentSeializer
-    permissions_class = permissions.IsAdminUser
+    permissions_class = IsAdminOrOwner
 
     filter_fields = ('order', 'user')
 
@@ -50,9 +55,46 @@ class PaymentsDetailsAPIView(APIView):
         return Response({})
 
 
+Y_KASSA_EVENTS_MAP = {
+    'payment.waiting_for_capture': 'pending',
+    'payment.succeeded': 'success',
+    'payment.canceled': 'failed',
+    'refund.succeeded': 'refund'
+}
+
+
+class PaymentsNotificationsAPIView(APIView):
+
+
+    def post(self, request, *args, **kwargs):
+
+        data = json.loads(request.body)
+
+        y_id = data['object']['id']
+        event = data['event']
+
+        try:
+            instance = Payment.objects.get(
+                y_id=y_id
+            )
+        except ObjectDoesNotExist:
+            return Response(
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        instance.status = Y_KASSA_EVENTS_MAP.get(event)
+        instance.paid = data['object']['paid']
+        instance.amount_paid = data['object']['amount']['value']
+        instance.save()
+        return Response(
+            status=status.HTTP_200_OK
+        )
+
+
 class CreatePaymentAPIView(APIView):
 
     serializer_class = PaymentSeializer
+    permissions_class = permissions.IsAdminUser
 
     def post(self, request, *args, **kwargs):
         data = request.data
@@ -62,6 +104,7 @@ class CreatePaymentAPIView(APIView):
         email = data.get('email', None)
 
         user_created = False
+        password = None
 
         order = None
 
@@ -111,16 +154,19 @@ class CreatePaymentAPIView(APIView):
                 )
                 try:
                     user.full_clean()
+                    user.set_password(password)
                     user.save()
                 except ValidationError:
                     return Response(
                         'Недопустимые данные',
-                        status=status.HTTP_BAD_REQUEST
+                        status=status.HTTP_400_BAD_REQUEST
                     )
 
                 # 1. Есть заказ
                 # 2. Есть новый юзер
                 user_created = True
+                order.user = user
+                order.save()
             else:
                 # 1. Есть заказ
                 # 2. Есть найденный юзер
@@ -132,7 +178,7 @@ class CreatePaymentAPIView(APIView):
         else:
             pass
 
-        return_url = 'https://presidentwatches/payments/confirmation/{uuid}'.format(
+        return_url = 'https://presidentwatches/u/profile/#payments'.format(
             uuid=order.uuid
         )
         description = 'Заказ №{public_id}'.format(
@@ -152,12 +198,16 @@ class CreatePaymentAPIView(APIView):
             'description': description
         }
 
-
         payment = Payment.create(
             params,
             order=order,
             user=user
         )
+
+        if user_created:
+            notify_new_user.delay(payment.id, password=password)
+        else:
+            notify.delay(payment.id)
 
         serializer = self.serializer_class(
             payment
@@ -171,6 +221,9 @@ class CreatePaymentAPIView(APIView):
             pass
 
         return Response(
-            serializer.data,
+            {
+                'payment': serializer.data,
+                'user': user.id
+            },
             status=status.HTTP_201_CREATED
         )

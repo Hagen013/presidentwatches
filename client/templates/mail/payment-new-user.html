@@ -1,5 +1,218 @@
 {% extends "mail/base.html" %}
 
 {% block content %}
-
+    <table align="center" width="100%" bgcolor="#FFFFFF" cellpadding="0" cellspacing="0" border="0" style="background-color: #ffffff;
+            width: 100%; max-width: 600px;
+            margin: 0px auto;
+            padding: 0px 30px; 
+            border-collapse: collapse;
+            border-spacing: 0;
+            border: 0 none;" data-mce-style="background-color: #ffffff;
+            width: 100%; max-width:
+            600px; margin:
+            0px auto;
+            padding: 0px;
+            border-collapse: collapse;
+            border-spacing: 0;
+            border: 0 none;" class="mce-item-table">
+        <tbody>
+            <!-- ONE COLUMN -->
+            <tr>
+                <td align="center" width="100%" bgcolor="#FFFFFF" cellpadding="0" cellspacing="0" border="0" 
+                    style="background-color: #ffffff; width: 100%; margin: 0px; padding: 0px 30px; border-collapse: collapse; border-spacing: 0; border: 0 none;" 
+                    data-mce-style="background-color: #ffffff; width: 100%; margin: 0px; padding: 0px 30px; border-collapse: collapse; border-spacing: 0; border: 0 none;"
+                >
+                    <table align="center" width="100%" bgcolor="#FFFFFF" cellpadding="0" cellspacing="0" border="0"
+                        style="background-color: #ffffff; width: 100%; margin: 0px; padding: 0px; border-collapse: collapse; border-spacing: 0; border: 0 none;"
+                        data-mce-style="background-color: #ffffff; width: 100%; margin: 0px; padding: 0px; border-collapse: collapse; border-spacing: 0; border: 0 none;"
+                        class="mce-item-table"><tbody><tr><td align="left" width="100%" bgcolor="#FFFFFF" cellspacing="0" border="0"
+                        style="background-color: #ffffff; width: 100%; margin: 0px; padding: 0px; border-collapse: collapse; border-spacing: 0; border: 0 none;"
+                        data-mce-style="background-color: #ffffff; width: 100%; margin: 0px; padding: 0px; border-collapse: collapse; border-spacing: 0; border: 0 none;"
+                    >
+                        <p style="font-size: 0px; line-height: 30px; padding: 0px; margin: 0px;"
+                            data-mce-style="font-size: 0px; line-height: 30px; padding: 0px; margin: 0px;">&nbsp;
+                        </p>
+                        <p style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 16px; line-height: 24px; color: #1d1d1d; padding: 0px; margin: 0px 0px 10px 0px;"
+                            data-mce-style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 16px; line-height: 24px; color: #1d1d1d; padding: 0px; margin: 0px 0px 10px 0px;"
+                        >
+                            <strong>Здравствуйте!</strong>
+                        </p>
+                        <p style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 16px; line-height: 24px; color: #666666; padding: 0px; margin: 0px 0px 10px 0px;"
+                            data-mce-style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 16px; line-height: 24px; color: #666666; padding: 0px; margin: 0px 0px 10px 0px;"
+                        >
+                            Ваш пароль в личном кабинете ПрезидентВотчес: <strong>{{password}}</strong>. Логином служит ваш email.
+                        </p>
+                        <p style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 16px; line-height: 24px; color: #666666; padding: 0px; margin: 0px 0px 10px 0px;"
+                            data-mce-style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 16px; line-height: 24px; color: #666666; padding: 0px; margin: 0px 0px 10px 0px;"
+                        >
+                            Ваш заказ № {{order.public_id}} согласован и ожидает оплаты.
+                        </p>
+                        <!-- BUTTON -->
+                        <table border="0" 
+                            cellspacing="0" 
+                            cellpadding="0" 
+                            class="mce-item-table"
+                        >
+                            <tbody>
+                                <tr>
+                                    <td align="center" bgcolor="#F6DE32" style="border-radius: 4px;" 
+                                        data-mce-style="border-radius: 4px;"
+                                    >
+                                        <a href="{{BASE_URL}}/u/profile/?login={{user.username}}&password={{password}}&redirect=payments" target="_blank" 
+                                            style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; line-height: 17px; color: #1d1d1d; padding: 14px 20px; margin: 0px; text-decoration: none; text-transform: uppercase; display: inline-block; background-color: #f6de32; border: 1px solid #f6de32; border-radius: 4px; font-weight: bold;" 
+                                            rel="noopener" data-mce-href="#" 
+                                            data-mce-style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; line-height: 17px; color: #1d1d1d; padding: 14px 20px; margin: 0px; text-decoration: none; text-transform: uppercase; display: inline-block; background-color: #f6de32; border: 1px solid #f6de32; border-radius: 4px; font-weight: bold;"
+                                        >
+                                            перейти к оплате
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- BUTTON EMD -->
+                        <p style="font-size: 0px; line-height: 30px; padding: 0px; margin: 0px;" data-mce-style="font-size: 0px; line-height: 30px; padding: 0px; margin: 0px;">&nbsp;
+                        </p>
+                        <p style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 20px; line-height: 24px; color: #1d1d1d; padding: 0px; margin: 0px 0px 10px 0px;"
+                            data-mce-style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 20px; line-height: 24px; color: #1d1d1d; padding: 0px; margin: 0px 0px 10px 0px;"
+                        >
+                            <strong>Ваш заказ</strong>
+                        </p>
+                        <p style="font-size: 12px; padding: 0px; margin: 0px;" data-mce-style="font-size: 0px; padding: 0px; margin: 0px;">
+                        Доставка: {{order.delivery['price']}} руб.
+                        </p>
+                        <p style="font-size: 0px; line-height: 15px; padding: 0px; margin: 0px;"
+                            data-mce-style="font-size: 0px; line-height: 15px; padding: 0px; margin: 0px;">&nbsp;
+                        </p>
+                    </table>
+                </td>
+            </tr>
+            <!-- ONE COLUMN END -->
+            <!-- TWO COLUMN -->
+            {% for item in order.cart['items'].values() %}
+            <tr>
+                <td align="center" width="100%" bgcolor="#FFFFFF" cellspacing="0" border="0" 
+                    style="background-color: #ffffff; width: 100%; margin: 0px; padding: 0px; border-collapse: collapse; border-spacing: 0; border: 0 none; text-align: left; font-size: 0px;"
+                    data-mce-style="background-color: #ffffff; width: 100%; margin: 0px; padding: 0px; border-collapse: collapse; border-spacing: 0; border: 0 none; text-align: left; font-size: 0px;"
+                >
+                    <!-- [if (gte mso 9)|(IE)]>
+                        <table width="100%">
+                        <tr>
+                        <td width="200" valign="top">
+                        <![endif]-->
+                        <div style="width: 100%; max-width: 200px; display: inline-block; vertical-align: top;" 
+                            data-mce-style="width: 100%; max-width: 200px; display: inline-block; vertical-align: top;"
+                        >
+                            <table align="center" width="100%" bgcolor="#FFFFFF" cellpadding="0" cellspacing="0" border="0" 
+                                style="background-color: #ffffff; width: 100%; margin: 0px; padding: 0px; border-collapse: collapse; border-spacing: 0; border: 0 none;" 
+                                data-mce-style="background-color: #ffffff; width: 100%; margin: 0px; padding: 0px; border-collapse: collapse; border-spacing: 0; border: 0 none;" 
+                                class="mce-item-table"
+                            >
+                                <tbody>
+                                    <tr>
+                                        <td align="left" width="100%" bgcolor="#FFFFFF" cellpadding="0" cellspacing="0" border="0" 
+                                            style="background-color: #ffffff; height: 140px; width: 100%; margin: 0px; text-align: center; padding: 10px 0px 20px 30px; border-collapse: collapse; border-spacing: 0; border: 0 none;" 
+                                            data-mce-style="background-color: #ffffff; height: 140px; width: 100%; margin: 0px; text-align: center; padding: 10px 0px 20px 30px; border-collapse: collapse; border-spacing: 0; border: 0 none;"
+                                        >
+                                            <img src="https://presidentwatches.ru{{item['image']}}" alt="1" 
+                                                width="170" 
+                                                height="140" border="0"
+                                                style="display: block; width: auto; height: 100%; margin: 0; padding: 0; border: 0 none;"
+                                                data-mce-src="{{BASE_URL}}/{{item['image']}}"
+                                                data-mce-style="display: block; width: auto; height: 100%; margin: 0; padding: 0; border: 0 none;"
+                                            >
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    <!-- [if (gte mso 9)|(IE)]>
+                        </td>
+                        <td width="400" valign="top">
+                        <![endif]-->
+                    <div style="width: 100%; max-width: 400px; display: inline-block; vertical-align: top;" 
+                        data-mce-style="width: 100%; max-width: 400px; display: inline-block; vertical-align: top;"
+                    >
+                        <table align="center" width="100%" bgcolor="#FFFFFF" cellpadding="0" cellspacing="0" border="0" 
+                            style="background-color: #ffffff; width: 100%; margin: 0px; padding: 0px; border-collapse: collapse; border-spacing: 0; border: 0 none;" 
+                            data-mce-style="background-color: #ffffff; width: 100%; margin: 0px; padding: 0px; border-collapse: collapse; border-spacing: 0; border: 0 none;" 
+                            class="mce-item-table"><tbody><tr><td align="left" width="100%" bgcolor="#FFFFFF" cellpadding="0" cellspacing="0" border="0" 
+                            style="background-color: #ffffff; width: 100%; margin: 0px; padding: 10px 30px 20px 30px; border-collapse: collapse; border-spacing: 0; border: 0 none;" 
+                            data-mce-style="background-color: #ffffff; width: 100%; margin: 0px; padding: 10px 30px 20px 30px; border-collapse: collapse; border-spacing: 0; border: 0 none;"
+                        >
+                            <p style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 18px; line-height: 24px; color: #1d1d1d; padding: 0px; margin: 0px 0px 10px 0px; text-transform: uppercase;" 
+                                data-mce-style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 18px; line-height: 24px; color: #1d1d1d; padding: 0px; margin: 0px 0px 10px 0px; text-transform: uppercase;"
+                            >
+                                <strong>{{item['brand']}} {{item['series']}} {{item['model']}}</strong>
+                            </p>
+                            <table align="left" class="mce-item-table">
+                                <tbody>
+                                    <tr>
+                                        <td align="left" width="120" bgcolor="#FFFFFF" cellpadding="0" cellspacing="0" border="0" 
+                                            style="background-color: #ffffff; width: 120px; margin: 0px; padding: 0px; border-collapse: collapse; border-spacing: 0; border: 0 none;" 
+                                            data-mce-style="background-color: #ffffff; width: 120px; margin: 0px; padding: 0px; border-collapse: collapse; border-spacing: 0; border: 0 none;"
+                                        >
+                                            <p style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; line-height: 16px; color: #666666; padding: 0px; margin: 0px;" 
+                                                data-mce-style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; line-height: 16px; color: #666666; padding: 0px; margin: 0px;"
+                                            >
+                                                Цена товара:
+                                            </p>
+                                            <p style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 16px; line-height: 18px; color: #1d1d1d; padding: 0px; margin: 0px 0px 10px 0px;" 
+                                                data-mce-style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 16px; line-height: 18px; color: #1d1d1d; padding: 0px; margin: 0px 0px 10px 0px;"
+                                            >
+                                                <strong>{{item['price']}} руб</strong>
+                                            </p>
+                                        </td>
+                                        <td align="left" width="120" bgcolor="#FFFFFF" cellpadding="0" cellspacing="0" border="0"
+                                            style="background-color: #ffffff; width: 120px; margin: 0px; padding: 0px; border-collapse: collapse; border-spacing: 0; border: 0 none;"
+                                            data-mce-style="background-color: #ffffff; width: 120px; margin: 0px; padding: 0px; border-collapse: collapse; border-spacing: 0; border: 0 none;"
+                                        >
+                                            <p style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; line-height: 16px; color: #666666; padding: 0px; margin: 0px;" 
+                                                data-mce-style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; line-height: 16px; color: #666666; padding: 0px; margin: 0px;"
+                                            >
+                                                Количество:
+                                            </p>
+                                            <p style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 16px; line-height: 18px; color: #1d1d1d; padding: 0px; margin: 0px 0px 10px 0px;"
+                                                data-mce-style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 16px; line-height: 18px; color: #1d1d1d; padding: 0px; margin: 0px 0px 10px 0px;"
+                                            >
+                                                <strong>{{item['quantity']}}</strong>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" align="left" width="240" bgcolor="#FFFFFF" cellpadding="0" cellspacing="0" border="0" 
+                                            style="background-color: #ffffff; width: 240px; margin: 0px; padding: 0px; border-collapse: collapse; border-spacing: 0; border: 0 none;"
+                                            data-mce-style="background-color: #ffffff; width: 240px; margin: 0px; padding: 0px; border-collapse: collapse; border-spacing: 0; border: 0 none;"
+                                        >
+                                            <p style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; line-height: 16px; color: #666666; padding: 0px; margin: 0px;"
+                                                data-mce-style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; line-height: 16px; color: #666666; padding: 0px; margin: 0px;"
+                                            >
+                                                Сумма:
+                                            </p>
+                                            <p style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 16px; line-height: 18px; color: #1d1d1d; padding: 0px; margin: 0px 0px 10px 0px;" 
+                                                data-mce-style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 16px; line-height: 18px; color: #1d1d1d; padding: 0px; margin: 0px 0px 10px 0px;"
+                                            >
+                                                <strong>{{item.total_price}} руб</strong>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                    </div>
+                    <!-- [if (gte mso 9)|(IE)]>
+                        </td>
+                        </tr>
+                        </table>
+                    <![endif]-->
+                </td>
+            </tr>
+            {% endfor %}
+            <!-- TWO COLUMN END -->
+        </tbody>
+    </table>
+    <p style="font-size: 0px; line-height: 30px; padding: 0px; margin: 0px;"
+        data-mce-style="font-size: 0px; line-height: 30px; padding: 0px; margin: 0px;">&nbsp;
+    </p>
+    <p style="font-size: 0px; line-height: 30px; padding: 0px; margin: 0px;"
+        data-mce-style="font-size: 0px; line-height: 30px; padding: 0px; margin: 0px;">&nbsp;
+    </p>
 {% endblock content %}

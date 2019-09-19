@@ -38,22 +38,27 @@ def notify(payment_id):
 
 
 @app.task
-def notify_new_user(order_pk, password):
-    instance = Order.objects.get(
-        id=order_pk
+def notify_new_user(payment_id, password):
+    instance = Payment.objects.get(
+        id=payment_id
     )
     user = instance.user
+    order = instance.order
+    print('Полученный пароль')
+    print(password)
+
     context = {
         'order': order,
+        'payment': instance,
         'user': user,
-        'password': password,
-        'BASE_URL': BASE_URL
+        'BASE_URL': BASE_URL,
+        'password': password
     }
+
     template = 'mail/payment-new-user.html'
     title = 'Подтверждение оплаты заказа № {public_id}'.format(
         public_id=order.public_id
     )
-
     mail = Mail(
         title=title,
         template=template,

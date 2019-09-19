@@ -28,6 +28,7 @@ class PaymentStatuses(DjangoChoices):
     Pending = ChoiceItem('pending', 'В обработке')
     Success = ChoiceItem('success', 'Успешно')
     Failed  = ChoiceItem('failed', 'Ошибка')
+    Refund = ChoiceItem('refund', 'Возврат')
 
 
 class Payment(models.Model):

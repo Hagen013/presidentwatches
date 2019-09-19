@@ -40,6 +40,7 @@
     import router from './router/index.js'
 
     import navigation from './components/Navigation.vue'
+    import getParameterByName from '@/utils/getParameterByName'
 
 
     export default {
@@ -80,6 +81,10 @@
         created() {
             store.commit('SET_USER_ID', this.user_id);
             this.getUser();
+            let redirect = getParameterByName('redirect');
+            if (redirect !== null) {
+                this.$router.push({path: `/${redirect}`});
+            }
             // if (window.innerWidth >= 768) {
             //     this.$router.push({path: '/orders'})
             // }

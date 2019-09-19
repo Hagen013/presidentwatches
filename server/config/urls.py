@@ -32,7 +32,7 @@ urlpatterns = [
     path('amerikanskie-chasy', RedirectView.as_view(url='/shop/watches/american/', permanent=False)),
     path('dizajnerskie-chasy', RedirectView.as_view(url='/shop/watches/fashion/', permanent=False)),
     path('404', TemplateView.as_view(template_name='404.html')),
-    path('mail', TemplateView.as_view(template_name='mail/base.html'))
+    path('mail', TemplateView.as_view(template_name='mail/payment.html'))
 ]
 
 urlpatterns += sitemaps

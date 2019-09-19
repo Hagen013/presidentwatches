@@ -8,6 +8,8 @@ from django.contrib.auth import login, logout, authenticate
 from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404
 
+from core.utils import custom_redirect_v2
+
 User = get_user_model()
 
 
@@ -16,6 +18,39 @@ class ProfileView(TemplateView):
     View для просмотра личной страницы пользователя
     """
     template_name = 'pages/profile.html'
+
+    def get(self, request, *args, **kwargs):
+        querydict = request.GET.dict()
+        if not request.user.is_authenticated:
+
+            user_login = querydict.get('login', None)
+            password = querydict.get('password', None)
+            redirect_to = querydict.get('redirect', None)
+
+            print(password)
+            print(password)
+
+            if user_login is not None and password is not None:
+                user = authenticate(request, username=user_login, password=password)
+                if not user:
+                    return custom_redirect_v2(
+                        'users:login',
+                        **querydict
+                    )
+                else:
+                    login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+                    querydict.pop('login')
+                    querydict.pop('password')
+                    return custom_redirect_v2(
+                        'users:profile',
+                        **querydict
+                    )
+
+            return custom_redirect_v2(
+                'users:login',
+                **querydict
+            )
+        return super(ProfileView, self).get(request, *args, *kwargs)
 
     def get_context_data(self, *args, **kwargs):
         context = super(ProfileView, self).get_context_data(**kwargs)

@@ -1,7 +1,9 @@
 <template>
     <div class="order-wrap" v-loading="loading">
         <div class="topbar">
-            <el-button type="primary" size="medium">
+            <el-button type="primary" size="medium"
+                @click="redirectToOrdersList"
+            >
                 <el-icon class="el-icon-back">
                 </el-icon>
                 Назад
@@ -16,6 +18,7 @@
             </div>
             <el-button type="success" size="medium"
                 :disabled="!hasChanged"
+                @click="saveChanges"
             >
                 <el-icon class="el-icon-check">
                 </el-icon>
@@ -23,6 +26,7 @@
             </el-button>
             <el-button type="danger" size="medium"
                 :disabled="!hasChanged"
+                @click="rollbackChanges"
             >
                 <el-icon class="el-icon-refresh-right">
                 </el-icon>
@@ -61,6 +65,7 @@
                         :instance="instance"
                         :is_ready="isReady"
                         :activeTabName="activeTabName"
+                        v-on:update-user="updateUser"
                     >
                     </order-payments>
                 </div>
@@ -119,6 +124,10 @@ export default {
         initialize() {
             this.getInstance();
         },
+        redirectToOrdersList() {
+            let path = '/orders/';
+            this.$router.push({path: path});
+        },
         getInstance() {
             this.loading = true;
             api.get(this.instanceApiEndpoint).then(
@@ -131,11 +140,36 @@ export default {
                 }
             )
         },
+        saveChanges() {
+            this.updateInstance();
+        },
+        rollbackChanges() {
+
+        },
         updateInstance() {
-            this.$refs.main.saveChanges();
+            this.loading = true;
+            let data = this.$refs.main.instance;
+            api.put(`/orders/${data.id}/`, data).then(
+                response => {
+                    this.instance = response.data;
+                    this.$refs.main.copyInstance();
+                    this.loading = false;
+                    this.$notify({
+                        title: `${this.instance.public_id}`,
+                        message: `Заказ успешно сохранен`,
+                        type: 'success'
+                    });
+                },
+                response => {
+                    this.loading = false;
+                }
+            )
         },
         handleMainChange(payload) {
             this.hasChanged = payload;
+        },
+        updateUser(user) {
+            this.getInstance();
         }
     }
 }

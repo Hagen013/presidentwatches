@@ -15,3 +15,18 @@ def custom_redirect(url_name, *args, **kwargs):
         return HttpResponseRedirect(url)
     params = '&'.join(params)
     return HttpResponseRedirect(url + "?%s" % params)
+
+
+def custom_redirect_v2(url_name, *args, **kwargs):
+    url = reverse(url_name, args=args)
+    params = list(
+        map(lambda x: "{key}={values}".format(
+            key=x,
+            values=kwargs[x]),
+            kwargs.keys()
+        )
+    )
+    if len(params) == 0:
+        return HttpResponseRedirect(url)
+    params = '&'.join(params)
+    return HttpResponseRedirect(url + "?%s" % params)
