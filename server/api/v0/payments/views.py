@@ -203,11 +203,12 @@ class CreatePaymentAPIView(APIView):
                 brand=item['brand'],
                 model=item['model']
             )
+            result_price = round(item['total_price']/item['quantity'])
             receipt['items'].append({
                 'description': descr,
                 'quantity': item['quantity'],
                 'amount': {
-                    'value': item['price'],
+                    'value': result_price,
                     'currency': 'RUB'
                 },
                 'vat_code': '1',
