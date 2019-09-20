@@ -183,7 +183,7 @@ class CreatePaymentAPIView(APIView):
         else:
             pass
 
-        return_url = 'https://presidentwatches/u/profile/#payments'.format(
+        return_url = 'https://presidentwatches.ru/u/profile/#payments'.format(
             uuid=order.uuid
         )
         description = 'Заказ №{public_id}'.format(
