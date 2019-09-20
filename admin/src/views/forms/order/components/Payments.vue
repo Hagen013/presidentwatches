@@ -171,7 +171,9 @@ export default {
             let payload = {
                 email: this.email,
                 user: this.instance.user,
-                order: this.instance.id
+                order: this.instance.id,
+                phone: this.instance.customer.phone,
+                name: this.instance.customer.name
             }
             this.loading = true;
             api.post(`/payments/create/`, payload).then(

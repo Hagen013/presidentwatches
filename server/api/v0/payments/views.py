@@ -107,6 +107,8 @@ class CreatePaymentAPIView(APIView):
         order_pk = data.get('order', None)
         user_pk = data.get('user', None)
         email = data.get('email', None)
+        phone = data.get('phone', None).replace('+', '')
+        name = data.get('name')
 
         user_created = False
         password = None
@@ -128,7 +130,7 @@ class CreatePaymentAPIView(APIView):
             if user_pk != order.user.id:
                 return Response(
                     'Переданный ID пользователя и ID пользователя заказа не совпадают',
-                    status=status.HTTP_BAD_REQUEST
+                    status=status.HTTP_400_BAD_REQUEST
                 )
             else:
                 try:
@@ -190,6 +192,49 @@ class CreatePaymentAPIView(APIView):
             public_id=order.public_id
         )
 
+        receipt = {
+            'phone': phone,
+            'email': email,
+            'items': [],
+        }
+
+        for item in order.cart['items'].values():
+            descr = "{brand} {model}".format(
+                brand=item['brand'],
+                model=item['model']
+            )
+            receipt['items'].append({
+                'description': descr,
+                'quantity': item['quantity'],
+                'amount': {
+                    'value': item['price'],
+                    'currency': 'RUB'
+                },
+                'vat_code': '1',
+                'payment_mode': 'full_prepayment',
+                'payment_subject': 'commodity'
+            })
+
+        
+        try:
+            delivery_price = order.delivery['price']
+        except:
+            delivery_price = None
+
+        if delivery_price is not None:
+            if delivery_price > 0:
+                receipt['items'].append({
+                    'description': 'Доставка',
+                    'quantity': 1,
+                    'amount': {
+                        'value': delivery_price,
+                        'currency': 'RUB'
+                    },
+                    'vat_code': '1',
+                    'payment_mode': 'full_prepayment',
+                    'payment_subject': 'commodity'
+                })
+
         params = {
             'amount': {
                 'value': order.total_price,
@@ -199,6 +244,7 @@ class CreatePaymentAPIView(APIView):
                 'type': 'redirect',
                 'return_url': return_url
             },
+            'receipt': receipt,
             'capture': True,
             'description': description
         }
