@@ -15,9 +15,14 @@
                 <div class="payment-body">
                 </div>
                 <div class="payment-footer">
-                    <a class="payment-link button button_accent">
+                    <a class="payment-link button button_accent" :href="payment.confirmation_url"
+                        v-if="!payment.paid"
+                    >
                         ОПЛАТИТЬ
                     </a>
+                    <div v-else>
+                        оплачен
+                    </div>
                     <div class="payment-price">
                         <span class="price">
                             {{payment.amount}}
