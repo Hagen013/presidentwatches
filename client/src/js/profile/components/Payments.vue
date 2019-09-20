@@ -16,7 +16,7 @@
                 </div>
                 <div class="payment-footer">
                     <div class="payment-link">
-                        <a class="link link_underscored" href="#">
+                        <a class="link link_underscored" :href="payment.confirmation_url">
                             Оплатить
                         </a>
                     </div>

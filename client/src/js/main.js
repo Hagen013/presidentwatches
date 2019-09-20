@@ -198,6 +198,37 @@ $(document).ready(function() {
         e.preventDefault();
         closeResetForm();
     })
+    $('#reset-submit').click(function(e) {
+        let emailValue = $('#reset-email').val();
+        if (validateEmail(emailValue)) {
+            api.post('/users/passwordreset/', {email: emailValue}).then(
+                response => {
+                    message({
+                        type: 'success',
+                        title: 'Новый пароль выслан',
+                        text: 'Проверьте указанный почтовый ящик и следуйте инструкции',
+                        link: ''
+                    })
+                    closeAuthModal();
+                },
+                response => {
+                    message({
+                        type: 'fail',
+                        title: 'Произошла ошибка',
+                        text: 'Пожалуйста свяжитесь с оператором',
+                        link: ''
+                    })
+                }
+            )
+        } else {
+            message({
+                type: 'fail',
+                title: 'Введите валидный Email',
+                text: 'предоставленные данные не подходят',
+                link: ''
+            })
+        }
+    })
     // AUTH MODAL END
 
 

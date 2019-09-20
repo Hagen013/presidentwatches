@@ -7,7 +7,9 @@ from .views import (
     RegisterView,
     LoginView,
     UserAftercheckView,
-    LogoutView
+    LogoutView,
+    UserEmailVerificationView,
+    UserPasswordConfirmationView
 )
 
 
@@ -19,5 +21,7 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
     path('profile/', ProfileView.as_view(), name='profile'),
     path('profile/#payments', ProfileView.as_view(), name='profile-payments'),
-    path('aftercheck/', UserAftercheckView.as_view(), name='aftercheck')
+    path('aftercheck/<str:uuid>/', UserAftercheckView.as_view(), name='aftercheck'),
+    path('verification/<str:uuid>/', UserEmailVerificationView.as_view(), name='verification'),
+    path('password-reset/<str:uuid>/', UserPasswordConfirmationView.as_view(), name='password-reset')
 ]

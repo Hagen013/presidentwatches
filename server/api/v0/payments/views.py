@@ -2,6 +2,7 @@ import json
 
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils import timezone
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -85,6 +86,10 @@ class PaymentsNotificationsAPIView(APIView):
         instance.status = Y_KASSA_EVENTS_MAP.get(event)
         instance.paid = data['object']['paid']
         instance.amount_paid = data['object']['amount']['value']
+        instance.resolvet_at = timezone.now()
+        order = instance.order
+        order.payment['paid'] = True
+        order.payment['amount'] = instance.amount_paid
         instance.save()
         return Response(
             status=status.HTTP_200_OK

@@ -54,9 +54,8 @@
                         </div>
                         <div class="user-input-box input-box">
                             <input class="input"
-                                :disabled="true"
                                 v-model="phone_number"
-                                v-mask="{mask: '+7 (999) 999-9999', showMaskOnHover: false}"
+                                v-mask="{mask: '+7 (999) 999-9999', showMaskOnHover: true, clearMaskOnLostFocus: false}"
                             >
                         </div>
                     </div>
@@ -135,7 +134,7 @@ export default {
         },
         phone_number: {
             get() {
-                return this.$store.state.user.first_name
+                return this.$store.state.user.phone_number
             },  
             set(value) {
                 value = value.replace(/\(|\)|\-|\_/g, '').replace(/\s/g, '');

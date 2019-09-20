@@ -1,4 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import Http404
 
 from rest_framework.response import Response
 from rest_framework import status
@@ -12,6 +13,7 @@ from cart.models import Order
 from cart.serializers import OrderSerializer
 from users.serializers import UserSerializer, UserSubscribeSerializer
 from users.models import UserSubscribe
+from tasks.users import send_new_password
 
 from django.contrib.auth import get_user_model
 
@@ -101,3 +103,28 @@ class SubsribesListView(APIView):
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST
         )
+
+
+class PasswordRenewAPIView(APIView):
+
+    permissions_class = permissions.AllowAny
+
+    def get(self, request):
+        return Response({})
+
+    def post(self, request, *args, **kwargs):
+        print('hoy')
+        data = request.data
+        email = data.get('email')
+        user = self.get_user(email)
+        password = User.objects.make_random_password()
+        send_new_password.delay(user.id, password)
+        return Response(
+            status=status.HTTP_200_OK
+        )
+
+    def get_user(self, email):
+        try:
+            return User.objects.get(email=email)
+        except ObjectDoesNotExist:
+            raise Http404

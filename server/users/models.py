@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser, PermissionsMixin
@@ -12,6 +14,10 @@ from core.db.fields import PhoneNumberField
 
 from .fields import UserTypeField
 from .managers import UserManager
+
+
+def generate_uuid():
+    return str(uuid.uuid4())
 
 
 class UserType(DjangoChoices):
@@ -99,14 +105,34 @@ class User(AbstractBaseUser, PermissionsMixin):
         default=UserSex.Unknown
     )
 
+    uuid = models.CharField(
+        max_length=64,
+        default=generate_uuid
+    )
+
+    public_uuid = models.CharField(
+        max_length=64,
+        default=generate_uuid
+    )
+
+    verified = models.BooleanField(
+        default=False
+    )
+
     objects = UserManager()
 
     EMAIL_FIELD = 'email'
     USERNAME_FIELD = 'username' 
     REQUIRED_FIELDS = ['email',]
 
+    def generate_uuid(self):
+        return str(uuid.uuid4())
 
     def save(self, *args, **kwargs):
+        if self.uuid is None:
+            self.uuid = self.generate_uuid()
+        if self.public_uuid is None:
+            self.public_uuid = self.generate_uuid()
         super(User, self).save(*args, **kwargs)
         return self
 

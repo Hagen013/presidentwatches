@@ -1,3 +1,5 @@
+from django.conf import settings
+
 from celery.schedules import crontab
 from config.celery import app
 
@@ -6,7 +8,10 @@ from core.mail import Mail
 from cart.models import Order
 from payments.models import Payment
 
-BASE_URL = 'http://localhost:8080'
+if settings.DEBUG:
+    BASE_URL = 'http://localhost:8080'
+else:
+    BASE_URL = 'https://presidentwatches.ru'
 
 
 @app.task

@@ -5,8 +5,11 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from django.shortcuts import redirect
 from django.contrib.auth import login, logout, authenticate
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.shortcuts import get_object_or_404
+from django.http import Http404
+
+from tasks.users import generate_verification_mail
 
 from core.utils import custom_redirect_v2
 
@@ -26,9 +29,6 @@ class ProfileView(TemplateView):
             user_login = querydict.get('login', None)
             password = querydict.get('password', None)
             redirect_to = querydict.get('redirect', None)
-
-            print(password)
-            print(password)
 
             if user_login is not None and password is not None:
                 user = authenticate(request, username=user_login, password=password)
@@ -86,7 +86,6 @@ class RegisterView(TemplateView):
             self.result = 'Пароль должен состоять минимум из 8 знаков'
             return self.get(request, *args, **kwargs)
 
-        print('Пароль верен')
 
         if all((not is_authenticated, email, password)):
             user_qs = User.objects.filter(
@@ -98,7 +97,7 @@ class RegisterView(TemplateView):
                 user.first_name = name
                 user.password = password
                 user.username = email
-                user.is_active = True
+                user.is_active = False
                 
                 try:
                     user.full_clean()
@@ -107,9 +106,10 @@ class RegisterView(TemplateView):
                     return self.get(request, *args, **kwargs)
 
                 user.save()
-                login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+                generate_verification_mail.delay(user.id)
+                #login(request, user, backend='django.contrib.auth.backends.ModelBackend')
                 self.result = 'Вы успешно зарегестрировались'
-                return redirect('/')
+                return redirect('users:aftercheck', uuid=user.public_uuid)
             else:
                 self.result = 'Пользователь с таким email уже существует'
         else:
@@ -164,7 +164,23 @@ class LoginView(TemplateView):
 
 class UserAftercheckView(TemplateView):
 
-    template_name = 'pages/aftercheck.html'
+    template_name = 'pages/user-verification.html'
+
+    def get_user(self, public_uuid):
+        try:
+            return User.objects.get(public_uuid=public_uuid)
+        except ObjectDoesNotExist:
+            raise Http404
+
+    def get(self, request, uuid, *args, **kwargs):
+        print('hoy')
+        self.user = self.get_user(uuid)
+        return super(UserAftercheckView, self).get(request, *args, **kwargs)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(UserAftercheckView, self).get_context_data(*args, **kwargs)
+        context['user'] = self.user
+        return context
 
 
 class LogoutView(TemplateView):
@@ -176,4 +192,48 @@ class LogoutView(TemplateView):
 
 
 class UserEmailVerificationView(TemplateView):
-    pass
+
+    """
+    View, принимающая uuid переданный в письме пользователю,
+    завершающая регистрацию через Email
+    """
+
+    template_name = 'pages/email-confirmation.html'
+
+    def get_user(self, uuid):
+        try:
+            return User.objects.get(
+                uuid=uuid
+            )
+        except ObjectDoesNotExist:
+            raise Http404
+
+    def get(self, request, uuid, *args, **kwargs):
+        user = self.get_user(uuid)
+        user.is_active = True
+        user.verified = True
+        user.save()
+        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+        return super(UserEmailVerificationView, self).get(request, *args, **kwargs)
+        
+
+class UserPasswordConfirmationView(TemplateView):
+
+    def get_user(self, uuid):
+        try:
+            return User.objects.get(
+                uuid=uuid
+            )
+        except ObjectDoesNotExist:
+            raise Http404
+
+    def get(self, request, uuid, *args, **kwargs):
+        password = request.GET.get('password', None)
+        if password is None:
+            raise Http404
+        user = self.get_user(uuid)
+        user.verified = True
+        user.set_password(password)
+        user.save()
+        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+        return redirect('/u/profile/')

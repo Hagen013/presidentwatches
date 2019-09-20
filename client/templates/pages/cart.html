@@ -122,7 +122,15 @@
                                         E-mail
                                     </div>
                                     <div class="field-input-box">
+                                    {% if request.user.is_authenticated %}
+                                        {% if request.user.email|length>0 %}
+                                        <input class="input" type="email" id="cart-email" disabled value="{{request.user.email}}">
+                                        {% else %}
                                         <input class="input" type="email" id="cart-email">
+                                        {% endif %}
+                                    {% else %}
+                                    <input class="input" type="email" id="cart-email">
+                                    {% endif %}
                                     </div>
                                 </div>
                                 <div class="field cart-field cart-recipient__phone cart-receipient__field">
@@ -130,9 +138,22 @@
                                         Телефон<span class="asterisk">*</span>
                                     </div>
                                     <div class="field-input-box">
+                                        {% if request.user.is_authenticated %}
+                                            {% if request.user.phone_number|length>0 %}
+                                            <input class="input cart-input" id="cart-phone"
+                                                placeholder='+7 (___) ___-____'
+                                                value="{{request.user.phone_number}}"
+                                            >
+                                            {% else %}
+                                            <input class="input cart-input" id="cart-phone"
+                                                placeholder='+7 (___) ___-____'
+                                            >
+                                            {% endif %}
+                                        {% else %}
                                         <input class="input cart-input" id="cart-phone"
                                             placeholder='+7 (___) ___-____'
                                         >
+                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="field cart-field cart-recipient__name cart-receipient__field">
