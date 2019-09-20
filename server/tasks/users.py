@@ -10,7 +10,7 @@ User = get_user_model()
 if settings.DEBUG:
     BASE_URL = 'http://localhost:8080'
 else:
-    BASE_URL = 'https//presidentwatches.ru'
+    BASE_URL = 'https://presidentwatches.ru'
 
 
 @app.task
