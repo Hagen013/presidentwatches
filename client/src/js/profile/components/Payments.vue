@@ -15,11 +15,9 @@
                 <div class="payment-body">
                 </div>
                 <div class="payment-footer">
-                    <div class="payment-link">
-                        <a class="link link_underscored" :href="payment.confirmation_url">
-                            Оплатить
-                        </a>
-                    </div>
+                    <a class="payment-link button button_accent">
+                        ОПЛАТИТЬ
+                    </a>
                     <div class="payment-price">
                         <span class="price">
                             {{payment.amount}}
