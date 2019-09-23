@@ -34,15 +34,28 @@ DATABASES = {
 
 # SESSIONS SETTINGS START
 # ------------------------------------------------------------------------------
-SESSION_ENGINE = 'core.sessions'
-SESSION_COOKIE_AGE = 60
+SESSION_ENGINE = 'redis_sessions.session'
 # ------------------------------------------------------------------------------
 # SESSIONS SETTINGS END
 
 
+# REDIS_SESSIONS SETTINGS START
+# ------------------------------------------------------------------------------
+SESSION_REDIS = {
+    'host': 'redis_sessions',
+    'port': 6379,
+    'db': 0,
+    'prefix': 'session',
+    'socket_timeout': 1,
+    'retry_on_timeout': False
+}
+# ------------------------------------------------------------------------------
+# REDIS_SESSIONS SETTINGS END
+
+
 # MEDIA FILES CONFIGURATION START
 # ------------------------------------------------------------------------------
-MEDIA_ROOT = "/1TB/presidentwatches-original/"
+MEDIA_ROOT = "/var/president_media/presidentwatches-original/"
 MEDIA_URL = '/media/'
 STATIC_ROOT = str(ROOT_DIR.path('client/static_production'))
 ADMIN_UPLOADS = MEDIA_ROOT + 'admin/uploads/'
