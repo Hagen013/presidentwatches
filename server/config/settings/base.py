@@ -291,6 +291,16 @@ SIMPLE_JWT = {
 # SIMPLE_JWT END
 
 
+# REDIS_SESSIONS SETTINGS START
+# ------------------------------------------------------------------------------
+SESSIONS_REDIS_PORT = 6379
+SESSIONS_REDIS_DB = 0
+SESSIONS_REDIS_HOST = 'redis_sessions'
+# ------------------------------------------------------------------------------
+# REDIS_SESSIONS SETTINGS END
+
+
+
 # REDIS SETTINGS START
 # ------------------------------------------------------------------------------
 REDIS_PORT = 6379

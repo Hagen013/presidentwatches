@@ -32,6 +32,12 @@ DATABASES = {
 # ------------------------------------------------------------------------------
 
 
+# SESSIONS SETTINGS START
+SESSION_ENGINE = 'core.sessions'
+SESSION_COOKIE_AGE = 60
+# SESSIONS SETTINGS END
+
+
 # MEDIA FILES CONFIGURATION START
 # ------------------------------------------------------------------------------
 MEDIA_ROOT = "/var/president_media/presidentwatches-original/"
@@ -73,3 +79,4 @@ sentry_sdk.init(
     integrations=[DjangoIntegration()]
 )
 # ------------------------------------------------------------------------------
+# SENTRY END

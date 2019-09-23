@@ -37,8 +37,10 @@ services:
     links:
       - postgres_web:postgres
       - geo:geo
+      - redis_sessions:redis_sessions
     depends_on:
       - postgres_web
+      - redis_sessions
       - geo
       - celery_pw
 
@@ -90,8 +92,14 @@ services:
     volumes:
       - "./env/rabbitmq.config:/etc/rabbitmq/rabbitmq.config:rw"
       - "./env/rabbit_definitions.json:/etc/rabbitmq/definitions.json:rw"
-  
-  # Redis
+
+  # Redis for session caching
+  redis_sessions:
+    image: redis:latest
+    restart: unless-stopped
+    hostname: redis_sessions
+
+  # Redis for other purposes (cache, celery integration etc.)
   redis:
     image: redis:latest
     restart: unless-stopped
