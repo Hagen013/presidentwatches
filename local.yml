@@ -99,9 +99,6 @@ services:
     command: ["redis-server", "--appendonly", "yes"]
     restart: unless-stopped
     hostname: redis_sessions
-    memory: 2048
-    volumes:
-      - redis-data:/data
 
   # Redis for other purposes (cache, celery integration etc.)
   redis:
@@ -124,6 +121,3 @@ services:
       - /var/postgresql_geo/data:/var/postgresql_geo/data
     env_file:
       - env/postgres_geo
-
-  volumes:
-    redis-data:
