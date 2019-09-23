@@ -89,9 +89,8 @@ services:
     image: rabbitmq:3.8-rc-management-alpine
     restart: unless-stopped
     hostname: rabbit
-    volumes:
-      - "./env/rabbitmq.config:/etc/rabbitmq/rabbitmq.config:rw"
-      - "./env/rabbit_definitions.json:/etc/rabbitmq/definitions.json:rw"
+    env_file:
+      - env/rabbit
 
   # Redis for session caching
   redis_sessions:

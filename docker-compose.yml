@@ -16,13 +16,12 @@ services:
       - "443:443"
       - "8282:8282"
     volumes:
-      - /var/president_media:/media
+      - /var/president_media/presidentwatches-original:/media
     links:
       - "web:web"
     depends_on:
       - web
 
-  # WEB
   web:
     image: graphmarket/server_pw
     restart: unless-stopped
@@ -34,10 +33,13 @@ services:
       - env/web
     volumes:
       - /var/president_media:/var/president_media
+      - /var/graph_market:/var/graph_market
     links:
       - postgres_web:postgres
+      - geo:geo
     depends_on:
       - postgres_web
+      - geo
       - celery_pw
 
   celery_pw:
@@ -46,7 +48,7 @@ services:
     hostname: web
     build:
       context: .
-      dockerfile: ./compose/celery/Dockerfile
+      dockerfile: ./compose/celery_pw/Dockerfile
     env_file:
       - env/web
     volumes:
@@ -56,23 +58,10 @@ services:
     depends_on:
       - postgres_web
 
-    # Postgres
-  postgres_web:
-    image: postgres:latest
-    restart: unless-stopped
-    volumes:
-      - /var/postgresql_web/data:/var/postgresql_web/data
-    env_file:
-      - env/postgres_web
-
-  # ElasticSearch
   elasticsearch:
-    image: graphmarket/elasticsearch-pw:latest
+    image: graphmarket/elasticsearch-pw
     restart: unless-stopped
     hostname: elasticsearch
-    build:
-      context: .
-      dockerfile: ./compose/elasticsearch/Dockerfile
     volumes:
       - /var/graph_market:/var/graph_market
 
@@ -104,6 +93,23 @@ services:
   
   # Redis
   redis:
-    image: redis-latest
+    image: redis:latest
     restart: unless-stopped
     hostname: redis
+
+  postgres_web:
+    image: postgres:latest
+    restart: unless-stopped
+    volumes:
+      - /var/postgresql_web/data2:/var/postgresql_web/data2
+    env_file:
+      - env/postgres_web
+
+  postgres_geo:
+    image: postgres:latest
+    restart: unless-stopped
+    shm_size: 3gb
+    volumes:
+      - /var/postgresql_geo/data:/var/postgresql_geo/data
+    env_file:
+      - env/postgres_geo
