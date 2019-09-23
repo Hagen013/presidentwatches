@@ -291,14 +291,21 @@ SIMPLE_JWT = {
 # SIMPLE_JWT END
 
 
+# SESSIONS SETTINGS START
+# ------------------------------------------------------------------------------
+SESSION_ENGINE = 'core.sessions'
+SESSION_COOKIE_AGE = 60
+# ------------------------------------------------------------------------------
+# SESSIONS SETTINGS END
+
+
 # REDIS_SESSIONS SETTINGS START
 # ------------------------------------------------------------------------------
 SESSIONS_REDIS_PORT = 6379
 SESSIONS_REDIS_DB = 0
-SESSIONS_REDIS_HOST = 'redis_sessions'
+SESSIONS_REDIS_HOST = 'localhost'
 # ------------------------------------------------------------------------------
 # REDIS_SESSIONS SETTINGS END
-
 
 
 # REDIS SETTINGS START
