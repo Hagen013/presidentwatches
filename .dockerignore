@@ -15,3 +15,5 @@
 ./client/node_modules
 ./client/src
 ./client/static_production
+
+./storage

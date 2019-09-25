@@ -32,9 +32,7 @@ services:
     env_file:
       - env/web
     volumes:
-      - /var/president_media:/var/president_media
-      - /var/graph_market:/var/graph_market
-      - /1TB/presidentwatches-original:/1TB/presidentwatches-original
+      - /1TB/presidentwatches-original/:/var/president_media/presidentwatches-original/
     links:
       - postgres_web:postgres
       - geo:geo
@@ -45,6 +43,7 @@ services:
       - geo
       - celery_pw
 
+  # Celery для Django-приложения
   celery_pw:
     image: graphmarket/celery_pw
     restart: unless-stopped
@@ -61,12 +60,15 @@ services:
     depends_on:
       - postgres_web
 
+  # Elasticsearch:
   elasticsearch:
     image: graphmarket/elasticsearch-pw
     restart: unless-stopped
     hostname: elasticsearch
     volumes:
-      - /var/graph_market:/var/graph_market
+      - ./storage/elasticsearch/:/var/graph_market:rw
+    logging:
+      driver: none
 
   # GEO Service
   geo:
@@ -90,34 +92,65 @@ services:
     image: rabbitmq:3.8-rc-management-alpine
     restart: unless-stopped
     hostname: rabbit
-    env_file:
-    - env/rabbit
+    volumes:
+      - ./env/rabbitmq.config:/etc/rabbitmq/rabbitmq.config:rw
+      - ./env/rabbitmq_definitions.json:/etc/rabbitmq/definitions.json:rw
+    logging:
+      driver: none
 
   # Redis for session caching
   redis_sessions:
     image: redis:latest
-    command: ["redis-server", "--appendonly", "yes"]
+    sysctls:
+      net.core.somaxconn: 4096
+    command: redis-server /redis/redis.conf
     restart: unless-stopped
     hostname: redis_sessions
+    volumes:
+      - ./config/redis.conf:/redis/redis.conf
+      - ./storage/redis/data:/data
+    deploy:
+      resources:
+        limits:
+          memory: 2gb
+    logging:
+      driver: none
 
   # Redis for other purposes (cache, celery integration etc.)
   redis:
     image: redis:latest
+    sysctls:
+      net.core.somaxconn: 1024
+    command: redis-server /redis/redis.conf
     restart: unless-stopped
     hostname: redis
+    volumes:
+      - ./config/redis_cache.conf:/redis/redis.conf
+      - ./storage/redis_cache/data:/data
+    deploy:
+      resources:
+        limits:
+          memory: 600mb
+    logging:
+      driver: none
 
+
+  # Postgres для основного Django-приложения
   postgres_web:
     image: postgres:latest
     restart: unless-stopped
+    shm_size: 3gb
     volumes:
-      - /var/postgresql_web/data2:/var/postgresql_web/data2
+      - ./storage/postgres_web/:/var/postgresql/data:rw
     env_file:
       - env/postgres_web
 
+  # Postgres для геосервиса
   postgres_geo:
     image: postgres:latest
     restart: unless-stopped
+    shm_size: 2gb
     volumes:
-      - /var/postgresql_geo/data:/var/postgresql_geo/data
+      - ./storage/postgres_geo:/var/postgresql/data:rw
     env_file:
       - env/postgres_geo

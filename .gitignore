@@ -4,6 +4,7 @@ admin/node_modules/
 server/venv
 geo/venv
 env/
+storage/
 compose/nginx/static_production/
 compose/nginx/dist/
 compose/nginx-proxy/static_production/
