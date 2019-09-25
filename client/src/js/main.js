@@ -345,11 +345,11 @@ $(document).ready(function() {
     })
 
     window.rrAddToBasket = function(pk, qnt) {
-        console.log('tsoy');
+
     }
 
     window.rrAddToFavourite = function(pk) {
-        console.log('hoy');
+
     }
 
 })
