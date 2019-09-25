@@ -42,7 +42,7 @@ SESSION_ENGINE = 'redis_sessions.session'
 # REDIS_SESSIONS SETTINGS START
 # ------------------------------------------------------------------------------
 SESSION_REDIS = {
-    'host': 'redis_sessions',
+    'host': 'localhost',
     'port': 6379,
     'db': 0,
     'prefix': 'session',

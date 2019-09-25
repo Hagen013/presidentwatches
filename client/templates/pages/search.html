@@ -25,6 +25,7 @@
 
         <div class="content-area content-area_block">
             <div class="catalog catalog_search">
+                {% if results|length > 0 %}
                 <div class="catalog__gallery row">
                     {% for instance in results %}
                         {% if instance.model %}
@@ -76,6 +77,12 @@
                         {% endif %}
                     {% endfor %}
                 </div>
+                {% else %}
+                <div class="search-placeholder">
+                По данному запросу ничего не найдено
+                </div>
+                <div data-retailrocket-markup-block="5d8a192a97a528156c373ea4" data-search-phrase="{{query}}"></div>
+                {% endif %}
             </div>
 
             {% if is_paginated %}
@@ -121,6 +128,7 @@
                     </div>
                 </div>
             </div>
+            <div data-retailrocket-markup-block="5d8a191c97a528156c373e8f" data-search-phrase="{{query}}"></div>
             {% endif %}
 
         </div>

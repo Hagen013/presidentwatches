@@ -11,6 +11,7 @@ import Likes from '@/components/Likes'
 import message from '@/lib/message'
 
 import STATE from '@/state/index.js';
+import store from '@/store/index.js';
 import toggleSidebarTab from '@/utils/toggleSidebarTab'
 import validateEmail from '@/utils/validateEmail'
 
@@ -342,5 +343,13 @@ $(document).ready(function() {
             $(form).submit()
         }, 100)
     })
+
+    window.rrAddToBasket = function(pk, qnt) {
+        console.log('tsoy');
+    }
+
+    window.rrAddToFavourite = function(pk) {
+        console.log('hoy');
+    }
 
 })

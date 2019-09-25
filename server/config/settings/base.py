@@ -291,27 +291,6 @@ SIMPLE_JWT = {
 # SIMPLE_JWT END
 
 
-# SESSIONS SETTINGS START
-# ------------------------------------------------------------------------------
-SESSION_ENGINE = 'redis_sessions.session'
-# ------------------------------------------------------------------------------
-# SESSIONS SETTINGS END
-
-
-# REDIS_SESSIONS SETTINGS START
-# ------------------------------------------------------------------------------
-SESSION_REDIS = {
-    'host': 'localhost',
-    'port': 6379,
-    'db': 0,
-    'prefix': 'session',
-    'socket_timeout': 1,
-    'retry_on_timeout': False
-}
-# ------------------------------------------------------------------------------
-# REDIS_SESSIONS SETTINGS END
-
-
 # REDIS SETTINGS START
 # ------------------------------------------------------------------------------
 REDIS_PORT = 6379
