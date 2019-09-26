@@ -221,6 +221,7 @@ class CategoryPageView(DiggPaginatorViewMixin, ListView):
 
         context['sorting_option'] = self.sorting_option
         context['filters'] = self.get_filters()
+        print(context['filters'])
 
         # Значения в тегах
         self.node_values = self.value_class.objects.filter(categories=self.category)

@@ -88,6 +88,7 @@
                 СОХРАНИТЬ ИЗМЕНЕНИЯ
             </div>
         </div>
+        <div data-retailrocket-markup-block="5d8a197b97a528156c373ec9"></div>
     </div>
 </template>
 
