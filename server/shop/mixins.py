@@ -430,4 +430,7 @@ class CategoryRetailRocketMixin(models.Model):
 
     @property
     def rr_id(self):
-        return self.rr_nodes.all().order_by('-_depth')[0].id
+        try:
+            return self.rr_nodes.all().order_by('-_depth').first().id
+        except AttributeError:
+            return 1
