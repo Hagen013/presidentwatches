@@ -370,6 +370,13 @@
                     </div>
                 </div>
                 {% endif %}
+                {% if rr_mode == 1 %}
+                <div data-retailrocket-markup-block="5d8a188097a5251704ec5dd4" data-category-id="​{{category.rr_id}}"></div>
+                {% elif rr_mode == 2 %}
+                <div data-retailrocket-markup-block="5d8a188e97a5251704ec5dd5" data-vendor="​{{brand_value}}"></div>
+                {% elif rr_mode == 3 %}
+                <div data-retailrocket-markup-block="5d8a196c97a5251704ec5e2c"></div>
+                {% endif %}
             </div>
         </div>
     </div>

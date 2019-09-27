@@ -333,6 +333,7 @@
 .video {
     height: 240px;
     width: 100%;
+    margin-bottom: 20px;
     @include mq($from: desktop) {
         height: 359px;
     }
@@ -346,7 +347,46 @@
 }
 
 .card-description {
+    position: relative;
+}
+
+.card-right-video {
+    width: 100%;
+}
+
+.card-description__inner {
     max-width: 738px;
+}
+
+.card-description__video {
+    display: none;
+    position: absolute;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    padding-left: 758px;
+    @include mq($from: wide) {
+        display: block;
+    }
+}
+
+.card-right-video {
+    margin-top: 20px;
+    height: 320px;
+    max-width: 800px;
+}
+
+.card-videos-d {
+    display: none;
+    @include mq($from: tablet, $until: wide) {
+        display: block;
+    }
+}
+
+.card-video-d {
+    max-width: 550px;
+    height: 300px;
+    margin-bottom: 20px;
 }
 
 .product-like {

@@ -436,6 +436,41 @@
                             </div>
                         </div>
                     </div>
+                    {% if videos|length > 0 %}
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <a class="panel-title active"
+                                data-toggle="collapse"
+                                data-parent="#accordion"
+                                href="#collapseVideos"
+                            >
+                                <span
+                                >
+                                    Видеобзоры {{videos|length}}
+                                </span>
+                                <i class="icon collapse-icon">
+                                </i>
+                            </a>
+                        </div>
+                        <div class="panel-collapse collapse" style="display: block">
+                            <div class="row">
+                                {% for video in videos %}
+                                <div class="col col-12 d-col-6">
+                                    <div class="video">
+                                        <iframe type="text/html"
+                                            width="100%"
+                                            height="100%"
+                                            src="https://www.youtube.com/embed/{{video.slug}}?autohide=1&amp;modestbranding=1&amp;rel=0&amp;showinfo=0"
+                                            frameborder="0"
+                                            allowfullscreen="">
+                                        </iframe>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
                     <div class="panel">
                         <div class="panel-heading">
                             <a class="panel-title"
@@ -469,6 +504,7 @@
                             </div>
                         </div>
                     </div>
+                    {% endif %}
                     <div class="panel">
                         <div class="panel-heading">
                             <a class="panel-title"
@@ -562,43 +598,79 @@
                     <div class="row">
                         <div class="card-footer__left">
                             <div class="tabs-outlet" id="product-nav">
-                                <div class="tab-pane active card-description" id="description">
-                                    <div class="content-block">
-                                        <h2>Описание</h2>
-                                        <div class="content-block__text">
-                                        {{product.description|safe}}
+                                <div class="tab-pane active card-description row" id="description">
+                                    <div class="card-description__inner">
+                                        <div class="content-block">
+                                            <h2>Описание</h2>
+                                            <div class="content-block__text">
+                                            {{product.description|safe}}
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="content-block">
-                                        <h2>Характеристики</h2>
-                                        <div class="list-group">
-                                            {% for group in product.grouped_attributes %}
-                                            <div class="list-group-item">
-                                                <div class="list-heading">
-                                                    {{ group['name'] }}
+                                        <div class="content-block">
+                                            <h2>Характеристики</h2>
+                                            <div class="list-group">
+                                                {% for group in product.grouped_attributes %}
+                                                <div class="list-group-item">
+                                                    <div class="list-heading">
+                                                        {{ group['name'] }}
+                                                    </div>
+                                                    <ul class="list">
+                                                        {% for attribute in group['attributes'] %}
+                                                        <li class="list-item">
+                                                            <div class="list-item-label">
+                                                                <span>{{ attribute['name'] }}</span>
+                                                            </div>
+                                                            <div class="list-item-text">
+                                                                {% for value in attribute['values'] %}
+                                                                {{ value['value'] }}
+                                                                {% endfor %}
+                                                            </div>
+                                                        </li>
+                                                        {% endfor %}
+                                                    </ul>
                                                 </div>
-                                                <ul class="list">
-                                                    {% for attribute in group['attributes'] %}
-                                                    <li class="list-item">
-                                                        <div class="list-item-label">
-                                                            <span>{{ attribute['name'] }}</span>
-                                                        </div>
-                                                        <div class="list-item-text">
-                                                            {% for value in attribute['values'] %}
-                                                            {{ value['value'] }}
-                                                            {% endfor %}
-                                                        </div>
-                                                    </li>
-                                                    {% endfor %}
-                                                </ul>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        {% if videos|length > 0 %}
+                                        <div class="content-block card-videos-d">
+                                            <h2>Видео</h2>
+                                            {% for video in videos %}
+                                            <div class="card-video-d">
+                                                <iframe type="text/html"
+                                                    width="100%"
+                                                    height="100%"
+                                                    src="https://www.youtube.com/embed/{{video.slug}}?autohide=1&amp;modestbranding=1&amp;rel=0&amp;showinfo=0"
+                                                    frameborder="0"
+                                                    allowfullscreen="">
+                                                </iframe>
                                             </div>
                                             {% endfor %}
                                         </div>
-                                        <div class="grey-block">
-                                            Нашли ошибку в описании или характеристиках? 
-                                            <a class="link link_grey" href="tel:+78007776072">Сообщите нам</a>
+                                        {% endif %}
+                                        <div class="content-block">
+                                            <div class="grey-block">
+                                                Нашли ошибку в описании или характеристиках? 
+                                                <a class="link link_grey" href="tel:+78007776072">Сообщите нам</a>
+                                            </div>
                                         </div>
                                     </div>
+                                    {% if videos|length > 0 %}
+                                    <div class="card-description__video">
+                                        <h2>Видео</h2>
+                                        {% for video in videos %}
+                                        <div class="card-right-video">
+                                            <iframe type="text/html"
+                                                width="100%"
+                                                height="100%"
+                                                src="https://www.youtube.com/embed/{{video.slug}}?autohide=1&amp;modestbranding=1&amp;rel=0&amp;showinfo=0"
+                                                frameborder="0"
+                                                allowfullscreen="">
+                                            </iframe>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
                                 </div>
                                 <div class="tab-pane" id="delivery">
                                     <div class="description-block">

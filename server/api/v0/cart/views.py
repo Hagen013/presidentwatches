@@ -64,7 +64,12 @@ class CartItemsApiView(BaseCartAPIView):
 
     def post(self, request):
         pk = request.data['pk']
-        self.cart.add_offer(pk)
+        qnt = request.data.get('qnt', None)
+        if qnt is not None:
+            qnt = int(qnt)
+            self.cart.add_offer(pk, quantity=qnt)
+        else:
+            self.cart.add_offer(pk)
         return Response(self.cart.data)
 
 

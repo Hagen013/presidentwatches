@@ -56,7 +56,8 @@ class Cart():
         self.ids = {int(pk) for pk in self.ids}
 
     
-    def add_offer(self, pk):
+    def add_offer(self, pk, quantity=1):
+        pk = str(pk)
         item = self.data['items'].get(pk)
         # Проверка на наличе в корзине
         # если есть -> инкремент
@@ -70,10 +71,11 @@ class Cart():
                 instance = None
             if instance is not None:
                 item = CartItemSerializer(instance).data
+                item['quantity'] = quantity
                 self.data['items'][pk] = item
                 self.save()
         else:
-            item['quantity'] += 1
+            item['quantity'] += quantity
             item['total_price'] = item['quantity'] * item['price']
             item['base_price'] = item['total_price']
             self.save()

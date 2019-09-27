@@ -315,10 +315,14 @@ class WatchesProductMixin(models.Model):
             self.sale_percentage = 0
 
 
-    def save(self):
+    def save(self, *args, **kwargs):
         
         if self.id:
 
+            if self.id == 69706:
+                print('TRIGGERED')
+                print(self._price)
+                print("#####")
             # Короткое описание
             self.summary = self.get_short_descriptions()
 
@@ -347,7 +351,7 @@ class WatchesProductMixin(models.Model):
                 except:
                     pass
 
-        super(WatchesProductMixin, self).save()
+        super(WatchesProductMixin, self).save(*args, **kwargs)
 
 
 class YandexMarketOfferMixin(models.Model):
@@ -423,3 +427,7 @@ class CategoryRetailRocketMixin(models.Model):
     @property
     def rr_nodes(self):
         return self.outputs.filter(is_published=True)
+
+    @property
+    def rr_id(self):
+        return self.rr_nodes.all().order_by('-_depth')[0].id

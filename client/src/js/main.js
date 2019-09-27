@@ -12,6 +12,7 @@ import message from '@/lib/message'
 
 import STATE from '@/state/index.js';
 import store from '@/store/index.js';
+import favoritesStore from '@/store/favorites/index.js';
 import toggleSidebarTab from '@/utils/toggleSidebarTab'
 import validateEmail from '@/utils/validateEmail'
 
@@ -345,11 +346,11 @@ $(document).ready(function() {
     })
 
     window.rrAddToBasket = function(pk, qnt) {
-
+        store.dispatch('addToCart', {pk: pk, qnt: qnt});
     }
 
     window.rrAddToFavourite = function(pk) {
-
+        favoritesStore.dispatch('addToFavorites', {pk: pk});
     }
 
 })

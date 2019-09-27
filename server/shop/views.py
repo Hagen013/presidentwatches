@@ -221,15 +221,27 @@ class CategoryPageView(DiggPaginatorViewMixin, ListView):
 
         context['sorting_option'] = self.sorting_option
         context['filters'] = self.get_filters()
-        print(context['filters'])
 
         # Значения в тегах
         self.node_values = self.value_class.objects.filter(categories=self.category)
         node_values_json = list(map(lambda tag: {"key": tag.attribute.key, "id": tag.id}, self.node_values))
         node_values_json = json.dumps(node_values_json)
         tags = list(chain(self.node_values, self.added_values))
+        
+        rr_mode = 1
+        brand_values = [tag.value for tag in tags if tag.attribute.name == 'Бренд']
+        if len(brand_values) > 0:
+            rr_mode = 2
+            context['brand_value'] = brand_values[0]
+        if self.category.slug == 'sale/':
+            rr_mode = 3
+
+        context['rr_mode'] = rr_mode
+
+
         tags = sorted(tags, key=lambda x: x.attribute.order)
         tags_json = list(map(lambda tag: {"key": tag.attribute.key, "id": tag.id}, tags))
+
         tags_json = json.dumps(tags_json)
         context['tags'] = tags
         context['tags_json'] = tags_json
