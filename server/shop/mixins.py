@@ -162,7 +162,7 @@ class WatchesProductMixin(models.Model):
             series=self.series,
             model=self.model
         )
-        import re.sub("\s\s+" , " ", name)
+        return re.sub("\s\s+" , " ", name)
 
     @property
     def yml_name(self):
@@ -199,6 +199,11 @@ class WatchesProductMixin(models.Model):
                 )
         return yml_images
         
+    def get_badges(self, request):
+        print('######')
+        print(request.user.city_code)
+        print("######")
+        return ''
 
     @property
     def grouped_attributes(self):

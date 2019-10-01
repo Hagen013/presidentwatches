@@ -98,7 +98,9 @@ export default {
     data: () => ({
     }),
     created() {
-
+        setTimeout(() => {
+            retailrocket.markup.render();
+        }, 500);
     },
     computed: {
         firstName: {

@@ -59,6 +59,7 @@ class CartPageView(TemplateView):
             delivery_data = self.get_delivery_data(products)
             context['delivery_data'] = delivery_data
             context['products'] = json.dumps(products)
+            context['rr_ids'] = ','.join([str(item['pk']) for item in self.cart.items_list])
 
             curier_is_available = False
             if delivery_data['curier'] is not None:
