@@ -13,6 +13,20 @@ from django.db import models
 from django.conf import settings
 
 
+PAID_VENDORS = {
+    'Level', 
+    'Восток', 
+    'Заря',
+    'Михаил Москвин', 
+    'Casio', 
+    'Orient', 
+    'Q&Q',
+    'Diesel', 
+    'Fossil', 
+    'DKNY',
+    'Michael Kors',
+}
+
 BRACELET_MAP = {
     'Титан + керамика': 'Браслет из титана и керамики',
     'Текстиль + кожа': 'Браслет из текстиля и кожи',
@@ -203,7 +217,10 @@ class WatchesProductMixin(models.Model):
         print('######')
         print(request.user.city_code)
         print("######")
-        return ''
+        if self.brand not in PAID_VENDORS:
+            return '<div class="badge">Бесплатная доставка</div>'
+        else:
+            return ''
 
     @property
     def grouped_attributes(self):
