@@ -1,3 +1,4 @@
+import re
 from collections import OrderedDict
 
 from imagekit.models import ImageSpecField, ProcessedImageField
@@ -155,8 +156,17 @@ class WatchesProductMixin(models.Model):
         )
 
     @property
+    def computed_name(self):
+        name = "{brand} {series} {model}".format(
+            brand=self.brand,
+            series=self.series,
+            model=self.model
+        )
+        import re.sub("\s\s+" , " ", name)
+
+    @property
     def yml_name(self):
-        base = self.name
+        base = self.computed_name
         try:
             v = self.attribute_values.get(attribute__name='Тип часов')
             prefix = YML_NAME_MAP.get(v.value, 'Наручные часы')
@@ -319,10 +329,6 @@ class WatchesProductMixin(models.Model):
         
         if self.id:
 
-            if self.id == 69706:
-                print('TRIGGERED')
-                print(self._price)
-                print("#####")
             # Короткое описание
             self.summary = self.get_short_descriptions()
 
