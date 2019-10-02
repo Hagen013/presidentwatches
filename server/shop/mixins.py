@@ -11,6 +11,8 @@ from operator import itemgetter
 
 from django.db import models
 from django.conf import settings
+from django.utils.functional import cached_property
+
 
 
 PAID_VENDORS = {
@@ -213,14 +215,21 @@ class WatchesProductMixin(models.Model):
                 )
         return yml_images
         
-    def get_badges(self, request):
-        print('######')
-        print(request.user.city_code)
-        print("######")
-        if self.brand not in PAID_VENDORS:
-            return '<div class="badge">Бесплатная доставка</div>'
-        else:
-            return ''
+    @property
+    def free_delivery(self):
+        if not self.brand in PAID_VENDORS:
+            return True
+        return False
+
+    def get_offline_availability(self, request):
+        user = request.user
+        if user.city_name == 'Москва' or user.city_code.startswith('50'):
+            return self.is_in_store
+        return False
+
+    @cached_property
+    def show_sale(self):
+        return self.is_sale and self.sale_percentage > 0 and (self.price < self.old_price)
 
     @property
     def grouped_attributes(self):

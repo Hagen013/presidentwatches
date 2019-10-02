@@ -244,86 +244,87 @@
                     {% endfor %}
                 </div>
                 <div class="catalog__gallery row">
-                    {% strip %}
                     {% for product in products %}
-                        <div class="product-card">
-                            <a href="/watches/{{ product.slug }}/">
-                                <div class="product-card__img-wrap">
-                                    <img class="product-card__img" src="{{ product.thumbnail.url }}">
-                                    <div class="product-card__ribbons row">
-                                        {% if product.is_sale %}
-                                            <div class="ribbon product-card__sale-percentage">
-                                            - {{product.sale_percentage}} %
-                                            </div>
-                                        {% endif %}
-                                        {% if product.is_bestseller %}
-                                            <div class="ribbon product-card-bestseller">
-                                            ХИТ
-                                            </div>
-                                        {% endif %}
-                                        {% if product.is_new %}
-                                            <div class="ribbon product-card-new">
-                                            Новинка
-                                            </div>
-                                        {% endif %}
-                                    </div>
+                    <div class="product-card">
+                        <div class="product-card-top">
+                            <div class="product-card__badges">
+                                {% if product.free_delivery %}
+                                <div class="badge badge_green">
+                                БЕСПЛАТНАЯ ДОСТАВКА
                                 </div>
-                            </a>
-                            <div class="product-card__data">
-                                <div class="product-card__info">
-                                    <a href="/watches/{{ product.slug }}/">
-                                        <div class="product-card__brand">
-                                            {{product.brand}}
-                                        </div>
-                                        <div class="product-card__series">
-                                            {{product.series}}
-                                        </div>
-                                        <div class="product-card__model">
-                                            {{ product.model }}
-                                        </div>
-                                    </a>
+                                {% endif %}
+                                {% if product.is_bestseller %}
+                                <div class="badge badge_orange">
+                                ХИТ
                                 </div>
-                                {% if product.is_sale %}
-                                    {% if product.sale_percentage > 0 %}
-                                    <div class="product-card__price price price_red">
-                                        {{format_price(product.price)}}
+                                {% endif %}
+                            </div>
+                            {% if product.id not in favorites.ids %}
+                                <div class="product-card__favorite like"
+                                    data-id="{{product.id}}"
+                                >
+                                    <i class="icon icon-like">
+                                    </i>
+                                </div>
+                            {% else %}
+                                <div class="product-card__favorite like like_active"
+                                    data-id="{{product.id}}"
+                                >
+                                    <i class="icon icon-like">
+                                    </i>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="product-card-body">
+                            <a href="/watches/{{product.slug}}/">
+                                <div class="product-card-img-wrap">
+                                    <img class="product-card-img" src="{{product.thumbnail.url}}">
+                                    {% if product.show_sale %}
+                                    <div class="product-card__sale-percentage">
+                                    - {{product.sale_percentage}} %
                                     </div>
-                                    <div class="product-card__price-wrap">
-                                        <div class="product-card__old-price price price_old">
-                                            {{format_price(product.old_price)}}
+                                    {% endif %}
+                                </div>
+                                <div class="product-card-data">
+                                    <div class="product-card-info">
+                                        <a href="/watches/{{product.slug}}/" class="product-card__hover-link">
+                                            <div class="product-card__brand">
+                                                {{product.brand}}
+                                            </div>
+                                            <div class="product-card__series">
+                                                {{product.series}}
+                                            </div>
+                                            <div class="product-card__model">
+                                                {{product.model}}
+                                            </div>
+                                        </a>
+                                    </div>
+                                    {% if product.show_sale %}
+                                        <div class="product-card__price price price_red">
+                                            {{format_price(product.price)}}
                                         </div>
-                                    </div>
+                                        <div class="product-card__old-price-wrap">
+                                            <div class="product-card__old-price price price_old">
+                                                {{format_price(product.old_price)}}
+                                            </div>
+                                        </div>
                                     {% else %}
                                     <div class="product-card__price price">
                                         {{format_price(product.price)}}
                                     </div>
                                     {% endif %}
-                                {% else %}
-                                <div class="product-card__price price">
-                                    {{format_price(product.price)}}
                                 </div>
-                                {% endif %}
-                                <div class="product-card__extra">
-                                    {% if product.id not in favorites.ids %}
-                                    <div class="product-card__favorite like"
-                                        data-id="{{ product.id }}"
-                                    >
-                                        <i class="icon icon-like">
-                                        </i>
-                                    </div>
-                                    {% else %}
-                                    <div class="product-card__favorite like like_active"
-                                        data-id="{{ product.id }}"
-                                    >
-                                        <i class="icon icon-like">
-                                        </i>
-                                    </div>
-                                    {% endif %}
-                                </div>
-                            </div>
+                            </a>
                         </div>
+                        <div class="product-card-footer">
+                            {% if product.get_offline_availability(request) %}
+                            <a class="link link_dotted" href="/info/offline-shops/" target="_blank">
+                            Есть в магазине на Тульской
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
                     {% endfor %}
-                    {% endstrip %}
                 </div>
 
                 {% if is_paginated %}
@@ -371,9 +372,9 @@
                 </div>
                 {% endif %}
                 {% if rr_mode == 1 %}
-                <div data-retailrocket-markup-block="5d8a188097a5251704ec5dd4" data-category-id="​{{category.rr_id}}"></div>
+                <div data-retailrocket-markup-block="5d8a188097a5251704ec5dd4" data-category-id="{{category.rr_id}}"></div>
                 {% elif rr_mode == 2 %}
-                <div data-retailrocket-markup-block="5d8a188e97a5251704ec5dd5" data-vendor="​{{brand_value}}"></div>
+                <div data-retailrocket-markup-block="5d8a188e97a5251704ec5dd5" data-vendor="{{brand_value}}"></div>
                 {% elif rr_mode == 3 %}
                 <div data-retailrocket-markup-block="5d8a196c97a5251704ec5e2c"></div>
                 {% endif %}

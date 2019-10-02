@@ -30,50 +30,85 @@
                     {% for instance in results %}
                         {% if instance.model %}
                         <div class="product-card">
-                            <a href="/watches/{{ instance.slug }}/">
-                                <div class="product-card__img-wrap">
-                                    <img class="product-card__img" src="{{ instance.thumbnail.url }}">
+                            <div class="product-card-top">
+                                <div class="product-card__badges">
+                                    {% if instance.free_delivery %}
+                                    <div class="badge badge_green">
+                                    БЕСПЛАТНАЯ ДОСТАВКА
+                                    </div>
+                                    {% endif %}
+                                    {% if instance.is_bestseller %}
+                                    <div class="badge badge_orange">
+                                    ХИТ
+                                    </div>
+                                    {% endif %}
                                 </div>
-                            </a>
-                            <div class="product-card__data">
-                                <div class="product-card__info">
-                                    <a href="/watches/{{ instance.slug }}/">
-                                        <div class="product-card__brand">
-                                            {{instance.brand}}
-                                        </div>
-                                        <div class="product-card__series">
-                                            {{instance.series}}
-                                        </div>
-                                        <div class="product-card__model">
-                                            {{ instance.model }}
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="product-card__price">
-                                    {{instance.price}} ₽
-                                </div>
-                                <div class="product-card__extra">
-                                    <div class="product-card__favorite like">
+                                {% if instance.id not in favorites.ids %}
+                                    <div class="product-card__favorite like"
+                                        data-id="{{instance.id}}"
+                                    >
                                         <i class="icon icon-like">
                                         </i>
                                     </div>
-                                </div>
+                                {% else %}
+                                    <div class="product-card__favorite like like_active"
+                                        data-id="{{instance.id}}"
+                                    >
+                                        <i class="icon icon-like">
+                                        </i>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="product-card-body">
+                                <a href="/watches/{{instance.slug}}/">
+                                    <div class="product-card-img-wrap">
+                                        <img class="product-card-img" src="{{instance.thumbnail.url}}">
+                                        {% if instance.show_sale %}
+                                        <div class="product-card__sale-percentage">
+                                        - {{instance.sale_percentage}} %
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="product-card-data">
+                                        <div class="product-card-info">
+                                            <a href="/watches/{{instance.slug}}/" class="product-card__hover-link">
+                                                <div class="product-card__brand">
+                                                    {{instance.brand}}
+                                                </div>
+                                                <div class="product-card__series">
+                                                    {{instance.series}}
+                                                </div>
+                                                <div class="product-card__model">
+                                                    {{instance.model}}
+                                                </div>
+                                            </a>
+                                        </div>
+                                        {% if instance.show_sale %}
+                                            <div class="product-card__price price price_red">
+                                                {{format_price(instance.price)}}
+                                            </div>
+                                            <div class="product-card__old-price-wrap">
+                                                <div class="product-card__old-price price price_old">
+                                                    {{format_price(instance.old_price)}}
+                                                </div>
+                                            </div>
+                                        {% else %}
+                                        <div class="product-card__price price">
+                                            {{format_price(instance.price)}}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="product-card-footer">
+                                {% if instance.get_offline_availability(request) %}
+                                <a class="link link_dotted" href="/info/offline-shops/" target="_blank">
+                                Есть в магазине на Тульской
+                                </a>
+                                {% endif %}
                             </div>
                         </div>
                         {% else %}
-                        <a class="product-card" href="/shop/watches/{{instance.slug}}">
-                            <div class="product-card__img-wrap">
-                                <img class="product-card__img" src="{{ instance.preview_image }}">
-                            </div>
-                            <div class="card-category">
-                                <div class="grey card-category__label">
-                                категория
-                                </div>
-                                <div class="card-category__title bold">
-                                {{instance.name}}
-                                </div>
-                            </div>
-                        </a>
                         {% endif %}
                     {% endfor %}
                 </div>

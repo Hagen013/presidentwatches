@@ -1,0 +1,230 @@
+.product-card {
+    position: relative;
+    border-top: 1px solid $light-grey;
+    @include mq($from: mobile-big) {
+        padding: 0px 0px 10px 0px;
+    }
+    @include mq($from: tablet) {
+        height: 405px;
+        width: 25%;
+        border-top: none;
+        float: left;
+        margin-bottom: 10px;
+        padding: 5px 0px 5px 5px;
+        &:hover {
+            z-index: 100;
+            box-shadow: 0 14px 38px 0 rgba(51, 38, 38, 0.15);
+        }
+    }
+    @include mq($from: desktop) {
+        height: 462px;
+        width: percentage(1/3);
+    }
+    @include mq($from: wide) {
+        height: 513px;
+        width: 25%;
+    }
+}
+
+.product-card-top {
+    width: 100%;
+    height: 40px;
+    padding-right: 32px;
+}
+
+.product-card-body {
+    @include row();
+}
+
+.product-card-footer {
+    padding-left: 40%;
+    width: 100%;
+    height: 32px;
+    text-align: left;
+    padding-top: 5px;
+    .link {
+        color: $blue;
+    }
+    @include mq($from: mobile-big) {
+        position: absolute;
+        bottom: 10px;
+    }
+    @include mq($from: tablet) {
+        position: absolute;
+        bottom: auto;
+        padding: 0px;
+        text-align: center;
+    }
+}
+
+.product-card-img-wrap {
+    position: relative;
+    display: block;
+    float: left;
+    height: 127px;
+    width: 40%;
+    padding: 0px 10px;
+    text-align: center;
+    overflow: hidden;
+    @include mq($from: mobile-big) {
+        height: 196px;
+    }
+    @include mq($from: tablet) {
+        height: 174px;
+        width: 100%;
+        float: none;
+    }
+    @include mq($from: desktop) {
+        height: 231px;
+    }
+    @include mq($from: wide) {
+        height: 282px;
+    }
+}
+
+.product-card-img {
+    height: 100%;
+    width: auto;
+}
+
+.product-card__hover-link {
+    display: block;
+    text-decoration: none;
+}
+
+.product-card-info {
+    padding-bottom: 11px;
+    @include mq($from: tablet) {
+        padding-top: 20px;
+        padding-bottom: 9px;
+        text-align: center;
+    }
+}
+
+.product-card-data {
+    padding: 10px 0px;
+    display: block;
+    float: left;
+    width: 60%;
+    @include mq($from: tablet) {
+
+        float: none;
+        width: 100%;
+    }
+}
+
+.product-card__brand {
+    margin-bottom: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1.33;
+    letter-spacing: 1px;
+    @include mq($from: tablet) {
+        margin-bottom: 10px;
+    }
+}
+
+.product-card__series {
+    height: 16px;
+    margin-bottom: 3px;
+    font-size: 14px;
+    line-height: 1.14;
+    letter-spacing: normal;
+}
+
+.product-card__model {
+    height: 14px;
+    font-size: 10px;
+    line-height: 1.4;
+    color: $dark-grey;
+}
+
+.product-card__badges {
+    position: relative;
+    height: 100%;
+    padding: 0px 5px 0px 10px;
+    z-index: 200;
+}
+
+.badge {
+    position: relative;
+    display: inline-block;
+    margin-top: 5px;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    border-radius: 4px;
+    padding: 4px 5px 3px 5px;
+    border: 1px solid $green;
+    z-index: 100000;
+    @include mq($from: desktop) {
+        font-size: 11px;
+    }
+}
+
+.badge_green {
+    color: $green;
+    border-color: $green;
+}
+
+.badge_orange {
+    color: $orange;
+    border-color: $orange;
+}
+
+.badge_blue {
+    color: $blue;
+    border-color: $blue;
+}
+
+.product-card__favorite {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    height: 32px;
+    width: 32px;
+    line-height: 32px;
+    text-align: center;
+    .icon {
+        display: inline-block;
+    }
+}
+
+.product-card__price {
+    font-size: 14px;
+    font-weight: 600;
+    @include mq($from: tablet) {
+        height: 24px;
+        font-size: 18px;
+        line-height: 1.33;
+        text-align: center;
+    }
+}
+
+.product-card__old-price-wrap {
+    width: 100%;
+    @include mq($from: tablet) {
+        text-align: center;
+    }
+}
+
+.product-card__old-price {
+    font-size: 12px;
+    @include mq($from: tablet) {
+        font-size: 14px;
+        text-align: center;
+    }
+}
+
+.product-card__sale-percentage {
+    position: absolute;
+    bottom: 0px;
+    left: 15px;
+    display: inline-block;
+    font-weight: 600;
+    color: $white;
+    padding: 3px 8px;
+    background-color: #fc152e;
+}
+
