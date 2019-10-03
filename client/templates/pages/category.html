@@ -257,6 +257,10 @@
                                 <div class="badge badge_orange">
                                 ХИТ
                                 </div>
+                                {% elif product.is_new %}
+                                <div class="badge badge_blue">
+                                НОВИНКА
+                                </div>
                                 {% endif %}
                             </div>
                             {% if product.id not in favorites.ids %}
