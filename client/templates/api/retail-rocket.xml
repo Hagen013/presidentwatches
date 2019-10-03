@@ -31,6 +31,7 @@
 
             <url>{{base_url}}{{p.absolute_url}}</url>
             <price>{{p.price}}</price>
+            <oldprice>{{p.rr_old_price}}</price>
             <currencyId>RUR</currencyId>
             {% with nodes = get_nodes_by_product(categories, p) %}
               {% for node in nodes %}
@@ -49,7 +50,11 @@
             
             {% for key, values_list in p.rr_attributes.items() %}
                 {% for value in values_list %}
+                  {% if value.datatype != 4 %}
                 <param name="{{key}}">{{value.value}}</param>
+                  {% else %}
+                <param name="{{key}}">{{value.value|lower}}</param>
+                  {% endif %}
                 {% endfor %}
             {% endfor %}
 

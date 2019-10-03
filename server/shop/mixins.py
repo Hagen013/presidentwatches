@@ -1,4 +1,5 @@
 import re
+import json
 from collections import OrderedDict
 
 from imagekit.models import ImageSpecField, ProcessedImageField
@@ -290,6 +291,12 @@ class WatchesProductMixin(models.Model):
             )
         except ObjectDoesNotExist:
             return None
+
+    @property
+    def rr_old_price(self):
+        if self.old_price > 0:
+            return self.old_price
+        return self.price
 
     def get_short_descriptions(self):
         attributes = self.attributes
