@@ -87,7 +87,7 @@ def generate_yml_file():
     category = Node.objects.get(_depth=0)
     category.add_rr_node(category)
 
-    products = Product.objects.available().filter(model='W0958L3')
+    products = Product.objects.available()
     date = now().astimezone(pytz.timezone(settings.TIME_ZONE)).strftime('%Y-%m-%d %H:%M')
 
     context = {
