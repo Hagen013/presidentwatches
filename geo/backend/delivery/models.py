@@ -332,6 +332,7 @@ class DeliveryPickPoint(DeliveryPoint):
             'price': self.get_price(weigh),
             'time_min': self.time_min,
             'time_max': self.time_max,
+            'type': self.pvz_type
         }
 
 

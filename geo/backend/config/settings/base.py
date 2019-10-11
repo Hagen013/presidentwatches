@@ -41,6 +41,7 @@ LOCAL_APPS = [
     'delivery',
     'geo_ip',
     'kladr',
+    'delivery_v2'
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

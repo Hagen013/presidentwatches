@@ -5,94 +5,86 @@
 
     <div class="delivery-heading">
         <div class="content-area content-area_block">
-            <h1 class="delivery-title">
-            Доставка товаров <span class="delivery-logo">ПрезидентВотчес</span>
-            <span class="grey caption">*Для некоторых товарных групп, доставка осуществляется бесплатно</span>
+            <h1 class="title delivery-title">
+                Доставка товаров <span class="hide-mb">ПрезидентВотчес</span>
             </h1>
             <div class="delivery-controls">
-                <div class="delivery-city">
-                    <div class="delivery-label grey">
+                <div class="delivery-city field city-choice">
+                    <div class="field-label">
                     Город
                     </div>
-                    <div class="delivery-city-input input">
-                        <div class="city-name city-choice" id="city-name">
-                        {{request.user.city_name}}
-                        </div>
+                    <div class="field-value field-value_city cityname" id="city-name">
+                    {{request.user.city_name}}
                     </div>
                 </div>
-                <div class="delivery-options">
-                    <div class="delivery-label grey">
-                    Способы доставки
+                <div class="field">
+                    <div class="field-label">
+                    Способ доставки
                     </div>
-                    <ul class="delivery-options-list row" id="delivery-options">
-                        <div class="delivery-loader">
-                            <img src="{{ static('assets/placeholder.svg') }}">
-                        </div>
+                    <ul class="delivery-options row">
+                        <li class="delivery-option">
+                            <input type="radio"
+                                id="radio-1" 
+                                name="delivery" 
+                                value="curier"
+                                checked
+                            />
+                            <label for="radio-1">
+                                <div class="rarefied">
+                                    КУРЬЕРОМ
+                                </div>
+                                <div class="grey" id="price-curier">
+                                </div>
+                                <div class="grey" id="time-curier">
+                                </div>
+                            </label>
+                        </li>
+                        <li class="delivery-option">
+                            <input type="radio"
+                                id="radio-2" 
+                                name="delivery" 
+                                value="points"
+                                checked
+                            />
+                            <label for="radio-2">
+                                <div class="rarefied">
+                                    ПУНКТЫ ВЫДАЧИ
+                                </div>
+                                <div class="grey" id="price-points">
+                                </div>
+                                <div class="grey" id="time-points">
+                                </div>
+                            </label>
+                        </li>
+                        <li class="delivery-option">
+                            <input type="radio"
+                                id="radio-3" 
+                                name="delivery" 
+                                value="rupost"
+                            />
+                            <label for="radio-3">
+                                <div class="rarefied">
+                                    ПОЧТОЙ
+                                </div>
+                                <div class="grey" id="price-rupost">
+                                </div>
+                                <div class="grey" id="time-rupost">
+                                </div>
+                            </label>
+                        </li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="delivery-content">
-
-        <div class="delivery-map" id="delivery-map">
-            <div class="delivery-map-loader">
-                <img src="{{ static('assets/placeholder.svg') }}">
-            </div>
+    <div class="content-area content-area_block">
+        <div class="delivery-outlet" id="delivery-outlet">
         </div>
+    </div>
 
-        <div class="content-area content-area_block">
-            <div class="delivery-payment info-page-content">
-                <h2 class="delivery-title">
-                Оплата
-                </h2>
-
-                <div class="info-page-block">
-                    <p>
-                    Для оплаты заказов на сайте предусмотрены следующие формы оплаты:
-                    <ul class="list">
-                        <li class="list-item">
-                        Оплата наличными при получении
-                        </li>
-                        <li class="list-item">
-                        Оплата картой при полученнии
-                        </li>
-                        <li class="list-item">
-                        Оплата картой онлнайн через систему Яндекс.Касса
-                        </li>
-                    </ul>
-                    </p>
-                    <p>
-                    Возможность конкретного способа оплаты для вашего региона и выбранного способа доставки уточняется у оператора
-                    </p>
-                </div>
-
-                <div class="info-page-block">
-                    <div class="info-page-block-title bold">
-                    Порядок совершения платежа
-                    </div>
-                    <ol class="list">
-                        <li class="list-item_num">
-                        Выберите интересующие Вас часы, поместите их в корзину;
-                        </li>
-                        <li class="list-item_num">
-                        На втором шаге оформления заказа выберите свой регион и выберите способ оплаты «Картой онлайн», после чего Вы будете перенаправлены на сайт компании Яндекс.Касса;
-                        </li>
-                        <li class="list-item_num">
-                        Введите недостающие данные в анкете платежной системы Яндекс; обратите внимание, что номер, дата окончания действия карты и имя держателя должны вводиться в той же транскрипции и регистре, как они указаны на карточке;
-                        </li>
-                        <li class="list-item_num">
-                        Не забудьте указать трехзначный код CVV2 (CVC2) – это последние три цифры на обратной стороне Вашей карты.
-                        </li>
-                        <li class="list-item_num">
-                        После совершения платежа Вы увидите информацию о результатах транзакции (данных платежа, Ваших персональных данных и данных нашего магазина), затем будете перенаправлены на сайт Интернет-магазина.
-                        </li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-
+    <div class="delivery-loader" id="delivery-loader">
+        <img src="{{ static('assets/placeholder.svg') }}">
     </div>
 
 </div>
