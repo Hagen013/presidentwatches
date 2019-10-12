@@ -334,7 +334,8 @@ CELERY_IMPORTS = (
     'tasks.sms_notifications',
     'tasks.retail_rocket',
     'tasks.yml',
-    'tasks.store'
+    'tasks.store',
+    'tasks.delivery_sync'
 )
 CELERY_QUEUES = (
     Queue('default', Exchange('default'), routing_key='default'),
@@ -376,13 +377,16 @@ STORE_API_URL = env('DJANGO_STORE_URL')
 
 
 # YANDEX KASSA START
+# ------------------------------------------------------------------------------
 YANDEX_KASSA_API = env('YANDEX_KASSA_API')
 YANDEX_KASSA_SHOP_ID = env('YANDEX_KASSA_SHOP_ID')
 YANDEX_KASSA_SECRET = env('YANDEX_KASSA_SECRET')
+# ------------------------------------------------------------------------------
 # YANDEX KASSA END
 
 
 # MAIL SETTINGS START
+# ------------------------------------------------------------------------------
 EMAILS_ADMIN = env("DJANGO_EMAILS_ADMIN")
 EMAIL_HOST_USER = env("DJANGO_EMAIL_HOST_USER")
 DEFAULT_FROM_EMAIL = env("DJANGO_DEFAULT_FROM_EMAIL")
@@ -390,4 +394,19 @@ EMAIL_PORT = int(env("DJANGO_EMAIL_PORT"))
 EMAIL_HOST = env("DJANGO_EMAIL_HOST")
 EMAIL_HOST_PASSWORD = env("DJANGO_EMAIL_HOST_PASSWORD")
 EMAIL_USE_SSL = True
+# ------------------------------------------------------------------------------
 # MAIL SETTINGS END
+
+
+# DELIVERY SYNCHRONIZATION CREDENTIALS
+# ------------------------------------------------------------------------------
+SDEK_USER = env('SDEK_USER')
+SDEK_PASSWORD = env('SDEK_PASSWORD')
+
+PICKPOINT_USER = env('PICKPOINT_USER')
+PICKPOINT_PASSWORD = env('PICKPOINT_PASSWORD')
+
+RUPOST_USER = env('RUPOST_LOGIN')
+RUPOST_PASSWORD = env('RUPOST_PASSWORD')
+# DELIVERY SYNCHRONIZATION CREDENTIALS
+# ------------------------------------------------------------------------------
