@@ -7,6 +7,7 @@
 ./geo/venv
 /geo/venv
 *.ipynb
+*.pickle
 
 /client/node_modules
 /client/src

@@ -18,3 +18,4 @@ client/static_production/
 *.xlsx
 *.csv
 *.json
+*.pickle
