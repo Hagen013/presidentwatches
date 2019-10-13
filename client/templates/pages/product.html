@@ -567,10 +567,10 @@
                     </div>
                 </div>
             </div>
-            <div class="card-footer hide-mb">
+            <div class="card-footer">
                 <div class="content-area content-area_block">
 
-                    <div class="tabs">
+                    <div class="tabs hide-mb">
                         <ul class="tabs-nav" href="#product-nav">
                             <li class="tabs-nav-item">
                                 <a class="tabs-link active" href="#description" id="descriptionLink">
@@ -595,7 +595,7 @@
                         </ul>
                     </div>
 
-                    <div class="row">
+                    <div class="row hide-mb">
                         <div class="card-footer__left">
                             <div class="tabs-outlet" id="product-nav">
                                 <div class="tab-pane active card-description row" id="description">
@@ -863,6 +863,7 @@
             'purchase_price': {{product._purchase_price}},
             'vendor': '{{product.brand}}'
         };
+        var CATEGORY = "{{category.name}}";
     </script>
     <script src="{{ static('js/jquery.fancybox.min.js') }}"></script>
     <script src="{{ static('js/productPage.js') }}"></script>

@@ -273,4 +273,25 @@ $(document).ready(function() {
         transitToDescription();
     })
 
+    if (window.dataLayer === undefined) {
+        window.dataLayer = [];
+    }
+
+    dataLayer.push({
+        "event": "Detail",
+        "ecommerce": {
+            "detail": {
+                "products": [
+                    {
+                        "id": PRODUCT.pk,
+                        "name": PRODUCT.model,
+                        "price": DELIVERY.price,
+                        "brand": DELIVERY.vendor,
+                        "category": CATEGORY
+                    }
+                ]
+            }
+        }
+    })
+
 })

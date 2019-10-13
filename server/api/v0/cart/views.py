@@ -56,8 +56,12 @@ class ApplyPromocodeAPIView(BaseCartAPIView):
 class CartApiView(BaseCartAPIView):
 
     def delete(self, request):
+        deleted = self.cart.data['items']
         self.cart.clear()
-        return Response(self.cart.data)
+        return Response({
+            'deleted': deleted,
+            'cart': self.cart.data,
+        })
 
 
 class CartItemsApiView(BaseCartAPIView):
@@ -103,8 +107,12 @@ class CartItemDetailsApiView(BaseCartAPIView):
         return Response({})
 
     def delete(self, request, pk):
+        deleted = self.cart.data['items'][pk]
         self.cart.delete_offer(pk)
-        return Response(self.cart.data)
+        return Response({
+            'deleted': deleted,
+            'cart': self.cart.data
+        })
 
 
 class CartItemQuantityApiView(BaseCartAPIView):
@@ -113,8 +121,15 @@ class CartItemQuantityApiView(BaseCartAPIView):
         return Response({})
 
     def put(self, request, pk, quantity):
+        changed = self.cart.data['items'][pk]
+        qnt = int(changed['quantity'])
+        changed['quantity'] = qnt
         self.cart.update_quantity(pk, quantity)
-        return Response(self.cart.data)
+        return Response({
+            'changed': changed,
+            'quantity': qnt,
+            'cart': self.cart.data
+        })
 
 
 class FastBuyApiView(BaseCartAPIView):

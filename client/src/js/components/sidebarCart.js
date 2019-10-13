@@ -17,6 +17,7 @@ export default class sidebarCart extends Component {
 
     initialize() {
 
+        let self = this;
         this.$element = $(this.element);
         this.applyPromocode = debounce(function(value) {
             value = value.toUpperCase();
@@ -48,6 +49,9 @@ export default class sidebarCart extends Component {
             )
         }, 500)
         this.bindMethods();
+        $('#sidebar-cart-clear').click(function(e) {
+            self.clearCart();
+        })
     }
 
     removeItem(target) {
@@ -95,10 +99,6 @@ export default class sidebarCart extends Component {
 
         this.$element.find('.quantity_increment').click(function(e) {
             self.incrementItem(this);
-        })
-
-        $('#sidebar-cart-clear').click(function(e) {
-            self.clearCart();
         })
 
         $('#sidebar-promocode').on('input', function(e){
