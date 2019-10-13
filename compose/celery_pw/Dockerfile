@@ -8,6 +8,7 @@ RUN apk add --no-cache --virtual .build-deps \
     build-base \
     libffi-dev \
     linux-headers \
+    py3-lxml \
     && pip3 install --upgrade pip \
     && pip3 install numpy \
     && pip3 install pandas \
