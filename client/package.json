@@ -44,7 +44,7 @@
     "js-cookie": "^2.2.0",
     "sass-mq": "^5.0.0",
     "simplebar": "^4.0.0-alpha.1",
-    "webpack": "^4.30.0",
+    "webpack": "^4.28.4",
     "webpack-cli": "^3.3.0",
     "webpack-dev-server": "^3.3.1"
   }
