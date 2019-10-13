@@ -13,7 +13,11 @@ class OrderCreateSerializer():
     
     def __init__(self, data, request, cart=None):
         
-        print(data)
+        self.created_by_staff = False
+        token = request.COOKIES.get('x-token', None)
+        if token is not None:
+            self.created_by_staff = True
+
         self._user = self.get_user(request)
         if cart is None:
             self._cart = self.get_cart(request)
@@ -43,7 +47,8 @@ class OrderCreateSerializer():
             source=self._source,
             client_notes=self._client_notes,
             sale=self._sale,
-            total_price=self._total_price
+            total_price=self._total_price,
+            created_by_staff=self.created_by_staff
         )
         self._instance.uuid = Order._generate_uuid()
 
@@ -79,7 +84,10 @@ class OrderCreateSerializer():
         return data.get('payment')
     
     def get_cpa_data(self, data):
-        return data.get('cpa', {})
+        if not self.created_by_staff:
+            return data.get('cpa', {})
+        else:
+            return {}
     
     def get_store_data(self):
         return {}

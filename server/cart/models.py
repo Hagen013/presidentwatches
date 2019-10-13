@@ -150,6 +150,10 @@ class Order(TimeStampedMixin):
         default=0
     )
 
+    created_by_staff = models.BooleanField(
+        default=False
+    )
+
     CART_JSONSCHEMA = {
         "type": "object",
         "properties": {
