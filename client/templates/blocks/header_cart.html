@@ -1,0 +1,1097 @@
+<div class="header">
+    <div class="header__desktop">
+        <div class="header__top">
+            <div class="content-area">
+                <div class="header__top-menu">
+                    <a class="header__top-link tab-link city-choice"
+                        id="header-city-link"
+                    >
+                        <i class="icon icon_nav tab-link__icon">
+                        </i>
+                        <div class="tab-link__caption bold"
+                            id="header-city-text"
+                        >
+                            <span class="city-name">
+                            {{request.user.city_name}}
+                            </span>
+                        </div>
+                    </a>
+                    <a class="header__top-link tab-link"
+                        href="/info/delivery/"
+                    >
+                        <i class="icon icon_delivery tab-link__icon">
+                        </i>
+                        <div class="tab-link__caption">
+                            ДОСТАВКА И ОПЛАТА
+                        </div>
+                    </a>
+                    {#<a class="header__top-link tab-link"
+                        href="/info/delivery-points/"
+                    >
+                        <i class="icon icon_pin tab-link__icon">
+                        </i>
+                        <div class="tab-link__caption">
+                            ТОЧКИ САМОВЫВОЗА
+                        </div>
+                    </a>#}
+                    <a class="header__top-link tab-link"
+                        href="/info/offline-shops/"
+                    >
+                        <i class="icon icon_bag tab-link__icon">
+                        </i>
+                        <div class="tab-link__caption">
+                            МАГАЗИНЫ
+                        </div>
+                    </a>
+                    <a class="header__top-link tab-link"
+                        href="/info/promo/"
+                    >
+                        <div class="tab-link__caption">
+                            АКЦИИ
+                        </div>
+                    </a>
+                    <a class="header__top-link tab-link"
+                        href="tel:+78007776072"
+                    >
+                        <i class="icon icon_phone tab-link__icon">
+                        </i>
+                        <div class="tab-link__caption">
+                            8 800 777 60 72
+                        </div>
+                    </a>
+                    <a class="header__top-link tab-link city-phone-link"
+                        href="tel:{{city_phone(request.user.city_name)['number']}}"
+                    >
+                        <i class="icon icon_phone tab-link__icon">
+                        </i>
+                        <div class="tab-link__caption city-phone">
+                            {{city_phone(request.user.city_name)['public']}}
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="header__middle">
+            <div class="content-area">
+                <div class="logo-wrap header__logo">
+                    <a href="/">
+                        <img class="logo" src="{{ static('img/logo/logo.svg') }}">
+                    </a>
+                </div>
+                <form class="header__search-box" action="/search">
+                    <div class="header__input-box input-box" id="header-input-box">
+                        <i class="icon icon_search header__search-icon">
+                        </i>
+                        <input class="input input_filled header__input"
+                            placeholder="ПОИСК ТОВАРОВ"
+                            name="q"
+                            autocomplete="off"
+                        >
+                        <ul class="search-list">
+                        </ul>
+                    </div>
+                </form>
+                <div class="header__controls">
+                    {% if request.user.is_authenticated %}
+                    <a class="control-button" href="/u/profile/">
+                        <i class="icon icon_user">
+                        </i>
+                        <div class="control-button__text">
+                        АККАУНТ
+                        </div>
+                    </a>
+                    {% else %}
+                    <div class="control-button header-auth">
+                        <i class="icon icon_user">
+                        </i>
+                        <div class="control-button__text">
+                        ВОЙТИ
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="header__bottom">
+            <div class="content-area">
+                <nav class="header__catalog row">
+                    <li class="header__catalog-item catalog-item">
+                        <a class="catalog-link_first catalog-link" href="/shop/watches/mens/">
+                            МУЖСКИЕ
+                        </a>
+                        <div class="submenu">
+                            <div class="submenu-content">
+                                <div class="content-area">
+                                    <div class="submenu-inner">
+                                        <div class="submenu-columns row">
+                                            <div class="submenu-col submenu-col-1">
+                                                <ul class="submenu-list">
+                                                    <li class="submenu-title bold">
+                                                        КАТЕГОРИИ
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/mens/quarz/">
+                                                            Кварцевые
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/mens/mechanical/">
+                                                            Механические
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/mens/electronic/">
+                                                            Электронные
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/mens/sport/">
+                                                            Спортивные
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/mens/waterproof/">
+                                                            Водонепроницаемые
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/mens/?rating_gte=4">
+                                                            Рейтинг выше 4 звезд
+                                                        </a>
+                                                    </li>
+                                                    {#<li>
+                                                        <a class="link_underline" href="#">
+                                                            Больше всего отзывов
+                                                        </a>
+                                                    </li>#}
+                                                </ul>
+                                            </div>
+                                            <div class="submenu-col submenu-col-2">
+                                                <ul class="submenu-list">
+                                                    <li class="submenu-title bold">
+                                                        СТРАНЫ
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/mens/russian/">
+                                                            Российские
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/mens/swiss/">
+                                                            Швейцарские
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/mens/japan/">
+                                                            Японские
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/mens/american/">
+                                                            Американские
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/mens/german/">
+                                                            Немецкие
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/mens/fashion/">
+                                                            Дизайнерские
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/mens/other/">
+                                                            Другие
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="submenu-col submenu-col-3">
+                                                <ul class="submenu-list">
+                                                    <li class="submenu-title bold">
+                                                        Бренды
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/japan/casio/mens/">
+                                                            Casio
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/japan/casio/casio-g-shock/">
+                                                            Casio G-Shock
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/japan/orient/mens/">
+                                                            Orient
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/fashion/fossil/mens/">
+                                                            Fossil
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/mens/russian/vostok/">
+                                                            Восток
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/swiss/calvin-klein/mens/">
+                                                            Calvin Klein
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/fashion/ben-sherman/">
+                                                            Ben Sherman
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="submenu-col submenu-col-4">
+                                                <ul class="submenu-list">
+                                                    <li class="submenu-title bold">
+                                                        Цвет
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/mens/white/">
+                                                            Белые
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/mens/black/">
+                                                            Черные
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/mens/brown/">
+                                                            Коричневые
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/mens/yellow/">
+                                                            Золотые
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/mens/silver-metallic/">
+                                                            Серебряные
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/mens/red/">
+                                                            Красные
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/mens/blue/">
+                                                            Синие
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="submenu-col submenu-col-5">
+                                                <ul class="submenu-list">
+                                                    <li class="submenu-title bold">
+                                                        ПО ЦЕНЕ
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/mens/?price__lte=5000">
+                                                            до <span class="price">5000</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/mens/?price__gte=5000&price__lte=10000">
+                                                            от <span class="price">5000</span> до <span class="price">10 000</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/mens/?price__gte=10000&price__lte=30000">
+                                                            от <span class="price">10 000</span> до <span class="price">30 000</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/mens/?price__gte=30000&price__lte=60000">
+                                                            от <span class="price">30 000</span> до <span class="price">60 000</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/mens/?price__gte=60000">
+                                                            Дороже <span class="price">60 000</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline red" href="/shop/watches/mens/sale/">
+                                                            Со скидкой
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="submenu-footer">
+                                            <div class="submenu-footer__title">
+                                                ПОПУЛЯРНЫЕ МОДЕЛИ У МУЖЧИН СЕГОДНЯ
+                                            </div>
+                                            <div class="popular-list row">
+                                                <a class="popular-item" href="/watches/casio-mtp-1314l-8a/">
+                                                    <div class="card-mini">
+                                                        <div class="card-mini__img-wrap">
+                                                            <img class="card-mini__img" src="/media/CACHE/images/images/0000/C/casio-mtp-1314l-8a/1314/b30d80940c55cb2359da008f8df29a57.jpg">
+                                                            <div class="card-mini__controls">
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-mini__content">
+                                                            <div class="card-mini__brand">
+                                                                Casio
+                                                            </div>
+                                                            <div class="card-mini__series">
+                                                                G-Shock
+                                                            </div>
+                                                            <div class="card-mini__model">
+                                                                MTP-1314L-8A
+                                                            </div>
+                                                            <div class="card-mini__price">
+                                                                <span class="price">2390</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <a class="popular-item" href="/watches/casio-mtp-1374l-1a/">
+                                                    <div class="card-mini">
+                                                        <div class="card-mini__img-wrap">
+                                                            <img class="card-mini__img" src="/media/CACHE/images/images/1435/627075/e0c5f9a9-347f-404e-9a51-a8dbd5fc1004/69a69a30cce4c5f32915c6a5eb645674.jpg">
+                                                            <div class="card-mini__controls">
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-mini__content">
+                                                            <div class="card-mini__brand">
+                                                                Casio
+                                                            </div>
+                                                            <div class="card-mini__series">
+                                                                G-Shock
+                                                            </div>
+                                                            <div class="card-mini__model">
+                                                                MTP-1374L-1A
+                                                            </div>
+                                                            <div class="card-mini__price">
+                                                                <span class="price">3990</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <a class="popular-item" href="/watches/casio-mtp-1374d-1a/">
+                                                    <div class="card-mini">
+                                                        <div class="card-mini__img-wrap">
+                                                            <img class="card-mini__img" src="/media/CACHE/images/images/1435/831829/13742000x2000/21472d0bb9bc6d7c1c0c775657e2aca1.jpg">
+                                                            <div class="card-mini__controls">
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-mini__content">
+                                                            <div class="card-mini__brand">
+                                                                Casio
+                                                            </div>
+                                                            <div class="card-mini__series">
+                                                                G-Shock
+                                                            </div>
+                                                            <div class="card-mini__model">
+                                                                MTP-1374D-1A
+                                                            </div>
+                                                            <div class="card-mini__price">
+                                                                <span class="price">3990</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <a class="popular-item" href="/watches/casio-mtp-v300g-1a/">
+                                                    <div class="card-mini">
+                                                        <div class="card-mini__img-wrap">
+                                                            <img class="card-mini__img" src="/media/CACHE/images/images/1645/320836/1-12000x20002000x2000/0c73b7b4dda7c7eed1306961b8f8bb71.jpg">
+                                                            <div class="card-mini__controls">
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-mini__content">
+                                                            <div class="card-mini__brand">
+                                                                Casio
+                                                            </div>
+                                                            <div class="card-mini__series">
+                                                                G-Shock
+                                                            </div>
+                                                            <div class="card-mini__model">
+                                                                MTP-V300G-1A
+                                                            </div>
+                                                            <div class="card-mini__price">
+                                                                <span class="price">3790</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="header__catalog-item catalog-item">
+                        <a class="catalog-link" href="/shop/watches/women/">
+                            ЖЕНСКИЕ
+                        </a>
+                        <div class="submenu">
+                            <div class="submenu-content">
+                                <div class="content-area">
+                                    <div class="submenu-inner">
+                                        <div class="submenu-columns row">
+                                            <div class="submenu-col submenu-col-1">
+                                                <ul class="submenu-list">
+                                                    <li class="submenu-title bold">
+                                                        КАТЕГОРИИ
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/women/quarz/">
+                                                            Кварцевые
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/women/mechanical/">
+                                                            Механические
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/women/electronic/">
+                                                            Электронные
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/women/sport/">
+                                                            Спортивные
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/women/waterproof/">
+                                                            Водонепроницаемые
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/women/?rating_gte=4">
+                                                            Рейтинг выше 4 звезд
+                                                        </a>
+                                                    </li>
+                                                    {#<li>
+                                                        <a class="link_underline" href="#">
+                                                            Больше всего отзывов
+                                                        </a>
+                                                    </li>#}
+                                                </ul>
+                                            </div>
+                                            <div class="submenu-col submenu-col-2">
+                                                <ul class="submenu-list">
+                                                    <li class="submenu-title bold">
+                                                        СТРАНЫ
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/women/russian/">
+                                                            Российские
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/women/swiss/">
+                                                            Швейцарские
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/women/japan/">
+                                                            Японские
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/women/american/">
+                                                            Американские
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/women/german/">
+                                                            Немецкие
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/women/fashion/">
+                                                            Дизайнерские
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/women/other/">
+                                                            Другие
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="submenu-col submenu-col-3">
+                                                <ul class="submenu-list">
+                                                    <li class="submenu-title bold">
+                                                        Бренды
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/japan/casio/women/">
+                                                            Casio
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/japan/casio/casio-g-shock/casio-baby-g/">
+                                                            Casio Baby-G
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/japan/orient/women/">
+                                                            Orient
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/women/japan/citizen/">
+                                                            Citizen
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/japan/qq/women/">
+                                                            Q&Q
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/japan/seiko/women/">
+                                                            Seiko
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/swiss/calvin-klein/women/">
+                                                            Calvin Klein
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="submenu-col submenu-col-4">
+                                                <ul class="submenu-list">
+                                                    <li class="submenu-title bold">
+                                                        Цвет
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/women/white/">
+                                                            Белые
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/women/black/">
+                                                            Черные
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/women/brown/">
+                                                            Коричневые
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/women/yellow/">
+                                                            Золотые
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/women/silver-metallic/">
+                                                            Серебряные
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/women/red/">
+                                                            Красные
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/women/blue/">
+                                                            Синие
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="submenu-col submenu-col-5">
+                                                <ul class="submenu-list">
+                                                    <li class="submenu-title bold">
+                                                        ПО ЦЕНЕ
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/women/?price__lte=5000">
+                                                            до <span class="price">5000</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/women/?price__gte=5000&price__lte=10000">
+                                                            от <span class="price">5000</span> до <span class="price">10 000</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/women/?price__gte=10000&price__lte=30000">
+                                                            от <span class="price">10 000</span> до <span class="price">30 000</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/women/?price__gte=30000&price__lte=60000">
+                                                            от <span class="price">30 000</span> до <span class="price">60 000</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/women/?price__gte=60000">
+                                                            Дороже <span class="price">60 000</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline red" href="/shop/watches/women/sale/">
+                                                            Со скидкой
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="submenu-footer">
+                                            <div class="submenu-footer__title">
+                                                ПОПУЛЯРНЫЕ МОДЕЛИ У ЖЕНЩИН СЕГОДНЯ
+                                            </div>
+                                            <div class="popular-list row">
+                                                <a class="popular-item" href="/watches/casio-ltp-e157m-7a/">
+                                                    <div class="card-mini">
+                                                        <div class="card-mini__img-wrap">
+                                                            <img class="card-mini__img" src="/media/CACHE/images/images/1848/557782/LTP-E156MR-9A-600x600/8e06fbaa44be75a56dcda1696525f254.jpg">
+                                                            <div class="card-mini__controls">
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-mini__content">
+                                                            <div class="card-mini__brand">
+                                                                Casio
+                                                            </div>
+                                                            <div class="card-mini__series">
+                                                                Collection
+                                                            </div>
+                                                            <div class="card-mini__model">
+                                                                LTP-E157M-7A
+                                                            </div>
+                                                            <div class="card-mini__price">
+                                                                <span class="price">4090</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <a class="popular-item" href="/watches/casio-ltp-v007d-1e/">
+                                                    <div class="card-mini">
+                                                        <div class="card-mini__img-wrap">
+                                                            <img class="card-mini__img" src="/media/CACHE/images/images/1548/252275/LTP-V007D-1E-600x600/d39f6c4aaf93849571a3d78b13ef90f0.jpg">
+                                                            <div class="card-mini__controls">
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-mini__content">
+                                                            <div class="card-mini__brand">
+                                                                Casio
+                                                            </div>
+                                                            <div class="card-mini__series">
+                                                                Collection
+                                                            </div>
+                                                            <div class="card-mini__model">
+                                                                LTP-V007D-1E
+                                                            </div>
+                                                            <div class="card-mini__price">
+                                                                <span class="price">1890</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <a class="popular-item" href="/watches/casio-ltp-v004g-9b/">
+                                                    <div class="card-mini">
+                                                        <div class="card-mini__img-wrap">
+                                                            <img class="card-mini__img" src="/media/CACHE/images/images/1507/339175/LTP-V004G-9B2000x2000/84294b0e28f2c3fc44d040e209e8c618.jpg">
+                                                            <div class="card-mini__controls">
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-mini__content">
+                                                            <div class="card-mini__brand">
+                                                                Casio
+                                                            </div>
+                                                            <div class="card-mini__series">
+                                                                Collection
+                                                            </div>
+                                                            <div class="card-mini__model">
+                                                                LTP-V004G-9B
+                                                            </div>
+                                                            <div class="card-mini__price">
+                                                                <span class="price">2490</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <a class="popular-item" href="/watches/casio-ltp-v300g-9a/">
+                                                    <div class="card-mini">
+                                                        <div class="card-mini__img-wrap">
+                                                            <img class="card-mini__img" src="/media/CACHE/images/images/1644/624515/27643750x0-1/981885a57015d619389727e06e37db07.jpg">
+                                                            <div class="card-mini__controls">
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-mini__content">
+                                                            <div class="card-mini__brand">
+                                                                Casio
+                                                            </div>
+                                                            <div class="card-mini__series">
+                                                                Collection
+                                                            </div>
+                                                            <div class="card-mini__model">
+                                                                LTP-V300G-9A
+                                                            </div>
+                                                            <div class="card-mini__price">
+                                                                <span class="price">3790</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="header__catalog-item catalog-item">
+                        <a class="catalog-link" href="/shop/watches/detskie/">
+                            ДЕТСКИЕ
+                        </a>
+                    </li>
+                    <li class="header__catalog-item catalog-item">
+                        <a class="catalog-link" href="#">
+                            БРЕНДЫ
+                        </a>
+                        <div class="submenu">
+                            <div class="submenu-content">
+                                <div class="content-area">
+                                    <div class="submenu-inner">
+                                        <div class="submenu-columns row">
+                                            <div class="submenu-col submenu-col-1">
+                                                <ul class="submenu-list">
+                                                    <li class="submenu-title bold">
+                                                        ПОПУЛЯРНЫЕ
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/japan/casio/">
+                                                            Casio
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/japan/orient/">
+                                                            Orient
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/fashion/fossil/">
+                                                            Fossil
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/russian/vostok/">
+                                                            Восток
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/russian/polet/">
+                                                            Полёт
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/other/jacques-lemans/">
+                                                            Jacques Lemans
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="submenu-col submenu-col-2">
+                                                <ul class="submenu-list">
+                                                    <li class="submenu-title bold">
+                                                        ВСЕ БРЕНДЫ
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/russian/vostok/">
+                                                            Восток
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/russian/zarja/">
+                                                            Заря
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/russian/luch/">
+                                                            Луч
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/russian/mihail-moskvin/">
+                                                            Михаил Москвин
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/russian/polet/">
+                                                            Полёт
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/russian/spetsnaz/">
+                                                            Спецназ
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/russian/shturmanskie/">
+                                                            Штурманские
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/russian/elektronika/">
+                                                            Электроника
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="submenu-col submenu-col-3">
+                                                <ul class="submenu-list">
+                                                    <li class="submenu-title bold">
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/swiss/adriatica/">
+                                                            Adriatica
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/american/anne-klein/">
+                                                            Anne Klein
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/fashion/ben-sherman/">
+                                                            Ben Sherman
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/swiss/calvin-klein/">
+                                                            Calvin Klein
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/japan/casio/">
+                                                            Casio
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/japan/citizen/">
+                                                            Citizen
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/fashion/daniel-wellington/">
+                                                            Daniel Wellington
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/fashion/dkny/">
+                                                            DKNY
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="submenu-col submenu-col-4">
+                                                <ul class="submenu-list">
+                                                    <li class="submenu-title bold">
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/fashion/emporio-armani/">
+                                                            Emporio Armani
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/fashion/fossil/">
+                                                            Fossil
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/german/hugo-boss/">
+                                                            Hugo Boss
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/other/jacques-lemans/">
+                                                            Jacques Lemans
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/american/ingersoll/">
+                                                            Ingersoll
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/fashion/michael-kors/">
+                                                            Michael Kors
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/japan/orient/">
+                                                            Orient
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/japan/qq/">
+                                                            Q&Q
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="submenu-col submenu-col-5">
+                                                <ul class="submenu-list">
+                                                    <li class="submenu-title bold">
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/russian/romanoff/">
+                                                            Romanoff
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/other/romanson/">
+                                                            Romanson
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/japan/seiko/">
+                                                            Seiko
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/other/skagen/">
+                                                            Skagen
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/swiss/swiss-military-by-chrono/">
+                                                            Swiss Military by Chrono
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/swiss/swiss-military-hanowa/">
+                                                            Swiss Military Hanowa
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/american/timex/">
+                                                            Timex
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="header__catalog-item catalog-item">
+                        <a class="catalog-link">
+                            СТРАНЫ
+                        </a>
+                        <div class="submenu">
+                            <div class="submenu-content">
+                                <div class="content-area">
+                                    <div class="submenu-inner">
+                                        <div class="submenu-columns row">
+                                            <div class="submenu-col submenu-col-1">
+                                                <ul class="submenu-list">
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/russian/">
+                                                            Российские
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/swiss/">
+                                                            Швейцарские
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/japan/">
+                                                            Японские
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/american/">
+                                                            Американские
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/german/">
+                                                            Немецкие
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/fashion/">
+                                                            Дизайнерские
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="link_underline" href="/shop/watches/other/">
+                                                            Другие
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="header__catalog-item catalog-item catalog-item_accent"
+                    >
+                        <a class="catalog-link" href="/shop/watches/sale/">
+                            РАСПРОДАЖА
+                        </a>
+                    </li>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <div class="header-mobile">
+        <div class="header-mobile-content" id="header-mobile">
+            <div class="header-mobile__left">
+                <div class="header__toggle-menu control-button" id="hamburger">
+                    <i class="icon icon_menu">
+                    </i>
+                </div>
+                <div class="header__home">
+                    <a class="logo-wrap logo-wrap_mobile"
+                        href="/"
+                    >
+                        <img class="logo logo_mobile"
+                            src="{{ static('img/logo/logo_small.svg') }}"
+                        >
+                    </a>
+                </div>
+            </div>
+            <div class="header-mobile__right">
+                <div class="header__search-button control-button"
+                    id="search-mobile"
+                >
+                    <i class="icon icon_search">
+                    </i>
+                </div>
+                <a class="header__cart-button control-button"
+                    href="/cart/"
+                    id="cart-mobile"
+                >
+                    <i class="icon icon_cart">
+                    </i>
+                    <div class="cart-count">
+                    {{ cart.data['total_quantity'] }}
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

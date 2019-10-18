@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<yml_catalog date="{{date}}">
+  <shop>
+    <name>ПрезидентВотчес</name>
+    <company>ООО "АВАНГАРД-РИТЕЙЛ"</company>
+    <url>{{base_url}}</url>
+    
+    <currencies>
+      <currency id="RUR" rate="1"/>
+    </currencies>
+    
+    <categories>
+        <category id="10001" 
+        >Все товары
+        </category>
+        <category id="10002" parentId="10001" 
+        >Одежда, обувь и аксессуары
+        </category>
+        <category id="10003" parentId="10002" 
+        >Аксессуары и украшения
+        </category>
+        <category id="10004" parentId="10003" 
+        >Часы и аксессуары
+        </category>
+        <category id="10005" parentId="10004" 
+        >Наручные часы
+        </category>
+        {% for node in nodes %}
+        <category id="{{node.id}}" 
+          parentId="10005"
+        >Наручные часы {{node.value}}
+        </category>
+        {% endfor %}
+    </categories>
+
+    <offers>
+      {% for p in products %}
+        {% if p.has_image %}
+        <offer id="{{p.id}}" available="{{p.is_in_stock|lower}}">
+
+            <url>{{base_url}}{{p.absolute_url}}</url>
+            <price>{{p.price}}</price>
+            <currencyId>RUR</currencyId>
+            <categoryId>{{ get_yml_node(p)['id'] }}</categoryId>
+            {% for image in p.yml_images %}
+            <picture>{{base_url}}{{image}}</picture>
+            {% endfor %}
+            <delivery>true</delivery>
+            <vendor>{{p.brand}}</vendor>
+            <name>{{p.model}}</name>
+            {% if p.description %}
+            <description>{{p.html_free_description}}</description>
+            {% endif %}
+            <sales_notes>Доставка по России без предоплаты.</sales_notes>
+
+        </offer>
+        {% endif %}
+      {% endfor %}
+    </offers>
+  </shop>
+</yml_catalog>

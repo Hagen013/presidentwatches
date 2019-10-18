@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base_cart.html" %}
 
 {% block content %}
     <div class="title-area">
@@ -407,7 +407,9 @@
 
 {% endblock content %}
 
-
+{% block sidebar %}
+    {% include 'blocks/cart-sidebar.html' %}
+{% endblock sidebar %}
 
 {% block modals %}
     {{super()}}
