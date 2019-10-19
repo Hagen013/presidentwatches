@@ -590,17 +590,17 @@
         width: 220px !important;
     }
     @include mq($from: wide) {
-        width: 300px !important;
+        width: 320px !important;
     }
 }
 
-.sidebar-tabs {
+.sidebar-tabs_cart {
     padding: 0px !important;
     @include mq($from: desktop, $until: wide) {
         width: 220px !important;
     }
     @include mq($from: wide) {
-        width: 300px !important;
+        width: 320px !important;
     }
 }
 
@@ -609,6 +609,6 @@
         padding-right: 220px !important;
     }
     @include mq($from: wide) {
-        padding-right: 300px !important;
+        padding-right: 320px !important;
     }
 }
