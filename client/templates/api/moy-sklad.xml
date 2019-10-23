@@ -38,20 +38,11 @@
         {% if p.has_image %}
         <offer id="{{p.id}}" available="{{p.is_in_stock|lower}}">
 
-            <url>{{base_url}}{{p.absolute_url}}</url>
             <price>{{p.price}}</price>
             <currencyId>RUR</currencyId>
             <categoryId>{{ get_yml_node(p)['id'] }}</categoryId>
-            {% for image in p.yml_images %}
-            <picture>{{base_url}}{{image}}</picture>
-            {% endfor %}
-            <delivery>true</delivery>
             <vendor>{{p.brand}}</vendor>
             <name>{{p.model}}</name>
-            {% if p.description %}
-            <description>{{p.html_free_description}}</description>
-            {% endif %}
-            <sales_notes>Доставка по России без предоплаты.</sales_notes>
 
         </offer>
         {% endif %}

@@ -64,7 +64,7 @@ def generate_yml_file(delay=60):
     }
 
     xml_raw = render_to_string(
-        template_name="api/yml.xml",
+        template_name="api/moy-sklad.xml",
         context=context
     )
 
