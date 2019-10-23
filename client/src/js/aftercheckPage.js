@@ -5,7 +5,9 @@ window.onload = function() {
 
     setTimeout(function() {
         let admitadCookie = Cookies.get('tagtag_aid');
-        if ( admitadCookie !== undefined ) {
+        let token = Cookies.get('x-token');
+
+        if ( ( admitadCookie !== undefined ) && (token === undefined) ) {
             let ADMITAD = window.ADMITAD || {};
             ADMITAD.Invoice = ADMITAD.Invoice || {};
             ADMITAD.Invoice.broker = "adm";     // параметр дедупликации (по умолчанию для admitad)
