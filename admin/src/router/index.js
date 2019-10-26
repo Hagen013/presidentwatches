@@ -60,14 +60,23 @@ export const constantRouterMap = [
   },
 
   {
-    path: '/promocodes',
+    path: '/marketing',
     component: Layout,
+    redirect: '/marketing/club-price',
+    name: 'Маркетинг',
+    meta: { title: 'Маркетинг', icon: 'dashboard' },
     children: [
       {
-        path: '',
+        path: 'club-price',
+        name: 'ClubPrice',
+        component: () => import('@/views/marketing/club-prices'),
+        meta: { title: 'Клубные цены' }
+      },
+      {
+        path: 'promocodes',
         name: 'Promocodes',
-        component: () => import('@/views/promocodes/index'),
-        meta: { title: 'Промокоды', icon: 'shopping-cart' }
+        component: () => import('@/views/marketing/promocodes'),
+        meta: { title: 'Промокоды' }
       },
     ]
   },
