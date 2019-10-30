@@ -2,6 +2,26 @@
     <div class="form-container" v-loading="loading">
         <div class="list-view" v-if="responseReceived">
             <div class="list-view-filters">
+                <el-row :gutter="20">
+                    <el-col :span="8">
+                        <el-input placeholder="Email"
+                            v-model="filters.email"
+                        >
+                        </el-input>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-input placeholder="Номер телефона"
+                            v-model="filters.phone"
+                        >
+                        </el-input>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-input placeholder="Имя"
+                            v-model="filters.name"
+                        >
+                        </el-input>
+                    </el-col> 
+                </el-row>
             </div>
             <table class="table">
                 <tr class="table-heading">
@@ -76,6 +96,11 @@ export default {
             {label: '100', value: 100},
             {label: '200', value: 200}
         ],
+        filters: {
+            email: '',
+            phone: '',
+            name: ''
+        }
     }),
     computed: {
     },

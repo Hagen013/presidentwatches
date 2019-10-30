@@ -562,3 +562,53 @@
 #cart-promocode {
     text-transform: uppercase;
 }
+
+.sidebar-cart {
+    padding: 20px 20px 10px 10px;
+    @include mq($from: wide) {
+        padding: 40px 40px 20px 10px;
+    }
+}
+
+.sidebar-cart-block {
+    margin-bottom: 30px;
+    text-align: justify;
+    p {
+        line-height: 1.5;
+    }
+}
+
+.sidebar-cart-title {
+    text-align: left;
+    font-size: 14px;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.sidebar_cart {
+    @include mq($from: desktop, $until: wide) {
+        width: 220px !important;
+    }
+    @include mq($from: wide) {
+        width: 320px !important;
+    }
+}
+
+.sidebar-tabs_cart {
+    padding: 0px !important;
+    @include mq($from: desktop, $until: wide) {
+        width: 220px !important;
+    }
+    @include mq($from: wide) {
+        width: 320px !important;
+    }
+}
+
+.page__content_cart {
+    @include mq($from: desktop, $until: wide) {
+        padding-right: 220px !important;
+    }
+    @include mq($from: wide) {
+        padding-right: 320px !important;
+    }
+}
