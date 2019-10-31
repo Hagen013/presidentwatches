@@ -22,7 +22,7 @@
                         {{brand.value}}
                         </div>
                     </td>
-                    <td class="table-cell" v-for="key in brand.sales" :key="key">
+                    <td class="table-cell" v-for="item in brand.sales" :key="key">
                         <div class="table-container">
                             <el-input v-model="brand.sales[key]"
                                 controls-position="right"
@@ -107,7 +107,7 @@ export default {
                     if (sale === undefined) {
                         sale = 0;
                     }
-                    this.brands[i].sales[this.groups[y].id] = sale;
+                    this.brands[i].sales[this.groups[y].id];
                 }
             }
         },
