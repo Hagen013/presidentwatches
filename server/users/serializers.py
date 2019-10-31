@@ -1,7 +1,8 @@
 from django.contrib.auth import get_user_model
 
+from rest_framework.serializers import ModelSerializer
 from core.serializers import DynamicFieldsModelSerializer
-from .models import UserSubscribe
+from .models import UserSubscribe, UserMarketingGroup
 
 User = get_user_model()
 
@@ -27,8 +28,6 @@ class UserSerializer(DynamicFieldsModelSerializer):
         )
 
 
-
-
 class UserPrivateSerializer(DynamicFieldsModelSerializer):
 
     class Meta:
@@ -44,4 +43,18 @@ class UserSubscribeSerializer(DynamicFieldsModelSerializer):
         model = UserSubscribe
         fields = (
             'email',
+        )
+
+
+class UserMarketingGroupSerializer(ModelSerializer):
+    
+    class Meta:
+        model = UserMarketingGroup
+        fields = (
+            'id',
+            'name',
+            'sales',
+            'automatically_increase',
+            'ranking',
+            'userscore_threshold'
         )

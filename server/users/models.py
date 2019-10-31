@@ -7,6 +7,7 @@ from django.contrib.auth.models import (
 from django.utils import timezone
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.contrib.postgres.fields import JSONField
 
 from djchoices import DjangoChoices, ChoiceItem
 
@@ -38,6 +39,34 @@ class UserSex(DjangoChoices):
     Female  = ChoiceItem(3, 'Женщина')
 
 
+class UserMarketingGroup(models.Model):
+
+    class Meta:
+        abstract = False
+
+    name = models.CharField(
+        default='',
+        unique=True,
+        max_length=256
+    )
+
+    sales = JSONField(
+        default=dict
+    )
+
+    automatically_increase = models.BooleanField(
+        default=False
+    )
+
+    ranking = models.PositiveIntegerField(
+        default=0,
+    )
+
+    userscore_threshold = models.PositiveIntegerField(
+        default=1000
+    )
+
+
 class User(AbstractBaseUser, PermissionsMixin):
 
     class Meta:
@@ -46,6 +75,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     role = models.PositiveIntegerField(
         choices=UserType.choices,
         default=UserType.Client
+    )
+
+    marketing_group = models.ForeignKey(
+        UserMarketingGroup,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL
     )
     
     username = models.CharField(

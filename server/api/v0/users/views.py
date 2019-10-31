@@ -11,8 +11,8 @@ from api.views import ListViewMixin
 
 from cart.models import Order
 from cart.serializers import OrderSerializer
-from users.serializers import UserSerializer, UserSubscribeSerializer
-from users.models import UserSubscribe
+from users.serializers import UserSerializer, UserSubscribeSerializer, UserMarketingGroupSerializer
+from users.models import UserSubscribe, UserMarketingGroup
 from tasks.users import send_new_password
 
 from django.contrib.auth import get_user_model
@@ -53,6 +53,7 @@ class UserProfileApiView(APIView):
     
     model = User
     serializer_class = UserSerializer
+    permissions_class = permissions.IsAdminUser
 
     def get(self, request, user_pk):
 
@@ -90,6 +91,7 @@ class SubsribesListView(APIView):
 
     model = UserSubscribe
     serializer_class = UserSubscribeSerializer
+    permissions_class = permissions.IsAdminUser
 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
@@ -105,7 +107,7 @@ class SubsribesListView(APIView):
         )
 
 
-class PasswordRenewAPIView(APIView):
+class PasswordRenewAPIView(APIView, ListViewMixin):
 
     permissions_class = permissions.AllowAny
 
@@ -128,3 +130,26 @@ class PasswordRenewAPIView(APIView):
             return User.objects.get(email=email)
         except ObjectDoesNotExist:
             raise Http404
+
+
+class UserMarketingGroupListView(APIView, ListViewMixin):
+
+    model = UserMarketingGroup
+    pagination_class  = LimitOffsetPagination
+    serializer_class = UserMarketingGroupSerializer
+    permissions_class = permissions.IsAdminUser
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return Response({})
+
+
+class UserMarketingGroupDetailsView(APIView):
+
+    def get(self, request, *args, **kwargs):
+        return Response({})
+
+    def put(self, request, *args, **kwargs):
+        return Response({})
