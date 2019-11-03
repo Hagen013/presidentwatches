@@ -10,7 +10,7 @@ from cart.models import Order
 def sms_notify(order_id):
     instance = Order.objects.get(public_id=order_id)
     to = instance.customer["phone"]
-    msg = "ПрезидентВотчес.Ру: Ваш заказ принят под номером {order_id}. С Вами свяжется оператор для подтверждения заказа. Наш телефон: +74951775736".format(
+    msg = "ПрезидентВотчес.Ру: Ваш заказ принят под номером {order_id}. С Вами свяжется оператор для подтверждения заказа. Наш телефон: +74951332056".format(
         order_id=order_id
     )
     payload = {

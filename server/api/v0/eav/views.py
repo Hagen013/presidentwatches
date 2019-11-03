@@ -24,6 +24,7 @@ class AttributeViewSet(ModelViewSet):
 
     filter_fields = (
         'is_filter',
+        'key'
     )
     search_fields = (
         'name',
