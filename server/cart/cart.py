@@ -72,6 +72,13 @@ class Cart():
             if instance is not None:
                 item = CartItemSerializer(instance).data
                 item['quantity'] = quantity
+
+                if group is not None:
+                    sales = group.sales
+                    sale = sales.get(instance.brand, None)
+                    if sale is not None and sale > 0:
+                        base_sale = item['price'] * 
+
                 self.data['items'][pk] = item
                 self.save()
         else:
