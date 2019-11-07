@@ -262,10 +262,27 @@
                                         — Бесплатная доставка в любой уголок России!
                                     </li>
                                     {% endif %}
-                                    {% if sale_notes|length > 0 %}
-                                    <li class="list-item plus-item">
-                                        — {{sale_notes}}
-                                    </li>
+                                    {% if product.has_club_price %}
+                                        {% if request.user.is_authenticated %}
+                                        <li class="list-item plus-item red">
+                                            — Использована клубная скидка {{club_sale}} %
+                                        </li>
+                                        {% else %}
+                                        <li class="list-item plus-item">
+                                            — <a class="link link_dotted header-auth" href="#">Зарегистрируйтесь</a>, чтобы узнать клубную цену
+                                        </li>
+                                            {% if sale_notes|length > 0 %}
+                                            <li class="list-item plus-item red">
+                                                — {{sale_notes}}
+                                            </li>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% else %}
+                                        {% if sale_notes|length > 0 %}
+                                        <li class="list-item plus-item red">
+                                            — {{sale_notes}}
+                                        </li>
+                                        {% endif %}
                                     {% endif %}
                                 </ul>
                                 {% endif %}

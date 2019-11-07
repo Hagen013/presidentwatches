@@ -73,7 +73,7 @@ class CartItemsApiView(BaseCartAPIView):
             qnt = int(qnt)
             self.cart.add_offer(pk, quantity=qnt, group=request.user.marketing_group)
         else:
-            self.cart.add_offer(pk, group=request.user.merketing_group)
+            self.cart.add_offer(pk, group=request.user.marketing_group)
         return Response(self.cart.data)
 
 

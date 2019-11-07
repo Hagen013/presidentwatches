@@ -336,6 +336,10 @@
                                                 {{format_price(product.price)}}
                                             </div>
                                             {% endif %}
+                                        {% else %}
+                                        <div class="product-card__price price">
+                                            {{format_price(product.price)}}
+                                        </div>
                                         {% endif %}
                                     {% else %}
                                     <div class="product-card__price price">

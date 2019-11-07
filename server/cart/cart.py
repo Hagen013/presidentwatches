@@ -74,10 +74,15 @@ class Cart():
                 item['quantity'] = quantity
 
                 if group is not None:
-                    sales = group.sales
-                    sale = sales.get(instance.brand, None)
-                    if sale is not None and sale > 0:
-                        base_sale = item['price'] * 
+                    instance.set_club_price(group)
+
+                    diff = instance.price - instance.club_price
+                    if diff > 0:
+                        item['price'] = instance.club_price
+                        item['base_price'] = item['price']
+                        item['sale'] = diff
+                        item['total_price'] = item['price'] * item['quantity']
+                        item['is_sale'] = True
 
                 self.data['items'][pk] = item
                 self.save()
@@ -96,6 +101,19 @@ class Cart():
             item = self.data['items'].get(instance.id, None)
             if item is None:
                 item = CartItemSerializer(instance).data
+
+                if group is not None:
+                    instance.set_club_price(group)
+
+                    diff = instance.price - instance.club_price
+                    if diff > 0:
+                        item['price'] = instance.club_price
+                        item['base_price'] = item['price']
+                        item['sale'] = diff
+                        item['total_price'] = item['price'] * item['quantity']
+                        item['is_sale'] = True
+
+
                 self.data['items'][instance.pk] = item
             else:
                 item['quantity'] += 1
