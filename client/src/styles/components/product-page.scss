@@ -276,6 +276,12 @@
     margin-bottom: 4px;
 }
 
+.plus-item {
+    @include mq($from: mobile, $until: desktop) {
+        margin-bottom: 4px;
+    }
+}
+
 .product-main__info-block-text {
     margin-bottom: 2px;
 }

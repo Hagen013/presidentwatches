@@ -112,16 +112,39 @@
                             <div class="product-main__name">
                                 {{product.brand}} {{product.series}}
                             </div>
+                            {% if product.is_sale %}
                             <div class="product-main__price-area row">
                                 <div class="price product-main__price">
                                     {{format_price(product.price)}}
                                 </div>
-                                {% if product.is_sale %}
                                 <div class="price_old price product-main__old-price">
                                     {{product.old_price}}
                                 </div>
-                                {% endif %}
                             </div>
+                            {% elif request.user.is_authenticated %}
+                                {% if product.club_price < product.price %}
+                                <div class="product-main__price-area row">
+                                    <div class="price product-main__price">
+                                        {{format_price(product.club_price)}}
+                                    </div>
+                                    <div class="price_old price product-main__old-price">
+                                        {{product.price}}
+                                    </div>
+                                </div>
+                                {% else %}
+                                <div class="product-main__price-area row">
+                                    <div class="price product-main__price">
+                                        {{format_price(product.price)}}
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% else %}
+                            <div class="product-main__price-area row">
+                                <div class="price product-main__price">
+                                    {{format_price(product.price)}}
+                                </div>
+                            </div>
+                            {% endif %}
                             <div class="hide-wide product-main-interactions">
                                 <div class="row">
                                     <div class="rating float-left">
@@ -179,16 +202,6 @@
                                 </div>
                             {% endif %}
                             </div>
-                            {% if sale_notes|length > 0 %}
-                            <div class="product-main__info-block">
-                                <div class="bold product-main__info-block-title">
-                                    Скидка
-                                </div>
-                                <div class="product-sale-notes">
-                                {{sale_notes}}
-                                </div>
-                            </div>
-                            {% endif %}
                             <div class="product-main__info-block show-wide">
                                 <div class="bold product-main__info-block-title">
                                     Информация о доставке
@@ -229,20 +242,32 @@
                                 Информация о гарантии
                                 </a>
                             </div>
-                            <div class="product-main__info-block show-wide">
+                            <div class="product-main__info-block">
                                 {% if product.has_summary %}
                                 <div class="bold product-main__info-block-title">
-                                    Коротко о товаре
+                                    Наши плюсы
                                 </div>
                                 <ul class="list list_mini">
-                                    {% for item in product.summary %}
-                                    <li class="list-item">
-                                        — {{item}}
-                                    {% endfor %}
+                                    <li class="list-item plus-item">
+                                        — Легко вернуть часы в течение 14 дней!
+                                    </li>
+                                    <li class="list-item plus-item">
+                                        — Сперва примерьте, потом платите!
+                                    </li>
+                                    <li class="list-item plus-item">
+                                        — Только оригинальные часы!
+                                    </li>
+                                    {% if product.free_delivery %}
+                                    <li class="list-item plus-item">
+                                        — Бесплатная доставка в любой уголок России!
+                                    </li>
+                                    {% endif %}
+                                    {% if sale_notes|length > 0 %}
+                                    <li class="list-item plus-item">
+                                        — {{sale_notes}}
+                                    </li>
+                                    {% endif %}
                                 </ul>
-                                <a class="link link_grey link_dotted product-card__show-descr">
-                                    Все характеристики
-                                </a>
                                 {% endif %}
                             </div>
                         </div>

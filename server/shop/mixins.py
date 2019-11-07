@@ -160,6 +160,21 @@ class WatchesProductMixin(models.Model):
         blank=True,
     )
 
+    has_club_price = models.BooleanField(
+        default=False
+    )
+
+    def get_club_price(self, group):
+        sale = group.sales.get(self.brand, None)
+        if sale is not None and sale > 0:
+            price = self.price - round(self.price * sale)
+        else:
+            price = self.price
+        return price
+
+    def set_club_price(self, group):
+        self.club_price = self.get_club_price(group)
+
     @property
     def has_summary(self):
         return len(self.summary) > 0

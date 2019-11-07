@@ -217,6 +217,16 @@ class CategoryPageView(DiggPaginatorViewMixin, ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(CategoryPageView, self).get_context_data(**kwargs)
+
+        if self.request.user.is_authenticated:
+            products = context['products']
+            group = self.request.user.marketing_group
+
+            for product in products:
+                product.set_club_price(group)
+
+            context['products'] = products
+
         context['category'] = self.category
 
         context['sorting_option'] = self.sorting_option
@@ -314,7 +324,7 @@ class ProductPageView(TemplateView):
         else:
             promocode = self.fetch_promocode()
             if promocode is not None:
-                return 'Акция! Скидка {amount}% на эту модель {brand} по промокоду {promocode}'.format(
+                return 'Скидка {amount}% на эту модель {brand} по промокоду {promocode}'.format(
                     amount=promocode.sale_amount,
                     brand=self.instance.brand,
                     promocode=promocode.name
@@ -324,6 +334,9 @@ class ProductPageView(TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(ProductPageView, self).get_context_data(**kwargs)
+        
+        if self.request.user.is_authenticated:
+            self.instance.set_club_price(self.request.user.marketing_group)
 
         context[self.instance_context_name] = self.instance
         context['category'] = CategoryPage.objects.get_by_product(self.instance)

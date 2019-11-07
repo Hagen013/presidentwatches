@@ -4,6 +4,8 @@ from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser, PermissionsMixin
 )
+
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.utils import timezone
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -42,6 +44,7 @@ class UserSex(DjangoChoices):
 class UserMarketingGroup(models.Model):
 
     class Meta:
+        ordering = ['id']
         abstract = False
 
     name = models.CharField(
@@ -51,7 +54,8 @@ class UserMarketingGroup(models.Model):
     )
 
     sales = JSONField(
-        default=dict
+        default=dict,
+        blank=True
     )
 
     automatically_increase = models.BooleanField(
@@ -65,6 +69,17 @@ class UserMarketingGroup(models.Model):
     userscore_threshold = models.PositiveIntegerField(
         default=1000
     )
+
+    def clean(self, *args, **kwargs):
+        for key, value in self.sales.items():
+            if type(key) != str:
+                raise ValidationError('Sales key must be a string')
+            if type(value) != float:
+                raise ValidationError('Sale percentage must be an float')
+            if not 0 <= value <= 1:
+                raise ValidationError('Sale percentage must be in range 0-1')
+
+        super(UserMarketingGroup, self).clean(*args, **kwargs)
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -169,6 +184,12 @@ class User(AbstractBaseUser, PermissionsMixin):
             self.uuid = self.generate_uuid()
         if self.public_uuid is None:
             self.public_uuid = self.generate_uuid()
+        if self.marketing_group is None:
+            try:
+                group = UserMarketingGroup.objects.get(name='Зарегестрированные')
+                self.marketing_group = group
+            except ObjectDoesNotExist:
+                pass
         super(User, self).save(*args, **kwargs)
         return self
 

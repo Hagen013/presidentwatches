@@ -56,7 +56,7 @@ class Cart():
         self.ids = {int(pk) for pk in self.ids}
 
     
-    def add_offer(self, pk, quantity=1):
+    def add_offer(self, pk, quantity=1, group=None):
         pk = str(pk)
         item = self.data['items'].get(pk)
         # Проверка на наличе в корзине
@@ -80,7 +80,7 @@ class Cart():
             item['base_price'] = item['total_price']
             self.save()
 
-    def add_offers(self, pks):
+    def add_offers(self, pks, group=None):
         qs = ProductPage.objects.filter(
             pk__in=pks
         )

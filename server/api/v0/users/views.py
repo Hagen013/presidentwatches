@@ -115,7 +115,6 @@ class PasswordRenewAPIView(APIView, ListViewMixin):
         return Response({})
 
     def post(self, request, *args, **kwargs):
-        print('hoy')
         data = request.data
         email = data.get('email')
         user = self.get_user(email)
@@ -145,6 +144,49 @@ class UserMarketingGroupListView(APIView, ListViewMixin):
     def post(self, request, *args, **kwargs):
         return Response({})
 
+    def put(self, request, *args, **kwargs):
+        groups = request.data
+        error = False
+        base_sales = None
+
+        for group in groups:
+            if group['name'] == 'Зарегестрированные':
+                base_sales = group['sales']
+
+        for group in groups:
+            try:
+                instance = self.model.objects.get(id=group['id'])
+            except ObjectDoesNotExist:
+                instance = None
+                error = True
+
+            if instance is not None:
+                sales = group['sales']
+
+                for key, value in base_sales.items():
+                    received_value = sales.get(key, None)
+                    if received_value is None:
+                        sales[key] = value
+                    elif received_value < value:
+                        sales[key] = value
+
+                formated_sales = {}
+                for key, value in sales.items():
+                    if value > 0:
+                        formated_sales[key] = round(value, 2)
+                
+                instance.sales = formated_sales
+                instance.full_clean()
+                instance.save()
+        
+        if not error:
+            return Response(
+                status=status.HTTP_200_OK
+            )
+        else:
+            return Response(
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
 class UserMarketingGroupDetailsView(APIView):
 

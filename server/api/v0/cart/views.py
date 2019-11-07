@@ -71,9 +71,9 @@ class CartItemsApiView(BaseCartAPIView):
         qnt = request.data.get('qnt', None)
         if qnt is not None:
             qnt = int(qnt)
-            self.cart.add_offer(pk, quantity=qnt)
+            self.cart.add_offer(pk, quantity=qnt, group=request.user.marketing_group)
         else:
-            self.cart.add_offer(pk)
+            self.cart.add_offer(pk, group=request.user.merketing_group)
         return Response(self.cart.data)
 
 
@@ -83,7 +83,8 @@ class CartItemsBulkyApiView(BaseCartAPIView):
         pks = request.data.get('pks', None)
         if pks is not None:
             self.cart.add_offers(
-                pks=pks
+                pks=pks,
+                group=request.user.marketing_group
             )
             return Response(self.cart.data)
         else:
@@ -97,7 +98,7 @@ class Fav2CartTransferApiView(BaseCartAPIView):
     def get(self, request):
         favorites = FavoritesController(request)
         pks = list(favorites.ids)
-        self.cart.add_offers(pks=pks)
+        self.cart.add_offers(pks=pks, group=request.user.merketing_group)
         return Response(self.cart.data)
     
 
@@ -139,7 +140,7 @@ class FastBuyApiView(BaseCartAPIView):
         product = request.data['product']
 
         cart = Cart()
-        cart.add_offer(product['pk'])
+        cart.add_offer(product['pk'], group=request.user.merketing_group)
 
         data = {
             'customer': {
