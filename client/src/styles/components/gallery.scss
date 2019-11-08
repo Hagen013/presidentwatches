@@ -55,11 +55,11 @@
 .gallery-slick-list {
     position: relative;
     @include mq($from: tablet) {
-        height: 186px;
+        height: 235px;
         overflow: hidden;
     }
     @include mq($from: desktop) {
-        height: 254px;
+        height: 320px;
     }
     @include mq($from: wide) {
         height: 100%;

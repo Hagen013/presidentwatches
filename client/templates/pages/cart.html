@@ -25,10 +25,12 @@
                         {% for item in cart.items_list %}
                         <li class="cart-item" data-pk="{{item['pk']}}">
                             <div class="cart-item__img-wrap">
-                                <img class="cart-item__img"
-                                    src="{{ item['image'] }}"
-                                    alt="{{ item['model'] }}"
-                                >
+                                <a href="/watches/{{item['slug']}}/">
+                                    <img class="cart-item__img"
+                                        src="{{ item['image'] }}"
+                                        alt="{{ item['model'] }}"
+                                    >
+                                </a>
                             </div>
                             <div class="cart-item__info">
                                 <div class="cart-item__model">

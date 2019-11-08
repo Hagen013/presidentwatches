@@ -11,6 +11,7 @@ from django.http import Http404
 
 from tasks.users import generate_verification_mail
 
+from cart.cart import Cart
 from core.utils import custom_redirect_v2
 
 User = get_user_model()
@@ -39,6 +40,8 @@ class ProfileView(TemplateView):
                     )
                 else:
                     login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+                    self.cart = Cart(request)
+                    self.cart.login_sync()
                     querydict.pop('login')
                     querydict.pop('password')
                     return custom_redirect_v2(
@@ -77,6 +80,7 @@ class RegisterView(TemplateView):
 
         email = request.POST.get('email')
         password = request.POST.get('password')
+        print(password)
         name = request.POST.get('name', '')
 
         try:
@@ -105,9 +109,11 @@ class RegisterView(TemplateView):
                     self.result = 'Пароль или email указаны неверно'
                     return self.get(request, *args, **kwargs)
 
+                user.set_password(password)
                 user.save()
                 generate_verification_mail.delay(user.id)
                 #login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+
                 self.result = 'Вы успешно зарегестрировались'
                 return redirect('users:aftercheck', uuid=user.public_uuid)
             else:
@@ -151,6 +157,8 @@ class LoginView(TemplateView):
 
         if user:
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            self.cart = Cart(request)
+            self.cart.login_sync()
             return redirect('/')
         else:
             self.result = 'Пароль или логин указаны неверно'
@@ -173,7 +181,6 @@ class UserAftercheckView(TemplateView):
             raise Http404
 
     def get(self, request, uuid, *args, **kwargs):
-        print('hoy')
         self.user = self.get_user(uuid)
         return super(UserAftercheckView, self).get(request, *args, **kwargs)
 
@@ -214,6 +221,8 @@ class UserEmailVerificationView(TemplateView):
         user.verified = True
         user.save()
         login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+        self.cart = Cart(request)
+        self.cart.login_sync()
         return super(UserEmailVerificationView, self).get(request, *args, **kwargs)
         
 
@@ -236,4 +245,6 @@ class UserPasswordConfirmationView(TemplateView):
         user.set_password(password)
         user.save()
         login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+        self.cart = Cart(request)
+        self.cart.login_sync()
         return redirect('/u/profile/')

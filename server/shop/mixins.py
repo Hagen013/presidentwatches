@@ -165,9 +165,20 @@ class WatchesProductMixin(models.Model):
     )
 
     def get_club_price(self, group):
-        sale = group.sales.get(self.brand, None)
-        if sale is not None and sale > 0:
-            price = self.price - round(self.price * sale)
+        all_sale = group.sales.get('all', None)
+        brand_sale = group.sales.get(self.brand, None)
+        if all_sale is not None and all_sale > 0:
+            if brand_sale is not None and brand_sale > 0:
+                if brand_sale > all_sale:
+                    price = self.price - round(self.price * brand_sale)
+                else:
+                    price = self.price - round(self.price * all_sale)
+            else:
+                price = self.price - round(self.price * all_sale)
+                
+        elif brand_sale is not None and brand_sale > 0:
+            price = self.price - round(self.price * brand_sale)
+
         else:
             price = self.price
         return price

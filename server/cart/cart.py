@@ -178,6 +178,13 @@ class Cart():
                 self.data = promocode.apply(self.data, self.user)
 
 
+    def login_sync(self, user=None):
+        if user is None:
+            user = self.user
+        keys = list(self.data['items'].keys())
+        self.add_offers(pks=keys, group=user.marketing_group)
+
+
     def apply_promocode(self, promocode):
         self.data = promocode.apply(self.data, self.user)
         self.save_session()

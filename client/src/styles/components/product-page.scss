@@ -6,10 +6,10 @@
     position: relative !important;
     height: 300px;
     @include mq($from: tablet) {
-        height: 276px;
+        height: 320px;
     }
     @include mq($from: desktop) {
-        height: 360px;
+        height: 420px;
     }
     @include mq($from: wide) {
         height: 540px;
@@ -76,13 +76,13 @@
     text-align: center;
     overflow: hidden;
     @include mq($from: tablet) {
-        height: 276px;
+        height: 320px;
         left: 59px;
         padding: 10px 0px;
         padding-right: 59px;
     }
     @include mq($from: desktop) {
-        height: 360px;
+        height: 420px;
         left: 66px;
         padding: 0px;
         padding-right: 66px;
