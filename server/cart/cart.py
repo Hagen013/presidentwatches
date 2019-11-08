@@ -182,7 +182,9 @@ class Cart():
         if user is None:
             user = self.user
         keys = list(self.data['items'].keys())
+        self.data['items'] = {}
         self.add_offers(pks=keys, group=user.marketing_group)
+        self.recalculate()
 
 
     def apply_promocode(self, promocode):
