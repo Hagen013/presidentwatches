@@ -202,6 +202,72 @@
                                 </div>
                             {% endif %}
                             </div>
+                            <div class="product-main__info-block product-advantages">
+                                {% if product.has_summary %}
+                                <div class="bold product-main__info-block-title">
+                                    Наши плюсы
+                                </div>
+                                <ul class="list list_mini">
+                                    <li class="list-item plus-item">
+                                    —
+                                        <a class="link link_dotted adv-link" href="#">
+                                        Легко вернуть часы в течение 14 дней!
+                                        </a>
+                                        <div class="tip">
+                                        Просто не понравился товар? Вы можете вернуть его в течение 30 дней из любого уголка России, узнать подробнее вы можете по телефону 8-800-777-60-72
+                                        </div>
+                                    </li>
+                                    <li class="list-item plus-item adv-link">
+                                    —
+                                        <a class="link link_dotted" href="#">
+                                        Сперва примерьте, потом платите!
+                                        </a>
+                                        <div class="tip">
+                                        </div>
+                                    </li>
+                                    <li class="list-item plus-item adv-link">
+                                    —
+                                        <a class="link link_dotted" href="#">
+                                        Только оригинальные часы!
+                                        </a>
+                                        <div class="tip">
+                                        </div>
+                                    </li>
+                                    {% if product.free_delivery %}
+                                    <li class="list-item plus-item adv-link">
+                                    —
+                                        <a class="link link_dotted">
+                                        Бесплатная доставка в любой уголок России!
+                                        </a>
+                                        <div class="tip">
+                                        </div>
+                                    </li>
+                                    {% endif %}
+                                    {% if product.has_club_price %}
+                                        {% if request.user.is_authenticated %}
+                                        <li class="list-item plus-item red">
+                                            — Использована клубная скидка {{club_sale}} %
+                                        </li>
+                                        {% else %}
+                                        <li class="list-item plus-item">
+                                            — <a class="link link_dotted header-auth" href="#">Зарегистрируйтесь</a>, чтобы узнать клубную цену
+                                        </li>
+                                            {% if sale_notes|length > 0 %}
+                                            <li class="list-item plus-item red">
+                                                — {{sale_notes}}
+                                            </li>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% else %}
+                                        {% if sale_notes|length > 0 %}
+                                        <li class="list-item plus-item red link">
+                                            — {{sale_notes}}
+                                        </li>
+                                        {% endif %}
+                                    {% endif %}
+                                </ul>
+                                {% endif %}
+                            </div>
                             <div class="product-main__info-block show-wide">
                                 <div class="bold product-main__info-block-title">
                                     Информация о доставке
@@ -241,51 +307,6 @@
                                 <a class="link link_dotted" href="/info/guarantees/">
                                 Информация о гарантии
                                 </a>
-                            </div>
-                            <div class="product-main__info-block">
-                                {% if product.has_summary %}
-                                <div class="bold product-main__info-block-title">
-                                    Наши плюсы
-                                </div>
-                                <ul class="list list_mini">
-                                    <li class="list-item plus-item">
-                                        — Легко вернуть часы в течение 14 дней!
-                                    </li>
-                                    <li class="list-item plus-item">
-                                        — Сперва примерьте, потом платите!
-                                    </li>
-                                    <li class="list-item plus-item">
-                                        — Только оригинальные часы!
-                                    </li>
-                                    {% if product.free_delivery %}
-                                    <li class="list-item plus-item">
-                                        — Бесплатная доставка в любой уголок России!
-                                    </li>
-                                    {% endif %}
-                                    {% if product.has_club_price %}
-                                        {% if request.user.is_authenticated %}
-                                        <li class="list-item plus-item red">
-                                            — Использована клубная скидка {{club_sale}} %
-                                        </li>
-                                        {% else %}
-                                        <li class="list-item plus-item">
-                                            — <a class="link link_dotted header-auth" href="#">Зарегистрируйтесь</a>, чтобы узнать клубную цену
-                                        </li>
-                                            {% if sale_notes|length > 0 %}
-                                            <li class="list-item plus-item red">
-                                                — {{sale_notes}}
-                                            </li>
-                                            {% endif %}
-                                        {% endif %}
-                                    {% else %}
-                                        {% if sale_notes|length > 0 %}
-                                        <li class="list-item plus-item red">
-                                            — {{sale_notes}}
-                                        </li>
-                                        {% endif %}
-                                    {% endif %}
-                                </ul>
-                                {% endif %}
                             </div>
                         </div>
                         <div class="product-controls show-wide">

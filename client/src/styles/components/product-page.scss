@@ -276,12 +276,6 @@
     margin-bottom: 4px;
 }
 
-.plus-item {
-    @include mq($from: mobile, $until: desktop) {
-        margin-bottom: 4px;
-    }
-}
-
 .product-main__info-block-text {
     margin-bottom: 2px;
 }
@@ -432,4 +426,43 @@
 .product-sale-notes {
     font-size: 14px;
     color: $red;
+}
+
+.product-advantages {
+    position: relative;
+    background: $light-grey;
+    border-radius: 4px;
+    padding: 10px;
+    .link {
+        color: #4c4dc1;
+        border-bottom: 1px dotted #4c4dc1; 
+    }
+}
+
+.tip {
+    top: 0px;
+    left: -360px;
+    padding: 23px 40px 21px 40px;
+    position: absolute;
+    display: none;
+    width: 360px;
+    z-index: 1000;
+    background: rgba(255,255,255,0.95);
+    box-shadow: 0 4px 11px rgba(0, 0, 0, 0.3);
+    border-radius: 4px 0px 0px 4px;
+    &:hover {
+        display: block;
+    }
+    &:after {
+        display: block;
+        content: "";
+        height: 16px;
+        width: 16px;
+        position: absolute;
+        top: 42%;
+        right: -8px;
+        z-index: 999;
+        background: white;
+        transform: rotate(45deg);
+    }
 }

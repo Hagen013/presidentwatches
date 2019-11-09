@@ -4,6 +4,7 @@ import favoritesStore from '@/store/favorites/index.js'
 import geoApi from '@/api/geo'
 import { priceFilter, timeFilter } from '@/utils/filters.js'
 import toggleSidebar from '@/utils/toggleSidebar.js'
+import { debounce } from 'debounce'
 
 import FastBuy from '@/components/FastBuy.js';
 
@@ -293,5 +294,13 @@ $(document).ready(function() {
             }
         }
     })
+
+    $('.adv-link').hover(function() {
+        $(this).parent().find('.tip').css('display', 'block')
+    })
+
+    $('.adv-link').mouseout(debounce(function() {
+        $(this).parent().find('.tip').css('display', 'none');
+    }, 1000))
 
 })
