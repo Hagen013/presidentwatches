@@ -3,7 +3,7 @@ Django==1.11.4
 # DJANGO
 django-debug-toolbar==1.8
 django-extensions==1.8.1
-djangorestframework==3.6.3
+djangorestframework==3.9.1
 django-mptt==0.8.7
 django-redis==4.8.0
 django-choices==1.6.0
