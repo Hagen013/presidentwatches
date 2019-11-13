@@ -215,7 +215,7 @@ class ClubPriceRegistrationApiView(APIView):
 
             if user is not None:
 
-                notify_existing_user(pk=user.id, model=model)
+                notify_existing_user.delay(pk=user.id, model=model)
 
                 return Response(
                     status=status.HTTP_200_OK
