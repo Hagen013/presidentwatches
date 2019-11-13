@@ -146,6 +146,41 @@
     z-index: 200;
 }
 
+.product-main__club-auth {
+    position: relative;
+    display: block;
+    float: left;
+    background: #fc152e;
+    font-size: 14px;
+    font-weight: 900;
+    color: $white;
+    padding: 4px 5px 4px 0px;
+    border-radius: 0px 4px 4px 2px;
+    margin-left: 20px;
+    user-select: none;
+    cursor: pointer;
+    &:before {
+        right: 100%;
+        top: 50%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+        border-color: rgba(136,183,213,0);
+        border-right-color: #fc152e;
+        border-width: 13px;
+        margin-top: -13px;
+    }
+    @include mq($from: tablet) {
+        margin-top: 4px;
+    }
+    @include mq($from: desktop) {
+        margin-top: 7px;
+    }
+}
+
 .badge {
     position: relative;
     display: inline-block;
@@ -176,6 +211,11 @@
 .badge_blue {
     color: $blue;
     border-color: $blue;
+}
+
+.badge_red {
+    color: $red;
+    border-color: $red;
 }
 
 .product-card__favorite {
@@ -228,3 +268,46 @@
     background-color: #fc152e;
 }
 
+.club-price-modal {
+    text-align: center;
+}
+
+.club-price-modal-text {
+    margin-top: 20px;
+    color: $dark-grey;
+    font-size: 14px;
+}
+
+.club-price-modal-container {
+    position: relative;
+    text-align: left;
+    display: inline-block;
+    width: 320px !important;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    height: 360px;
+    @include mq($from: tablet) {
+        height: 300px;
+        margin-top: 100px;
+        width: 520px !important;
+    }
+}
+
+.club-price-modal-title {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.club-price-buttons {
+    width: 100%;
+    position: absolute;
+    bottom: 20px;
+    left: 0px;
+    text-align: right;
+    padding: 0px 20px;
+}
+
+.club-price-messages {
+    font-size: 14px;
+    margin-top: 20px;
+}

@@ -80,7 +80,7 @@ class RegisterView(TemplateView):
 
         email = request.POST.get('email')
         password = request.POST.get('password')
-        print(password)
+
         name = request.POST.get('name', '')
 
         try:
@@ -248,3 +248,38 @@ class UserPasswordConfirmationView(TemplateView):
         self.cart = Cart(request)
         self.cart.login_sync()
         return redirect('/u/profile/')
+
+
+class UserUUIDMixin():
+
+    def get_user(self, uuid):
+        try:
+            return User.objects.get(
+                uuid=uuid
+            )
+        except ObjectDoesNotExist:
+            raise Http404
+
+
+class UserClubPriceExistingView(TemplateView, UserUUIDMixin):
+
+    def get(self, request, uuid, *args, **kwargs):
+        slug = request.GET.get('slug')
+        user = self.get_user(uuid)
+        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+        self.cart = Cart(request)
+        self.cart.login_sync()
+        url = '/watches/{slug}/'.format(slug=slug)
+        return redirect(url)
+
+
+class UserClubPriceCreatedView(TemplateView, UserUUIDMixin):
+
+    def get(self, request, uuid, *args, **kwargs):
+        slug = request.GET.get('slug')
+        user = self.get_user(uuid)
+        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+        self.cart = Cart(request)
+        self.cart.login_sync()
+        url = '/watches/{slug}/'.format(slug=slug)
+        return redirect(url)

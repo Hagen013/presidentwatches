@@ -14,6 +14,7 @@ from cart.serializers import OrderSerializer
 from users.serializers import UserSerializer, UserSubscribeSerializer, UserMarketingGroupSerializer
 from users.models import UserSubscribe, UserMarketingGroup
 from tasks.users import send_new_password
+from tasks.marketing import notify_existing_user, notify_created_user
 
 from django.contrib.auth import get_user_model
 
@@ -195,3 +196,63 @@ class UserMarketingGroupDetailsView(APIView):
 
     def put(self, request, *args, **kwargs):
         return Response({})
+
+
+class ClubPriceRegistrationApiView(APIView):
+
+    def post(self, request, *args, **kwargs):
+        email = request.data.get('email', None)
+        model = request.data.get('model', None)
+        print(model)
+
+        if email is not None:
+            try:
+                user = User.objects.get(
+                    email=email
+                )
+            except ObjectDoesNotExist:
+                user = None
+
+            if user is not None:
+
+                notify_existing_user(pk=user.id, model=model)
+
+                return Response(
+                    status=status.HTTP_200_OK
+                )
+
+
+            else:
+                group = None
+                try:
+                    group = UserMarketingGroup.objects.get(
+                        name='Зарегестрированные'
+                    )
+                except ObjectDoesNotExist:
+                    pass
+
+                password = User.objects.make_random_password()
+                
+                user = User(
+                    username=email,
+                    email=email,
+                    marketing_group=group
+                )
+                user.set_password(password)
+                
+                try:
+                    user.full_clean()
+                    user.save()
+                    notify_created_user.delay(pk=user.pk, model=model, password=password)
+                    return Response(
+                        status=status.HTTP_200_OK
+                    )
+                except:
+                    return Response(
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
+
+        else:
+            return Response(
+                status=status.HTTP_400_BAD_REQUEST
+            )

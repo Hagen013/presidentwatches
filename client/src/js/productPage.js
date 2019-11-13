@@ -1,10 +1,14 @@
 import store from '@/store/index.js';
 import locationStore from '@/store/location/index.js'
 import favoritesStore from '@/store/favorites/index.js'
+import api from '@/api'
 import geoApi from '@/api/geo'
 import { priceFilter, timeFilter } from '@/utils/filters.js'
 import toggleSidebar from '@/utils/toggleSidebar.js'
 import { debounce } from 'debounce'
+import validateEmail from '@/utils/validateEmail'
+
+import ToolTip from '@/components/ToolTip.js'
 
 import FastBuy from '@/components/FastBuy.js';
 
@@ -295,12 +299,50 @@ $(document).ready(function() {
         }
     })
 
-    $('.adv-link').hover(function() {
-        $(this).parent().find('.tip').css('display', 'block')
+    $('#club-price-button').click(function() {
+        $('#club-price-modal').css('display', 'block')
     })
 
-    $('.adv-link').mouseout(debounce(function() {
-        $(this).parent().find('.tip').css('display', 'none');
-    }, 1000))
+    $('#club-price-placeholder, #club-price-close').click(function() {
+        $('#club-price-modal').css('display', 'none');
+    })
+
+
+    $('#club-price-submit').click(function() {
+        let emailValue = $('#club-price-input').val();
+        console.log(PRODUCT.model);
+        if (validateEmail(emailValue)) {
+            let data = {
+                'email': emailValue,
+                'model': PRODUCT.model
+            }
+            api.post('/users/get-club-price/', data).then(
+                response => {
+                    $('#club-price-input').css('visibility', 'hidden');
+                    $('#club-price-submit').css('visibility', 'hidden');
+                    $('#club-price-messages').html(
+                    `
+                    <span class="success bold">Проверьте электронную почту, мы прислали Вам письмо!<span>
+                    `
+                    )
+                },
+                response => {
+
+                }
+            )
+        } else {
+            $('#club-price-messages').html(
+            `
+            <span class="red">Укажите подходящий адрес<span>
+            `
+            )
+        }
+    })
+
+    let items = $('.tip-item');
+
+    for (let i=0; i<items.length; i++) {
+        let tip = new ToolTip(items[i]);
+    }
 
 })

@@ -9,7 +9,9 @@ from .views import (
     UserAftercheckView,
     LogoutView,
     UserEmailVerificationView,
-    UserPasswordConfirmationView
+    UserPasswordConfirmationView,
+    UserClubPriceExistingView,
+    UserClubPriceCreatedView,
 )
 
 
@@ -23,5 +25,7 @@ urlpatterns = [
     path('profile/#payments', ProfileView.as_view(), name='profile-payments'),
     path('aftercheck/<str:uuid>/', UserAftercheckView.as_view(), name='aftercheck'),
     path('verification/<str:uuid>/', UserEmailVerificationView.as_view(), name='verification'),
-    path('password-reset/<str:uuid>/', UserPasswordConfirmationView.as_view(), name='password-reset')
+    path('password-reset/<str:uuid>/', UserPasswordConfirmationView.as_view(), name='password-reset'),
+    path('club-price-сreated/<str:uuid>/', UserClubPriceCreatedView.as_view(), name='club-price-created'),
+    path('club-price-existing/<str:uuid>/', UserClubPriceExistingView.as_view(), name='club-price-existing')
 ]

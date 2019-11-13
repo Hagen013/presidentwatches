@@ -36,8 +36,22 @@
                         <div class="product-front__main-img-wrap">
                             <div class="product-front-badges">
                             {% if product.is_sale %}
-                                <div class="product-badge product-badge-sale">
-                                -{{product.sale_percentage}}%
+                                <div class="badge badge_red">
+                                СКИДКА -{{product.sale_percentage}}%
+                                </div>
+                            {% elif product.has_club_price %}
+                                <div class="badge badge_blue">
+                                КЛУБНАЯ ЦЕНА
+                                </div>
+                            {% endif %}
+                            {% if product.is_bestseller %}
+                                <div class="badge badge_orange">
+                                ХИТ
+                                </div>
+                            {% endif %}
+                            {% if product.free_delivery %}
+                                <div class="badge badge_green">
+                                БЕСПЛАТНАЯ ДОСТАВКА
                                 </div>
                             {% endif %}
                             </div>
@@ -121,8 +135,8 @@
                                     {{product.old_price}}
                                 </div>
                             </div>
-                            {% elif request.user.is_authenticated %}
-                                {% if product.club_price < product.price %}
+                            {% elif product.has_club_price %}
+                                {% if request.user.is_authenticated %}
                                 <div class="product-main__price-area row">
                                     <div class="price product-main__price">
                                         {{format_price(product.club_price)}}
@@ -135,6 +149,9 @@
                                 <div class="product-main__price-area row">
                                     <div class="price product-main__price">
                                         {{format_price(product.price)}}
+                                    </div>
+                                    <div class="product-main__club-auth" id="club-price-button">
+                                        Узнать цену клуба
                                     </div>
                                 </div>
                                 {% endif %}
@@ -208,38 +225,41 @@
                                     Наши плюсы
                                 </div>
                                 <ul class="list list_mini">
-                                    <li class="list-item plus-item">
+                                    <li class="list-item plus-item tip-item">
                                     —
-                                        <a class="link link_dotted adv-link" href="#">
+                                        <a class="link link_dotted tip-link" href="#">
                                         Легко вернуть часы в течение 14 дней!
                                         </a>
                                         <div class="tip">
-                                        Просто не понравился товар? Вы можете вернуть его в течение 30 дней из любого уголка России, узнать подробнее вы можете по телефону 8-800-777-60-72
+                                        Просто не понравился товар? Вы можете вернуть его в течение 14 дней из любого уголка России, узнать подробнее вы можете по телефону 8-800-777-60-72
                                         </div>
                                     </li>
-                                    <li class="list-item plus-item adv-link">
+                                    <li class="list-item plus-item tip-item">
                                     —
-                                        <a class="link link_dotted" href="#">
+                                        <a class="link link_dotted tip-link" href="#">
                                         Сперва примерьте, потом платите!
                                         </a>
-                                        <div class="tip">
+                                        <div class="tip tip-1">
+                                        При доставке курьером или на пункте выдачи вы сможете осмотреть товар, проверить его качество и комплектность и лишь потом решить, оплачивать его или нет
                                         </div>
                                     </li>
-                                    <li class="list-item plus-item adv-link">
+                                    <li class="list-item plus-item tip-item">
                                     —
-                                        <a class="link link_dotted" href="#">
+                                        <a class="link link_dotted tip-link" href="#">
                                         Только оригинальные часы!
                                         </a>
-                                        <div class="tip">
+                                        <div class="tip tip-2">
+                                        Мы работаем на часовом рынке уже более 6 лет, и у нас вы найдете только оригинальные часы, мы НЕ торгуем копиями или подделками
                                         </div>
                                     </li>
                                     {% if product.free_delivery %}
-                                    <li class="list-item plus-item adv-link">
+                                    <li class="list-item plus-item tip-item">
                                     —
-                                        <a class="link link_dotted">
+                                        <a class="link link_dotted tip-link" href="#">
                                         Бесплатная доставка в любой уголок России!
                                         </a>
-                                        <div class="tip">
+                                        <div class="tip tip-3">
+                                        На данный товар есть бесплатная доставка в любую точку России
                                         </div>
                                     </li>
                                     {% endif %}
@@ -253,14 +273,14 @@
                                             — <a class="link link_dotted header-auth" href="#">Зарегистрируйтесь</a>, чтобы узнать клубную цену
                                         </li>
                                             {% if sale_notes|length > 0 %}
-                                            <li class="list-item plus-item red">
+                                            <li class="list-item plus-item list-item_red">
                                                 — {{sale_notes}}
                                             </li>
                                             {% endif %}
                                         {% endif %}
                                     {% else %}
                                         {% if sale_notes|length > 0 %}
-                                        <li class="list-item plus-item red link">
+                                        <li class="list-item plus-item list-item_red link">
                                             — {{sale_notes}}
                                         </li>
                                         {% endif %}
@@ -404,29 +424,6 @@
                                     <a class="link link_grey" href="tel:88007776072">Сообщите нам</a>
                                 </div>
                             </div>
-                            {#<div class="content-block">
-                                <div class="brand-info">
-                                    <div class="brand-info-heading row">
-                                        <div class="brand-info-title">
-                                            <p>О бренде</p>
-                                            <p>CASIO</p>
-                                        </div>
-                                        <div class="brand-info-img-area">
-                                            <div class="brand-info-img-wrap">
-                                                <img class="brand-info-img">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="brand-info-content">
-                                        <p>
-                                        Вдохновением для нашей компании пришли из пионерских человек по имени Ричард Брейтуэйт, который жил в 1600-х годов. Он был писателем, поэтом и провидцем. Он изменил общественную динамику в 1631 году, когда опубликовал "английского джентльмена", первое документальное упоминание о джентльмене и благородной женщине, и руководство о том, как вести себя с почетными манерами и уважением ко всем, независимо от социального класса.
-                                        </p>
-                                        <p>
-                                        В нашей оценке Брейтуэйт наследие, наши часы создаются в соответствии с этими признаками; честность, порядочность и прозрачность. Что делает нас единственным в мире прозрачным часовщиком.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>#}
                         </div>
                     </div>
                     <div class="panel">
@@ -908,6 +905,34 @@
             </div>
         </div>
         <div class="modal-placeholder">
+        </div>
+    </div>
+
+
+    <div class="modal club-price-modal" id="club-price-modal">
+        <div class="modal-container club-price-modal-container">
+            <div class="modal-title bold club-price-modal-title">
+                Клубная цена
+            </div>
+            <div class="modal-close control-button" id="club-price-close">
+                <i class="icon icon_close">
+                </i>
+            </div>
+            <div class="input-box club-price-input">
+                <input class="input" type="email" placeholder="Ваш email" id="club-price-input">
+            </div>
+            <div class="club-price-modal-text">
+            Укажите свой адрес электронной почты и мы вышлем вам ссылку для окончания регистрации, после чего вы получите доступ к уникальным для Вас ценовым предложениям, включая этот товар.
+            </div>
+            <div class="club-price-messages" id="club-price-messages">
+            </div>
+            <div class="club-price-buttons">
+                <div class="club-price-button button button_accent button_big" id="club-price-submit">
+                ОТПРАВИТЬ
+                </div>
+            </div>
+        </div>
+        <div class="modal-placeholder" id="club-price-placeholder">
         </div>
     </div>
 {% endblock modals %}

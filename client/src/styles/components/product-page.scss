@@ -27,28 +27,6 @@
     }
 }
 
-.product-badge {
-    display: inline-block;
-    margin-right: 10px;
-    text-align: center;
-    height: 26px;
-    line-height: 26px;
-    padding: 0px 10px;
-    color: white;
-    font-weight: 600;
-    font-size: 14px;
-    @include mq($from: tablet) {
-        padding: 0px 20px;
-        font-size: 18px;
-        line-height: 36px;
-        height: 36px;
-    }
-}
-
-.product-badge-sale {
-    background: $red;
-}
-
 .product-main__old-price {
     float: left;
     font-size: 18px;
@@ -117,8 +95,10 @@
     will-change: opacity;
     overflow: hidden;
     padding: 10px 0px 56px 0px;
+    padding-top: 40px;
     @include mq($from: tablet) {
         padding: 0px;
+        padding-top: 40px;
         padding-right: 59px;
     }
     @include mq($from: desktop) {
@@ -430,12 +410,18 @@
 
 .product-advantages {
     position: relative;
-    background: $light-grey;
-    border-radius: 4px;
-    padding: 10px;
     .link {
-        color: #4c4dc1;
-        border-bottom: 1px dotted #4c4dc1; 
+        color: black;
+        border: none;
+    }
+    @include mq($from: tablet) {
+        background: #f9f9f9;
+        border-radius: 4px;
+        padding: 10px;
+        .link {
+            color: #4c4dc1;
+            border-bottom: 1px dotted #4c4dc1; 
+        }
     }
 }
 
@@ -465,4 +451,21 @@
         background: white;
         transform: rotate(45deg);
     }
+}
+
+.tip-1 {
+
+}
+
+.tip-2 {
+    top: 40px;
+}
+
+.tip-3 {
+    top: 70px;
+}
+
+.list-item_red {
+    color: $red !important;
+    border-bottom: none !important;
 }
