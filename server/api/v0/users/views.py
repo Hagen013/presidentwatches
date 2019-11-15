@@ -202,8 +202,7 @@ class ClubPriceRegistrationApiView(APIView):
 
     def post(self, request, *args, **kwargs):
         email = request.data.get('email', None)
-        model = request.data.get('model', None)
-        print(model)
+        pk = request.data.get('pk', None)
 
         if email is not None:
             try:
@@ -215,7 +214,7 @@ class ClubPriceRegistrationApiView(APIView):
 
             if user is not None:
 
-                notify_existing_user.delay(pk=user.id, model=model)
+                notify_existing_user.delay(pk=user.id, pk=pk)
 
                 return Response(
                     status=status.HTTP_200_OK
@@ -243,7 +242,7 @@ class ClubPriceRegistrationApiView(APIView):
                 try:
                     user.full_clean()
                     user.save()
-                    notify_created_user.delay(pk=user.pk, model=model, password=password)
+                    notify_created_user.delay(pk=user.pk, pk=pk, password=password)
                     return Response(
                         status=status.HTTP_200_OK
                     )

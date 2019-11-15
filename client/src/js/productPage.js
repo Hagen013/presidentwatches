@@ -324,7 +324,8 @@ $(document).ready(function() {
                     `
                     <span class="success bold">Проверьте электронную почту, мы прислали Вам письмо!<span>
                     `
-                    )
+                    );
+                    (window["rrApiOnReady"] = window["rrApiOnReady"] || []).push(function() { rrApi.setEmail(emailValue);});
                 },
                 response => {
 

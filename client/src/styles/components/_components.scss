@@ -485,3 +485,9 @@
     padding: 20px 0px;
     border-top: 1px solid $light-grey;
 }
+
+.hl-1 {
+    @include mq($from: desktop) {
+        display: none;
+    }
+}
