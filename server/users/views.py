@@ -283,3 +283,8 @@ class UserClubPriceCreatedView(TemplateView, UserUUIDMixin):
         self.cart.login_sync()
         url = '/watches/{slug}/'.format(slug=slug)
         return redirect(url)
+
+
+class UserTestView(TemplateView):
+
+    template_name = 'mail/club-price.html'

@@ -28,7 +28,7 @@
                     <tr class="table-row" v-for="brand in brands" :key="brand.id">
                         <td class="table-cell">
                             <div class="table-container">
-                            {{brand.value|brandFilter}}
+                            {{brand.value|brandFilter}} {{brand.products_count}}
                             </div>
                         </td>
                         <td class="table-cell" v-for="group in groups" :key="group.id">
@@ -95,7 +95,7 @@ export default {
             
         },
         getBrands() {
-            request.get('/eav/attributes/?key=vendor').then(
+            request.get('/eav/counts/?attribute__key=vendor').then(
                 response => {
                     this.handleSuccessfulBrandsResponse(response);
                 },
@@ -105,11 +105,11 @@ export default {
             )
         },
         handleSuccessfulBrandsResponse(response) {
-            this.brands = response.data.results[0].value_set.sort(function(a,b) {
-                if(a.value < b.value) { return -1; }
-                if(a.value > b.value) { return 1; }
-                return 0;
-            });
+            this.brands = response.data.results.sort(function(a,b) {
+                if(a.products_count < b.products_count) { return 1; }
+                if(a.products_count > b.products_count) { return -1; }
+                return 0;  
+            })
             this.brandsReceived = true;
         },
         handleFailedBrandsResponse(response) {
@@ -118,6 +118,7 @@ export default {
         processData() {
             this.brands.unshift({
                 'value': 'all',
+                'products_count': 0,
             })
             for (let i=0; i<this.brands.length; i++) {
                 this.brands[i].sales = {};
@@ -127,7 +128,7 @@ export default {
                     if (groupSale === undefined) {
                         groupSale = 0.00;
                     }
-                    this.brands[i].sales[this.groups[y].id] = groupSale * 100;
+                    this.brands[i].sales[this.groups[y].id] = Math.round(groupSale * 100);
                 }
             }
             this.ready = true;

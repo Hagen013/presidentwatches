@@ -145,7 +145,30 @@ class AttributeValueSerializer(serializers.ModelSerializer):
             'order',
             'is_hidden',
             'created_at',
-            'modified_at'
+            'modified_at',
+        )
+
+
+class AttributeValueProductsCountSerializer(serializers.ModelSerializer):
+    """
+    Serializer для Value из EAV, отображение Attribute предусмотрено
+    в виде ID
+    """
+
+    products_count = serializers.IntegerField()
+
+    class Meta:
+        model = AttributeValue
+        fields = (
+            'id',
+            'attribute',
+            'datatype',
+            'value',
+            'order',
+            'is_hidden',
+            'created_at',
+            'modified_at',
+            'products_count'
         )
 
 
