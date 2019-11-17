@@ -767,7 +767,7 @@ export default class CartForm {
                     value="pickup"/>
                 <label for="radio-3" class="flex-column">
                     <div class="rarefied">
-                        САМОВЫВОЗ
+                        ИЗ МАГАЗИНА
                     </div>
                     <div class="grey">
                     завтра/послезавтра
