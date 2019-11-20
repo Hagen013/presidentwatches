@@ -96,6 +96,13 @@ MIDDLEWARE = [
 # APPLICATIONS CONFIGURATION END
 
 
+# SESSIONS CONFIGURATION
+# ------------------------------------------------------------------------------
+SESSION_COOKIE_AGE = 4838400
+# ------------------------------------------------------------------------------
+# SESSIONS CONFIGURATION END
+
+
 # TEMPLATES CONFIGURATION
 # ------------------------------------------------------------------------------
 TEMPLATES = [
