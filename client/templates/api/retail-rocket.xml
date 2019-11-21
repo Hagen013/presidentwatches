@@ -31,6 +31,11 @@
 
             <url>{{base_url}}{{p.absolute_url}}</url>
             <price>{{p.price}}</price>
+            {% for price in club_prices(p) %}
+            <price_{{loop.index}}>
+            {{price}}
+            </price>
+            {% endfor %}
             <oldprice>{{p.rr_old_price}}</oldprice>
             <currencyId>RUR</currencyId>
             {% with nodes = get_nodes_by_product(categories, p) %}

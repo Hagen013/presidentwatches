@@ -744,6 +744,9 @@ export default class CartForm {
                     <div class="grey">
                         ${timeFilter(self.deliveryData['curier']['time_min'], self.deliveryData['curier']['time_max'])}
                     </div>
+                    <div class="grey">
+                        <span class="price">${self.deliveryData['curier']['price']}</span>
+                    </div>
                 </label>
             </li>
             <li class="radio-group-container">
@@ -758,6 +761,9 @@ export default class CartForm {
                     <div class="grey">
                         ${timeFilter(self.deliveryData['delivery_point']['time_min'], self.deliveryData['delivery_point']['time_max'])}
                     </div>
+                    <div class="grey">
+                        <span class="price">${self.deliveryData['delivery_point']['price']}</span>
+                    </div>
                 </label>
             </li>
             <li class="radio-group-container">
@@ -771,6 +777,9 @@ export default class CartForm {
                     </div>
                     <div class="grey">
                     завтра/послезавтра
+                    </div>
+                    <div class="grey">
+                        Бесплатно
                     </div>
                 </label>
             </li>
@@ -798,6 +807,9 @@ export default class CartForm {
                         </div>
                         <div class="grey">
                             ${timeFilter(self.deliveryData['curier']['time_min'], self.deliveryData['curier']['time_max'])}
+                        </div>
+                        <div class="grey">
+                            <span class="price">${self.deliveryData['curier']['price']}</span>
                         </div>
                     </label>
                 </li>
@@ -840,6 +852,9 @@ export default class CartForm {
                         <div class="grey">
                             ${timeFilter(self.deliveryData['delivery_point']['time_min'], self.deliveryData['delivery_point']['time_max'])}
                         </div>
+                        <div class="grey">
+                            <span class="price">${self.deliveryData['delivery_point']['price']}</span>
+                        </div>
                     </label>
                 </li>
                 `
@@ -881,6 +896,9 @@ export default class CartForm {
                         <div class="grey">
                             от 5 до 7 дней
                         </div>
+                        <div class="grey">
+                            <span class="price">300</span>
+                        </div>
                     </label>
                 </li>
                 `
@@ -898,6 +916,9 @@ export default class CartForm {
                         </div>
                         <div class="grey">
                             от 5 до 7 дней
+                        </div>
+                        <div class="grey">
+                            <span class="price">300</span>
                         </div>
                     </label>
                 </li>

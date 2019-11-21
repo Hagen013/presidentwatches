@@ -74,6 +74,9 @@
     @include mq($from: tablet) {
         margin-left: 118px;
     }
+    a {
+        text-decoration: none;
+    }
 }
 
 .cart-item__model {

@@ -9,6 +9,7 @@ from celery.signals import beat_init
 from celery.schedules import crontab
 from config.celery import app
 
+from users.models import UserMarketingGroup as Group
 from shop.models import Attribute
 from shop.models import CategoryPage as Node
 from shop.models import ProductPage as Product
@@ -42,9 +43,25 @@ def sorting_function(node):
         order = 0
     return (node._depth, order)
 
+
+def club_prices(groups, instance):
+    prices = []
+
+    for group in groups:
+        sale = group.sales.get(instance.brand, None)
+        if sale is not None:
+            price = round(((1-sale) * instance.price))
+        else:
+            price = instance.price
+        prices.append(price)
+
+    return prices
+
+
 @app.task
 def generate_yml_file():
 
+    groups = Group.objects.all().order_by('id')
     attr_names = ['Тип часов', 'Цвет']
     gender_values = Value.objects.filter(attribute__name__in=attr_names)
 
@@ -96,7 +113,8 @@ def generate_yml_file():
         'categories': nodes,
         'qs': qs,
         'products': products,
-        'get_nodes_by_product': lambda qs, product: get_nodes_by_product(qs, product)
+        'get_nodes_by_product': lambda qs, product: get_nodes_by_product(qs, product),
+        'club_prices': lambda instance: club_prices(groups=groups, instance=instance)
     }
 
     xml_raw = render_to_string(

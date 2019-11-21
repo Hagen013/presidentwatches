@@ -34,14 +34,14 @@
                             </div>
                             <div class="cart-item__info">
                                 <div class="cart-item__model">
-                                    {{ item['model'] }}
+                                    <a href="/watches/{{item['slug']}}/">{{ item['model'] }}</a>
                                 </div>
                                 <div class="cart-item__name">
                                     <span class="cart-item__brand">
-                                        {{ item['brand'] }}
+                                        <a href="/watches/{{item['slug']}}/">{{ item['brand'] }}</a>
                                     </span>
                                     <span class="cart-item__series">
-                                        {{ item['series'] }}
+                                        <a href="/watches/{{item['slug']}}/">{{ item['series'] }}</a>
                                     </span>
                                 </div>
                                 <div class="cart-item__controls row">
@@ -198,6 +198,9 @@
                                         <div class="grey">
                                             {{time_filter(delivery_data['curier']['time_min'], delivery_data['curier']['time_max'])}}
                                         </div>
+                                        <div class="grey">
+                                            <span class="price">{{delivery_data['curier']['price']}}</span>
+                                        </div>
                                     </label>
                                     {% else %}
                                     <input type="radio"
@@ -228,6 +231,9 @@
                                         </div>
                                         <div class="grey">
                                             {{time_filter(delivery_data['delivery_point']['time_min'], delivery_data['delivery_point']['time_max'])}}
+                                        </div>
+                                        <div class="grey">
+                                            <span class="price">{{delivery_data['delivery_point']['price']}}</span>
                                         </div>
                                     </label>
                                 </li>
@@ -262,6 +268,9 @@
                                         <div class="grey">
                                         завтра/послезавтра
                                         </div>
+                                        <div class="grey">
+                                            Бесплатно
+                                        </div>
                                     </label>
                                 </li>
                                 {% else %}
@@ -286,6 +295,9 @@
                                         </div>
                                         <div class="grey">
                                             от 5 до 7 дней
+                                        </div>
+                                        <div class="grey">
+                                            <span class="price">300</span>
                                         </div>
                                     </label>
                                 </li>

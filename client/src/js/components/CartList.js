@@ -103,21 +103,29 @@ export default class sidebarCart extends Component {
             return `
             <li class="cart-item" data-pk=${item['pk']} id="cart-item-${item['pk']}">
                 <div class="cart-item__img-wrap">
-                    <img class="cart-item__img"
-                        src="${item['image']}"
-                        alt="${item['model']}"
-                    >
+                    <a href="/shop/watches/${item['slug']}/">
+                        <img class="cart-item__img"
+                            src="${item['image']}"
+                            alt="${item['model']}"
+                        >
+                    </a>
                 </div>
                 <div class="cart-item__info">
                     <div class="cart-item__model">
-                        ${item['model']}
+                        <a href="/shop/watches/${item['slug']}/">
+                            ${item['model']}
+                        </a>
                     </div>
                     <div class="cart-item__name">
                         <span class="cart-item__brand">
-                            ${item['brand']}
+                            <a href="/shop/watches/${item['slug']}/">
+                                ${item['brand']}
+                            </a>
                         </span>
                         <span class="cart-item__series">
-                            ${item['series']}
+                            <a href="/shop/watches/${item['slug']}/">
+                                ${item['series']}
+                            </a>
                         </span>
                     </div>
                     <div class="cart-item__controls row">
