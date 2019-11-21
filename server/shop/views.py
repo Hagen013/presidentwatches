@@ -337,7 +337,10 @@ class ProductPageView(TemplateView):
         
         if self.request.user.is_authenticated:
             self.instance.set_club_price(self.request.user.marketing_group)
-            context['club_sale'] = round(((self.instance.club_price - self.instance.price) / self.instance.price) * 100)
+            if self.instance.price > 0:
+                context['club_sale'] = round(((self.instance.club_price - self.instance.price) / self.instance.price) * 100)
+            else:
+                context['club_sale'] = 0
 
         context[self.instance_context_name] = self.instance
         context['category'] = CategoryPage.objects.get_by_product(self.instance)

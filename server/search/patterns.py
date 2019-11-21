@@ -19,7 +19,10 @@ search_body_pattern = {
                     },
                     "boost_mode": "multiply"
                 }
-            }
+            },
+            "filter": [
+                { "term": {"is_in_stock": "true"} }
+            ]
         }
     }
 }

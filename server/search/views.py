@@ -1,11 +1,12 @@
 from itertools import chain
 
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 from django.shortcuts import redirect
 from django.core.exceptions import ObjectDoesNotExist
 
 from digg_paginator import DiggPaginator
 
+from core.viewmixins import DiggPaginatorViewMixin
 from config.es_client import es_client
 from shop.models import ProductPage, CategoryPage
 from .patterns import generate_from_pattern
@@ -105,7 +106,7 @@ class ElasticsearchListView(TemplateView):
         qs_category = CategoryPage.objects.filter(id__in=categories_ids)
 
         qs = list(chain(qs_product, qs_category))
-
+        
         # Здесь сделать сортировку по релевантности
 
         return qs
@@ -171,7 +172,7 @@ class CustomSearchView(ElasticsearchListView):
 
     template_name = 'pages/search.html'
     index = 'store'
-    doc_type = 'category,product'
+    doc_type = 'product'
     strict_mode = False
 
     def get_search_body(self):
