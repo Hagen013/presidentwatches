@@ -12,7 +12,8 @@ from .views import (
     UserPasswordConfirmationView,
     UserClubPriceExistingView,
     UserClubPriceCreatedView,
-    UserTestView
+    UserTestView,
+    UserMailingView
 )
 
 
@@ -30,4 +31,5 @@ urlpatterns = [
     path('club-price-сreated/<str:uuid>/', UserClubPriceCreatedView.as_view(), name='club-price-created'),
     path('club-price-existing/<str:uuid>/', UserClubPriceExistingView.as_view(), name='club-price-existing'),
     path('test/', UserTestView.as_view(), name='club-price-test'),
+    path('mailing/<str:uuid>/', UserMailingView.as_view(), name='mailing')
 ]

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>    
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+        <meta name="author"    lang="ru" content="www.presidentwatches.ru"/>
+        <meta name="copyright" lang="ru" content="© 2018 Интернет-магазин ПрезидентВотчес"/>
+
+        {% block meta %}
+        <title></title>
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        {% endblock meta %}
+
+        {% block open_graph %}
+        {% endblock open_graph %}
+
+        {% block open_graph_image %}
+        {% endblock open_graph_image %}
+
+        {% block favicons %}
+        {% endblock favicons %}
+
+        {% block css %}
+        <link rel="stylesheet" href="{{ static('css/styles.css') }}" />
+        <link rel="stylesheet" href="{{ static('css/error.css') }}" />
+        {% endblock css %}
+
+        {% block script_head %}
+        <script type="text/javascript">
+        if (!!window.performance && window.performance.navigation.type == 2)
+        {
+            window.location.reload();
+        }
+        </script>
+        <script type="text/javascript">
+            var rrPartnerId = "5cd035df97a52530209d43f8";       
+            var rrApi = {}; 
+            var rrApiOnReady = rrApiOnReady || [];
+            rrApi.addToBasket = rrApi.order = rrApi.categoryView = rrApi.view = 
+                rrApi.recomMouseDown = rrApi.recomAddToCart = function() {};
+            (function(d) {
+                var ref = d.getElementsByTagName('script')[0];
+                var apiJs, apiJsId = 'rrApi-jssdk';
+                if (d.getElementById(apiJsId)) return;
+                apiJs = d.createElement('script');
+                apiJs.id = apiJsId;
+                apiJs.async = true;
+                apiJs.src = "//cdn.retailrocket.ru/content/javascript/tracking.js";
+                ref.parentNode.insertBefore(apiJs, ref);
+            }(document));
+        </script>
+        {% endblock script_head %}
+    </head>
+    <body class="page">
+        <div class="error error-404">
+
+            <div class="error-heading">
+                <div class="error-logo">
+                    <div class="error-logo-image">
+                        <img class="logo" src="{{ static('img/logo/logo_small.svg') }}">
+                    </div>
+                    <div class="error-logo-caption">
+                    Магазин наручных часов
+                    </div>
+                </div>
+                <div class="error-socials error-socials-2">
+                    <a class="control-button" href="https://www.facebook.com/pwatches" target="_blank">
+                        <i class="icon icon_facebook">
+                        </i>
+                    </a>
+
+                    <a class="control-button" href="https://www.instagram.com/presidentwatchesru/" target="_blank">
+                        <i class="icon icon_instagram">
+                        </i>
+                    </a>
+
+                    <a class="control-button">
+                        <i class="icon icon_youtube">
+                        </i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="error-body">
+
+                <div class="error-content-wrap">
+
+                    <div class="title">
+                    Спасибо за регистрацию!
+                    </div>
+                
+                    <div class="error-content">
+                        <div class="error-socials error-socials-1">
+                            <a class="control-button" href="https://www.facebook.com/pwatches" target="_blank">
+                                <i class="icon icon_facebook">
+                                </i>
+                            </a>
+                            <a class="control-button" href="https://www.instagram.com/presidentwatchesru/" target="_blank">
+                                <i class="icon icon_instagram">
+                                </i>
+                            </a>
+                            <a class="control-button">
+                                <i class="icon icon_youtube">
+                                </i>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="error-footer">
+                <div class="error-socials">
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

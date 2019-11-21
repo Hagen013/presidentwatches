@@ -288,3 +288,31 @@ class UserClubPriceCreatedView(TemplateView, UserUUIDMixin):
 class UserTestView(TemplateView):
 
     template_name = 'mail/club-price.html'
+
+
+class UserMailingView(TemplateView):
+
+    template_name = 'pages/mailing.html'
+
+    def get_user(self, uuid):
+        try:
+            return User.objects.get(
+                uuid=uuid
+            )
+        except ObjectDoesNotExist:
+            raise Http404
+
+    def get(self, request, uuid, *args, **kwargs):
+        user = self.get_user(uuid)
+        user.verified = True
+        user.save()
+        self.user = user
+        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+        self.cart = Cart(request)
+        self.cart.login_sync()
+        return super(UserMailingView, self).get(request, *args, **kwargs)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(UserMailingView, self).get_context_data(*args, **kwargs)
+        context['user'] = self.user
+        return context
