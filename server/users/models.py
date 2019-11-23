@@ -1,4 +1,5 @@
 import uuid
+import json
 
 from django.db import models
 from django.contrib.auth.models import (
@@ -69,6 +70,14 @@ class UserMarketingGroup(models.Model):
     userscore_threshold = models.PositiveIntegerField(
         default=1000
     )
+
+    @property
+    def sales_json(self, *args, **kwargs):
+        sales = self.sales
+        new_sales = {}
+        for key, value in sales.items():
+            new_sales[key] = value
+        return json.dumps(new_sales)
 
     def clean(self, *args, **kwargs):
         for key, value in self.sales.items():

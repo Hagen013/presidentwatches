@@ -985,6 +985,13 @@
         {% endstrip %}
         {% endblock modals %}
 
+        <script type="text/javascript">
+        {% if request.user.is_authenticated %}
+        var GROUP = "{{request.user.marketing_group.sales_json}}";
+        {% else %}
+        var GROUP = null;
+        {% endif %}
+        </script>
 
         {% block javascript %}
         <script src="{{ static('js/common.js') }}"></script>

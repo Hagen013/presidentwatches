@@ -353,4 +353,56 @@ $(document).ready(function() {
         favoritesStore.dispatch('addToFavorites', {pk: pk});
     }
 
+
+    let groupSales = {}
+    let previousCount = 0;
+    let iterationCount = 0;
+    let rrTimer = null;
+
+    if (GROUP !== null) {
+        groupSales = GROUP.replace(/&#34;/g, '"').replace(/&amp;/g, '&');
+        groupSales = JSON.parse(groupSales);
+    } else {
+
+    }
+
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ')
+    }
+
+    function calculateClubPrices() {
+        let items = $('.retailrocket-item');
+
+        for (let i=0; i<items.length; i++) {
+            let $element = $(items[i]);
+            let brand = $element.find('.retailrocket-item__brand').text().replace(/^\s+|\s+$/g, '');;
+
+            let sale = groupSales[brand];
+            if (sale !== undefined) {
+                let $priceSelector = $element.find('.retailrocket-item__price-value');
+                if (!$priceSelector.hasClass('red')) {
+                    let price = $priceSelector.text().replace(' ', '')
+                    price = parseInt(price);
+                    let newPrice = formatNumber(String(Math.round(price * (1 - sale))));
+                    $priceSelector.text(newPrice);
+                }
+            }
+        }
+    }
+
+    rrTimer = setInterval(() => {
+        let items = $('.retailrocket-item');
+        let itemsCount = items.length;
+        if (iterationCount > 5) {
+            clearTimeout(rrTimer);
+            calculateClubPrices();
+        }
+        if ( (previousCount === itemsCount) && (previousCount > 0) ) {
+            clearInterval(rrTimer);
+            calculateClubPrices()
+        }
+        previousCount = itemsCount;
+        iterationCount += 1;
+    }, 500)
+
 })
