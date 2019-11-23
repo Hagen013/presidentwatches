@@ -263,8 +263,12 @@
                                 </div>
                                 {% endif %}
                                 {% if product.show_sale %}
-                                {% else %}
-                                    {% if product.has_club_price %}
+                                {% elif product.has_club_price %}
+                                <div class="badge badge_blue">
+                                КЛУБНАЯ ЦЕНА
+                                </div>
+                                {% elif request.user.is_authenticated %}
+                                    {% if product.club_price < product.price %}
                                     <div class="badge badge_blue">
                                     КЛУБНАЯ ЦЕНА
                                     </div>
@@ -341,6 +345,15 @@
                                             {{format_price(product.price)}}
                                         </div>
                                         {% endif %}
+                                    {% elif product.club_price < product.price %}
+                                    <div class="product-card__price price price_blue">
+                                        {{format_price(product.club_price)}}
+                                    </div>
+                                    <div class="product-card__old-price-wrap">
+                                        <div class="product-card__old-price price price_old">
+                                            {{format_price(product.price)}}
+                                        </div>
+                                    </div>
                                     {% else %}
                                     <div class="product-card__price price">
                                         {{format_price(product.price)}}

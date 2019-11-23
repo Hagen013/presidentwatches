@@ -155,6 +155,17 @@
                                     </div>
                                 </div>
                                 {% endif %}
+                            {% elif request.user.is_authenticated %}
+                                {% if product.club_price < product.price %}
+                                <div class="product-main__price-area row">
+                                    <div class="price product-main__price">
+                                        {{format_price(product.club_price)}}
+                                    </div>
+                                    <div class="price_old price product-main__old-price">
+                                        {{product.price}}
+                                    </div>
+                                </div>
+                                {% endif %}
                             {% else %}
                             <div class="product-main__price-area row">
                                 <div class="price product-main__price">

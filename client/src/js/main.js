@@ -353,7 +353,7 @@ $(document).ready(function() {
         favoritesStore.dispatch('addToFavorites', {pk: pk});
     }
 
-
+    // RR rendering stuff
     let groupSales = {}
     let previousCount = 0;
     let iterationCount = 0;
@@ -404,5 +404,6 @@ $(document).ready(function() {
         previousCount = itemsCount;
         iterationCount += 1;
     }, 500)
+    ///
 
 })
