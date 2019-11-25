@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie'
 import store from '@/store/facetes/index.js'
 import state from '@/state/index.js'
 import api from '@/api/index.js'
@@ -162,6 +163,15 @@ $(document).ready(function() {
             document.location.search = query;
         }
     })
+
+    let rrEmailValue = getParameterByName('rr_email');
+    if (rrEmailValue !== null) {
+        let cookieValue = Cookies.get('rr_email2');
+        if (cookieValue === undefined) {
+            (window["rrApiOnReady"] = window["rrApiOnReady"] || []).push(function() { rrApi.setEmail(rrEmailValue);});
+            Cookies.set('rr_email2', rrEmailValue);
+        }
+    }
     
 })
 

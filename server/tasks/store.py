@@ -26,7 +26,6 @@ def sync_store():
         params = {
             'offset': 0,
             'limit': limit,
-            'store.id': STORE_ID,
         }
         page_num = 0
         while True:

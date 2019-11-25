@@ -12,6 +12,7 @@ from django.http import Http404
 from tasks.users import generate_verification_mail
 
 from cart.cart import Cart
+from shop.models import CategoryPage as Node
 from core.utils import custom_redirect_v2
 
 User = get_user_model()
@@ -285,11 +286,6 @@ class UserClubPriceCreatedView(TemplateView, UserUUIDMixin):
         return redirect(url)
 
 
-class UserTestView(TemplateView):
-
-    template_name = 'mail/club-price.html'
-
-
 class UserMailingView(TemplateView):
 
     template_name = 'pages/mailing.html'
@@ -316,3 +312,66 @@ class UserMailingView(TemplateView):
         context = super(UserMailingView, self).get_context_data(*args, **kwargs)
         context['user'] = self.user
         return context
+
+
+class UserTestView(TemplateView):
+
+    template_name = 'mail/club-price-mailing.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(UserTestView, self).get_context_data(*args, **kwargs)
+        context['uuid'] = '1e869c25-ddc3-40b9-8c2d-0116cae91b46'
+        context['BASE_URL'] = 'http://localhost:8000'
+        return context
+
+
+class UserMailingRedirectView(TemplateView):
+
+    template_name = 'pages/mailing.html'
+
+    def get_user(self, uuid):
+        try:
+            return User.objects.get(
+                uuid=uuid
+            )
+        except ObjectDoesNotExist:
+            raise Http404
+
+    def get(self, request, uuid, *args, **kwargs):
+        user = self.get_user(uuid)
+        user.is_active = True
+        user.verified = True
+        user.save()
+        self.user = user
+        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+        self.cart = Cart(request)
+        self.cart.login_sync()
+        category_id = request.GET.get('category', None)
+        email = user.email
+
+        print(category_id)
+        node = None
+        if category_id is not None:
+            try:
+                node = Node.objects.get(
+                    id=category_id
+                )
+            except ObjectDoesNotExist:
+                print('hoy')
+                node = Node.objects.get(
+                    slug=''
+                )
+        else:
+            print('tsoy')
+            node = Node.objects.get(
+                slug=''
+            )
+
+        print(node.slug)
+        
+        url = '/shop/watches/{slug}?rr_email={email}'.format(
+            slug=node.slug,
+            email=email
+        )
+
+        return redirect(url)
