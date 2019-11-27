@@ -224,8 +224,11 @@ class CategoryPageView(DiggPaginatorViewMixin, ListView):
 
             for product in products:
                 product.set_club_price(group)
-
             context['products'] = products
+        else:
+            products = context['products']
+            for product in products:
+                product.club_price = product.price
 
         context['category'] = self.category
 

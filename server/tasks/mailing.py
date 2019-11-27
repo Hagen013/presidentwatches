@@ -27,13 +27,17 @@ BASE_URL = 'https://presidentwatches.ru'
 def get_or_create_user(email):
     user = None
     password = None
-    
+    group = Group.objects.get(name='Премиум 3')
+
     try:
         user = User.objects.get(email=email)
+        user.marketing_group = group
+        user.save()
     except ObjectDoesNotExist:
         user = User(
             email=email,
-            username=email
+            username=email,
+            marketing_group=group
         )
         password = User.objects.make_random_password()
         user.set_password(password)
@@ -112,7 +116,7 @@ def ultima_machina(filename):
     
     for key, value in tz.items():
         zone_time = int(value) + hour
-        if (zone_time > 15) and (zone_time < 17):
+        if (zone_time >= 15) and (zone_time < 17):
             selected_zones.add(key)
             
     df_total = None

@@ -98,7 +98,7 @@ MIDDLEWARE = [
 
 # SESSIONS CONFIGURATION
 # ------------------------------------------------------------------------------
-SESSION_COOKIE_AGE = 4838400
+SESSION_COOKIE_AGE = 15778476
 # ------------------------------------------------------------------------------
 # SESSIONS CONFIGURATION END
 
@@ -342,7 +342,8 @@ CELERY_IMPORTS = (
     'tasks.retail_rocket',
     'tasks.yml',
     'tasks.store',
-    'tasks.delivery_sync'
+    'tasks.delivery_sync',
+    'tasks.mailing'
 )
 CELERY_QUEUES = (
     Queue('default', Exchange('default'), routing_key='default'),
