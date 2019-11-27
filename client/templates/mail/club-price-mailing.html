@@ -2,17 +2,29 @@
 
 
 {% block content %}
+    <p style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 16px; line-height: 24px; color: #1d1d1d; padding: 0 50px; margin: 0px 0px 10px 0px;"
+    data-mce-style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 16px; line-height: 24px; color: #1d1d1d; padding: 0px 50px; margin: 0px 0px 10px 0px;"
+    >
+    <strong>Скоро Черная Пятница, а уникальные скидки можно получить уже сейчас!</strong>
+    </p>
+    <p style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 16px; line-height: 24px; color: #1d1d1d; padding: 0 50px; margin: 0px 0px 10px 0px;"
+    data-mce-style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 16px; line-height: 24px; color: #1d1d1d; padding: 0px 50px; margin: 0px 0px 10px 0px;"
+    >
+    {% if password is not none %} 
+    <strong>Пароль от личного кабинета: {{password}}</strong>
+    {% endif %}
+    </p>
     <table cellpadding="0" style="width: 100%; max-width: 600px; padding: 0px; border-collapse: collapse;">
         <tbody>
             <tr>
                 <td>
                     <a href="{{BASE_URL}}/u/mailing/{{uuid}}/?category=3110">
-                        <img src="/static/mailing/01.jpg">
+                        <img src="{{BASE_URL}}/static/mailing/01.jpg">
                     </a>
                 </td>
                 <td>
                     <a href="{{BASE_URL}}/u/mailing/{{uuid}}/?category=3053">
-                        <img src="/static/mailing/02.jpg">
+                        <img src="{{BASE_URL}}/static/mailing/02.jpg">
                     </a>
                 </td>
             </tr>
@@ -32,7 +44,7 @@
             <tr>
                 <td>
                     <a href="{{BASE_URL}}/u/mailing/{{uuid}}/?category=3104">
-                        <img src="/static/mailing/03.jpg">
+                        <img src="{{BASE_URL}}/static/mailing/03.jpg">
                     </a>
                 </td>
             </tr>
@@ -52,12 +64,12 @@
             <tr>
                 <td>
                     <a href="{{BASE_URL}}/u/mailing/{{uuid}}/?category=3106">
-                        <img src="/static/mailing/04.jpg">
+                        <img src="{{BASE_URL}}/static/mailing/04.jpg">
                     </a>
                 </td>
                 <td>
                     <a href="{{BASE_URL}}/u/mailing/{{uuid}}/?category=3182">
-                        <img src="/static/mailing/06.jpg">
+                        <img src="{{BASE_URL}}/static/mailing/06.jpg">
                     </a>
                 </td>
             </tr>
@@ -77,7 +89,7 @@
             <tr>
                 <td>
                     <a href="{{BASE_URL}}/u/mailing/{{uuid}}/?category=3223">
-                        <img src="/static/mailing/07.jpg">
+                        <img src="{{BASE_URL}}/static/mailing/07.jpg">
                     </a>
                 </td>
             </tr>
@@ -96,7 +108,7 @@
             <tr>
                 <td>
                     <a href="{{BASE_URL}}/u/mailing/{{uuid}}/?category=3239">
-                        <img src="/static/mailing/08.jpg">
+                        <img src="{{BASE_URL}}/static/mailing/08.jpg">
                     </a>
                 </td>
             </tr>
@@ -115,12 +127,12 @@
             <tr>
                 <td>
                     <a href="{{BASE_URL}}/u/mailing/{{uuid}}/?category=3184">
-                        <img src="/static/mailing/09.jpg">
+                        <img src="{{BASE_URL}}/static/mailing/09.jpg">
                     </a>
                 </td>
                 <td>
                     <a href="{{BASE_URL}}/u/mailing/{{uuid}}/?category=3236">
-                        <img src="/static/mailing/10.jpg">
+                        <img src="{{BASE_URL}}/static/mailing/10.jpg">
                     </a>
                 </td>
             </tr>
@@ -139,7 +151,7 @@
             <tr>
                 <td>
                     <a href="{{BASE_URL}}/u/mailing/{{uuid}}/?category=3226">
-                        <img src="/static/mailing/11.jpg">
+                        <img src="{{BASE_URL}}/static/mailing/11.jpg">
                     </a>
                 </td>
             </tr>

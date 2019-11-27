@@ -13,6 +13,7 @@ from tasks.users import generate_verification_mail
 
 from cart.cart import Cart
 from shop.models import CategoryPage as Node
+from shop.models import ProductPage as Product
 from core.utils import custom_redirect_v2
 
 User = get_user_model()
@@ -322,6 +323,7 @@ class UserTestView(TemplateView):
         context = super(UserTestView, self).get_context_data(*args, **kwargs)
         context['uuid'] = '1e869c25-ddc3-40b9-8c2d-0116cae91b46'
         context['BASE_URL'] = 'http://localhost:8000'
+        context['products'] = Product.objects.filter(is_bestseller=True)[:3]
         return context
 
 
