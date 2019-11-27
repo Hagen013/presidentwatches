@@ -116,7 +116,7 @@ def ultima_machina(filename):
     
     for key, value in tz.items():
         zone_time = int(value) + hour
-        if (zone_time >= 15) and (zone_time < 17):
+        if (zone_time >= 15) and (zone_time < 18):
             selected_zones.add(key)
             
     df_total = None
@@ -134,6 +134,7 @@ def ultima_machina(filename):
         df_total = df_total[~df_total['Email'].isin(mailed_set)]
         
         for index, row in df_total.iterrows():
+            time.sleep(randint(1,3))
             email = row['Email']
             orders_count = row['Число заказов']
             total = row['total_sum']
@@ -149,6 +150,7 @@ def ultima_machina(filename):
                     with open(mailed_filename, 'a') as fp:
                         fp.write(email+'\n')
                 except:
+                    print('ERROR')
                     with open('errors.txt', 'a') as fp:
                         fp.write(email+'\n')
             else:
@@ -158,5 +160,6 @@ def ultima_machina(filename):
                     with open(mailed_filename, 'a') as fp:
                         fp.write(email+'\n')
                 except:
+                    print('ERROR')
                     with open('errors.txt', 'a') as fp:
                         fp.write(email+'\n')
