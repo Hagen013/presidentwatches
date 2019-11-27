@@ -343,7 +343,8 @@ CELERY_IMPORTS = (
     'tasks.yml',
     'tasks.store',
     'tasks.delivery_sync',
-    'tasks.mailing'
+    'tasks.mailing',
+    'tasks.moy_sklad'
 )
 CELERY_QUEUES = (
     Queue('default', Exchange('default'), routing_key='default'),

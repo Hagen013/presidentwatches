@@ -1,5 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
+from django.shortcuts import redirect
+from django.views.generic import TemplateView
 
 from rest_framework.response import Response
 from rest_framework import status
@@ -12,7 +14,7 @@ from api.views import ListViewMixin
 from cart.models import Order
 from cart.serializers import OrderSerializer
 from users.serializers import UserSerializer, UserSubscribeSerializer, UserMarketingGroupSerializer
-from users.models import UserSubscribe, UserMarketingGroup
+from users.models import UserSubscribe, UserMarketingGroup, UserSubscribeBlacklist
 from tasks.users import send_new_password
 from tasks.marketing import notify_existing_user, notify_created_user
 
@@ -255,3 +257,21 @@ class ClubPriceRegistrationApiView(APIView):
             return Response(
                 status=status.HTTP_400_BAD_REQUEST
             )
+
+
+class BlackListApiView(APIView):
+
+    def get(self, request, *args, **kwargs):
+        email = request.GET.get('email', None)
+        if email is not None:
+            instance = BlackListApiView(email=email)
+            try:
+                instance.save()
+            except:
+                pass
+        return redirect('/api/v0/users/unsubscribe-aftercheck/')
+
+
+class UnsubscribeAfterCheckView(TemplateView):
+
+    template_name = 'pages/unsubscribe.html'

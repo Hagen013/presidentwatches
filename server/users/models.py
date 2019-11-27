@@ -222,3 +222,12 @@ class UserSubscribe(models.Model):
 
     class Meta:
         abstract = False
+
+
+class UserSubscribeBlacklist(models.Model):
+
+    email = models.EmailField(
+        blank=True,
+        unique=True,
+        db_index=True
+    )

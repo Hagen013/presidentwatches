@@ -505,6 +505,7 @@ export default class CartForm {
             products = [];
             for (let key in store.state.cart.items) {
                 let item = store.state.cart.items[key];
+                console.log(item.brand)
                 products.push({
                     price: item.price,
                     purchase_price: item.price,
@@ -531,6 +532,7 @@ export default class CartForm {
     }
 
     handleSuccessfulGeoResponse(response) {
+        console.log(response.data)
         this.deliveryData = response.data;
         if (this.locationLoading) {
             this.hideLoader();

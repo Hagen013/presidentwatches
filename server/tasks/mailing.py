@@ -18,6 +18,7 @@ from django.conf import settings
 from shop.models import ProductPage as Product
 from core.mail import Mail
 from users.models import UserMarketingGroup as Group
+from users.models import UserSubscribeBlacklist as BlackList
 
 User = get_user_model()
 
@@ -136,30 +137,40 @@ def ultima_machina(filename):
         for index, row in df_total.iterrows():
             time.sleep(randint(1,3))
             email = row['Email']
-            orders_count = row['Число заказов']
-            total = row['total_sum']
-            brands = row['Бренды']
-            
-            user, password = get_or_create_user(email)
-            products = get_products(brands)
-            
-            if orders_count >= 3 and total >= 30000:
-                try:
-                    print(email)
-                    notify_user(user, products, password, temporary=False)
-                    with open(mailed_filename, 'a') as fp:
-                        fp.write(email+'\n')
-                except:
-                    print('ERROR')
-                    with open('errors.txt', 'a') as fp:
-                        fp.write(email+'\n')
-            else:
-                try:
-                    print(email)
-                    notify_user(user, products, password, temporary=True)
-                    with open(mailed_filename, 'a') as fp:
-                        fp.write(email+'\n')
-                except:
-                    print('ERROR')
-                    with open('errors.txt', 'a') as fp:
-                        fp.write(email+'\n')
+
+            blacklisted = False
+            try:
+                instance = BlackList.objects.get(email=email)
+                blacklisted = True
+            except ObjectDoesNotExist:
+                blacklisted = False
+
+            if not blacklisted:
+
+                orders_count = row['Число заказов']
+                total = row['total_sum']
+                brands = row['Бренды']
+                
+                user, password = get_or_create_user(email)
+                products = get_products(brands)
+                
+                if orders_count >= 3 and total >= 30000:
+                    try:
+                        print(email)
+                        notify_user(user, products, password, temporary=False)
+                        with open(mailed_filename, 'a') as fp:
+                            fp.write(email+'\n')
+                    except Exception as e:
+                        print(e)
+                        with open('errors.txt', 'a') as fp:
+                            fp.write(email+'\n')
+                else:
+                    try:
+                        print(email)
+                        notify_user(user, products, password, temporary=True)
+                        with open(mailed_filename, 'a') as fp:
+                            fp.write(email+'\n')
+                    except Exception as e:
+                        print(e)
+                        with open('errors.txt', 'a') as fp:
+                            fp.write(email+'\n')

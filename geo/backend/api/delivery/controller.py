@@ -27,6 +27,7 @@ PAID_VENDORS = {
     'Fossil', 
     'DKNY',
     'Michael Kors',
+    'Q&amp;Q'
 }
 
 def roundup(x):
