@@ -117,7 +117,7 @@ def ultima_machina(filename):
     
     for key, value in tz.items():
         zone_time = int(value) + hour
-        if (zone_time >= 15) and (zone_time < 18):
+        if (zone_time >= 14) and (zone_time < 18):
             selected_zones.add(key)
             
     df_total = None
@@ -135,7 +135,7 @@ def ultima_machina(filename):
         df_total = df_total[~df_total['Email'].isin(mailed_set)]
         
         for index, row in df_total.iterrows():
-            time.sleep(randint(1,3))
+
             email = row['Email']
 
             blacklisted = False
@@ -152,8 +152,8 @@ def ultima_machina(filename):
                 brands = row['Бренды']
                 
                 user, password = get_or_create_user(email)
-                products = get_products(brands)
-                
+                products = []
+
                 if orders_count >= 3 and total >= 30000:
                     try:
                         print(email)
