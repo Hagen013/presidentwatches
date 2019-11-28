@@ -37,7 +37,7 @@ def sync_store():
                 quantity = int(row['quantity'])
                 if quantity <= 0:
                     continue
-                upid = row.get('article', None)
+                upid = row.get('code', None)
                 if upid is not None:
                     models_in_store.add(upid)
             page_num += 1
@@ -45,7 +45,7 @@ def sync_store():
             time.sleep(0.25)  # Не более 5 запросов в секунду с одного адреса от одного пользователя
         
         Product.objects.update(is_in_store=False)
-        Product.objects.filter(model__in=models_in_store).update(is_in_store=True)
+        Product.objects.filter(id__in=models_in_store).update(is_in_store=True)
 
 
 app.add_periodic_task(
