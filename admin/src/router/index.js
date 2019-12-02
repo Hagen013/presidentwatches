@@ -78,6 +78,12 @@ export const constantRouterMap = [
         component: () => import('@/views/marketing/promocodes'),
         meta: { title: 'Промокоды' }
       },
+      {
+        path: 'gift-price',
+        name: 'GiftPrices',
+        component: () => import('@/views/marketing/gift-prices'),
+        meta: { title: 'Подарочные цены' }
+      }
     ]
   },
 

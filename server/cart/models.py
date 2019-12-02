@@ -634,9 +634,6 @@ class Promocode(TimeStampedMixin):
         
 class GiftSalesTable(SingletonMixin):
 
-    class Meta:
-        abstract = True
-
     sales = JSONField(
         default=dict,
         blank=True,
