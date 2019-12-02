@@ -334,3 +334,21 @@ class AbstractCategoryPage(Node, WebPage, Searchable):
         if len(self._meta_description) > 0:
             return self._meta_description
         return 'Широкий выбор оригинальных наручных часов на ПрезидентВотчес.Ру Полистайте каталог часов на нашем сайте, сделайте ваш выбор, купите часы до доступной цене. Интернет магазин ПрезидентВотчес.Ру +7 495 133 20 56'
+
+
+class SingletonMixin(models.Model):
+
+    class Meta:
+        abstract = True
+
+    def save(self, *args, **kwargs):
+        self.pk = 1
+        super(SingletonMixin, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        pass
+
+    @classmethod
+    def load(cls):
+        obj, created = cls.objects.get_or_create(pk=1)
+        return obj

@@ -132,6 +132,13 @@ class SdekCityList(DeliveryCityList):
         additional_ex_weight = max(weigh - 1, 0)
         additional_pkg_weight = max(weigh - 3, 0)
 
+        if self.full_name == 'Москва':
+            return {
+                'price': 300,
+                'time_min': 0,
+                'time_max': 1
+            }
+
         if self.full_name in SPECIAL_NAMES:
             return {
                 'price': 300,

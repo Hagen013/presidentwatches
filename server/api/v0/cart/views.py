@@ -5,8 +5,8 @@ from rest_framework import status
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 
 from cart.cart import Cart
-from cart.models import Order, Promocode
-from cart.serializers import OrderCreateSerializer
+from cart.models import Order, Promocode, GiftSalesTable
+from cart.serializers import OrderCreateSerializer, GiftSalesTableSerializer
 from favorites.controller import FavoritesController
 from shop.models import ProductPage
 
@@ -235,3 +235,27 @@ class CreateOrderAPIView(BaseCartAPIView):
             'public_id': instance.public_id
         }
         return Response(data)
+
+
+class GiftSalesTableSerializer(APIView):
+
+    model = GiftSalesTable
+    serializer_class = GiftSalesTableSerializer
+
+    def get(self, request, *args, **kwargs):
+        instance = self.model.objects.first()
+        serializer = self.serializer_class(instance)
+        return Response(serializer.data)
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                serializer.data,
+                status=status.HTTP_200_OK
+            )
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST
+        )

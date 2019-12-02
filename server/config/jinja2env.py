@@ -153,6 +153,8 @@ def time_filter(time_min, time_max):
             if time_max is None:
                 to_time = ''
             else:
+                if time_min == 0 and time_max == 1:
+                    return 'сегодня-завтра'
                 to_time = ' до {days} дней'.format(days=time_max)
             return '{0}{1}'.format(
                 from_time,

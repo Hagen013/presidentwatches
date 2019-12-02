@@ -4,7 +4,7 @@ from django.conf import settings
 from rest_framework import serializers
 
 from core.serializers import DynamicFieldsModelSerializer
-from cart.models import Order, Promocode
+from cart.models import Order, Promocode, GiftSalesTable
 from tasks.sms_notifications import sms_notify
 from .cart import Cart
 
@@ -196,3 +196,18 @@ class PromocodeSerializer(serializers.ModelSerializer):
             'name',
             'description',
         )
+
+
+class GiftSalesTableSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = GiftSalesTable
+        fields = (
+            'sales',
+        )
+
+    def validate(self, data, *args, **kwargs):
+        for key, value in data['sales'].items():
+            if type(key) != str or type(value) != float:
+                raise serializers.ValidationError('Недопустимые значения в поле sales')
+        return data

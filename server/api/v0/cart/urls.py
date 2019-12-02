@@ -8,7 +8,8 @@ from .views import (CartApiView,
                     Fav2CartTransferApiView,
                     FastBuyApiView,
                     CreateOrderAPIView,
-                    ApplyPromocodeAPIView)
+                    ApplyPromocodeAPIView,
+                    GiftSalesTableSerializer)
 
 
 app_name = 'api'
@@ -22,5 +23,6 @@ urlpatterns = [
     path('items/<str:pk>/quantity/<int:quantity>/', CartItemQuantityApiView.as_view()),
     path('fast-buy/<str:pk>/', FastBuyApiView.as_view()),
     path('create-order/', CreateOrderAPIView.as_view()),
-    path('promocode/', ApplyPromocodeAPIView.as_view())
+    path('promocode/', ApplyPromocodeAPIView.as_view()),
+    path('gift-prices/', GiftSalesTableSerializer.as_view())
 ]

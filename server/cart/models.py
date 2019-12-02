@@ -15,6 +15,7 @@ from djchoices import DjangoChoices, ChoiceItem
 
 from core.db.mixins import TimeStampedMixin
 from core.db.fields import PositiveSmallIntegerRangeField
+from core.models import SingletonMixin
 
 from shop.models import Attribute
 from shop.models import AttributeValue as Value
@@ -473,6 +474,7 @@ class PromocodeType(DjangoChoices):
     SeriesPromo  = ChoiceItem(2, 'По коллекциям')
     PrivatePromo = ChoiceItem(3, 'Приватный')
     Custom       = ChoiceItem(4, 'Вручную')
+    Gift         = ChoiceItem(5, 'Вам подарок')
 
 
 class Promocode(TimeStampedMixin):
@@ -540,6 +542,11 @@ class Promocode(TimeStampedMixin):
         default=0,
         min_value=0,
         max_value=100
+    )
+
+    sales = JSONField(
+        default=dict,
+        blank=True
     )
 
     def clean(self, *args, **kwargs):
@@ -625,3 +632,23 @@ class Promocode(TimeStampedMixin):
         return data
 
         
+class GiftSalesTable(SingletonMixin):
+
+    class Meta:
+        abstract = True
+
+    sales = JSONField(
+        default=dict,
+        blank=True,
+    )
+
+    def clean(self):
+        for key, value in self.sales.items():
+            if type(key) != str or type(value) != float:
+                raise ValidationError('Недопустимые значения в поле sales')
+        super(GiftSalesTable, self).save(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        qs = Promocode.objects.filter(datatype=PromocodeType.Gift)
+        qs.update(sales=self.sales)
+        super(GiftSalesTable, self).save(*args, **kwargs)
