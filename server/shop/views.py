@@ -343,7 +343,7 @@ class ProductPageView(TemplateView):
         sale_price_mode = False
 
         ### Цены, цены, цены
-        if self.instance.is_sale and self.price < self.old_price:
+        if self.instance.is_sale and self.instance.price < self.instance.old_price:
             sale_price_mode = True
         else:
 
@@ -360,10 +360,11 @@ class ProductPageView(TemplateView):
                 except ObjectDoesNotExist:
                     promocode = None
                 if promocode is not None and promocode.datatype == 5:
-                    gift_sale_multiplier = promocode.sales.get(self.instance.brand)
-                    gift_price_mode = True
-                    gift_sale = int(self.instance._price * gift_sale_multiplier)
-                    gift_price = self.instance._price - gift_sale
+                    gift_sale_multiplier = promocode.sales.get(self.instance.brand, None)
+                    if gift_sale_multiplier is not None:
+                        gift_price_mode = True
+                        gift_sale = int(self.instance._price * gift_sale_multiplier)
+                        gift_price = self.instance._price - gift_sale
 
             if self.request.user.is_authenticated:
                 self.instance.set_club_price(self.request.user.marketing_group)
