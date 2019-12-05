@@ -15,8 +15,8 @@ from django.http import Http404
 
 from core.viewmixins import DiggPaginatorViewMixin
 from core.utils import custom_redirect
-from cart.models import Promocode
-
+from cart.models import Promocode, GiftSalesTable
+from cart.cart import Cart
 from cart.last_seen import LastSeenController
 from reviews.models import ReviewStatus
 
@@ -338,12 +338,59 @@ class ProductPageView(TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super(ProductPageView, self).get_context_data(**kwargs)
         
-        if self.request.user.is_authenticated:
-            self.instance.set_club_price(self.request.user.marketing_group)
-            if self.instance.price > 0:
-                context['club_sale'] = round(((self.instance.club_price - self.instance.price) / self.instance.price) * 100)
-            else:
-                context['club_sale'] = 0
+        club_price_mode = False
+        gift_price_mode = False
+        sale_price_mode = False
+
+        ### Цены, цены, цены
+        if self.instance.is_sale and self.price < self.old_price:
+            sale_price_mode = True
+        else:
+
+            if self.instance.has_gift_price:
+                sales = GiftSalesTable.objects.first().sales
+                multiplier = sales.get(self.instance.brand)
+                context['gift_price_percentage'] = int(multiplier*100)
+
+            self.cart = Cart(self.request)
+            code = self.cart.data.get('promocode', None)
+            if code is not None:
+                try:
+                    promocode = Promocode.objects.get(name=code)
+                except ObjectDoesNotExist:
+                    promocode = None
+                if promocode is not None and promocode.datatype == 5:
+                    gift_sale_multiplier = promocode.sales.get(self.instance.brand)
+                    gift_price_mode = True
+                    gift_sale = int(self.instance._price * gift_sale_multiplier)
+                    gift_price = self.instance._price - gift_sale
+
+            if self.request.user.is_authenticated:
+                self.instance.set_club_price(self.request.user.marketing_group)
+                if self.instance.club_price < self.instance._price:
+                    if gift_price_mode:
+                        if self.instance.club_price < gift_price:
+                            gift_price_mode = False
+                            club_price_mode = True
+                            if self.instance.price > 0:
+                                context['club_sale'] = round(((self.instance.club_price - self.instance.price) / self.instance.price) * 100)
+                            else:
+                                context['club_sale'] = 0
+                        else:
+                            pass
+                    else:
+                        club_price_mode = True
+                        if self.instance.price > 0:
+                            context['club_sale'] = round(((self.instance.club_price - self.instance.price) / self.instance.price) * 100)
+                        else:
+                            context['club_sale'] = 0
+
+            if gift_price_mode:
+                context['gift_price'] = gift_price
+
+        context['sale_price_mode'] = sale_price_mode
+        context['gift_price_mode'] = gift_price_mode
+        context['club_price_mode'] = club_price_mode
 
         context[self.instance_context_name] = self.instance
         context['category'] = CategoryPage.objects.get_by_product(self.instance)

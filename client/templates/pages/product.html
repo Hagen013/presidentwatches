@@ -55,6 +55,19 @@
                                 </div>
                             {% endif %}
                             </div>
+                            {% if product.has_gift_price %}
+                                {% if gift_price_mode %}
+                                {% elif club_price_mode %}
+                                {% else %}
+                                <div class="fab-gift" id="fab-gift">
+                                    <div class="fab-gift-text">
+                                    Вам подарок - {{gift_price_percentage}}%
+                                    </div>
+                                    <div class="fab-gift-icon">
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% endif %}
                             <a class="product-front__img-link active" href="{{product.image.url}}"
                                 data-fancybox="gallery"
                                 target="_blank"
@@ -126,7 +139,7 @@
                             <div class="product-main__name">
                                 {{product.brand}} {{product.series}}
                             </div>
-                            {% if product.is_sale %}
+                            {% if sale_price_mode %}
                             <div class="product-main__price-area row">
                                 <div class="price product-main__price">
                                     {{format_price(product.price)}}
@@ -135,37 +148,33 @@
                                     {{product.old_price}}
                                 </div>
                             </div>
+                            {% elif gift_price_mode %}
+                            <div class="product-main__price-area row">
+                                <div class="price product-main__price">
+                                    {{format_price(gift_price)}}
+                                </div>
+                                <div class="price_old price product-main__old-price">
+                                    {{product.price}}
+                                </div>
+                            </div>
+                            {% elif club_price_mode %}
+                            <div class="product-main__price-area row">
+                                <div class="price product-main__price">
+                                    {{format_price(product.club_price)}}
+                                </div>
+                                <div class="price_old price product-main__old-price">
+                                    {{product.price}}
+                                </div>
+                            </div>
                             {% elif product.has_club_price %}
-                                {% if request.user.is_authenticated %}
-                                <div class="product-main__price-area row">
-                                    <div class="price product-main__price">
-                                        {{format_price(product.club_price)}}
-                                    </div>
-                                    <div class="price_old price product-main__old-price">
-                                        {{product.price}}
-                                    </div>
+                            <div class="product-main__price-area row">
+                                <div class="price product-main__price">
+                                    {{format_price(product.price)}}
                                 </div>
-                                {% else %}
-                                <div class="product-main__price-area row">
-                                    <div class="price product-main__price">
-                                        {{format_price(product.price)}}
-                                    </div>
-                                    <div class="product-main__club-auth" id="club-price-button">
-                                        Узнать цену клуба
-                                    </div>
+                                <div class="product-main__club-auth" id="club-price-button">
+                                    Узнать цену клуба
                                 </div>
-                                {% endif %}
-                            {% elif request.user.is_authenticated %}
-                                {% if product.club_price < product.price %}
-                                <div class="product-main__price-area row">
-                                    <div class="price product-main__price">
-                                        {{format_price(product.club_price)}}
-                                    </div>
-                                    <div class="price_old price product-main__old-price">
-                                        {{product.price}}
-                                    </div>
-                                </div>
-                                {% endif %}
+                            </div>
                             {% else %}
                             <div class="product-main__price-area row">
                                 <div class="price product-main__price">
@@ -274,21 +283,18 @@
                                         </div>
                                     </li>
                                     {% endif %}
-                                    {% if product.has_club_price %}
-                                        {% if request.user.is_authenticated %}
-                                        <li class="list-item plus-item red">
-                                            — Использована клубная скидка {{club_sale}} %
-                                        </li>
-                                        {% else %}
-                                        <li class="list-item plus-item">
-                                            — <a class="link link_dotted header-auth" href="#">Зарегистрируйтесь</a>, чтобы узнать клубную цену
-                                        </li>
-                                            {% if sale_notes|length > 0 %}
-                                            <li class="list-item plus-item list-item_red">
-                                                — {{sale_notes}}
-                                            </li>
-                                            {% endif %}
-                                        {% endif %}
+                                    {% if gift_price_mode %}
+                                    <li class="list-item plus-item red">
+                                        — Использован персональный промокод
+                                    </li>
+                                    {% elif club_price_mode %}
+                                    <li class="list-item plus-item red">
+                                        — Использована клубная скидка {{club_sale}} %
+                                    </li>
+                                    {% elif product.has_club_price %}
+                                    <li class="list-item plus-item">
+                                        — <a class="link link_dotted header-auth" href="#">Зарегистрируйтесь</a>, чтобы узнать клубную цену
+                                    </li>
                                     {% else %}
                                         {% if sale_notes|length > 0 %}
                                         <li class="list-item plus-item list-item_red link">
@@ -946,6 +952,47 @@
         <div class="modal-placeholder" id="club-price-placeholder">
         </div>
     </div>
+
+    {% if product.has_gift_price %}
+    <div class="modal club-price-modal" id="gift-price-modal">
+        <div class="modal-container gift-price-modal-container row">
+            <div class="modal-close control-button" id="gift-price-close">
+                <i class="icon icon_close">
+                </i>
+            </div>
+            <div class="gift-modal-left">
+                <img src="{{product.thumbnail.url}}">
+            </div>
+            <div class="gift-modal-right">
+                <div class="gift-modal-title">
+                ВАМ ПОДАРОК!
+                </div>
+                <div class="gift-modal-sale bold">
+                СКИДКА 10%
+                </div>
+                <div class="gift-modal-form" id="gift-modal-form">
+                    <div class="gift-modal-text">
+                    Вышлем промокод со скидкой 10% на Вашу почту
+                    </div>
+                    <div class="gift-modal-input-box">
+                        <input class="input" placeholder="Ваш email" type="email" id="gift-price-input">
+                    </div>
+                    <div class="gift-modal-messages" id="gift-modal-messages">
+                    </div>
+                    <div class="gift-modal-submit button button_accent button_big" id="gift-price-submit">
+                    ПОЛУЧИТЬ СКИДКУ
+                    </div>
+                </div>
+                <div class="gift-price-after" id="gift-price-after">
+                </div>
+            </div>
+        </div>
+        <div class="modal-placeholder" id="gift-price-placeholder">
+        </div>
+    </div>
+
+    {% endif %}
+
 {% endblock modals %}
 
 {% block javascript %}

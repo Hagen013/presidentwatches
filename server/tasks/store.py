@@ -38,14 +38,23 @@ def sync_store():
                 if quantity <= 0:
                     continue
                 upid = row.get('code', None)
+                print(upid)
                 if upid is not None:
-                    models_in_store.add(upid)
+                    try:
+                        upid = int(upid)
+                        models_in_store.add(upid)
+                    except ValueError:
+                        pass
             page_num += 1
             params['offset'] = page_num * limit
             time.sleep(0.25)  # Не более 5 запросов в секунду с одного адреса от одного пользователя
         
         Product.objects.update(is_in_store=False)
-        Product.objects.filter(id__in=models_in_store).update(is_in_store=True)
+        qs = Product.objects.filter(id__in=models_in_store)
+        print('###')
+        print(qs.count())
+        print('###')
+        qs.update(is_in_store=True)
 
 
 app.add_periodic_task(

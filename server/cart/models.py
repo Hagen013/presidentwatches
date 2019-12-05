@@ -534,6 +534,10 @@ class Promocode(TimeStampedMixin):
         default=False
     )
 
+    applied = models.BooleanField(
+        default=False
+    )
+
     limit = models.PositiveSmallIntegerField(
         default=1
     )
@@ -596,7 +600,6 @@ class Promocode(TimeStampedMixin):
         # Функция преобразования данных корзины
         # в соответствии с условиями промокода
 
-        brands = set(self.brands)
         items = data['items'].copy()
         data['total_sale'] = 0
         data['promocode'] = self.name
@@ -604,13 +607,25 @@ class Promocode(TimeStampedMixin):
         total_overall = 0
         total_sale = 0
 
+        if self.datatype == PromocodeType.Gift:
+            brands = set(self.sales.keys())
+        else:
+            brands = set(self.brands)
+
+        items = data['items'].copy()
+        data['total_sale'] = 0
+        data['promocode'] = self.name
+
         for key in list(items.keys()):
             item = items[key]
 
             if item['is_sale'] == False and item['brand'] in brands:
                     
                 total_price = item['price'] * item['quantity']
-                sale = int(self.sale_amount*total_price/100)
+                if self.datatype == PromocodeType.Gift:
+                    sale = int(total_price * self.sales[item['brand']])
+                else:
+                    sale = int(self.sale_amount*total_price/100)
                 total_sale += sale
 
                 item['total_price'] = total_price - sale

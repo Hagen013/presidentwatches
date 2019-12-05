@@ -164,6 +164,10 @@ class WatchesProductMixin(models.Model):
         default=False
     )
 
+    has_gift_price = models.BooleanField(
+        default=False
+    )
+
     def get_club_price(self, group):
         if group is not None:
             all_sale = group.sales.get('all', None)

@@ -311,3 +311,68 @@
     font-size: 14px;
     margin-top: 20px;
 }
+
+
+
+
+.gift-price-modal {
+
+}
+
+.gift-price-modal-container {
+    overflow: hidden;
+    width: 300px;
+    margin: 0 auto;
+    margin-top: 70px;
+    @include mq($from: tablet) {
+        width: 600px;
+    } 
+}
+
+.gift-modal-left {
+    float: left;
+    width: 50%;
+    img {
+        width: 100%;
+        height: auto;
+    }
+}
+
+.gift-modal-right {
+    float: left;
+    width: 50%;
+    padding: 50px 0px;
+    box-shadow: -80px 10px 111px 6px rgba(255,255,255,1);
+}
+
+.gift-modal-title {
+    font-size: 19px;
+    color: #999;
+    line-height: 1.5;
+}
+
+.gift-modal-sale {
+    font-size: 35px;
+    line-height: 1.5;
+}
+
+.gift-modal-text {
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.gift-modal-input-box {
+    margin-top: 20px;
+    .input {
+        height: 36px;
+    }
+}
+
+.gift-modal-submit {
+    margin-top: 30px;
+    width: 100%;
+}
+
+.gift-price-after {
+    font-size: 16px;
+}

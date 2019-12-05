@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework import permissions
 
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 
@@ -9,6 +10,11 @@ from cart.models import Order, Promocode, GiftSalesTable
 from cart.serializers import OrderCreateSerializer, GiftSalesTableSerializer
 from favorites.controller import FavoritesController
 from shop.models import ProductPage
+from tasks.marketing import send_gift_price, label_gift_prices
+
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 class BaseCartAPIView(APIView):
@@ -237,10 +243,11 @@ class CreateOrderAPIView(BaseCartAPIView):
         return Response(data)
 
 
-class GiftSalesTableSerializer(APIView):
+class GiftSalesTableView(APIView):
 
     model = GiftSalesTable
     serializer_class = GiftSalesTableSerializer
+    permissions = permissions.IsAdminUser
 
     def get(self, request, *args, **kwargs):
         instance = self.model.objects.first()
@@ -248,14 +255,42 @@ class GiftSalesTableSerializer(APIView):
         return Response(serializer.data)
 
     def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data)
+        instance = self.model.objects.first()
+        serializer = self.serializer_class(instance=instance, data=request.data)
         if serializer.is_valid():
             serializer.save()
+            label_gift_prices.delay()
             return Response(
                 serializer.data,
                 status=status.HTTP_200_OK
             )
         return Response(
             serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+
+class GiftPriceApiView(APIView):
+
+    def post(self, request, *args, **kwargs):
+        data = request.data
+        email = data.get('email', None)
+        product_pk = data.get('product_pk', None)
+        if email is not None and product_pk is not None:
+            try:
+                user = User.objects.get(
+                    email=email
+                )
+            except ObjectDoesNotExist:
+                password = User.objects.make_random_password()
+                user = User(
+                    username=email,
+                    email=email,
+                    password=password
+                )
+                user.save()
+            send_gift_price.delay(user_pk=user.pk, product_pk=product_pk)
+            return Response(status=status.HTTP_200_OK)
+        return Response(
             status=status.HTTP_400_BAD_REQUEST
         )

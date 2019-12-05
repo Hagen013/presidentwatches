@@ -16,6 +16,9 @@ from shop.models import CategoryPage as Node
 from shop.models import ProductPage as Product
 from core.utils import custom_redirect_v2
 
+# удалить
+from cart.models import Promocode, GiftSalesTable
+
 User = get_user_model()
 
 
@@ -317,13 +320,32 @@ class UserMailingView(TemplateView):
 
 class UserTestView(TemplateView):
 
-    template_name = 'mail/club-price-mailing.html'
+    template_name = 'mail/gift-price.html'
 
     def get_context_data(self, *args, **kwargs):
         context = super(UserTestView, self).get_context_data(*args, **kwargs)
-        context['uuid'] = '1e869c25-ddc3-40b9-8c2d-0116cae91b46'
-        context['BASE_URL'] = 'http://localhost:8000'
-        context['products'] = Product.objects.filter(is_bestseller=True)[:3]
+        product = Product.objects.get(model='SSB301P1')
+        email = 'vlad.sivh@gmail.com'
+        user = User.objects.get(email=email)
+        password = None
+        promocode = Promocode.objects.filter(datatype=5)[0]
+        table = GiftSalesTable.objects.first()
+        sales = table.sales
+        multiplier = sales.get(product.brand)
+        percentage = int(multiplier * 100)
+        sale_amount = product._price * multiplier
+
+        context = {
+            'BASE_URL': 'http://localhost:8000',
+            'email': email,
+            'user': user,
+            'password': password,
+            'promocode': promocode,
+            'product': product,
+            'percentage': percentage,
+            'sale_amount': sale_amount
+        }
+
         return context
 
 
@@ -351,7 +373,6 @@ class UserMailingRedirectView(TemplateView):
         category_id = request.GET.get('category', None)
         email = user.email
 
-        print(category_id)
         node = None
         if category_id is not None:
             try:
@@ -359,21 +380,55 @@ class UserMailingRedirectView(TemplateView):
                     id=category_id
                 )
             except ObjectDoesNotExist:
-                print('hoy')
                 node = Node.objects.get(
                     slug=''
                 )
         else:
-            print('tsoy')
             node = Node.objects.get(
                 slug=''
             )
 
-        print(node.slug)
-        
+
         url = '/shop/watches/{slug}?rr_email={email}'.format(
             slug=node.slug,
             email=email
+        )
+
+        return redirect(url)
+
+
+class GiftPriceRedirectView(TemplateView):
+
+    template_name = 'pages/mailing.html'
+
+    def get_user(self, uuid):
+        try:
+            return User.objects.get(
+                uuid=uuid
+            )
+        except ObjectDoesNotExist:
+            raise Http404
+
+    def get(self, request, uuid, *args, **kwargs):
+        user = self.get_user(uuid=uuid)
+        product_pk = request.GET.get('product', None)
+        promocode_name = request.GET.get('promocode', None)
+        if product_pk is None or promocode_name is None:
+            raise Http404
+        
+        try:
+            product = Product.objects.get(id=product_pk)
+            promocode = Promocode.objects.get(name=promocode_name)
+        except ObjectDoesNotExist:
+            raise Http404
+
+        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+        self.cart = Cart(request)
+        self.cart.login_sync()
+        self.cart.apply_promocode(promocode)
+
+        url = '/watches/{slug}/'.format(
+            slug=product.slug,
         )
 
         return redirect(url)

@@ -1,0 +1,71 @@
+{% extends "mail/base.html" %}
+
+
+{% block content %}
+<table style="padding: 0px 15px; font-family: 'Segoe UI', Arial, sans-serif;" cellpadding="0">
+    <tr>
+        <td>
+            <p>Здравствуйте!</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p style="margin-top: 10px;"><span style="font-weight: 900; line-height: 1.5;">Подтвердите</span>, пожалуйста правильность Вашего email-адреса, кликнув по ссылке:</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div style="margin-top: 20px; text-align: center;">
+                <a href="{{BASE_URL}}/u/gift-price/{{user.uuid}}/?product={{product.id}}&promocode={{promocode.name}}"  target="_blank" 
+                    style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; line-height: 17px; color: #1d1d1d; padding: 14px 20px; margin: 0px; text-decoration: none; text-transform: uppercase; display: inline-block; background-color: #f6de32; border: 1px solid #f6de32; border-radius: 4px; font-weight: bold;" 
+                    rel="noopener" data-mce-href="#" 
+                    data-mce-style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; line-height: 17px; color: #1d1d1d; padding: 14px 20px; margin: 0px; text-decoration: none; text-transform: uppercase; display: inline-block; background-color: #f6de32; border: 1px solid #f6de32; border-radius: 4px; font-weight: bold;"
+                >
+                    Подтвердить адрес и вернуться к товару
+                </a>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p style="margin-top: 20px; text-align: center;">
+                За это мы дарим Вам промокод на скидку {{percentage}} %
+            <p style="margin-top: 20px; text-align: center; font-weight: 900; font-size: 24px; border: 2px dashed #000000; padding: 20px 0px; border-radius: 4px;">
+                {{promocode.name}}
+            </p>
+        </td>
+    </tr>
+</table>
+<table cellpadding="0" style="width: 100%; padding: 0px 15px; font-family: 'Segoe UI', Arial, sans-serif; margin-top: 20px;">
+    <tr style="width: 100%;">
+        <td style="width: 50%">
+            <div style="width: 100%; text-align: center;">
+                <img src="{{BASE_URL}}{{product.thumbnail.url}}" style="max-height: 200px">
+            </div>
+        </td>
+        <td style="width: 50%">
+            <p>
+            {{product.brand}}
+            </p>
+            <p>
+            {{product.series}}
+            </p>
+            <p>
+            {{product.model}}
+            </p>
+        </td>
+    </tr>
+</table>
+<table cellpadding="0" style="width: 100%; padding: 0px 15px; font-family: 'Segoe UI', Arial, sans-serif; margin-top: 20px; line-height: 1.5; margin-bottom: 30px;">
+    <tr>
+        <td>
+            <p>
+                Данное подтверждение нужно, чтобы оградить вас от получения непрошенных рассылок.
+            </p>
+            <p>
+                Если это ошибка, просто проигнорируйте данное письмо.
+            </p>
+        </td>
+    </tr>
+</table>
+{% endblock content %}

@@ -204,6 +204,10 @@ class GiftSalesTableSerializer(serializers.ModelSerializer):
         model = GiftSalesTable
         fields = (
             'sales',
+            'id'
+        )
+        read_only_fields = (
+            'id',
         )
 
     def validate(self, data, *args, **kwargs):

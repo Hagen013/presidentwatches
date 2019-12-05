@@ -310,7 +310,6 @@ $(document).ready(function() {
 
     $('#club-price-submit').click(function() {
         let emailValue = $('#club-price-input').val();
-        console.log(PRODUCT.model);
         if (validateEmail(emailValue)) {
             let data = {
                 'email': emailValue,
@@ -346,4 +345,42 @@ $(document).ready(function() {
         let tip = new ToolTip(items[i]);
     }
 
+    $("#fab-gift").click(function() {
+        $('#gift-price-modal').css('display', 'block');
+    })
+
+    $('#gift-price-placeholder, #gift-price-close').click(function() {
+        $('#gift-price-modal').css('display', 'none');
+    })
+
+    $('#gift-price-submit').click(function() {
+        let emailValue = $('#gift-price-input').val();
+        console.log(emailValue)
+        if (validateEmail(emailValue)) {
+            let data = {
+                'email': emailValue,
+                'product_pk': PRODUCT.model
+            }
+            api.post('/cart/gift/', data).then(
+                response => {
+                    $('#gift-modal-form').css('visibility', 'hidden');
+                    $('#gift-price-after').html(
+                    `
+                    <span class="success bold">Проверьте электронную почту, мы прислали Вам письмо!<span>
+                    `
+                    );
+                    (window["rrApiOnReady"] = window["rrApiOnReady"] || []).push(function() { rrApi.setEmail(emailValue);});
+                },
+                response => {
+
+                }
+            )
+        } else {
+            $('#gift-modal-messages').html(
+            `
+            <span class="red">Укажите подходящий адрес<span>
+            `
+            )
+        }
+    })
 })
