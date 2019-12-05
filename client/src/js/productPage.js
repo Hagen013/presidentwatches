@@ -7,6 +7,8 @@ import { priceFilter, timeFilter } from '@/utils/filters.js'
 import toggleSidebar from '@/utils/toggleSidebar.js'
 import { debounce } from 'debounce'
 import validateEmail from '@/utils/validateEmail'
+import getParameterByName from '@/utils/getParameterByName'
+import message from '@/lib/message'
 
 import ToolTip from '@/components/ToolTip.js'
 
@@ -383,4 +385,19 @@ $(document).ready(function() {
             )
         }
     })
+
+    let promoSale = getParameterByName('promo_sale');
+    if (promoSale !== null) {
+        message({
+            type: 'success',
+            title: 'Промокод применен',
+            text: `<p class="bold message-sale">Ваша скидка: <span class="price">${promoSale}</span><p>`,
+            link: '<a class="message-btn message-btn-1" href="/info/promo/">ВСЕ ПРОМОКОДЫ</a>'
+        })
+    }
+
+    setTimeout(function() {
+        $('#fab-gift').addClass('active');
+    }, 5000)
+
 })

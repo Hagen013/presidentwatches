@@ -426,9 +426,15 @@ class GiftPriceRedirectView(TemplateView):
         self.cart = Cart(request)
         self.cart.login_sync()
         self.cart.apply_promocode(promocode)
-
-        url = '/watches/{slug}/'.format(
-            slug=product.slug,
-        )
+        try:
+            sale = product.price * promocode.sales.get(product.brand)
+            url = '/watches/{slug}/?promo_sale={sale}'.format(
+                slug=product.slug,
+                sale=sale
+            )
+        except:
+            url = '/watches/{slug}/'.format(
+                slug=product.slug,
+            )
 
         return redirect(url)
