@@ -475,6 +475,7 @@ class PromocodeType(DjangoChoices):
     PrivatePromo = ChoiceItem(3, 'Приватный')
     Custom       = ChoiceItem(4, 'Вручную')
     Gift         = ChoiceItem(5, 'Вам подарок')
+    Triggered    = ChoiceItem(6, 'Триггерный')
 
 
 class Promocode(TimeStampedMixin):
@@ -616,29 +617,47 @@ class Promocode(TimeStampedMixin):
         data['total_sale'] = 0
         data['promocode'] = self.name
 
+
         for key in list(items.keys()):
             item = items[key]
-
-            if item['is_sale'] == False and item['brand'] in brands:
-                    
-                total_price = item['price'] * item['quantity']
-                if self.datatype == PromocodeType.Gift:
-                    sale = int(total_price * self.sales[item['brand']])
+            if item['brand'] in brands or self.datatype == PromocodeType.Triggered:
+                if item['is_sale']:
+                    stored_sale = item['sale']
+                    if stored_sale == 0:
+                        total_price = item['price'] * item['quantity']
+                        item['total_price'] = total_price
+                        item['sale'] = 0
+                        total_overall += total_price
+                    else:
+                        total_price = (item['price'] + stored_sale) * item['quantity']
+                        if self.datatype == PromocodeType.Gift:
+                            sale = int(total_price * self.sales[item['brand']])
+                        else:
+                            sale = int(self.sale_amount*total_price/100)
+                        sale_per_item = int(sale/item['quantity'])
+                        if sale_per_item > stored_sale:
+                            total_sale += sale
+                            item['total_price'] = total_price - sale
+                            item['sale'] = sale_per_item
+                            total_overall += item['total_price']
+                        else:
+                            total_overall += item['total_price']
                 else:
-                    sale = int(self.sale_amount*total_price/100)
-                total_sale += sale
-
-                item['total_price'] = total_price - sale
-                item['sale'] = sale
-                total_overall += item['total_price']
-                    
+                    total_price = item['price'] * item['quantity']
+                    if self.datatype == PromocodeType.Gift:
+                        sale = int(total_price * self.sales[item['brand']])
+                    else:
+                        sale = int(self.sale_amount*total_price/100)
+                    total_sale += sale
+                    item['total_price'] = total_price - sale
+                    item['sale'] = int(sale/item['quantity'])
+                    total_overall += item['total_price']
             else:
-                    
                 total_price = item['price'] * item['quantity']
                 item['total_price'] = total_price
                 item['sale'] = 0
                 total_overall += total_price
-
+                
         data['items'] = items
         data['total_price'] = total_overall
         data['total_sale'] = total_sale

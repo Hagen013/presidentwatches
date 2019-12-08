@@ -11,6 +11,7 @@ from cart.serializers import OrderCreateSerializer, GiftSalesTableSerializer
 from favorites.controller import FavoritesController
 from shop.models import ProductPage
 from tasks.marketing import send_gift_price, label_gift_prices
+from tasks.cart import serve_promocode
 
 from django.contrib.auth import get_user_model
 
@@ -159,6 +160,7 @@ class FastBuyApiView(BaseCartAPIView):
         
         product = request.data['product']
 
+        request_cart = Cart(request)
         cart = Cart()
 
         if request.user.is_authenticated:
@@ -203,8 +205,12 @@ class FastBuyApiView(BaseCartAPIView):
                 data=e.messages
             )
 
-
         instance = serializer.save()
+        
+        print(request_cart.data)
+        code = request_cart.data['promocode']
+        if code != '':
+            serve_promocode.delay(code)
 
         data = {
             'cart': instance.cart,
@@ -235,6 +241,11 @@ class CreateOrderAPIView(BaseCartAPIView):
             )
     
         instance = serializer.save()
+        code = instance.cart.get('promocode', None)
+
+        if code is not None and code != '':
+            serve_promocode.delay(code=code)
+
         data = {
             'cart': instance.cart,
             'uuid': instance.uuid,

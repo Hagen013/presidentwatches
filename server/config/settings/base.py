@@ -344,7 +344,8 @@ CELERY_IMPORTS = (
     'tasks.store',
     'tasks.delivery_sync',
     'tasks.mailing',
-    'tasks.moy_sklad'
+    'tasks.moy_sklad',
+    'tasks.cart'
 )
 CELERY_QUEUES = (
     Queue('default', Exchange('default'), routing_key='default'),

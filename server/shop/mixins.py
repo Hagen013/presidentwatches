@@ -169,7 +169,7 @@ class WatchesProductMixin(models.Model):
     )
 
     def get_club_price(self, group):
-        if group is not None:
+        if group is not None and self.is_sale == False:
             all_sale = group.sales.get('all', None)
             brand_sale = group.sales.get(self.brand, None)
             if all_sale is not None and all_sale > 0:

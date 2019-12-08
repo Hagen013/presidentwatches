@@ -15,6 +15,7 @@ from cart.cart import Cart
 from shop.models import CategoryPage as Node
 from shop.models import ProductPage as Product
 from core.utils import custom_redirect_v2
+from .models import UserTemporaryMailingAccessToken as Token
 
 # удалить
 from cart.models import Promocode, GiftSalesTable
@@ -436,5 +437,36 @@ class GiftPriceRedirectView(TemplateView):
             url = '/watches/{slug}/'.format(
                 slug=product.slug,
             )
+
+        return redirect(url)
+
+
+class MailingTokenView(TemplateView):
+
+    model = Token
+
+    def get(self, request, uuid, *args, **kwargs):
+        category = request.get('category')
+        email = request.get('email')
+        try:
+            token = self.model.objects.get(
+                token=uuid
+            )
+            node = CategoryPage.objects.get(pk=category)
+        except ObjectDoesNotExist:
+            raise Http404
+
+        user = token.user
+        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+        self.cart = Cart(request)
+        self.cart.login_sync()
+        self.cart.apply_promocode(promocode)
+        user.verified = True
+        user.save()
+
+        url = '/shop/watches/{slug}?rr_email={email}'.format(
+            slug=node.slug,
+            email=email
+        )
 
         return redirect(url)

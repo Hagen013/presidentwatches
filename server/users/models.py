@@ -231,3 +231,18 @@ class UserSubscribeBlacklist(models.Model):
         unique=True,
         db_index=True
     )
+
+
+class UserTemporaryMailingAccessToken(models.Model):
+
+    class Meta:
+        abstract = False
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE
+    )
+
+    token = models.CharField(
+        max_length=64
+    )
