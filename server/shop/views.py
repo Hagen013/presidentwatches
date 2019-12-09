@@ -113,6 +113,7 @@ class CategoryPageView(DiggPaginatorViewMixin, ListView):
         removed_values = set()
         self.queryparams = request.GET.dict()
         self.attrs_set = set(map(lambda x: x["key"], self.attribute_class.objects.all().values("key")))
+        self.attrs_set.remove('sale')
 
         fields = list(filter(lambda x: x in self.attrs_set, self.queryparams))
         removed_fields = list(filter(lambda x: x[1:] in self.attrs_set, self.queryparams))

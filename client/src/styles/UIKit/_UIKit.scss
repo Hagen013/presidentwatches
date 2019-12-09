@@ -66,6 +66,11 @@
     border-bottom: 2px dotted $dark-grey;
 }
 
+.link_success {
+    color: darken($green, 5) !important;
+    border-bottom: 2px dotted darken($green, 5) !important;
+}
+
 .heading {
 
 }
