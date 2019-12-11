@@ -18,6 +18,7 @@ from tasks.warehouse import (
     process_warehouse_file_2,
     create_product_list_from_file,
 )
+from tasks.yml import generate_yml_file
 
 
 class StatusReportMixin():
@@ -60,6 +61,7 @@ class UploadFile2TaskApiView(APIView, StatusReportMixin):
         data = {
             'uuid': result.id
         }
+        generate_yml_file.delay()
         return Response(data)
 
 
@@ -85,6 +87,7 @@ class Task2DonwloadFileApiView(APIView, StatusReportMixin):
             'uuid': result.id,
             'filename':  filename
         }
+        generate_yml_file.delay()
         return Response(data)
 
 
