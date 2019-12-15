@@ -315,6 +315,7 @@
                                             </div>
                                         </a>
                                     </div>
+                                    <div class="product-card__prices">
                                     {% if product.show_sale %}
                                         <div class="product-card__price price price_red">
                                             {{format_price(product.price)}}
@@ -346,19 +347,28 @@
                                         </div>
                                         {% endif %}
                                     {% elif product.club_price < product.price %}
-                                    <div class="product-card__price price price_blue">
-                                        {{format_price(product.club_price)}}
-                                    </div>
-                                    <div class="product-card__old-price-wrap">
-                                        <div class="product-card__old-price price price_old">
+                                        <div class="product-card__price price price_blue">
+                                            {{format_price(product.club_price)}}
+                                        </div>
+                                        <div class="product-card__old-price-wrap">
+                                            <div class="product-card__old-price price price_old">
+                                                {{format_price(product.price)}}
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <div class="product-card__price price">
                                             {{format_price(product.price)}}
                                         </div>
-                                    </div>
-                                    {% else %}
-                                    <div class="product-card__price price">
-                                        {{format_price(product.price)}}
-                                    </div>
                                     {% endif %}
+                                    </div>
+                                    <div class="product-card__buttons">
+                                        <a class="button button_accent" href="/cart/?auto_add={{product.id}}">
+                                            КУПИТЬ
+                                        </a>
+                                    </div>
+                                    <div class="product-card__summary">
+                                        {{product.summary}}
+                                    </div>
                                 </div>
                             </a>
                         </div>

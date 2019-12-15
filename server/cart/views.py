@@ -16,6 +16,14 @@ class CartPageView(TemplateView):
 
     def get(self, request, *args, **kwargs):
         self.cart = Cart(request)
+        auto_add = request.GET.get('auto_add', None)
+        if auto_add is not None:
+            try:
+                auto_add = int(auto_add)
+            except ValueError:
+                auto_add = None
+            if auto_add is not None:
+                self.cart.add_offer(auto_add)
         return super(CartPageView, self).get(request, *args, **kwargs)
 
     @property
