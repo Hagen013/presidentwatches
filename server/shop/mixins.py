@@ -155,9 +155,9 @@ class WatchesProductMixin(models.Model):
         blank=True
     )
 
-    summary = JSONField(
-        default=list,
+    summary = models.CharField(
         blank=True,
+        max_length=512
     )
 
     has_club_price = models.BooleanField(
@@ -335,54 +335,56 @@ class WatchesProductMixin(models.Model):
         attributes = self.attributes
         descriptions = []
         
+        # Механизм
+        try:
+            mechanism = attributes['Тип механизма'][0].value
+        except (IndexError, KeyError):
+            mechanism = None
+
+        if mechanism is not None:
+            mechanism = mechanism.lower()
+            descriptions.append(mechanism)
+            
+        # Водонепроницаемость
+        try:
+            waterproof = attributes['Водонепроницаемость'][0].value
+        except (IndexError, KeyError):
+            waterproof = None
+
+        if waterproof is not None:
+            descriptions.append(waterproof)
+            
         #  Стекло
         try:
             glass = attributes['Стекло'][0].value
         except (IndexError, KeyError):
             glass = None
-            
+
         if glass is not None:
-            glass = glass + ' стекло'
+            glass = 'стекло: {glass}'.format(glass=glass).lower()
             descriptions.append(glass)
             
-        # Браслет
-        try:
-            bracelet = attributes['Браслет'][0].value
-        except (IndexError, KeyError):
-            bracelet = None
+        if self.height != 0 and self.width != 0:
+            dims = '{height}x{width}мм'.format(
+                height=round(self.height),
+                width=round(self.width)
+            )
+            descriptions.append(dims)
             
-        if bracelet is not None:
-            bracelet = BRACELET_MAP.get(bracelet, None)
-            if bracelet is not None:
-                descriptions.append(bracelet)
-                
-        # Водонепроницаемость
-        try:
-            waterproof = attributes['Водонепроницаемые'][0].value
-        except (IndexError, KeyError):
-            waterproof = None
+        if self.thickness != 0:
+            thickness = 'толщина {thickness}мм'.format(
+                thickness=round(self.thickness)
+            )
+            descriptions.append(thickness)
             
-        if waterproof is not None:
-            if waterproof == '100 м' or waterproof == '200 м':
-                descriptions.append('Водонепроницаемые')
-                
-        if len(descriptions) < 3:
-            
-            # Материал
-            try:
-                material = attributes['Материал'][0].value
-            except (IndexError, KeyError):
-                material = None
-            
-            if material is not None:
-                material = MATERIAL_MAP.get(material, None)
-                if material is not None:
-                    descriptions.append(material)
-                    
-        dimensions = self.dimensions
-        if dimensions != '':
-            descriptions.append(dimensions)
-            
+        if self._weight != 0:
+            weight = '{weight}г'.format(
+                weight=round(self._weight)
+            )
+            descriptions.append(weight)
+
+        descriptions = ', '.join(descriptions)
+        
         return descriptions
 
     

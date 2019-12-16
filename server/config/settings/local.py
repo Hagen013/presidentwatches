@@ -24,7 +24,7 @@ DATABASES = {
 
 # MEDIA FILES CONFIGURATION START
 # ------------------------------------------------------------------------------
-MEDIA_ROOT = "/1TB//presidentwatches-original/"
+MEDIA_ROOT = "/var/president_media/presidentwatches-original/"
 MEDIA_URL = '/media/'
 STATIC_ROOT = str(ROOT_DIR.path('client/static_production'))
 ADMIN_UPLOADS = MEDIA_ROOT + 'admin/uploads/'
