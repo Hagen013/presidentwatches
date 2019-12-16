@@ -899,7 +899,7 @@ export default class CartForm {
                             от 5 до 7 дней
                         </div>
                         <div class="grey">
-                            <span class="price">300</span>
+                            <span class="price">450</span>
                         </div>
                     </label>
                 </li>
@@ -920,7 +920,7 @@ export default class CartForm {
                             от 5 до 7 дней
                         </div>
                         <div class="grey">
-                            <span class="price">300</span>
+                            <span class="price">450</span>
                         </div>
                     </label>
                 </li>

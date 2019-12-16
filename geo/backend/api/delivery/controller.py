@@ -320,7 +320,7 @@ class DeliveryController():
         ПОЧТА РОССИИ
         """
         result = {
-            'price': 300,
+            'price': 450,
             'time_min': 5,
             'time_max': 7,
         }

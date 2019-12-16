@@ -164,7 +164,7 @@ $(document).ready(function() {
                         Пункты выдачи — от ${filteredPricePoints}, ${filteredDatePoints}
                         </p>
                         <p class="delivery-rupost">
-                            Почтой России — <span class="price">300</span>, от 5 до 7 дней
+                            Почтой России — <span class="price">450</span>, от 5 до 7 дней
                         </p>
                         `
                     )

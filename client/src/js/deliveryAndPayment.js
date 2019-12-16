@@ -98,7 +98,7 @@ class DeliveryController {
         `)
         $('#price-rupost').html(`
         <span class="price">
-            от 0 до 300
+            от 0 до 450
         </span>
         `)
         $('#time-rupost').html(`
@@ -197,7 +197,7 @@ class DeliveryController {
                 Мы предоставляем бесплатную доставку Почтой России для товаров <span class="bold">не входящих</span> в следующий список брендов: Casio, Orient, Q&Q,
                 Michael Kors, DKNY, Fossil, Diesel, Михаил Москвин, Заря, Восток, Level.
                 </p>
-                <p>Для остальных товаров, не включенных в список выше, стоимость доставки для всех регионов России фиксированная и составляет <span class="price">300</span>.
+                <p>Для остальных товаров, не включенных в список выше, стоимость доставки для всех регионов России фиксированная и составляет <span class="price">450</span>.
                 Расчетное время доставки для города <a class="link link_dotted city-choice cityname">${this.cityName}</a> составляет 
                 ${timeFilter(this.data.postal_service.time_min, this.data.postal_service.time_max)}.
                 </p>
