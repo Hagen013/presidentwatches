@@ -5,6 +5,7 @@ from django.http import Http404
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import TemplateView
 from django.conf import settings
+from django.shortcuts import redirect
 
 from cart.models import Order
 from cart.cart import Cart
@@ -24,6 +25,7 @@ class CartPageView(TemplateView):
                 auto_add = None
             if auto_add is not None:
                 self.cart.add_offer(auto_add)
+                return redirect('/cart/')
         return super(CartPageView, self).get(request, *args, **kwargs)
 
     @property

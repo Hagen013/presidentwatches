@@ -25,6 +25,7 @@ from .models import Attribute, AttributeValue
 from .models import CategoryNodeOutdatedUrl as OutdatedUrl
 
 
+
 class ProductPageFilter(django_filters.FilterSet):
 
     price = django_filters.NumberFilter()
@@ -51,7 +52,7 @@ class CategoryPageView(DiggPaginatorViewMixin, ListView):
     attribute_class = Attribute
     value_class = AttributeValue
 
-    paginate_by = 24
+    paginate_by = 48
 
     allowed_sorting_options = {'-price': ('-_price', 'id'),
                                'price': ('_price', 'id'),
