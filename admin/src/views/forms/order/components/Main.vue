@@ -91,7 +91,7 @@
                                 </div>
                                 <div class="field-value">
                                     <div class="price">
-                                        {{instance.cart.total_price+saleAmount}} ₽
+                                        {{instance.cart.total_price}} ₽
                                     </div>
                                 </div>
                             </div>
@@ -191,7 +191,7 @@
                                                 </div>
                                                 <div class="cart-item-value">
                                                     <el-input-number
-                                                        v-model="item.price"
+                                                        v-model="item.unsaled_price"
                                                         :min="0"
                                                         size="mini"
                                                         controls-position="right"
@@ -217,7 +217,7 @@
                                             </div>
                                             <div class="cart-item-field">
                                                 <div class="cart-item-label">
-                                                    Скидка:
+                                                    Скидка на 1 шт.:
                                                 </div>
                                                 <div class="cart-item-value">
                                                     <el-input-number
@@ -485,12 +485,13 @@ export default {
 
             for (let key in this.instance.cart.items) {
                 let item = this.instance.cart.items[key];
+                let unsaled_price = item['unsaled_price'];
                 let quantity = item['quantity'];
-                let price = item['price'];
                 let sale = item['sale']
-                item['total_price'] = (price * quantity) - sale
+                item['price'] = unsaled_price - sale;
+                item['total_price'] = (item['price'] * quantity);
 
-                totalSale += sale;
+                totalSale += sale * quantity;
                 totalPrice += item['total_price'];
             }
             this.$set(this.instance.cart, 'total_price', totalPrice)

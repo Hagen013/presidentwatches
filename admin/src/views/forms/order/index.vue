@@ -132,7 +132,13 @@ export default {
             this.loading = true;
             api.get(this.instanceApiEndpoint).then(
                 response => {
-                    this.instance = response.data;
+                    let instance = response.data;
+                    for (let key in instance.cart.items) {
+                        let item = instance.cart.items[key];
+                        item.unsaled_price = item.price + item.sale;
+                        instance.cart.items[key] = item;
+                    }
+                    this.instance = instance;
                     this.loading = false;
                 },
                 response => {

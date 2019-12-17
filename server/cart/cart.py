@@ -155,15 +155,19 @@ class Cart():
         total_quantity = 0
         total_price = 0
         items_quantity = 0
+        total_sale = 0
 
         for item in self.data['items'].values():
             total_price += item['total_price']
             total_quantity += item['quantity']
             items_quantity += 1
+            sale = item['sale']
+            total_sale += sale * item['quantity']
 
         self.data['total_quantity'] = total_quantity
         self.data['total_price'] = total_price
         self.data['items_quantity'] = items_quantity
+        self.data['total_sale'] = total_sale
 
         promocode = self.data.get('promocode', None)
         if promocode is not None and len(promocode) > 0:

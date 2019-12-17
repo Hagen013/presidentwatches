@@ -634,9 +634,10 @@ class Promocode(TimeStampedMixin):
                             sale = int(total_price * self.sales[item['brand']])
                         else:
                             sale = int(self.sale_amount*total_price/100)
+                        total_sale += sale
                         sale_per_item = int(sale/item['quantity'])
                         if sale_per_item > stored_sale:
-                            total_sale += sale
+                            total_sale += sale * item['quantity']
                             item['total_price'] = total_price - sale
                             item['sale'] = sale_per_item
                             total_overall += item['total_price']
@@ -648,7 +649,7 @@ class Promocode(TimeStampedMixin):
                         sale = int(total_price * self.sales[item['brand']])
                     else:
                         sale = int(self.sale_amount*total_price/100)
-                    total_sale += sale
+                    total_sale += sale * item['quantity']
                     item['total_price'] = total_price - sale
                     item['sale'] = int(sale/item['quantity'])
                     total_overall += item['total_price']
