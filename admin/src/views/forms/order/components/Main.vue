@@ -480,6 +480,9 @@ export default {
             this.$emit('change', this.hasChanged);
         },
         calculatePrices() {
+
+            console.log('AHOY TSOY');
+
             let totalPrice = 0;
             let totalSale = 0;
 
@@ -494,6 +497,7 @@ export default {
                 totalSale += sale * quantity;
                 totalPrice += item['total_price'];
             }
+            console.log(this.instance);
             this.$set(this.instance.cart, 'total_price', totalPrice)
             this.$set(this.instance.cart, 'total_sale', totalSale)
 

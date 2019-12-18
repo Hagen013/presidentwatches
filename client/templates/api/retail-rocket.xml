@@ -34,7 +34,7 @@
             {% for price in club_prices(p) %}
             <price_{{loop.index}}>
             {{price}}
-            </price>
+            </price_{{loop.index}}>
             {% endfor %}
             <oldprice>{{p.rr_old_price}}</oldprice>
             <currencyId>RUR</currencyId>

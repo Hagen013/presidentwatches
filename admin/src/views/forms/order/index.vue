@@ -135,7 +135,7 @@ export default {
                     let instance = response.data;
                     for (let key in instance.cart.items) {
                         let item = instance.cart.items[key];
-                        item.unsaled_price = item.price + item.sale;
+                        item.unsaled_price = item.price;
                         instance.cart.items[key] = item;
                     }
                     this.instance = instance;
