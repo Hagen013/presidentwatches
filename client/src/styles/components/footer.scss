@@ -1,12 +1,12 @@
 .footer-top {
     position: relative;
-    height: 560px;
+    height: 600px;
     width: 100%;
     @include mq($from: tablet) {
-        height: 400px;
+        height: 460px;
     }
     @include mq($from: desktop) {
-        height: 210px;
+        height: 270px;
     }
 }
 
@@ -50,6 +50,9 @@
         border-top: 1px solid $light-grey;
         border-bottom: 1px solid $light-grey;
     }
+    @include mq($from: desktop) {
+        border-bottom: none;
+    }
 }
 
 .footer-column {
@@ -61,7 +64,7 @@
     top: 404px;
     left: 0px;
     @include mq($from: tablet) {
-        top: 241px;
+        top: 301px;
     }
     @include mq($from: desktop) {
         top: 0px;
@@ -203,5 +206,40 @@
 .footer-column__sub-column {
     @include mq($from: wide) {
         width: 50%;
+    }
+}
+
+.footer-y-market {
+    height: 60px;
+    padding: 10px 0px;
+    @include mq($from: desktop) {
+        padding: 0px;
+        text-align: right;
+        padding: 10px 0px 0px 0px;
+    }
+    @include mq($from: wide) {
+        height: 100px;
+        padding-top: 40px;
+    }
+}
+
+.footer-ym-link {
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    img {
+        height: 100%;
+        width: auto;
+    }
+    @include mq($from: tablet) {
+        text-align: left;
+    }
+    @include mq($from: desktop) {
+        max-width: 400px;
+        text-align: left;
+    }
+    @include mq($from: wide) {
+        text-align: right;
     }
 }

@@ -84,7 +84,7 @@ class Client(object):
     def get_orders_information(self, orders):
         info_request = Element('InfoRequest')
         for order in orders:
-            dispatch_number = order['delivery_status']['dispatch_number']
+            dispatch_number = order['tracking']['dispatch_number']
             if dispatch_number != "":
                 SubElement(
                     info_request,

@@ -303,6 +303,29 @@ class WatchesProductMixin(models.Model):
             
         groups = sorted(groups.values(), key=itemgetter('order'))
 
+        dimensions = self.dimensions
+        if len(dimensions) > 0:
+            try:
+                groups[0]['attributes'].append({
+                    'name': 'Габариты',
+                    'order': 20,
+                    'values': [{'order': 0, 'value': dimensions}]
+                })
+            except IndexError:
+                pass
+
+        if self._weight != 0:
+            weight = '{val} г.'.format(val=self._weight)
+            try:
+                groups[0]['attributes'].append({
+                    'name': 'Вес',
+                    'order': 21,
+                    'values': [{'order': 0, 'value': weight}]
+                })
+            except IndexError:
+                pass
+
+
         return groups
 
     @property

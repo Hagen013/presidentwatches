@@ -42,9 +42,8 @@ class DimensionsMixin(models.Model):
         if len(dims) == 0:
             return ''
         else:
-            dims = ' x '.join(dims)
-            dims = 'Габариты ' + dims
-            return dims
+            dims = 'мм x '.join(dims)
+            return dims + 'мм'
         
 
     @property
