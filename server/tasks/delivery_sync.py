@@ -1,13 +1,15 @@
 from datetime import datetime, timedelta
 
+import pandas as pd
 from django.conf import settings
 from django.db import transaction
 from django.utils.timezone import now, pytz
+from django.core.exceptions import ObjectDoesNotExist
 
 from config.celery import app
 from celery.schedules import crontab
 
-from cart.models import Order
+from cart.models import Order, OrderState
 from delivery.cdek import Client as ClientSDEK
 from delivery.pickpoint import Client as ClientPickpoint
 from delivery.rupost import Client as ClientRupost
@@ -142,52 +144,120 @@ def sync_postal_orders(pks):
     qs = Order.objects.filter(public_id__in=pks)
     client = ClientRupost(settings.RUPOST_USER, settings.RUPOST_PASSWORD)
     
-    
     for instance in qs:
         
-        dispatch_number = str(instance.tracking['dispatch_number'])
-        if len(dispatch_number) > 0:
-            tracking_history = client.get_operation_history(dispatch_number)
+        dispatch_number = instance.tracking.get('dispatch_number', None)
+        if dispatch_number is not None:
+            dispatch_number = str(dispatch_number)
+            if len(dispatch_number) > 0:
+                tracking_history = client.get_operation_history(dispatch_number)
 
-            finance_parameters_list = list(map(lambda x: x['FinanceParameters'], tracking_history))
-            finance_parameters_list = list(filter(lambda x: x['Payment'] is not None, finance_parameters_list))
-            invoice_sum = finance_parameters_list[0]['Payment']
-            if int(invoice_sum) != 0:
-                invoice_sum = float(str(invoice_sum)[:-2])
+                finance_parameters_list = list(map(lambda x: x['FinanceParameters'], tracking_history))
+                finance_parameters_list = list(filter(lambda x: x['Payment'] is not None, finance_parameters_list))
+                invoice_sum = finance_parameters_list[0]['Payment']
+                if int(invoice_sum) != 0:
+                    invoice_sum = float(str(invoice_sum)[:-2])
 
-            last_state = tracking_history[-1]
-            operation_parameters = last_state['OperationParameters']
-            oper_type = operation_parameters['OperType']
-            oper_attribute = operation_parameters['OperAttr']
-            oper_date = str(operation_parameters['OperDate'])
-            state_description = "{0} ({1})".format(
-                oper_type['Name'],
-                oper_attribute['Name']
-            )
-            instance.tracking['state_description'] = state_description
-            code = rupost_msg_to_code(oper_attribute['Name'])
-            instance.tracking['service_status_code'] = code
-            instance.tracking['status_code'] = rupost_to_cdek_code(str(code))
-            instance.tracking['change_date'] = oper_date
-            instance.tracking['sum'] = invoice_sum
-
-            history = []
-            for item in tracking_history:
-                history_state_description = "{0} ({1})".format(
-                    item['OperationParameters']['OperType']['Name'],
-                    item['OperationParameters']['OperAttr']['Name']
+                last_state = tracking_history[-1]
+                operation_parameters = last_state['OperationParameters']
+                oper_type = operation_parameters['OperType']
+                oper_attribute = operation_parameters['OperAttr']
+                oper_date = str(operation_parameters['OperDate'])
+                state_description = "{0} ({1})".format(
+                    oper_type['Name'],
+                    oper_attribute['Name']
                 )
-                history_log_item = {
-                    "state_description": history_state_description,
-                    "change_date": str(item['OperationParameters']['OperDate']),
-                    "service_status_code": item['OperationParameters']['OperType']['Id']
-                }
-                history.append(history_log_item)
-            instance.delivery_status['history'] = history
+                instance.tracking['state_description'] = state_description
+                code = rupost_msg_to_code(oper_attribute['Name'])
+                instance.tracking['service_status_code'] = code
+                instance.tracking['status_code'] = rupost_to_cdek_code(str(code))
+                instance.tracking['change_date'] = oper_date
+                instance.tracking['sum'] = invoice_sum
 
-            if instance.delivery_status['status_code'] == 4:
-                instance.state = 'вручен'
-            elif instance.delivery_status['status_code'] == 5:
-                instance.state = 'отказ'
+                history = []
+                for item in tracking_history:
+                    history_state_description = "{0} ({1})".format(
+                        item['OperationParameters']['OperType']['Name'],
+                        item['OperationParameters']['OperAttr']['Name']
+                    )
+                    history_log_item = {
+                        "state_description": history_state_description,
+                        "change_date": str(item['OperationParameters']['OperDate']),
+                        "service_status_code": item['OperationParameters']['OperType']['Id']
+                    }
+                    history.append(history_log_item)
+                instance.delivery_status['history'] = history
 
+                if instance.delivery_status['status_code'] == 4:
+                    instance.state = 'вручен'
+                elif instance.delivery_status['status_code'] == 5:
+                    instance.state = 'отказ'
+
+                instance.save()
+
+
+def sort_orders_by_service(limit=500, days=90):
+    sdek      = []
+    pickpoint = []
+    rupost    = []
+    unknown   = []
+    
+    qs = Order.objects.filter(
+        created_at__gte=now()-timedelta(days=days)
+    )
+    
+    for instance in qs:
+        if instance.delivery['type'] == 'curier':
+            sdek.append(instance.public_id)
+        elif instance.delivery['type'] == 'rupost':
+            rupost.append(instance.public_id)
+        elif instance.delivery['type'] == 'pvz':
+            if instance.delivery['pvz_service'] == 'sdek':
+                sdek.append(instance.public_id)
+            elif instance.delivery['pvz_service'] == 'pickpoint':
+                pickpoint.append(instance.public_id)
+            else:
+                sdek.append(instance.public_id)
+                pickpoint.append(instance.public_id)
+                unknown.append(instance.public_id)
+                
+    return {
+        'sdek': sdek,
+        'pickpoint': pickpoint,
+        'rupost': rupost,
+        'unknown': unknown
+    }
+
+
+@app.task
+def sync_delivery_statuses():
+    data = sort_orders_by_service()
+    sync_sdek_orders(data['sdek'])
+    sync_pickpoint_orders(data['pickpoint'])
+    sync_postal_orders(data['rupost'])
+
+
+@app.task
+def set_rupost_numbers(filename):
+    df = pd.read_excel(filename)
+    mapping = {}
+    for index, row in df.iterrows():
+        dispatch_number = row['Номер отправления']
+        public_id       = row['Заказ']
+        mapping[public_id] = dispatch_number
+    
+    pks = list(mapping.keys())
+    qs = Order.objects.filter(public_id__in=pks)
+
+    with transaction.atomic():
+        for instance in qs:
+            instance.tracking['type'] = 'rupost'
+            instance.tracking['dispatch_number'] = dispatch_number
             instance.save()
+
+
+app.add_periodic_task(
+    crontab(minute="01", hour='08'),
+    sync_delivery_statuses.s(),
+    name='sync_delivery_statuses',
+)
