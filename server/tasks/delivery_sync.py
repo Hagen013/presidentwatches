@@ -186,12 +186,12 @@ def sync_postal_orders(pks):
                         "service_status_code": item['OperationParameters']['OperType']['Id']
                     }
                     history.append(history_log_item)
-                instance.delivery_status['history'] = history
+                instance.tracking['history'] = history
 
-                if instance.delivery_status['status_code'] == 4:
-                    instance.state = 'вручен'
-                elif instance.delivery_status['status_code'] == 5:
-                    instance.state = 'отказ'
+                if instance.tracking['status_code'] == 4:
+                    instance.state = OrderState.HandedOver
+                elif instance.tracking['status_code'] == 5:
+                    instance.state = OrderState.Rejected
 
                 instance.save()
 
