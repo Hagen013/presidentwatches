@@ -917,15 +917,39 @@
             <div class="button button_ghost button_big fast-buy-close-btn">
             ЗАКРЫТЬ
             </div>
-            <div class="modal-close control-button">
-                <i class="icon icon_close" id="fast-buy-close">
+            <div class="modal-close control-button" id="fast-buy-close">
+                <i class="icon icon_close">
                 </i>
             </div>
         </div>
+
         <div class="modal-placeholder">
         </div>
     </div>
 
+    <div class="modal order-modal" id="order-modal">
+        <div class="modal-container fast-buy-container">
+            <div class="modal-title bold">
+                Товар добавлен в корзину
+            </div>
+            <div class="order-modal-buttons">
+                <a class="button button_big button_accent order-modal-submit"
+                    href="/cart/"
+                >
+                    ОФОРМИТЬ ЗАКАЗ
+                </a>
+                <div class="button button_ghost button_big order-modal-close-button order-modal-close-btn">
+                    ПРОДОЛЖИТЬ ПОКУПКИ
+                </div>
+                <div class="modal-close control-button order-modal-close-btn" id="order-modal-close">
+                    <i class="icon icon_close">
+                    </i>
+                </div>
+            </div>
+        </div>
+        <div class="modal-placeholder order-modal-close-btn">
+        </div>
+    </div>
 
     <div class="modal club-price-modal" id="club-price-modal">
         <div class="modal-container club-price-modal-container">

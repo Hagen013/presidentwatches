@@ -401,3 +401,40 @@
 .gift-price-after {
     font-size: 16px;
 }
+
+.order-modal-submit {
+    font-size: 12px !important;
+    width: 100% !important;;
+    @include mq($from: tablet) {
+        display: inline-block !important;
+        font-size: 14px;
+        width: auto !important;
+    }
+}
+
+.order-modal-buttons {
+    @include mq($from: tablet) {
+        margin-top: 40px;
+    }
+}
+
+.order-modal-close-button {
+    font-size: 12px !important;
+    width: 100% !important;;
+    margin-top: 20px;
+    @include mq($from: tablet) {
+        margin-top: 0px;
+        margin-left: 15px;
+        display: inline-block !important;
+        font-size: 14px;
+        width: auto !important;
+    }
+}
+
+.order-modal {
+    text-align: center;
+    .modal-title {
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+}

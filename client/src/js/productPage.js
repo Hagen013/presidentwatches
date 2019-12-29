@@ -46,6 +46,7 @@ $(document).ready(function() {
     }
 
     $('#add-to-cart').click(function() {
+        $('#order-modal').css('display', 'block');
         store.dispatch('addToCart', PRODUCT);
         $('#add-to-cart').replaceWith(`
         <a class="button button_big button_accent product-main__button float-left"
@@ -399,5 +400,9 @@ $(document).ready(function() {
     setTimeout(function() {
         $('#fab-gift').addClass('active');
     }, 5000)
+
+    $('.order-modal-close-btn').click(function() {
+        $('#order-modal').css('display', 'none');
+    })
 
 })
