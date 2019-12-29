@@ -981,10 +981,47 @@
             <div class="modal-placeholder">
             </div>
         </div>
+        <div class="modal fast-buy-modal" id="call-modal">
+            <div class="modal-container fast-buy-container">
+                <div class="modal-title bold">
+                Обратный звонок
+                </div>
+                <div class="fast-buy-main" id="call-main">
+                    <div class="fast-buy-form">
+                        <div class="fast-buy-caption bold">
+                        Введите номер вашего телефона
+                        </div>
+                        <div class="input-box">
+                            <input class="input" id="call-modal-input"
+                                placeholder='+7 (___) ___-____'
+                            >
+                            <div class="fast-buy-error" id="call-modal-error">
+                            Укажите номер телефона, включая код города (10 цифр)
+                            </div>
+                        </div>
+                    </div>
+                </div>            
+                <div class="button button_big button_accent"
+                    id="call-modal-submit"
+                >
+                ОСТАВИТЬ ЗАЯВКУ
+                </div>
+                <div class="button button_ghost button_big call-close-btn" id="call-close-btn">
+                ЗАКРЫТЬ
+                </div>
+                <div class="modal-close control-button call-close-btn">
+                    <i class="icon icon_close" id="call-modal-close">
+                    </i>
+                </div>
+            </div>
+            <div class="modal-placeholder">
+            </div>
+        </div>
         {% endstrip %}
         {% endblock modals %}
 
         <script type="text/javascript">
+        var PRODUCT = null;
         {% if request.user.is_authenticated %}
         var GROUP = "{{request.user.marketing_group.sales_json}}";
         {% else %}

@@ -2,8 +2,17 @@
     <div class="sidebar__inner">
         <div class="sidebar-tabs sticky">
             <ul class="sidebar-nav">
-                <li class="sidebar-nav-tab">
+                <li class="sidebar-nav-tab show-wide">
                     <a class="sidebar-link active" id="sidebar-cart-link" href="#cart">
+                        <i class="icon icon_cart">
+                        </i>
+                        <div class="sidebar-nav-count cart-count">
+                            {{ cart.data['total_quantity'] }}
+                        </div>
+                    </a>
+                </li>
+                <li class="sidebar-nav-tab hide-wide">
+                    <a class="sidebar-link-direct" href="/cart/">
                         <i class="icon icon_cart">
                         </i>
                         <div class="sidebar-nav-count cart-count">

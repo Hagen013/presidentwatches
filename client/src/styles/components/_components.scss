@@ -30,7 +30,7 @@
     min-height: 40px;
     padding-right: 10px;
     padding-left: 10px;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: normal;
     font-style: normal;
     font-stretch: normal;
@@ -45,6 +45,9 @@
     }
     &:first-child {
         padding-left: 0px;
+    }
+    @include mq($from: desktop) {
+        font-size: 12px;
     }
 }
 
@@ -122,6 +125,19 @@
 }
 
 .control-button_tablet {
+    position: relative;
+    .cart-count {
+        position: absolute;
+        top: 4px;
+        right: 3px;
+        line-height: normal;
+    }
+    @include mq($from: desktop) {
+        display: none;
+    }
+}
+
+.control-button_tablet-link {
     position: relative;
     .cart-count {
         position: absolute;

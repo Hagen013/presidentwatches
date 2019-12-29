@@ -10,7 +10,8 @@ from .views import (CartApiView,
                     CreateOrderAPIView,
                     ApplyPromocodeAPIView,
                     GiftSalesTableView,
-                    GiftPriceApiView)
+                    GiftPriceApiView,
+                    CallApiView)
 
 
 app_name = 'api'
@@ -26,5 +27,6 @@ urlpatterns = [
     path('create-order/', CreateOrderAPIView.as_view()),
     path('promocode/', ApplyPromocodeAPIView.as_view()),
     path('gift-prices/', GiftSalesTableView.as_view()),
-    path('gift/', GiftPriceApiView.as_view())
+    path('gift/', GiftPriceApiView.as_view()),
+    path('call/', CallApiView.as_view())
 ]

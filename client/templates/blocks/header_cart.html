@@ -44,13 +44,6 @@
                         </div>
                     </a>
                     <a class="header__top-link tab-link"
-                        href="/info/promo/"
-                    >
-                        <div class="tab-link__caption">
-                            АКЦИИ
-                        </div>
-                    </a>
-                    <a class="header__top-link tab-link"
                         href="tel:+78007776072"
                     >
                         <i class="icon icon_phone tab-link__icon">
@@ -67,6 +60,11 @@
                         <div class="tab-link__caption city-phone">
                             {{city_phone(request.user.city_name)['public']}}
                         </div>
+                    </a>
+                    <a class="header-top_link tab-link" id="header-call">
+                        <i class="icon icon_phone tab-link__icon">
+                        </i>
+                        ОБРАТНЫЙ ЗВОНОК
                     </a>
                 </div>
             </div>

@@ -15,6 +15,7 @@ import store from '@/store/index.js';
 import favoritesStore from '@/store/favorites/index.js';
 import toggleSidebarTab from '@/utils/toggleSidebarTab'
 import validateEmail from '@/utils/validateEmail'
+import callModal from '@/components/CallModal.js';
 
 
 $(document).ready(function() {
@@ -353,6 +354,8 @@ $(document).ready(function() {
         favoritesStore.dispatch('addToFavorites', {pk: pk});
     }
 
+    let callingModal = new callModal();
+
     // RR rendering stuff
     let groupSales = {}
     let previousCount = 0;
@@ -405,5 +408,6 @@ $(document).ready(function() {
         iterationCount += 1;
     }, 500)
     ///
+
 
 })

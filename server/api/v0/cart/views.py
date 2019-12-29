@@ -207,11 +207,60 @@ class FastBuyApiView(BaseCartAPIView):
 
         instance = serializer.save()
         
-        print(request_cart.data)
         code = request_cart.data['promocode']
         if code != '':
             serve_promocode.delay(code)
 
+        data = {
+            'cart': instance.cart,
+            'uuid': instance.uuid,
+            'public_id': instance.public_id
+        }
+        return Response(data)
+
+
+class CallApiView(BaseCartAPIView):
+
+    def post(self, request):
+        
+        cart = Cart()
+        product = request.data.get('product', None)
+        if product is not None:
+            cart.add_offer(product['pk'])
+
+        data = {
+            'customer': {
+                'email': '',
+                'phone': request.data.get('phone'),
+                'name': '',
+                'address': ''
+            },
+            'delivery': {
+                'type': 'not_selected',
+                'price': 0,
+                'pvz_code': None,
+                'pvz_service': None,
+                'pvz_address': ''
+            },
+            'payment': {
+                'type': 'not_selected',
+            },
+            'client_notes': 'Обратный звонок',
+            'source': 3
+        }
+                
+        serializer = OrderCreateSerializer(data, request, cart=cart)
+
+        try:
+            serializer.validate()
+        except ValidationError as e:
+            return Response(
+                status=status.HTTP_400_BAD_REQUEST,
+                data=e.messages
+            )
+
+        instance = serializer.save()
+        
         data = {
             'cart': instance.cart,
             'uuid': instance.uuid,

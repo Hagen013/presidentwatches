@@ -44,13 +44,6 @@
                         </div>
                     </a>
                     <a class="header__top-link tab-link"
-                        href="/info/promo/"
-                    >
-                        <div class="tab-link__caption">
-                            АКЦИИ
-                        </div>
-                    </a>
-                    <a class="header__top-link tab-link"
                         href="tel:+78007776072"
                     >
                         <i class="icon icon_phone tab-link__icon">
@@ -66,6 +59,25 @@
                         </i>
                         <div class="tab-link__caption city-phone">
                             {{city_phone(request.user.city_name)['public']}}
+                        </div>
+                    </a>
+                    <a class="header-top_link tab-link" id="header-call">
+                        <i class="icon icon_phone tab-link__icon">
+                        </i>
+                        ОБРАТНЫЙ ЗВОНОК
+                    </a>
+                    <a class="header__top-link tab-link show-wide"
+                        href="/info/about/"
+                    >
+                        <div class="tab-link__caption">
+                            О КОМПАНИИ
+                        </div>
+                    </a>
+                    <a class="header__top-link tab-link show-wide"
+                        href="/info/guarantees/"
+                    >
+                        <div class="tab-link__caption">
+                            ГАРАНТИЯ
                         </div>
                     </a>
                 </div>
@@ -121,15 +133,15 @@
                         <i class="icon icon_heart-stroke">
                         </i>
                     </div>
-                    <div class="control-button control-button_tablet"
-                        href="#cart"
+                    <a class="control-button control-button_tablet-link"
+                        href="/cart/"
                     >
                         <i class="icon icon_cart">
                         </i>
                         <div class="cart-count">
                         {{ cart.data['total_quantity'] }}
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>

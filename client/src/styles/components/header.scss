@@ -354,3 +354,12 @@
         line-height: normal;
     }
 }
+
+#header-call {
+    user-select: none;
+    cursor: pointer !important;
+}
+
+.call-close-btn {
+    display: none;
+}
