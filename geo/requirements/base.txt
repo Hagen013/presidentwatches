@@ -15,7 +15,7 @@ kombu==4.1.0
 
 Unidecode==0.4.21
 
-aiohttp==2.3.6
+aiohttp==3.7.4
 requests==2.11.1
 
 # Raven
