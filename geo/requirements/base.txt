@@ -10,7 +10,7 @@ django-choices==1.6.0
 django-environ==0.4.3
 django-cors-headers==2.1.0
 
-celery==4.1.0
+celery==5.2.2
 kombu==4.1.0
 
 Unidecode==0.4.21
